@@ -1,0 +1,4 @@
+settings.ini.php
+*.swp
+!.gitkeep
+log

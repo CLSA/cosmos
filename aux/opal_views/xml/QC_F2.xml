@@ -1,0 +1,260 @@
+<org.obiba.magma.views.View>
+  <name>QC_F2</name>
+  <from class="org.obiba.magma.views.JoinTable">
+    <list>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs-f2.Participants</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs-f2.BloodPressure</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs-f2.CognitiveTest</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs-images-f2.CarotidIntima</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs-images-f2.DualHipBoneDensity</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs-f2.ECG</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs-images-f2.ForearmBoneDensity</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs-f2.GripStrength</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs-f2.Hearing</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs-images-f2.LateralBoneDensity</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs-images-f2.RetinalScanLeft</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs-images-f2.RetinalScanRight</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs-f2.Spirometry</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs-f2.Tonometer</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs-f2.Weight</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs-images-f2.WholeBodyBoneDensity</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs-f2.StandingHeight</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs-images-f2.SpineBoneDensity</reference>
+      </table>
+    </list>
+  </from>
+  <select class="org.obiba.magma.views.support.NoneClause"/>
+  <where class="org.obiba.magma.js.views.JavascriptClause">
+    <scriptName>customScript</scriptName>
+    <script>$lastupdate().before(newValue(&apos;2018-05-17&apos;,&apos;date&apos;)).and($lastupdate().after(newValue(&apos;2018-03-01&apos;,&apos;date&apos;)))</script>
+  </where>
+  <variables class="org.obiba.magma.js.views.VariablesClause">
+    <variables class="linked-hash-set">
+      <variable name="data_grade_spirometry" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="stage" valueType="text">Spirometry</attribute>
+          <attribute name="validation" valueType="text">[IntegrityCheck-ERROR]</attribute>
+          <attribute name="captureMethod" valueType="text">AUTOMATIC</attribute>
+          <attribute name="isManualCaptureAllowed" valueType="text">true</attribute>
+          <attribute name="vendorName" valueType="text">QUALITY_GRADE</attribute>
+          <attribute name="derivedFrom" namespace="opal" valueType="text">/datasource/clsa-dcs-f2/table/Spirometry/variable/OUTPUT_QUALITY_GRADE</attribute>
+          <attribute name="script" valueType="text">$(&apos;OUTPUT_QUALITY_GRADE&apos;)</attribute>
+        </attributes>
+        <categories>
+          <category name="A"/>
+          <category name="B"/>
+          <category name="C"/>
+          <category name="C1"/>
+          <category name="C2"/>
+          <category name="D1"/>
+          <category name="D2"/>
+        </categories>
+      </variable>
+      <variable name="stage_technician_spirometry" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="stage" valueType="text">Spirometry</attribute>
+          <attribute name="derivedFrom" namespace="opal" valueType="text">/datasource/clsa-dcs-f2/table/Spirometry/variable/InstrumentRun.user</attribute>
+          <attribute name="script" valueType="text">$(&apos;clsa-dcs-f2.Spirometry:InstrumentRun.user&apos;).lowerCase().whenNull(
+  $group(&apos;Admin.Action.stage&apos;,&apos;Spirometry&apos;,&apos;Admin.Action.user&apos;).asSequence().last().lowerCase())</attribute>
+        </attributes>
+      </variable>
+      <variable name="interview_site" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;Admin.ApplicationConfiguration.siteName&apos;).map({
+  &apos;BritishColumbia&apos;:&apos;University of BC DCS&apos;,
+  &apos;British Columbia&apos;:&apos;University of BC DCS&apos;,
+  &apos;Calgary&apos;:&apos;Calgary DCS&apos;,
+  &apos;Dalhousie&apos;:&apos;Dalhousie DCS&apos;,
+  &apos;Hamilton&apos;:&apos;Hamilton DCS&apos;,
+  &apos;Manitoba&apos;:&apos;Manitoba DCS&apos;,
+  &apos;McGill&apos;:&apos;McGill DCS&apos;,
+  &apos;McMaster&apos;:&apos;Hamilton DCS&apos;,
+  &apos;Memorial&apos;:&apos;Memorial DCS&apos;,
+  &apos;Memorial University&apos;:&apos;Memorial DCS&apos;,
+  &apos;Ottawa&apos;:&apos;Ottawa DCS&apos;,
+  &apos;Sherbrooke&apos;:&apos;Sherbrooke DCS&apos;,
+  &apos;Simon Fraser&apos;:&apos;Simon Fraser DCS&apos;,
+  &apos;SimonFraser&apos;:&apos;Simon Fraser DCS&apos;,
+  &apos;UniversityofBC&apos;:&apos;University of BC DCS&apos;,
+  &apos;University of Manitoba&apos;:&apos;Manitoba DCS&apos;,
+  &apos;University of Victoria&apos;:&apos;Victoria DCS&apos;,
+  &apos;Victoria&apos;:&apos;Victoria DCS&apos;},null) </attribute>
+        </attributes>
+      </variable>
+      <variable name="data_missing_spirometry" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var stage=newValue($group(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,&apos;Spirometry&apos;,&apos;Admin.StageInstance.lastState&apos;).asSequence().last(),&apos;text&apos;)
+$this(&apos;data_grade_spirometry&apos;).isNull().and(stage.any(&apos;Skipped&apos;,&apos;NotApplicable&apos;).not()).value() ? 1 : 0</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_comment_spirometry" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">// this script compounds repeated comments by using lowercase comment strings as array keys
+// and further compounds events within actions
+// 
+var v1=$group(&apos;Admin.Action.stage&apos;,&apos;Spirometry&apos;,&apos;Admin.Action.comment&apos;).asSequence()
+var v2=$group(&apos;Admin.Action.stage&apos;,&apos;Spirometry&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
+var v3=$group(&apos;Admin.Action.stage&apos;,&apos;Spirometry&apos;,&apos;Admin.Action.eventReason&apos;).asSequence()
+var res=null
+var c_str=[]  // string array of comments
+var e_str=[]  // string array of events
+var a_str=[]  // string array of actions
+for(var i=0; i&lt;v1.size(); i++) {
+  if(v1.valueAt(i).isNull().value()) continue
+  c_str.push(v1.valueAt(i).value())
+  a_str.push(v2.valueAt(i).value())
+  e_str.push((v3.valueAt(i).isNull().value()?&apos;SeeComment&apos;:v3.valueAt(i).value().slice(14)))
+}
+var v4=$(&apos;clsa-dcs-f2.Spirometry:InstrumentRun.skipComment&apos;)
+if(v4.isNull().not().value()) {
+  c_str.push(v4.value())  
+  a_str.push(&apos;SKIP&apos;)
+  e_str.push(&apos;SeeComment&apos;)
+}
+if(undefined!==c_str &amp;&amp; 0&lt;c_str.length) {
+  var arr=[]
+  var key_orig=[]
+  for(var i=0;i&lt;c_str.length;i++) {
+    var key=c_str[i].replace(/[.,\/#!:$%\^\|&amp;\*;{}=\-_`~()]/g,&quot;&quot;).replace(/\s\s+/g,&quot; &quot;)
+    var key_lower = key.toLowerCase()
+    // retain the first encountered instance of the comment
+    if(undefined===key_orig[key_lower])
+      key_orig[key_lower]=key
+    // combine the action and the event
+    var str=a_str[i]+&apos;:&apos;+e_str[i]
+    if(undefined===arr[key_lower])
+      arr[key_lower]=[]
+    if(-1===arr[key_lower].indexOf(str))
+      arr[key_lower].push(str)
+  }
+  
+  var str=[]
+  for(var key in arr) {
+    // compound repeated events 
+    var subarr=[]
+    for(var i=0;i&lt;arr[key].length;i++) {
+      var t=arr[key][i].split(&apos;:&apos;)
+      var t_key=t[1]
+      if(undefined===subarr[t_key])
+        subarr[t_key]=[]
+      if(-1===subarr[t_key].indexOf(t[0]))  
+        subarr[t_key].push(t[0])
+    }
+    var substr=[]
+    for(var t_key in subarr) {
+      var t_str=&apos;SeeComment&apos;==t_key?&apos;]&apos;:&apos;]&apos;+t_key
+      if(1&lt;subarr[t_key].length) {
+        substr.push(&apos;[&apos;+subarr[t_key].join(&apos;/&apos;)+t_str);
+      } else {
+        substr.push(&apos;[&apos;+subarr[t_key][0]+t_str);
+      }
+    }
+    str.push(&apos;[&apos;+((1&lt;substr.length)?substr.join(&apos;/&apos;):substr[0])+&apos;]:&apos;+key_orig[key])
+  }
+  
+  if(1&lt;str.length) {
+    res=newValue(str.join(&apos;,&apos;),&apos;text&apos;)
+  } else {
+    res=newValue(str[0],&apos;text&apos;)
+  }
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_skip_spirometry" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var v1=$group(&apos;Admin.Action.stage&apos;,&apos;Spirometry&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
+var v2=$group(&apos;Admin.Action.stage&apos;,&apos;Spirometry&apos;,&apos;Admin.Action.eventReason&apos;).asSequence()
+var res=null
+var arr=[]  // string array of events
+for(var i=0; i&lt;v1.size(); i++) {
+  if(v1.valueAt(i).any(&apos;SKIP&apos;).not().value() ||
+     v2.valueAt(i).isNull().value()) continue
+  var key=v2.valueAt(i).value().slice(14)
+  if(-1==arr.indexOf(key))
+    arr.push(key)
+}
+if(undefined!==arr &amp;&amp; 0&lt;arr.length) {
+  res=newValue(arr.pop(),&apos;text&apos;)
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_contraindicated_spirometry" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,&apos;Spirometry&apos;,
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
+? 1 : 0</attribute>
+        </attributes>
+      </variable>
+      <variable name="interview_start_date" valueType="date" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="derivedFrom" namespace="opal" valueType="text">/datasource/clsa-dcs-f2/table/Participants/variable/Admin.Interview.startDate</attribute>
+          <attribute name="script" valueType="text">$(&apos;Admin.Interview.startDate&apos;)</attribute>
+        </attributes>
+      </variable>
+      <variable name="interview_barcode" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="identifier" valueType="text">true</attribute>
+          <attribute name="derivedFrom" namespace="opal" valueType="text">/datasource/clsa-dcs-f2/table/Participants/variable/Admin.Participant.barcode</attribute>
+          <attribute name="script" valueType="text">$(&apos;Admin.Participant.barcode&apos;)</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_duration_spirometry" valueType="decimal" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var res=null
+if( $group(
+  &apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,
+  &apos;Spirometry&apos;,
+  &apos;Admin.StageInstance.lastState&apos;).asSequence().last().any(&apos;Skipped&apos;,&apos;NotApplicable&apos;).not().value() ) {
+  res=$group(
+    &apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,
+    &apos;Spirometry&apos;,
+    &apos;Admin.StageInstance.duration&apos;).asSequence().last()
+  if(res.isNull().not().value()) {
+    res=Math.round(res.div(60.0).multiply(10.0).value()) / 10.0
+  }
+}
+res</attribute>
+        </attributes>
+      </variable>
+    </variables>
+  </variables>
+  <created valueType="datetime">2018-05-15T13:40:50.956-04</created>
+  <updated valueType="datetime">2018-05-16T12:56:09.368-04</updated>
+</org.obiba.magma.views.View>

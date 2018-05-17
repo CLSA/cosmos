@@ -1,0 +1,277 @@
+{
+  "Magma.VariableListViewDto.view": {
+    "variables": [
+      {
+        "attributes": [
+          {
+            "name": "stage", 
+            "value": "Spirometry"
+          }, 
+          {
+            "name": "validation", 
+            "value": "[IntegrityCheck-ERROR]"
+          }, 
+          {
+            "name": "captureMethod", 
+            "value": "AUTOMATIC"
+          }, 
+          {
+            "name": "isManualCaptureAllowed", 
+            "value": "true"
+          }, 
+          {
+            "name": "vendorName", 
+            "value": "QUALITY_GRADE"
+          }, 
+          {
+            "name": "derivedFrom", 
+            "namespace": "opal", 
+            "value": "/datasource/clsa-dcs-f2/table/Spirometry/variable/OUTPUT_QUALITY_GRADE"
+          }, 
+          {
+            "name": "script", 
+            "value": "$('OUTPUT_QUALITY_GRADE')"
+          }
+        ], 
+        "categories": [
+          {
+            "isMissing": false, 
+            "name": "A"
+          }, 
+          {
+            "isMissing": false, 
+            "name": "B"
+          }, 
+          {
+            "isMissing": false, 
+            "name": "C"
+          }, 
+          {
+            "isMissing": false, 
+            "name": "C1"
+          }, 
+          {
+            "isMissing": false, 
+            "name": "C2"
+          }, 
+          {
+            "isMissing": false, 
+            "name": "D1"
+          }, 
+          {
+            "isMissing": false, 
+            "name": "D2"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "data_grade_spirometry", 
+        "occurrenceGroup": "", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "stage", 
+            "value": "Spirometry"
+          }, 
+          {
+            "name": "derivedFrom", 
+            "namespace": "opal", 
+            "value": "/datasource/clsa-dcs-f2/table/Spirometry/variable/InstrumentRun.user"
+          }, 
+          {
+            "name": "script", 
+            "value": "$('clsa-dcs-f2.Spirometry:InstrumentRun.user').lowerCase().whenNull(\n  $group('Admin.Action.stage','Spirometry','Admin.Action.user').asSequence().last().lowerCase())"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_technician_spirometry", 
+        "occurrenceGroup": "", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$('Admin.ApplicationConfiguration.siteName').map({\n  'BritishColumbia':'University of BC DCS',\n  'British Columbia':'University of BC DCS',\n  'Calgary':'Calgary DCS',\n  'Dalhousie':'Dalhousie DCS',\n  'Hamilton':'Hamilton DCS',\n  'Manitoba':'Manitoba DCS',\n  'McGill':'McGill DCS',\n  'McMaster':'Hamilton DCS',\n  'Memorial':'Memorial DCS',\n  'Memorial University':'Memorial DCS',\n  'Ottawa':'Ottawa DCS',\n  'Sherbrooke':'Sherbrooke DCS',\n  'Simon Fraser':'Simon Fraser DCS',\n  'SimonFraser':'Simon Fraser DCS',\n  'UniversityofBC':'University of BC DCS',\n  'University of Manitoba':'Manitoba DCS',\n  'University of Victoria':'Victoria DCS',\n  'Victoria':'Victoria DCS'},null) "
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "interview_site", 
+        "occurrenceGroup": "", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "var stage=newValue($group('clsa-dcs-f2.Participants:Admin.StageInstance.stage','Spirometry','Admin.StageInstance.lastState').asSequence().last(),'text')\n$this('data_grade_spirometry').isNull().and(stage.any('Skipped','NotApplicable').not()).value() ? 1 : 0"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "data_missing_spirometry", 
+        "occurrenceGroup": "", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "integer"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "// this script compounds repeated comments by using lowercase comment strings as array keys\n// and further compounds events within actions\n// \nvar v1=$group('Admin.Action.stage','Spirometry','Admin.Action.comment').asSequence()\nvar v2=$group('Admin.Action.stage','Spirometry','Admin.Action.actionType').asSequence()\nvar v3=$group('Admin.Action.stage','Spirometry','Admin.Action.eventReason').asSequence()\nvar res=null\nvar c_str=[]  // string array of comments\nvar e_str=[]  // string array of events\nvar a_str=[]  // string array of actions\nfor(var i=0; i<v1.size(); i++) {\n  if(v1.valueAt(i).isNull().value()) continue\n  c_str.push(v1.valueAt(i).value())\n  a_str.push(v2.valueAt(i).value())\n  e_str.push((v3.valueAt(i).isNull().value()?'SeeComment':v3.valueAt(i).value().slice(14)))\n}\nvar v4=$('clsa-dcs-f2.Spirometry:InstrumentRun.skipComment')\nif(v4.isNull().not().value()) {\n  c_str.push(v4.value())  \n  a_str.push('SKIP')\n  e_str.push('SeeComment')\n}\nif(undefined!==c_str && 0<c_str.length) {\n  var arr=[]\n  var key_orig=[]\n  for(var i=0;i<c_str.length;i++) {\n    var key=c_str[i].replace(/[.,\\/#!:$%\\^\\|&\\*;{}=\\-_`~()]/g,\"\").replace(/\\s\\s+/g,\" \")\n    var key_lower = key.toLowerCase()\n    // retain the first encountered instance of the comment\n    if(undefined===key_orig[key_lower])\n      key_orig[key_lower]=key\n    // combine the action and the event\n    var str=a_str[i]+':'+e_str[i]\n    if(undefined===arr[key_lower])\n      arr[key_lower]=[]\n    if(-1===arr[key_lower].indexOf(str))\n      arr[key_lower].push(str)\n  }\n  \n  var str=[]\n  for(var key in arr) {\n    // compound repeated events \n    var subarr=[]\n    for(var i=0;i<arr[key].length;i++) {\n      var t=arr[key][i].split(':')\n      var t_key=t[1]\n      if(undefined===subarr[t_key])\n        subarr[t_key]=[]\n      if(-1===subarr[t_key].indexOf(t[0]))  \n        subarr[t_key].push(t[0])\n    }\n    var substr=[]\n    for(var t_key in subarr) {\n      var t_str='SeeComment'==t_key?']':']'+t_key\n      if(1<subarr[t_key].length) {\n        substr.push('['+subarr[t_key].join('/')+t_str);\n      } else {\n        substr.push('['+subarr[t_key][0]+t_str);\n      }\n    }\n    str.push('['+((1<substr.length)?substr.join('/'):substr[0])+']:'+key_orig[key])\n  }\n  \n  if(1<str.length) {\n    res=newValue(str.join(','),'text')\n  } else {\n    res=newValue(str[0],'text')\n  }\n}\nres"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_comment_spirometry", 
+        "occurrenceGroup": "", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "var v1=$group('Admin.Action.stage','Spirometry','Admin.Action.actionType').asSequence()\nvar v2=$group('Admin.Action.stage','Spirometry','Admin.Action.eventReason').asSequence()\nvar res=null\nvar arr=[]  // string array of events\nfor(var i=0; i<v1.size(); i++) {\n  if(v1.valueAt(i).any('SKIP').not().value() ||\n     v2.valueAt(i).isNull().value()) continue\n  var key=v2.valueAt(i).value().slice(14)\n  if(-1==arr.indexOf(key))\n    arr.push(key)\n}\nif(undefined!==arr && 0<arr.length) {\n  res=newValue(arr.pop(),'text')\n}\nres"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_skip_spirometry", 
+        "occurrenceGroup": "", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$group('clsa-dcs-f2.Participants:Admin.StageInstance.stage','Spirometry',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable').value() \n? 1 : 0"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_contraindicated_spirometry", 
+        "occurrenceGroup": "", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "integer"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "derivedFrom", 
+            "namespace": "opal", 
+            "value": "/datasource/clsa-dcs-f2/table/Participants/variable/Admin.Interview.startDate"
+          }, 
+          {
+            "name": "script", 
+            "value": "$('Admin.Interview.startDate')"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "interview_start_date", 
+        "occurrenceGroup": "", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "date"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "identifier", 
+            "value": "true"
+          }, 
+          {
+            "name": "derivedFrom", 
+            "namespace": "opal", 
+            "value": "/datasource/clsa-dcs-f2/table/Participants/variable/Admin.Participant.barcode"
+          }, 
+          {
+            "name": "script", 
+            "value": "$('Admin.Participant.barcode')"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "interview_barcode", 
+        "occurrenceGroup": "", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "var res=null\nif( $group(\n  'clsa-dcs-f2.Participants:Admin.StageInstance.stage',\n  'Spirometry',\n  'Admin.StageInstance.lastState').asSequence().last().any('Skipped','NotApplicable').not().value() ) {\n  res=$group(\n    'clsa-dcs-f2.Participants:Admin.StageInstance.stage',\n    'Spirometry',\n    'Admin.StageInstance.duration').asSequence().last()\n  if(res.isNull().not().value()) {\n    res=Math.round(res.div(60.0).multiply(10.0).value()) / 10.0\n  }\n}\nres"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_duration_spirometry", 
+        "occurrenceGroup": "", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "decimal"
+      }
+    ]
+  }, 
+  "datasourceName": "Quality_Control", 
+  "from": [
+    "clsa-dcs-f2.Participants", 
+    "clsa-dcs-f2.BloodPressure", 
+    "clsa-dcs-f2.CognitiveTest", 
+    "clsa-dcs-images-f2.CarotidIntima", 
+    "clsa-dcs-images-f2.DualHipBoneDensity", 
+    "clsa-dcs-f2.ECG", 
+    "clsa-dcs-images-f2.ForearmBoneDensity", 
+    "clsa-dcs-f2.GripStrength", 
+    "clsa-dcs-f2.Hearing", 
+    "clsa-dcs-images-f2.LateralBoneDensity", 
+    "clsa-dcs-images-f2.RetinalScanLeft", 
+    "clsa-dcs-images-f2.RetinalScanRight", 
+    "clsa-dcs-f2.Spirometry", 
+    "clsa-dcs-f2.Tonometer", 
+    "clsa-dcs-f2.Weight", 
+    "clsa-dcs-images-f2.WholeBodyBoneDensity", 
+    "clsa-dcs-f2.StandingHeight", 
+    "clsa-dcs-images-f2.SpineBoneDensity"
+  ], 
+  "name": "QC_F2", 
+  "where": "$lastupdate().before(newValue('BEFORE_DATE','date')).and($lastupdate().after(newValue('AFTER_DATE','date')))"
+}
