@@ -164,16 +164,16 @@ foreach($site_list as $site=>$site_data)
 
 // set up the DataTable headers
 $ncol = count($total_keys)+1;
-$head_str = "<tr><td></td>";
+$head_str_tech = "<tr><td>TECH</td>";
 $head_str_site = "<tr><td>SITE</td>";
 foreach($total_keys as $key)
 {
   $key_str = str_replace('_',' ',$key);
-  $head_str .= "<td>{$key_str}</td>";
+  $head_str_tech .= "<td>{$key_str}</td>";
   $head_str_site .= "<td>{$key_str}</td>";
 }
-$head_str.= "</tr>";
-$head_str_site.= "</tr>";
+$head_str_tech .= "</tr>";
+$head_str_site .= "</tr>";
 
 // set up the DataTable options for column group hiding
 $col_groups = array(
@@ -198,67 +198,90 @@ $hide_skip = sprintf( '[%s]', implode(',',$col_groups[$rank]['skips']) );
     <link rel="stylesheet" type="text/css" href="../css/datatables.min.css">
     <script type="text/javascript" src="datatables.min.js"></script>
     <script>
-       var hide_grade = <?php echo $hide_grade; ?>;
-       var hide_skip = <?php echo $hide_skip; ?>;
-       $(function(){
-         $('#summary').DataTable({
-           dom: 'Bfrtipl',
-           buttons: [
-
-               'copyHtml5',
-               'excelHtml5',
-               'csvHtml5',
-               'pdfHtml5',
-               {
-                 extend: 'colvisGroup',
-                 text: 'Grades',
-                 show: hide_skip,
-                 hide: hide_grade
-               },
-               {
-                 extend: 'colvisGroup',
-                 text: 'Skips',
-                 hide: hide_skip,
-                 show: hide_grade
-               },
-               {
-                 extend: 'colvisGroup',
-                 text: 'Show All',
-                 show: ':hidden'
-               }
-           ]
-         });
+      var hide_grade = <?php echo $hide_grade; ?>;
+      var hide_skip = <?php echo $hide_skip; ?>;
+      $( function() {
+        $( 'table.clsa' ).DataTable( {
+          dom: 'Bfrtipl',
+          buttons: [
+            'copyHtml5',
+            'excelHtml5',
+            'csvHtml5',
+            'pdfHtml5',
+            {
+              extend: 'colvisGroup',
+              text: 'Grades',
+              show: hide_skip,
+              hide: hide_grade
+            },
+            {
+              extend: 'colvisGroup',
+              text: 'Skips',
+              hide: hide_skip,
+              show: hide_grade
+            },
+            {
+              extend: 'colvisGroup',
+              text: 'Show All',
+              show: ':hidden'
+            }
+          ]
         });
+      });
     </script>
   </head>
   <body>
+    <h3><?php echo "SPIROMETRY RESULTS - Wave {$rank} ({$begin_date} - {$end_date})"?></h3>
+    <!--build the main summary table-->
+    <table id='summary' class="clsa stripe cell-border order-column" style="width:100%">
+      <thead>
+        <tr><?php echo"<th colspan={$ncol}>SITE SUMMARY</th>"?></tr>
+        <?php echo $head_str_site?>
+      </thead>
+      <tbody>
+        <?php
+          foreach( $site_list as $site=>$site_data )
+          {
+            if('ALL'==$site) continue;
+            echo "<tr><td>{$site}</td>";
+            foreach( $site_data['totals'] as $key=>$item )
+              echo "<td>{$item}</td>";
+            echo "</tr>";
+          }
+        ?>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td>TOTAL</td>
+          <?php
+            foreach( $site_list['ALL']['totals'] as $key=>$item )
+              echo "<td>{$item}</td>";
+          ?>
+        </tr>
+      </tfoot>
+    </table>
+    <!--build the sites and technician tables-->
+    <?php
+      foreach( $site_list as $site=>$site_data )
+      {
+        if('ALL'==$site) continue;
+        echo "<table id='{$site}' class=\"clsa stripe cell-border order-column\" style=\"width:100%\">" .
+             "<thead><tr><th colspan={$ncol}>{$site}</th></tr>";
+        echo $head_str_tech . "</thead><tbody>";
+        foreach( $site_data['technicians'] as $tech=>$row )
+        {
+          if('NA'==$tech) continue;
+          echo "<tr><td>{$tech}</td>";
+          foreach( $row as $key=>$item )
+            echo "<td>{$item}</td>";
+          echo "</tr>";
+        }
+        echo "</tbody><tfoot><tr><td>TOTAL</td>";
+        foreach( $site_data['totals'] as $key=>$item )
+          echo "<td>{$item}</td>";
 
-  <h3><?php echo "SPIROMETRY RESULTS - Wave {$rank} ({$begin_date} - {$end_date})"?></h3>
-
-  <table id='summary' class="stripe cell-border order-column" style="width:100%">
-    <thead>
-      <tr>
-        <?php echo"<th colspan={$ncol}>SITE SUMMARY</th>"?>
-      </tr>
-      <?php echo $head_str_site;
-    echo "</thead><tbody>";
-  foreach($site_list as $site=>$site_data)
-  {
-    if('ALL'==$site) continue;
-    echo "<tr>";
-    echo "<td>{$site}</td>";
-      foreach($site_data['totals'] as $key=>$item)
-        echo "<td>{$item}</td>";
-    echo "</tr>";
-  }
-  ?>
-  </tbody>
-  <tfoot>
-    <tr>
-    <td>TOTAL</td>
-      <?php foreach($site_list['ALL']['totals'] as $key=>$item)
-        echo "<td>{$item}</td>";
-      ?>
-   </tr>
-   </tfoot>
-</table>
+        echo "</tr></tfoot></table>";
+      }
+    ?>
+  </body>
+</html>
