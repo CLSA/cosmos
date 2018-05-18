@@ -73,7 +73,7 @@ $date_ranges = json_encode($db->get_all( $sql ));
       <span class="help">
         Please enter a start date and an end date for the report<br/>
       </span>
-      <form action="scripts/daterange.php" method="POST">
+      <form action="scripts/dataToDatatable.php" method="POST">
         <div>
           <label for="rank">Wave:</label>
           <input type="number" id="rank" name="rank"

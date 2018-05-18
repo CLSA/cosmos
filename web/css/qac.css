@@ -87,6 +87,10 @@ tr.header {
   cursor:pointer;
 }
 
+tr:nth-child(odd) td {
+  background-color: rgb(245,245,245);
+}
+/*
 .header .sign:after {
   content: "+";
   display:inline-block;
@@ -95,7 +99,4 @@ tr.header {
 .header.expand .sign:after{
   content: "-";
 }
-
-tr:nth-child(odd) td {
-  background-color: rgb(245,245,245);
-}
+*/
