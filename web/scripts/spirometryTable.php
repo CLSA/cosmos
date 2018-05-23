@@ -33,7 +33,7 @@ $sql =
 
 foreach($grades as $grade)
 {
-  $sql .= sprintf('sum(case when strcmp(qcdata,"%s")=0 then 1 else 0 end) as total_%s, ',$grade,$grade);
+  $sql .= sprintf('sum(case when strcmp(qcdata,"{grade:%s}")=0 then 1 else 0 end) as total_%s, ',$grade,$grade);
   $grade_keys[] = sprintf('total_%s',$grade);
 }
 
@@ -110,7 +110,6 @@ foreach($site_list as $site=>$site_data)
           $value,round(100.0*$value/$grade_total));
     }
   }
-
   $site_total = $site_data['totals']['total_interview'];
   if( 0 < $site_total )
   {
@@ -179,11 +178,33 @@ $head_str_site .= "</tr>";
 $col_groups = array(
   1=>array('grades'=>array(9,10,11,12),'skips'=>array(1,2,3,4,5,6,7,8)),
   2=>array('grades'=>array(3,4,5,6),'skips'=>array(1,2)),
-  3=>array('grades'=>array(9,10,11,12),'skips'=>array(1,2,3,4,5,6,7,8)),
+  3=>array('grades'=>array(9,10,11,12),'skips'=>array(1,2,3,4,5,6,7,8))
  );
 
 $hide_grade = sprintf( '[%s]', implode(',',$col_groups[$rank]['grades']) );
 $hide_skip = sprintf( '[%s]', implode(',',$col_groups[$rank]['skips']) );
+
+// build sub-tables and store in array of strings
+/*
+$sub_tables = array();
+foreach( $site_list as $site=>$site_data )
+{
+  if('ALL'==$site) continue;
+  $str = '<table class="stripe cell-border order-column" style="width:100%">';
+  foreach( $site_data['technicians'] as $tech=>$row )
+  {
+    if('NA'==$tech) continue;
+    $str .= '<tr><td colspan="2">'.$tech.'</td>';
+    foreach( $row as $key=>$item )
+      $str .= '<td>'.$item.'</td>';
+    $str .= '</tr>';
+  }
+  $str .= '</table>';
+  $sub_tables[$site]=$str;
+}
+
+$sub_tables = json_encode($sub_tables);
+*/
 ?>
 
 <!doctype html>
@@ -198,11 +219,13 @@ $hide_skip = sprintf( '[%s]', implode(',',$col_groups[$rank]['skips']) );
     <link rel="stylesheet" type="text/css" href="../css/datatables.min.css">
     <script type="text/javascript" src="datatables.min.js"></script>
     <script>
+
       var hide_grade = <?php echo $hide_grade; ?>;
       var hide_skip = <?php echo $hide_skip; ?>;
+
       $( function() {
         $( 'table.clsa' ).DataTable( {
-          dom: 'Bfrtipl',
+          dom: 'Bfrtpl',
           buttons: [
             'copyHtml5',
             'excelHtml5',
@@ -261,6 +284,7 @@ $hide_skip = sprintf( '[%s]', implode(',',$col_groups[$rank]['skips']) );
       </tfoot>
     </table>
     <!--build the sites and technician tables-->
+
     <?php
       foreach( $site_list as $site=>$site_data )
       {
@@ -283,5 +307,6 @@ $hide_skip = sprintf( '[%s]', implode(',',$col_groups[$rank]['skips']) );
         echo "</tr></tfoot></table>";
       }
     ?>
+
   </body>
 </html>

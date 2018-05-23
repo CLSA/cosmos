@@ -30,6 +30,10 @@ $date_ranges = json_encode($db->get_all( $sql ));
         date_ranges[obj.rank]={'min_date':obj.min_date,'max_date':obj.max_date};
       });  
       $(function(){
+        $('#stage').change( function() {
+          $('#qacform').attr('action', $(this).val());
+        });
+
         $('#from').datepicker({
           dateFormat: 'yy-mm-dd',
           changeMonth: true,
@@ -73,7 +77,7 @@ $date_ranges = json_encode($db->get_all( $sql ));
       <span class="help">
         Please enter a start date and an end date for the report<br/>
       </span>
-      <form action="scripts/dataToDatatable.php" method="POST">
+      <form id="qacform" action="scripts/grip_strengthTable.php" method="POST">
         <div>
           <label for="rank">Wave:</label>
           <input type="number" id="rank" name="rank"
@@ -87,12 +91,13 @@ $date_ranges = json_encode($db->get_all( $sql ));
           <label for="to">End Date:</label>
           <input type="text" id="to" name="to">
         </div>
-        <!--
         <div>
-          <label for="format">Format:</label>
-          <input type="radio" name="format" value="tabulated" checked>Tabulated<br>
-          <input type="radio" name="format" value="graphed" checked>Graphical<br>
-        </div>-->
+          <label for="stage">Stage:</label>
+          <select name="stage" id="stage">
+            <option value="scripts/grip_strengthTable.php" selected="selected">Grip Strength</option>
+            <option value="scripts/spirometryTable.php">Spirometry</option>
+          </select>
+        </div>
         <div class="button">
           <button type="submit">Request Data</button>
         </div>
