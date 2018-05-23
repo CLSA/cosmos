@@ -243,7 +243,7 @@ $sub_tables = json_encode($sub_tables);
     </script>
   </head>
   <body>
-    <h3><?php echo "GRIP STRENGTH RESULTS - Wave {$rank} ({$begin_date} - {$end_date})"?></h3>
+    <h3><?php echo "BLOOD PRESSURE RESULTS - Wave {$rank} ({$begin_date} - {$end_date})"?></h3>
     <!--build the main summary table-->
     <table id='summary' class="clsa stripe cell-border order-column" style="width:100%">
       <thead>
