@@ -96,6 +96,7 @@ $date_ranges = json_encode($db->get_all( $sql ));
           <select name="stage" id="stage">
             <option value="scripts/grip_strengthTable.php" selected="selected">Grip Strength</option>
             <option value="scripts/spirometryTable.php">Spirometry</option>
+            <option value="scripts/blood_pressureTable.php">Blood Pressure</option>
           </select>
         </div>
         <div class="button">

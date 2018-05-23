@@ -8,84 +8,13 @@
             "value": "Spirometry"
           }, 
           {
-            "name": "validation", 
-            "value": "[IntegrityCheck-ERROR]"
-          }, 
-          {
-            "name": "captureMethod", 
-            "value": "AUTOMATIC"
-          }, 
-          {
-            "name": "isManualCaptureAllowed", 
-            "value": "true"
-          }, 
-          {
-            "name": "vendorName", 
-            "value": "QUALITY_GRADE"
-          }, 
-          {
-            "name": "derivedFrom", 
-            "namespace": "opal", 
-            "value": "/datasource/clsa-dcs/table/Spirometry/variable/OUTPUT_QUALITY_GRADE"
-          }, 
-          {
-            "name": "script", 
-            "value": "$('OUTPUT_QUALITY_GRADE')"
-          }
-        ], 
-        "categories": [
-          {
-            "isMissing": false, 
-            "name": "A"
-          }, 
-          {
-            "isMissing": false, 
-            "name": "B"
-          }, 
-          {
-            "isMissing": false, 
-            "name": "C"
-          }, 
-          {
-            "isMissing": false, 
-            "name": "C1"
-          }, 
-          {
-            "isMissing": false, 
-            "name": "C2"
-          }, 
-          {
-            "isMissing": false, 
-            "name": "D1"
-          }, 
-          {
-            "isMissing": false, 
-            "name": "D2"
-          }
-        ], 
-        "entityType": "Participant", 
-        "index": 0, 
-        "isRepeatable": false, 
-        "mimeType": "", 
-        "name": "data_grade_spirometry", 
-        "referencedEntityType": "", 
-        "unit": "", 
-        "valueType": "text"
-      }, 
-      {
-        "attributes": [
-          {
-            "name": "stage", 
-            "value": "Spirometry"
-          }, 
-          {
             "name": "derivedFrom", 
             "namespace": "opal", 
             "value": "/datasource/clsa-dcs/table/Spirometry/variable/InstrumentRun.user"
           }, 
           {
             "name": "script", 
-            "value": "$('clsa-dcs.Spirometry:InstrumentRun.user').lowerCase().whenNull(\n  $group('Admin.Action.stage','Spirometry','Admin.Action.user').asSequence().last().lowerCase())"
+            "value": "$('clsa-dcs.Spirometry:InstrumentRun.user').whenNull(\n  $group('Admin.Action.stage','Spirometry','Admin.Action.user').asSequence().last()).lowerCase()"
           }
         ], 
         "entityType": "Participant", 
@@ -93,7 +22,6 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_technician_spirometry", 
-        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -118,7 +46,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var stage=newValue($group('clsa-dcs.Participants:Admin.StageInstance.stage','Spirometry','Admin.StageInstance.lastState').asSequence().last(),'text')\n$this('data_grade_spirometry').isNull().and(stage.any('Skipped','NotApplicable').not()).value() ? 1 : 0"
+            "value": "var stage=newValue($group('clsa-dcs.Participants:Admin.StageInstance.stage','Spirometry','Admin.StageInstance.lastState').asSequence().last(),'text')\n$this('data_qac_spirometry').isNull().and(stage.any('Skipped','NotApplicable').not()).value() ? 1 : 0"
           }
         ], 
         "entityType": "Participant", 
@@ -134,7 +62,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "// this script compounds repeated comments by using lowercase comment strings as array keys\n// and further compounds events within actions\n// \nvar v1=$group('Admin.Action.stage','Spirometry','Admin.Action.comment').asSequence()\nvar v2=$group('Admin.Action.stage','Spirometry','Admin.Action.actionType').asSequence()\nvar v3=$group('Admin.Action.stage','Spirometry','Admin.Action.eventReason').asSequence()\nvar res=null\nvar c_str=[]  // string array of comments\nvar e_str=[]  // string array of events\nvar a_str=[]  // string array of actions\nfor(var i=0; i<v1.size(); i++) {\n  if(v1.valueAt(i).isNull().value()) continue\n  c_str.push(v1.valueAt(i).value())\n  a_str.push(v2.valueAt(i).value())\n  e_str.push((v3.valueAt(i).isNull().value()?'SeeComment':v3.valueAt(i).value().slice(14)))\n}\nvar v4=$('clsa-dcs.Spirometry:InstrumentRun.skipComment')\nif(v4.isNull().not().value()) {\n  c_str.push(v4.value())  \n  a_str.push('SKIP')\n  e_str.push('SeeComment')\n}\nif(undefined!==c_str && 0<c_str.length) {\n  var arr=[]\n  var key_orig=[]\n  for(var i=0;i<c_str.length;i++) {\n    var key=c_str[i].replace(/[.,\\/#!:$%\\^\\|&\\*;{}=\\-_`~()]/g,\"\").replace(/\\s\\s+/g,\" \")\n    var key_lower = key.toLowerCase()\n    // retain the first encountered instance of the comment\n    if(undefined===key_orig[key_lower])\n      key_orig[key_lower]=key\n    // combine the action and the event\n    var str=a_str[i]+':'+e_str[i]\n    if(undefined===arr[key_lower])\n      arr[key_lower]=[]\n    if(-1===arr[key_lower].indexOf(str))\n      arr[key_lower].push(str)\n  }\n  \n  var str=[]\n  for(var key in arr) {\n    // compound repeated events \n    var subarr=[]\n    for(var i=0;i<arr[key].length;i++) {\n      var t=arr[key][i].split(':')\n      var t_key=t[1]\n      if(undefined===subarr[t_key])\n        subarr[t_key]=[]\n      if(-1===subarr[t_key].indexOf(t[0]))  \n        subarr[t_key].push(t[0])\n    }\n    var substr=[]\n    for(var t_key in subarr) {\n      var t_str='SeeComment'==t_key?']':']'+t_key\n      if(1<subarr[t_key].length) {\n        substr.push('['+subarr[t_key].join('/')+t_str);\n      } else {\n        substr.push('['+subarr[t_key][0]+t_str);\n      }\n    }\n    str.push('['+((1<substr.length)?substr.join('/'):substr[0])+']:'+key_orig[key])\n  }\n  \n  if(1<str.length) {\n    res=newValue(str.join(','),'text')\n  } else {\n    res=newValue(str[0],'text')\n  }\n}\nres"
+            "value": "// this script compounds repeated comments by using lowercase comment strings as array keys\n// and further compounds events within actions\n// \nvar v1=$group('Admin.Action.stage','Spirometry','Admin.Action.comment').asSequence()\nvar v2=$group('Admin.Action.stage','Spirometry','Admin.Action.actionType').asSequence()\nvar v3=$group('Admin.Action.stage','Spirometry','Admin.Action.eventReason').asSequence()\nvar res=null\nvar c_str=[]  // string array of comments\nvar e_str=[]  // string array of events\nvar a_str=[]  // string array of actions\nfor(var i=0; i<v1.size(); i++) {  \n  if(v1.valueAt(i).isNull().or(v2.valueAt(i).isNull()).value()) continue\n  c_str.push(v1.valueAt(i).value())\n  a_str.push(v2.valueAt(i).value())\n  e_str.push((v3.valueAt(i).isNull().value()?'SeeComment':v3.valueAt(i).value().slice(14)))\n}\nvar v4=$('clsa-dcs.Spirometry:InstrumentRun.skipComment')\nif(v4.isNull().not().value()) {\n  c_str.push(v4.value())\n  a_str.push('SKIP')\n  e_str.push('SeeComment')\n}\nif(0<c_str.length) {\n  var arr=[]\n  var key_orig=[]\n  for(var i=0;i<c_str.length;i++) {\n    var key=c_str[i].replace(/[^a-zA-Z0-9 \u00e0\u00e2\u00e4\u00e8\u00e9\u00ea\u00eb\u00ee\u00ef\u00f4\u0153\u00f9\u00fb\u00fc\u00ff\u00e7\u00c0\u00c2\u00c4\u00c8\u00c9\u00ca\u00cb\u00ce\u00cf\u00d4\u0152\u00d9\u00db\u00dc\u0178\u00c7]/g,\"\")\n    var key_lower = key.toLowerCase()    \n    // retain the first encountered instance of the comment\n    if(undefined===key_orig[key_lower])\n      key_orig[key_lower]=key\n    if(0==key_orig[key_lower].length) continue\n    // combine the action and the event\n    var str=a_str[i]+':'+e_str[i]\n    if(undefined===arr[key_lower])\n      arr[key_lower]=[]\n    if(-1===arr[key_lower].indexOf(str))\n      arr[key_lower].push(str)\n  }\n  \n  var str=[]\n  for(var key in arr) {\n    // compound repeated events \n    var subarr=[]\n    for(var i=0;i<arr[key].length;i++) {\n      var t=arr[key][i].split(':')\n      var t_key=t[1]\n      if(undefined===subarr[t_key])\n        subarr[t_key]=[]\n      if(-1===subarr[t_key].indexOf(t[0]))  \n        subarr[t_key].push(t[0])\n    }\n    var substr=[]\n    for(var t_key in subarr) {\n      var t_str='SeeComment'==t_key?']':']'+t_key\n      if(1<subarr[t_key].length) {\n        substr.push('['+subarr[t_key].join('/')+t_str);\n      } else {\n        substr.push('['+subarr[t_key][0]+t_str);\n      }\n    }\n    str.push('['+((1<substr.length)?substr.join('/'):substr[0])+']:'+key_orig[key])\n  }\n  \n  if(1<str.length) {\n    res=newValue(str.join(','),'text')\n  } else if(1==str.length) {\n    res=newValue(str[0],'text')\n  }\n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -158,7 +86,6 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_skip_spirometry", 
-        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -237,6 +164,272 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_duration_spirometry", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "decimal"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "stage", 
+            "value": "Spirometry"
+          }, 
+          {
+            "name": "validation", 
+            "value": "[IntegrityCheck-ERROR]"
+          }, 
+          {
+            "name": "captureMethod", 
+            "value": "AUTOMATIC"
+          }, 
+          {
+            "name": "isManualCaptureAllowed", 
+            "value": "true"
+          }, 
+          {
+            "name": "vendorName", 
+            "value": "QUALITY_GRADE"
+          }, 
+          {
+            "name": "derivedFrom", 
+            "namespace": "opal", 
+            "value": "/datasource/clsa-dcs/table/Spirometry/variable/OUTPUT_QUALITY_GRADE"
+          }, 
+          {
+            "name": "script", 
+            "value": "var res=$('clsa-dcs.Spirometry:OUTPUT_QUALITY_GRADE')\nif(!res.isNull().value()) {\n  res=newValue('{grade:'+res.value()+'}','text')\n}\nres"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "data_qac_spirometry", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$('clsa-dcs.Spirometry:InstrumentRun.user').whenNull(\n  $group('Admin.Action.stage','GripStrength','Admin.Action.user').asSequence().last()).lowerCase()"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_technician_grip_strength", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$group('clsa-dcs.Participants:Admin.StageInstance.stage','GripStrength',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable').value() \n? 1 : 0"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_contraindicated_grip_strength", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "integer"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "var v1=$group('Admin.Action.stage','GripStrength','Admin.Action.actionType').asSequence()\nvar v2=$group('Admin.Action.stage','GripStrength','Admin.Action.eventReason').asSequence()\nvar res=null\nvar arr=[]  // string array of events\nfor(var i=0; i<v1.size(); i++) {\n  if(v1.valueAt(i).any('SKIP').not().value() ||\n     v2.valueAt(i).isNull().value()) continue\n  var key=v2.valueAt(i).value().slice(14)\n  if(-1==arr.indexOf(key))\n    arr.push(key)\n}\nif(undefined!==arr && 0<arr.length) {\n  res=newValue(arr.pop(),'text')  \n}\nres"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_skip_grip_strength", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "// this script compounds repeated comments by using lowercase comment strings as array keys\n// and further compounds events within actions\n// \nvar v1=$group('Admin.Action.stage','GripStrength','Admin.Action.comment').asSequence()\nvar v2=$group('Admin.Action.stage','GripStrength','Admin.Action.actionType').asSequence()\nvar v3=$group('Admin.Action.stage','GripStrength','Admin.Action.eventReason').asSequence()\nvar res=null\nvar c_str=[]  // string array of comments\nvar e_str=[]  // string array of events\nvar a_str=[]  // string array of actions\nfor(var i=0; i<v1.size(); i++) {  \n  if(v1.valueAt(i).isNull().or(v2.valueAt(i).isNull()).value()) continue\n  c_str.push(v1.valueAt(i).value())\n  a_str.push(v2.valueAt(i).value())\n  e_str.push((v3.valueAt(i).isNull().value()?'SeeComment':v3.valueAt(i).value().slice(14)))\n}\nvar v4=$('clsa-dcs.GripStrength:InstrumentRun.skipComment')\nif(v4.isNull().not().value()) {\n  c_str.push(v4.value())\n  a_str.push('SKIP')\n  e_str.push('SeeComment')\n}\nif(0<c_str.length) {\n  var arr=[]\n  var key_orig=[]\n  for(var i=0;i<c_str.length;i++) {\n    var key=c_str[i].replace(/[^a-zA-Z0-9 \u00e0\u00e2\u00e4\u00e8\u00e9\u00ea\u00eb\u00ee\u00ef\u00f4\u0153\u00f9\u00fb\u00fc\u00ff\u00e7\u00c0\u00c2\u00c4\u00c8\u00c9\u00ca\u00cb\u00ce\u00cf\u00d4\u0152\u00d9\u00db\u00dc\u0178\u00c7]/g,\"\")\n    var key_lower = key.toLowerCase()    \n    // retain the first encountered instance of the comment\n    if(undefined===key_orig[key_lower])\n      key_orig[key_lower]=key\n    if(0==key_orig[key_lower].length) continue\n    // combine the action and the event\n    var str=a_str[i]+':'+e_str[i]\n    if(undefined===arr[key_lower])\n      arr[key_lower]=[]\n    if(-1===arr[key_lower].indexOf(str))\n      arr[key_lower].push(str)\n  }\n  \n  var str=[]\n  for(var key in arr) {\n    // compound repeated events \n    var subarr=[]\n    for(var i=0;i<arr[key].length;i++) {\n      var t=arr[key][i].split(':')\n      var t_key=t[1]\n      if(undefined===subarr[t_key])\n        subarr[t_key]=[]\n      if(-1===subarr[t_key].indexOf(t[0]))  \n        subarr[t_key].push(t[0])\n    }\n    var substr=[]\n    for(var t_key in subarr) {\n      var t_str='SeeComment'==t_key?']':']'+t_key\n      if(1<subarr[t_key].length) {\n        substr.push('['+subarr[t_key].join('/')+t_str);\n      } else {\n        substr.push('['+subarr[t_key][0]+t_str);\n      }\n    }\n    str.push('['+((1<substr.length)?substr.join('/'):substr[0])+']:'+key_orig[key])\n  }\n  \n  if(1<str.length) {\n    res=newValue(str.join(','),'text')\n  } else if(1==str.length) {\n    res=newValue(str[0],'text')\n  }\n}\nres"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_comment_grip_strength", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "var stage=newValue($group('clsa-dcs.Participants:Admin.StageInstance.stage','GripStrength','Admin.StageInstance.lastState').asSequence().last(),'text')\n$this('data_qac_grip_strength').isNull().and(stage.any('Skipped','NotApplicable').not()).value() ? 1 : 0"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "data_missing_grip_strength", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "integer"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "var res=null\nif($('clsa-dcs.GripStrength:Measure.RES_TRIAL_MAX').isNull().not().value()) {\n  res=newValue('{trial_count:'+$('clsa-dcs.GripStrength:Measure.RES_TRIAL_MAX').size()+'}','text')\n}\nres"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "data_qac_grip_strength", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "var res=null\nif( $group(\n  'clsa-dcs.Participants:Admin.StageInstance.stage',\n  'GripStrength',\n  'Admin.StageInstance.lastState').asSequence().last().any('Skipped','NotApplicable').not().value() ) {\n  res=$group(\n    'clsa-dcs.Participants:Admin.StageInstance.stage',\n    'GripStrength',\n    'Admin.StageInstance.duration').asSequence().last()\n  if(res.isNull().not().value()) {\n    res=Math.round(res.div(60.0).multiply(10.0).value()) / 10.0\n  }\n}\nres"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_duration_grip_strength", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "decimal"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$('clsa-dcs.Spirometry:InstrumentRun.user').whenNull(\n  $group('Admin.Action.stage','BloodPressure','Admin.Action.user').asSequence().last()).lowerCase()"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_technician_blood_pressure", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$group('clsa-dcs.Participants:Admin.StageInstance.stage','BloodPressure',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable').value() \n? 1 : 0"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_contraindicated_blood_pressure", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "integer"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "var v1=$group('Admin.Action.stage','BloodPressure','Admin.Action.actionType').asSequence()\nvar v2=$group('Admin.Action.stage','BloodPressure','Admin.Action.eventReason').asSequence()\nvar res=null\nvar arr=[]  // string array of events\nfor(var i=0; i<v1.size(); i++) {\n  if(v1.valueAt(i).any('SKIP').not().value() ||\n     v2.valueAt(i).isNull().value()) continue\n  var key=v2.valueAt(i).value().slice(14)\n  if(-1==arr.indexOf(key))\n    arr.push(key)\n}\nif(undefined!==arr && 0<arr.length) {\n  res=newValue(arr.pop(),'text')  \n}\nres"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_skip_blood_pressure", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "// this script compounds repeated comments by using lowercase comment strings as array keys\n// and further compounds events within actions\n// \nvar v1=$group('Admin.Action.stage','BloodPressure','Admin.Action.comment').asSequence()\nvar v2=$group('Admin.Action.stage','BloodPressure','Admin.Action.actionType').asSequence()\nvar v3=$group('Admin.Action.stage','BloodPressure','Admin.Action.eventReason').asSequence()\nvar res=null\nvar c_str=[]  // string array of comments\nvar e_str=[]  // string array of events\nvar a_str=[]  // string array of actions\nfor(var i=0; i<v1.size(); i++) {  \n  if(v1.valueAt(i).isNull().or(v2.valueAt(i).isNull()).value()) continue\n  c_str.push(v1.valueAt(i).value())\n  a_str.push(v2.valueAt(i).value())\n  e_str.push((v3.valueAt(i).isNull().value()?'SeeComment':v3.valueAt(i).value().slice(14)))\n}\nvar v4=$('clsa-dcs.BloodPressure:InstrumentRun.skipComment')\nif(v4.isNull().not().value()) {\n  c_str.push(v4.value())\n  a_str.push('SKIP')\n  e_str.push('SeeComment')\n}\nif(0<c_str.length) {\n  var arr=[]\n  var key_orig=[]\n  for(var i=0;i<c_str.length;i++) {\n    var key=c_str[i].replace(/[^a-zA-Z0-9 \u00e0\u00e2\u00e4\u00e8\u00e9\u00ea\u00eb\u00ee\u00ef\u00f4\u0153\u00f9\u00fb\u00fc\u00ff\u00e7\u00c0\u00c2\u00c4\u00c8\u00c9\u00ca\u00cb\u00ce\u00cf\u00d4\u0152\u00d9\u00db\u00dc\u0178\u00c7]/g,\"\")\n    var key_lower = key.toLowerCase()    \n    // retain the first encountered instance of the comment\n    if(undefined===key_orig[key_lower])\n      key_orig[key_lower]=key\n    if(0==key_orig[key_lower].length) continue\n    // combine the action and the event\n    var str=a_str[i]+':'+e_str[i]\n    if(undefined===arr[key_lower])\n      arr[key_lower]=[]\n    if(-1===arr[key_lower].indexOf(str))\n      arr[key_lower].push(str)\n  }\n  \n  var str=[]\n  for(var key in arr) {\n    // compound repeated events \n    var subarr=[]\n    for(var i=0;i<arr[key].length;i++) {\n      var t=arr[key][i].split(':')\n      var t_key=t[1]\n      if(undefined===subarr[t_key])\n        subarr[t_key]=[]\n      if(-1===subarr[t_key].indexOf(t[0]))  \n        subarr[t_key].push(t[0])\n    }\n    var substr=[]\n    for(var t_key in subarr) {\n      var t_str='SeeComment'==t_key?']':']'+t_key\n      if(1<subarr[t_key].length) {\n        substr.push('['+subarr[t_key].join('/')+t_str);\n      } else {\n        substr.push('['+subarr[t_key][0]+t_str);\n      }\n    }\n    str.push('['+((1<substr.length)?substr.join('/'):substr[0])+']:'+key_orig[key])\n  }\n  \n  if(1<str.length) {\n    res=newValue(str.join(','),'text')\n  } else if(1==str.length) {\n    res=newValue(str[0],'text')\n  }\n}\nres"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_comment_blood_pressure", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "var stage=newValue($group('clsa-dcs.Participants:Admin.StageInstance.stage','BloodPressure','Admin.StageInstance.lastState').asSequence().last(),'text')\n$this('data_qac_blood_pressure').isNull().and(stage.any('Skipped','NotApplicable').not()).value() ? 1 : 0"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "data_missing_blood_pressure", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "integer"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "var res=null\nif($('clsa-dcs.BloodPressure:RES_AVG_COUNT').isNull().not().value()) {\n  res=newValue('{trial_count:'+$('clsa-dcs.BloodPressure:RES_AVG_COUNT')+'}','text')\n}\nres"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "data_qac_blood_pressure", 
+        "occurrenceGroup": "", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "var res=null\nif( $group(\n  'clsa-dcs.Participants:Admin.StageInstance.stage',\n  'BloodPressure',\n  'Admin.StageInstance.lastState').asSequence().last().any('Skipped','NotApplicable').not().value() ) {\n  res=$group(\n    'clsa-dcs.Participants:Admin.StageInstance.stage',\n    'BloodPressure',\n    'Admin.StageInstance.duration').asSequence().last()\n  if(res.isNull().not().value()) {\n    res=Math.round(res.div(60.0).multiply(10.0).value()) / 10.0\n  }\n}\nres"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_duration_blood_pressure", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "decimal"
