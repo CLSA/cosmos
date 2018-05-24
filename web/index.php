@@ -4,7 +4,7 @@ require_once $SETTINGS['path']['APPLICATION'].'/web/scripts/common.php';
 
 $min_rank=1;
 $max_rank=3;
-$sql = 
+$sql =
   'select '.
   'min(start_date) as min_date, '.
   'max(start_date) as max_date, '.
@@ -19,7 +19,7 @@ $date_ranges = json_encode($db->get_all( $sql ));
   <head>
     <meta charset="utf-8">
     <title>CLSA-&Eacute;LCV QAC</title>
-    <link rel="stylesheet" type="text/css" href="css/qac.css"> 
+    <link rel="stylesheet" type="text/css" href="css/qac.css">
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
@@ -28,10 +28,11 @@ $date_ranges = json_encode($db->get_all( $sql ));
       var date_ranges = [];
       date_json.forEach(function(obj){
         date_ranges[obj.rank]={'min_date':obj.min_date,'max_date':obj.max_date};
-      });  
+      });
       $(function(){
         $('#stage').change( function() {
           $('#qacform').attr('action', $(this).val());
+          console.log('changing action to : '+$(this).val());
         });
 
         $('#from').datepicker({
@@ -75,7 +76,11 @@ $date_ranges = json_encode($db->get_all( $sql ));
     </div>
     <div class="view">
       <span class="help">
-        Please enter a start date and an end date for the report<br/>
+        <ul>
+          <li>Please select the wave of interest (eg., 1 = baseline)</li>
+          <li>Enter a start date and an end date for the report</li>
+          <li>Select an interview stage</li>
+        </ul>
       </span>
       <form id="qacform" action="scripts/grip_strengthTable.php" method="POST">
         <div>
@@ -97,6 +102,7 @@ $date_ranges = json_encode($db->get_all( $sql ));
             <option value="scripts/grip_strengthTable.php" selected="selected">Grip Strength</option>
             <option value="scripts/spirometryTable.php">Spirometry</option>
             <option value="scripts/blood_pressureTable.php">Blood Pressure</option>
+            <option value="scripts/ecgTable.php">ECG</option>
           </select>
         </div>
         <div class="button">

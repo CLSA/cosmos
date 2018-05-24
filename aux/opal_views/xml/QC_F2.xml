@@ -251,7 +251,7 @@ res</attribute>
       </variable>
       <variable name="stage_technician_grip_strength" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">$(&apos;clsa-dcs-f2.Spirometry:InstrumentRun.user&apos;).whenNull(
+          <attribute name="script" valueType="text">$(&apos;clsa-dcs-f2.GripStrength:InstrumentRun.user&apos;).whenNull(
   $group(&apos;Admin.Action.stage&apos;,&apos;GripStrength&apos;,&apos;Admin.Action.user&apos;).asSequence().last()).lowerCase()</attribute>
         </attributes>
       </variable>
@@ -391,7 +391,7 @@ res</attribute>
       </variable>
       <variable name="stage_technician_blood_pressure" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">$(&apos;clsa-dcs-f2.Spirometry:InstrumentRun.user&apos;).whenNull(
+          <attribute name="script" valueType="text">$(&apos;clsa-dcs-f2.BloodPressure:InstrumentRun.user&apos;).whenNull(
   $group(&apos;Admin.Action.stage&apos;,&apos;BloodPressure&apos;,&apos;Admin.Action.user&apos;).asSequence().last()).lowerCase()</attribute>
         </attributes>
       </variable>
@@ -529,8 +529,156 @@ if( $group(
 res</attribute>
         </attributes>
       </variable>
+      <variable name="stage_technician_ecg" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;clsa-dcs-f2.ECG:InstrumentRun.user&apos;).whenNull(
+  $group(&apos;Admin.Action.stage&apos;,&apos;ECG&apos;,&apos;Admin.Action.user&apos;).asSequence().last()).lowerCase()</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_contraindicated_ecg" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,&apos;ECG&apos;,
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
+? 1 : 0</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_skip_ecg" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var v1=$group(&apos;Admin.Action.stage&apos;,&apos;ECG&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
+var v2=$group(&apos;Admin.Action.stage&apos;,&apos;ECG&apos;,&apos;Admin.Action.eventReason&apos;).asSequence()
+var res=null
+var arr=[]  // string array of events
+for(var i=0; i&lt;v1.size(); i++) {
+  if(v1.valueAt(i).any(&apos;SKIP&apos;).not().value() ||
+     v2.valueAt(i).isNull().value()) continue
+  var key=v2.valueAt(i).value().slice(14)
+  if(-1==arr.indexOf(key))
+    arr.push(key)
+}
+if(undefined!==arr &amp;&amp; 0&lt;arr.length) {
+  res=newValue(arr.pop(),&apos;text&apos;)  
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_comment_ecg" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">// this script compounds repeated comments by using lowercase comment strings as array keys
+// and further compounds events within actions
+// 
+var v1=$group(&apos;Admin.Action.stage&apos;,&apos;ECG&apos;,&apos;Admin.Action.comment&apos;).asSequence()
+var v2=$group(&apos;Admin.Action.stage&apos;,&apos;ECG&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
+var v3=$group(&apos;Admin.Action.stage&apos;,&apos;ECG&apos;,&apos;Admin.Action.eventReason&apos;).asSequence()
+var res=null
+var c_str=[]  // string array of comments
+var e_str=[]  // string array of events
+var a_str=[]  // string array of actions
+for(var i=0; i&lt;v1.size(); i++) {  
+  if(v1.valueAt(i).isNull().or(v2.valueAt(i).isNull()).value()) continue
+  c_str.push(v1.valueAt(i).value())
+  a_str.push(v2.valueAt(i).value())
+  e_str.push((v3.valueAt(i).isNull().value()?&apos;SeeComment&apos;:v3.valueAt(i).value().slice(14)))
+}
+var v4=$(&apos;clsa-dcs-f2.ECG:InstrumentRun.skipComment&apos;)
+if(v4.isNull().not().value()) {
+  c_str.push(v4.value())
+  a_str.push(&apos;SKIP&apos;)
+  e_str.push(&apos;SeeComment&apos;)
+}
+if(0&lt;c_str.length) {
+  var arr=[]
+  var key_orig=[]
+  for(var i=0;i&lt;c_str.length;i++) {
+    var key=c_str[i].replace(/[^a-zA-Z0-9 àâäèéêëîïôœùûüÿçÀÂÄÈÉÊËÎÏÔŒÙÛÜŸÇ]/g,&quot;&quot;)
+    var key_lower = key.toLowerCase()    
+    // retain the first encountered instance of the comment
+    if(undefined===key_orig[key_lower])
+      key_orig[key_lower]=key
+    if(0==key_orig[key_lower].length) continue
+    // combine the action and the event
+    var str=a_str[i]+&apos;:&apos;+e_str[i]
+    if(undefined===arr[key_lower])
+      arr[key_lower]=[]
+    if(-1===arr[key_lower].indexOf(str))
+      arr[key_lower].push(str)
+  }
+  
+  var str=[]
+  for(var key in arr) {
+    // compound repeated events 
+    var subarr=[]
+    for(var i=0;i&lt;arr[key].length;i++) {
+      var t=arr[key][i].split(&apos;:&apos;)
+      var t_key=t[1]
+      if(undefined===subarr[t_key])
+        subarr[t_key]=[]
+      if(-1===subarr[t_key].indexOf(t[0]))  
+        subarr[t_key].push(t[0])
+    }
+    var substr=[]
+    for(var t_key in subarr) {
+      var t_str=&apos;SeeComment&apos;==t_key?&apos;]&apos;:&apos;]&apos;+t_key
+      if(1&lt;subarr[t_key].length) {
+        substr.push(&apos;[&apos;+subarr[t_key].join(&apos;/&apos;)+t_str);
+      } else {
+        substr.push(&apos;[&apos;+subarr[t_key][0]+t_str);
+      }
+    }
+    str.push(&apos;[&apos;+((1&lt;substr.length)?substr.join(&apos;/&apos;):substr[0])+&apos;]:&apos;+key_orig[key])
+  }
+  
+  if(1&lt;str.length) {
+    res=newValue(str.join(&apos;,&apos;),&apos;text&apos;)
+  } else if(1==str.length) {
+    res=newValue(str[0],&apos;text&apos;)
+  }
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="data_missing_ecg" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var stage=newValue($group(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,&apos;ECG&apos;,&apos;Admin.StageInstance.lastState&apos;).asSequence().last(),&apos;text&apos;)
+$this(&apos;data_qac_ecg&apos;).isNull().and(stage.any(&apos;Skipped&apos;,&apos;NotApplicable&apos;).not()).value() ? 1 : 0</attribute>
+        </attributes>
+      </variable>
+      <variable name="data_qac_ecg" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var f=$(&apos;clsa-dcs-f2.ECG:RES_XML_FILE&apos;)
+var q=$(&apos;clsa-dcs-f2.ECG:RES_DIAGNOSIS&apos;)
+var res=null
+if(f.isNull().not().value()) {
+  var str=&apos;{file_size:&apos;+f.length()+&apos;,quality:&apos;
+  if(q.lowerCase().matches(/poor data quality/).value()) {
+    str += &apos;0}&apos;
+  } else {
+    str += &apos;1}&apos;  
+  }
+  res = newValue(str,&apos;text&apos;)
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_duration_ecg" valueType="decimal" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var res=null
+if( $group(
+  &apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,
+  &apos;ECG&apos;,
+  &apos;Admin.StageInstance.lastState&apos;).asSequence().last().any(&apos;Skipped&apos;,&apos;NotApplicable&apos;).not().value() ) {
+  res=$group(
+    &apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,
+    &apos;ECG&apos;,
+    &apos;Admin.StageInstance.duration&apos;).asSequence().last()
+  if(res.isNull().not().value()) {
+    res=Math.round(res.div(60.0).multiply(10.0).value()) / 10.0
+  }
+}
+res</attribute>
+        </attributes>
+      </variable>
     </variables>
   </variables>
   <created valueType="datetime">2018-05-15T13:40:50.956-04</created>
-  <updated valueType="datetime">2018-05-23T12:27:10.213-04</updated>
+  <updated valueType="datetime">2018-05-24T10:34:49.466-04</updated>
 </org.obiba.magma.views.View>
