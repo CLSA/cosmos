@@ -23,7 +23,7 @@ $grade_list=array(
   2=>array('A','B'),
   3=>array('A','B','C','C1','C2','D1','D2','F'));
 $grades = $grade_list[$rank];
-$grade_keys=array();
+$qc_keys=array();
 
 // build the main query
 $sql =
@@ -34,7 +34,7 @@ $sql =
 foreach($grades as $grade)
 {
   $sql .= sprintf('sum(case when strcmp(qcdata,"{grade:%s}")=0 then 1 else 0 end) as total_%s, ',$grade,$grade);
-  $grade_keys[] = sprintf('total_%s',$grade);
+  $qc_keys[] = sprintf('total_%s',$grade);
 }
 
 $sql .= sprintf(
@@ -97,17 +97,17 @@ $percent_keys = array('total_skip','total_missing','total_contraindicated');
 $all_total = $site_list['ALL']['totals']['total_interview'];
 foreach($site_list as $site=>$site_data)
 {
-  $grade_total=0;
-  foreach($grade_keys as $key)
-    $grade_total+=$site_data['totals'][$key];
-  if(0<$grade_total)
+  $qc_total=0;
+  foreach($qc_keys as $key)
+    $qc_total+=$site_data['totals'][$key];
+  if(0<$qc_total)
   {
-    foreach($grade_keys as $key)
+    foreach($qc_keys as $key)
     {
       $value = $site_list[$site]['totals'][$key] ;
       if( 0 < $value )
         $site_list[$site]['totals'][$key] = sprintf('%d</br>(%d)',
-          $value,round(100.0*$value/$grade_total));
+          $value,round(100.0*$value/$qc_total));
     }
   }
   $site_total = $site_data['totals']['total_interview'];
@@ -128,17 +128,17 @@ foreach($site_list as $site=>$site_data)
 
   foreach( $site_data['technicians'] as $tech => $row )
   {
-    $grade_total = 0;
-    foreach( $grade_keys as $key )
-      $grade_total += $row[$key];
-    if( 0 < $grade_total )
+    $qc_total = 0;
+    foreach( $qc_keys as $key )
+      $qc_total += $row[$key];
+    if( 0 < $qc_total )
     {
-      foreach( $grade_keys as $key )
+      foreach( $qc_keys as $key )
       {
         $value = $row[$key];
         if( 0 < $value )
           $site_list[$site]['technicians'][$tech][$key] = sprintf('%d</br>(%d)',
-            $value,round(100.0*$value/$grade_total));
+            $value,round(100.0*$value/$qc_total));
       }
     }
     $total = $row['total_interview'];
@@ -181,30 +181,9 @@ $col_groups = array(
   3=>array('grades'=>array(9,10,11,12),'skips'=>array(1,2,3,4,5,6,7,8))
  );
 
-$hide_grade = sprintf( '[%s]', implode(',',$col_groups[$rank]['grades']) );
+$hide_qc = sprintf( '[%s]', implode(',',$col_groups[$rank]['grades']) );
 $hide_skip = sprintf( '[%s]', implode(',',$col_groups[$rank]['skips']) );
 
-// build sub-tables and store in array of strings
-/*
-$sub_tables = array();
-foreach( $site_list as $site=>$site_data )
-{
-  if('ALL'==$site) continue;
-  $str = '<table class="stripe cell-border order-column" style="width:100%">';
-  foreach( $site_data['technicians'] as $tech=>$row )
-  {
-    if('NA'==$tech) continue;
-    $str .= '<tr><td colspan="2">'.$tech.'</td>';
-    foreach( $row as $key=>$item )
-      $str .= '<td>'.$item.'</td>';
-    $str .= '</tr>';
-  }
-  $str .= '</table>';
-  $sub_tables[$site]=$str;
-}
-
-$sub_tables = json_encode($sub_tables);
-*/
 ?>
 
 <!doctype html>
@@ -220,7 +199,7 @@ $sub_tables = json_encode($sub_tables);
     <script type="text/javascript" src="datatables.min.js"></script>
     <script>
 
-      var hide_grade = <?php echo $hide_grade; ?>;
+      var hide_qc = <?php echo $hide_qc; ?>;
       var hide_skip = <?php echo $hide_skip; ?>;
 
       $( function() {
@@ -235,13 +214,13 @@ $sub_tables = json_encode($sub_tables);
               extend: 'colvisGroup',
               text: 'Grades',
               show: hide_skip,
-              hide: hide_grade
+              hide: hide_qc
             },
             {
               extend: 'colvisGroup',
               text: 'Skips',
               hide: hide_skip,
-              show: hide_grade
+              show: hide_qc
             },
             {
               extend: 'colvisGroup',
@@ -255,6 +234,7 @@ $sub_tables = json_encode($sub_tables);
   </head>
   <body>
     <h3><?php echo "SPIROMETRY RESULTS - Wave {$rank} ({$begin_date} - {$end_date})"?></h3>
+    <p><?php echo sprintf('Grades: %s',implode(', ',$grades))?></p>
     <!--build the main summary table-->
     <table id='summary' class="clsa stripe cell-border order-column" style="width:100%">
       <thead>

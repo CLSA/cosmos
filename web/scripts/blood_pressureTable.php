@@ -15,17 +15,15 @@ if(''==$begin_date || ''==$end_date ||
   die();
 }
 
-$trial_keys=array('total_sub','total_par','total_sup');
-
 // build the main query
 $sql =
   'select '.
   'ifnull(t.name,"NA") as tech, '.
   'site.name as site, ';
 
-$sql .= 'sum(if(qcdata is null, 0, if(replace(replace(qcdata,"{trial_count:",""),"}","")<5,1,0))) as total_sub, ';
-$sql .= 'sum(if(qcdata is null, 0, if(replace(replace(qcdata,"{trial_count:",""),"}","")=5,1,0))) as total_par, ';
-$sql .= 'sum(if(qcdata is null, 0, if(replace(replace(qcdata,"{trial_count:",""),"}","")>5,1,0))) as total_sup, ';
+$sql .= 'sum(if(qcdata is null, 0, if(replace(replace(qcdata,"{trial_count:",""),"}","")<5,1,0))) as total_trial_sub, ';
+$sql .= 'sum(if(qcdata is null, 0, if(replace(replace(qcdata,"{trial_count:",""),"}","")=5,1,0))) as total_trial_par, ';
+$sql .= 'sum(if(qcdata is null, 0, if(replace(replace(qcdata,"{trial_count:",""),"}","")>5,1,0))) as total_trial_sup, ';
 
 $sql .= sprintf(
   'sum(case when strcmp(skip,"TechnicalProblem")=0 then 1 else 0 end) as total_skip_technical, '.
@@ -83,23 +81,24 @@ foreach($res as $row)
   $site_list[$site]['technicians'][$tech]=$row;
 }
 
+$qc_keys = array('total_trial_sub','total_trial_par','total_trial_sup');
 $percent_keys = array('total_skip','total_missing','total_contraindicated');
 $all_total = $site_list['ALL']['totals']['total_interview'];
 foreach($site_list as $site=>$site_data)
 {
-    $trial_total=0;
-    foreach($trial_keys as $key)
-      $trial_total+=$site_data['totals'][$key];
-    if(0<$trial_total)
+  $qc_total=0;
+  foreach($qc_keys as $key)
+    $qc_total+=$site_data['totals'][$key];
+  if(0<$qc_total)
+  {
+    foreach($qc_keys as $key)
     {
-      foreach($trial_keys as $key)
-      {
-        $value = $site_list[$site]['totals'][$key] ;
-        if( 0 < $value )
-          $site_list[$site]['totals'][$key] = sprintf('%d</br>(%d)',
-            $value,round(100.0*$value/$trial_total));
-      }
+      $value = $site_list[$site]['totals'][$key] ;
+      if( 0 < $value )
+        $site_list[$site]['totals'][$key] = sprintf('%d</br>(%d)',
+          $value,round(100.0*$value/$qc_total));
     }
+  }
   $site_total = $site_data['totals']['total_interview'];
   if( 0 < $site_total )
   {
@@ -118,17 +117,17 @@ foreach($site_list as $site=>$site_data)
 
   foreach( $site_data['technicians'] as $tech => $row )
   {
-    $trial_total = 0;
-    foreach( $trial_keys as $key )
-      $trial_total += $row[$key];
-    if( 0 < $trial_total )
+    $qc_total = 0;
+    foreach( $qc_keys as $key )
+      $qc_total += $row[$key];
+    if( 0 < $qc_total )
     {
-      foreach( $trial_keys as $key )
+      foreach( $qc_keys as $key )
       {
         $value = $row[$key];
         if( 0 < $value )
           $site_list[$site]['technicians'][$tech][$key] = sprintf('%d</br>(%d)',
-            $value,round(100.0*$value/$trial_total));
+            $value,round(100.0*$value/$qc_total));
       }
     }
     $total = $row['total_interview'];
@@ -166,34 +165,13 @@ $head_str_site .= "</tr>";
 
 // set up the DataTable options for column group hiding
 $col_groups = array(
-  'trials'=>array(4,5,6,7),
+  'qc_group'=>array(4,5,6,7),
   'skips'=>array(1,2,3)
  );
 
-$hide_trial = sprintf( '[%s]', implode(',',$col_groups['trials']) );
+$hide_trial = sprintf( '[%s]', implode(',',$col_groups['qc_group']) );
 $hide_skip = sprintf( '[%s]', implode(',',$col_groups['skips']) );
 
-// build sub-tables and store in array of strings
-/*
-$sub_tables = array();
-foreach( $site_list as $site=>$site_data )
-{
-  if('ALL'==$site) continue;
-  $str = '<table class="stripe cell-border order-column" style="width:100%">';
-  foreach( $site_data['technicians'] as $tech=>$row )
-  {
-    if('NA'==$tech) continue;
-    $str .= '<tr><td colspan="2">'.$tech.'</td>';
-    foreach( $row as $key=>$item )
-      $str .= '<td>'.$item.'</td>';
-    $str .= '</tr>';
-  }
-  $str .= '</table>';
-  $sub_tables[$site]=$str;
-}
-
-$sub_tables = json_encode($sub_tables);
-*/
 ?>
 
 <!doctype html>
@@ -209,7 +187,7 @@ $sub_tables = json_encode($sub_tables);
     <script type="text/javascript" src="datatables.min.js"></script>
     <script>
 
-      var hide_trial = <?php echo $hide_trial; ?>;
+      var hide_qc = <?php echo $hide_qc; ?>;
       var hide_skip = <?php echo $hide_skip; ?>;
 
       $( function() {
@@ -224,13 +202,13 @@ $sub_tables = json_encode($sub_tables);
               extend: 'colvisGroup',
               text: 'Trials',
               show: hide_skip,
-              hide: hide_trial
+              hide: hide_qc
             },
             {
               extend: 'colvisGroup',
               text: 'Skips',
               hide: hide_skip,
-              show: hide_trial
+              show: hide_qc
             },
             {
               extend: 'colvisGroup',
@@ -244,6 +222,14 @@ $sub_tables = json_encode($sub_tables);
   </head>
   <body>
     <h3><?php echo "BLOOD PRESSURE RESULTS - Wave {$rank} ({$begin_date} - {$end_date})"?></h3>
+    <ul>
+      <?php
+        echo "<li>trial sub: < 5 trials</li>";
+        echo "<li>trial par: = 5 trials</li>";
+        echo "<li>trial sup: > 5 trials</li>";
+      ?>
+    </ul>
+
     <!--build the main summary table-->
     <table id='summary' class="clsa stripe cell-border order-column" style="width:100%">
       <thead>
