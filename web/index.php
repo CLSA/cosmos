@@ -103,6 +103,8 @@ $date_ranges = json_encode($db->get_all( $sql ));
             <option value="scripts/spirometryTable.php">Spirometry</option>
             <option value="scripts/blood_pressureTable.php">Blood Pressure</option>
             <option value="scripts/ecgTable.php">ECG</option>
+            <option value="scripts/cognitive_testTable.php">Cognitive Test</option>
+            <option value="scripts/hearingTable.php">Hearing</option>
           </select>
         </div>
         <div class="button">
