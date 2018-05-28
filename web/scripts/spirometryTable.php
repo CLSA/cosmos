@@ -174,23 +174,22 @@ foreach($total_keys as $key)
 $head_str_tech .= "</tr>";
 $head_str_site .= "</tr>";
 
+$num_qc_keys = count($qc_keys);
 // set up the DataTable options for column group hiding
 $col_groups = array(
-  1=>array('grades'=>array(9,10,11,12),'skips'=>array(1,2,3,4,5,6,7,8)),
-  2=>array('grades'=>array(3,4,5,6),'skips'=>array(1,2)),
-  3=>array('grades'=>array(9,10,11,12),'skips'=>array(1,2,3,4,5,6,7,8))
+  'qc_group'=>range($num_qc_keys+1,$num_qc_keys+4),
+  'skips'=>range(1,$num_qc_keys)
  );
 
-$hide_qc = sprintf( '[%s]', implode(',',$col_groups[$rank]['grades']) );
-$hide_skip = sprintf( '[%s]', implode(',',$col_groups[$rank]['skips']) );
-
+$hide_qc = sprintf( '[%s]', implode(',',$col_groups['qc_group']) );
+$hide_skip = sprintf( '[%s]', implode(',',$col_groups['skips']) );
 ?>
 
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>CLSA-&Eacute;LCV QAC></title>
+    <title>CLSA-&Eacute;LCV QAC</title>
     <link rel="stylesheet" type="text/css" href="../css/qac.css">
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
@@ -198,10 +197,8 @@ $hide_skip = sprintf( '[%s]', implode(',',$col_groups[$rank]['skips']) );
     <link rel="stylesheet" type="text/css" href="../css/datatables.min.css">
     <script type="text/javascript" src="datatables.min.js"></script>
     <script>
-
       var hide_qc = <?php echo $hide_qc; ?>;
       var hide_skip = <?php echo $hide_skip; ?>;
-
       $( function() {
         $( 'table.clsa' ).DataTable( {
           dom: 'Bfrtpl',

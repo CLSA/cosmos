@@ -21,9 +21,9 @@ $sql =
   'ifnull(t.name,"NA") as tech, '.
   'site.name as site, ';
 
-$sql .= 'sum(if(qcdata is null, 0, if(replace(replace(qcdata,"{trial_count:",""),"}","")<3,1,0))) as total_trial_sub, ';
-$sql .= 'sum(if(qcdata is null, 0, if(replace(replace(qcdata,"{trial_count:",""),"}","")=3,1,0))) as total_trial_par, ';
-$sql .= 'sum(if(qcdata is null, 0, if(replace(replace(qcdata,"{trial_count:",""),"}","")>3,1,0))) as total_trial_sup, ';
+$sql .= 'sum(if(qcdata is null, 0, if(trim("}" from substring_index(qcdata,":",-1))<3,1,0))) as total_trial_sub, ';
+$sql .= 'sum(if(qcdata is null, 0, if(trim("}" from substring_index(qcdata,":",-1))=3,1,0))) as total_trial_par, ';
+$sql .= 'sum(if(qcdata is null, 0, if(trim("}" from substring_index(qcdata,":",-1))>3,1,0))) as total_trial_sup, ';
 
 $sql .= sprintf(
   'sum(case when strcmp(skip,"TechnicalProblem")=0 then 1 else 0 end) as total_skip_technical, '.
@@ -163,22 +163,22 @@ foreach($total_keys as $key)
 $head_str_tech .= "</tr>";
 $head_str_site .= "</tr>";
 
+$num_qc_keys = count($qc_keys);
 // set up the DataTable options for column group hiding
 $col_groups = array(
-  'qc_group'=>array(4,5,6,7),
-  'skips'=>array(1,2,3)
+  'qc_group'=>range($num_qc_keys+1,$num_qc_keys+4),
+  'skips'=>range(1,$num_qc_keys)
  );
 
 $hide_qc = sprintf( '[%s]', implode(',',$col_groups['qc_group']) );
 $hide_skip = sprintf( '[%s]', implode(',',$col_groups['skips']) );
-
 ?>
 
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>CLSA-&Eacute;LCV QAC></title>
+    <title>CLSA-&Eacute;LCV QAC</title>
     <link rel="stylesheet" type="text/css" href="../css/qac.css">
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
@@ -186,10 +186,8 @@ $hide_skip = sprintf( '[%s]', implode(',',$col_groups['skips']) );
     <link rel="stylesheet" type="text/css" href="../css/datatables.min.css">
     <script type="text/javascript" src="datatables.min.js"></script>
     <script>
-
       var hide_qc = <?php echo $hide_qc; ?>;
       var hide_skip = <?php echo $hide_skip; ?>;
-
       $( function() {
         $( 'table.clsa' ).DataTable( {
           dom: 'Bfrtpl',
