@@ -93,81 +93,6 @@
 $this(&apos;data_qac_spirometry&apos;).isNull().and(stage.any(&apos;Skipped&apos;,&apos;NotApplicable&apos;).not()).value() ? 1 : 0</attribute>
         </attributes>
       </variable>
-      <variable name="stage_comment_spirometry" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
-        <attributes>
-          <attribute name="script" valueType="text">// this script compounds repeated comments by using lowercase comment strings as array keys
-// and further compounds events within actions
-// 
-var v1=$group(&apos;Admin.Action.stage&apos;,&apos;Spirometry&apos;,&apos;Admin.Action.comment&apos;).asSequence()
-var v2=$group(&apos;Admin.Action.stage&apos;,&apos;Spirometry&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
-var v3=$group(&apos;Admin.Action.stage&apos;,&apos;Spirometry&apos;,&apos;Admin.Action.eventReason&apos;).asSequence()
-var res=null
-var c_str=[]  // string array of comments
-var e_str=[]  // string array of events
-var a_str=[]  // string array of actions
-for(var i=0; i&lt;v1.size(); i++) {  
-  if(v1.valueAt(i).isNull().or(v2.valueAt(i).isNull()).value()) continue
-  c_str.push(v1.valueAt(i).value())
-  a_str.push(v2.valueAt(i).value())
-  e_str.push((v3.valueAt(i).isNull().value()?&apos;SeeComment&apos;:v3.valueAt(i).value().slice(14)))
-}
-var v4=$(&apos;clsa-dcs.Spirometry:InstrumentRun.skipComment&apos;)
-if(v4.isNull().not().value()) {
-  c_str.push(v4.value())
-  a_str.push(&apos;SKIP&apos;)
-  e_str.push(&apos;SeeComment&apos;)
-}
-if(0&lt;c_str.length) {
-  var arr=[]
-  var key_orig=[]
-  for(var i=0;i&lt;c_str.length;i++) {
-    var key=c_str[i].replace(/[^a-zA-Z0-9 àâäèéêëîïôœùûüÿçÀÂÄÈÉÊËÎÏÔŒÙÛÜŸÇ]/g,&quot;&quot;)
-    var key_lower = key.toLowerCase()    
-    // retain the first encountered instance of the comment
-    if(undefined===key_orig[key_lower])
-      key_orig[key_lower]=key
-    if(0==key_orig[key_lower].length) continue
-    // combine the action and the event
-    var str=a_str[i]+&apos;:&apos;+e_str[i]
-    if(undefined===arr[key_lower])
-      arr[key_lower]=[]
-    if(-1===arr[key_lower].indexOf(str))
-      arr[key_lower].push(str)
-  }
-  
-  var str=[]
-  for(var key in arr) {
-    // compound repeated events 
-    var subarr=[]
-    for(var i=0;i&lt;arr[key].length;i++) {
-      var t=arr[key][i].split(&apos;:&apos;)
-      var t_key=t[1]
-      if(undefined===subarr[t_key])
-        subarr[t_key]=[]
-      if(-1===subarr[t_key].indexOf(t[0]))  
-        subarr[t_key].push(t[0])
-    }
-    var substr=[]
-    for(var t_key in subarr) {
-      var t_str=&apos;SeeComment&apos;==t_key?&apos;]&apos;:&apos;]&apos;+t_key
-      if(1&lt;subarr[t_key].length) {
-        substr.push(&apos;[&apos;+subarr[t_key].join(&apos;/&apos;)+t_str);
-      } else {
-        substr.push(&apos;[&apos;+subarr[t_key][0]+t_str);
-      }
-    }
-    str.push(&apos;[&apos;+((1&lt;substr.length)?substr.join(&apos;/&apos;):substr[0])+&apos;]:&apos;+key_orig[key])
-  }
-  
-  if(1&lt;str.length) {
-    res=newValue(str.join(&apos;,&apos;),&apos;text&apos;)
-  } else if(1==str.length) {
-    res=newValue(str[0],&apos;text&apos;)
-  }
-}
-res</attribute>
-        </attributes>
-      </variable>
       <variable name="stage_skip_spirometry" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">var v1=$group(&apos;Admin.Action.stage&apos;,&apos;Spirometry&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
@@ -272,81 +197,6 @@ if(undefined!==arr &amp;&amp; 0&lt;arr.length) {
 res</attribute>
         </attributes>
       </variable>
-      <variable name="stage_comment_grip_strength" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
-        <attributes>
-          <attribute name="script" valueType="text">// this script compounds repeated comments by using lowercase comment strings as array keys
-// and further compounds events within actions
-// 
-var v1=$group(&apos;Admin.Action.stage&apos;,&apos;GripStrength&apos;,&apos;Admin.Action.comment&apos;).asSequence()
-var v2=$group(&apos;Admin.Action.stage&apos;,&apos;GripStrength&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
-var v3=$group(&apos;Admin.Action.stage&apos;,&apos;GripStrength&apos;,&apos;Admin.Action.eventReason&apos;).asSequence()
-var res=null
-var c_str=[]  // string array of comments
-var e_str=[]  // string array of events
-var a_str=[]  // string array of actions
-for(var i=0; i&lt;v1.size(); i++) {  
-  if(v1.valueAt(i).isNull().or(v2.valueAt(i).isNull()).value()) continue
-  c_str.push(v1.valueAt(i).value())
-  a_str.push(v2.valueAt(i).value())
-  e_str.push((v3.valueAt(i).isNull().value()?&apos;SeeComment&apos;:v3.valueAt(i).value().slice(14)))
-}
-var v4=$(&apos;clsa-dcs.GripStrength:InstrumentRun.skipComment&apos;)
-if(v4.isNull().not().value()) {
-  c_str.push(v4.value())
-  a_str.push(&apos;SKIP&apos;)
-  e_str.push(&apos;SeeComment&apos;)
-}
-if(0&lt;c_str.length) {
-  var arr=[]
-  var key_orig=[]
-  for(var i=0;i&lt;c_str.length;i++) {
-    var key=c_str[i].replace(/[^a-zA-Z0-9 àâäèéêëîïôœùûüÿçÀÂÄÈÉÊËÎÏÔŒÙÛÜŸÇ]/g,&quot;&quot;)
-    var key_lower = key.toLowerCase()    
-    // retain the first encountered instance of the comment
-    if(undefined===key_orig[key_lower])
-      key_orig[key_lower]=key
-    if(0==key_orig[key_lower].length) continue
-    // combine the action and the event
-    var str=a_str[i]+&apos;:&apos;+e_str[i]
-    if(undefined===arr[key_lower])
-      arr[key_lower]=[]
-    if(-1===arr[key_lower].indexOf(str))
-      arr[key_lower].push(str)
-  }
-  
-  var str=[]
-  for(var key in arr) {
-    // compound repeated events 
-    var subarr=[]
-    for(var i=0;i&lt;arr[key].length;i++) {
-      var t=arr[key][i].split(&apos;:&apos;)
-      var t_key=t[1]
-      if(undefined===subarr[t_key])
-        subarr[t_key]=[]
-      if(-1===subarr[t_key].indexOf(t[0]))  
-        subarr[t_key].push(t[0])
-    }
-    var substr=[]
-    for(var t_key in subarr) {
-      var t_str=&apos;SeeComment&apos;==t_key?&apos;]&apos;:&apos;]&apos;+t_key
-      if(1&lt;subarr[t_key].length) {
-        substr.push(&apos;[&apos;+subarr[t_key].join(&apos;/&apos;)+t_str);
-      } else {
-        substr.push(&apos;[&apos;+subarr[t_key][0]+t_str);
-      }
-    }
-    str.push(&apos;[&apos;+((1&lt;substr.length)?substr.join(&apos;/&apos;):substr[0])+&apos;]:&apos;+key_orig[key])
-  }
-  
-  if(1&lt;str.length) {
-    res=newValue(str.join(&apos;,&apos;),&apos;text&apos;)
-  } else if(1==str.length) {
-    res=newValue(str[0],&apos;text&apos;)
-  }
-}
-res</attribute>
-        </attributes>
-      </variable>
       <variable name="data_missing_grip_strength" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">var stage=newValue($group(&apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,&apos;GripStrength&apos;,&apos;Admin.StageInstance.lastState&apos;).asSequence().last(),&apos;text&apos;)
@@ -412,81 +262,6 @@ if(undefined!==arr &amp;&amp; 0&lt;arr.length) {
 res</attribute>
         </attributes>
       </variable>
-      <variable name="stage_comment_blood_pressure" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
-        <attributes>
-          <attribute name="script" valueType="text">// this script compounds repeated comments by using lowercase comment strings as array keys
-// and further compounds events within actions
-// 
-var v1=$group(&apos;Admin.Action.stage&apos;,&apos;BloodPressure&apos;,&apos;Admin.Action.comment&apos;).asSequence()
-var v2=$group(&apos;Admin.Action.stage&apos;,&apos;BloodPressure&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
-var v3=$group(&apos;Admin.Action.stage&apos;,&apos;BloodPressure&apos;,&apos;Admin.Action.eventReason&apos;).asSequence()
-var res=null
-var c_str=[]  // string array of comments
-var e_str=[]  // string array of events
-var a_str=[]  // string array of actions
-for(var i=0; i&lt;v1.size(); i++) {  
-  if(v1.valueAt(i).isNull().or(v2.valueAt(i).isNull()).value()) continue
-  c_str.push(v1.valueAt(i).value())
-  a_str.push(v2.valueAt(i).value())
-  e_str.push((v3.valueAt(i).isNull().value()?&apos;SeeComment&apos;:v3.valueAt(i).value().slice(14)))
-}
-var v4=$(&apos;clsa-dcs.BloodPressure:InstrumentRun.skipComment&apos;)
-if(v4.isNull().not().value()) {
-  c_str.push(v4.value())
-  a_str.push(&apos;SKIP&apos;)
-  e_str.push(&apos;SeeComment&apos;)
-}
-if(0&lt;c_str.length) {
-  var arr=[]
-  var key_orig=[]
-  for(var i=0;i&lt;c_str.length;i++) {
-    var key=c_str[i].replace(/[^a-zA-Z0-9 àâäèéêëîïôœùûüÿçÀÂÄÈÉÊËÎÏÔŒÙÛÜŸÇ]/g,&quot;&quot;)
-    var key_lower = key.toLowerCase()    
-    // retain the first encountered instance of the comment
-    if(undefined===key_orig[key_lower])
-      key_orig[key_lower]=key
-    if(0==key_orig[key_lower].length) continue
-    // combine the action and the event
-    var str=a_str[i]+&apos;:&apos;+e_str[i]
-    if(undefined===arr[key_lower])
-      arr[key_lower]=[]
-    if(-1===arr[key_lower].indexOf(str))
-      arr[key_lower].push(str)
-  }
-  
-  var str=[]
-  for(var key in arr) {
-    // compound repeated events 
-    var subarr=[]
-    for(var i=0;i&lt;arr[key].length;i++) {
-      var t=arr[key][i].split(&apos;:&apos;)
-      var t_key=t[1]
-      if(undefined===subarr[t_key])
-        subarr[t_key]=[]
-      if(-1===subarr[t_key].indexOf(t[0]))  
-        subarr[t_key].push(t[0])
-    }
-    var substr=[]
-    for(var t_key in subarr) {
-      var t_str=&apos;SeeComment&apos;==t_key?&apos;]&apos;:&apos;]&apos;+t_key
-      if(1&lt;subarr[t_key].length) {
-        substr.push(&apos;[&apos;+subarr[t_key].join(&apos;/&apos;)+t_str);
-      } else {
-        substr.push(&apos;[&apos;+subarr[t_key][0]+t_str);
-      }
-    }
-    str.push(&apos;[&apos;+((1&lt;substr.length)?substr.join(&apos;/&apos;):substr[0])+&apos;]:&apos;+key_orig[key])
-  }
-  
-  if(1&lt;str.length) {
-    res=newValue(str.join(&apos;,&apos;),&apos;text&apos;)
-  } else if(1==str.length) {
-    res=newValue(str[0],&apos;text&apos;)
-  }
-}
-res</attribute>
-        </attributes>
-      </variable>
       <variable name="data_missing_blood_pressure" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">var stage=newValue($group(&apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,&apos;BloodPressure&apos;,&apos;Admin.StageInstance.lastState&apos;).asSequence().last(),&apos;text&apos;)
@@ -548,81 +323,6 @@ for(var i=0; i&lt;v1.size(); i++) {
 }
 if(undefined!==arr &amp;&amp; 0&lt;arr.length) {
   res=newValue(arr.pop(),&apos;text&apos;)  
-}
-res</attribute>
-        </attributes>
-      </variable>
-      <variable name="stage_comment_ecg" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
-        <attributes>
-          <attribute name="script" valueType="text">// this script compounds repeated comments by using lowercase comment strings as array keys
-// and further compounds events within actions
-// 
-var v1=$group(&apos;Admin.Action.stage&apos;,&apos;ECG&apos;,&apos;Admin.Action.comment&apos;).asSequence()
-var v2=$group(&apos;Admin.Action.stage&apos;,&apos;ECG&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
-var v3=$group(&apos;Admin.Action.stage&apos;,&apos;ECG&apos;,&apos;Admin.Action.eventReason&apos;).asSequence()
-var res=null
-var c_str=[]  // string array of comments
-var e_str=[]  // string array of events
-var a_str=[]  // string array of actions
-for(var i=0; i&lt;v1.size(); i++) {  
-  if(v1.valueAt(i).isNull().or(v2.valueAt(i).isNull()).value()) continue
-  c_str.push(v1.valueAt(i).value())
-  a_str.push(v2.valueAt(i).value())
-  e_str.push((v3.valueAt(i).isNull().value()?&apos;SeeComment&apos;:v3.valueAt(i).value().slice(14)))
-}
-var v4=$(&apos;clsa-dcs.ECG:InstrumentRun.skipComment&apos;)
-if(v4.isNull().not().value()) {
-  c_str.push(v4.value())
-  a_str.push(&apos;SKIP&apos;)
-  e_str.push(&apos;SeeComment&apos;)
-}
-if(0&lt;c_str.length) {
-  var arr=[]
-  var key_orig=[]
-  for(var i=0;i&lt;c_str.length;i++) {
-    var key=c_str[i].replace(/[^a-zA-Z0-9 àâäèéêëîïôœùûüÿçÀÂÄÈÉÊËÎÏÔŒÙÛÜŸÇ]/g,&quot;&quot;)
-    var key_lower = key.toLowerCase()    
-    // retain the first encountered instance of the comment
-    if(undefined===key_orig[key_lower])
-      key_orig[key_lower]=key
-    if(0==key_orig[key_lower].length) continue
-    // combine the action and the event
-    var str=a_str[i]+&apos;:&apos;+e_str[i]
-    if(undefined===arr[key_lower])
-      arr[key_lower]=[]
-    if(-1===arr[key_lower].indexOf(str))
-      arr[key_lower].push(str)
-  }
-  
-  var str=[]
-  for(var key in arr) {
-    // compound repeated events 
-    var subarr=[]
-    for(var i=0;i&lt;arr[key].length;i++) {
-      var t=arr[key][i].split(&apos;:&apos;)
-      var t_key=t[1]
-      if(undefined===subarr[t_key])
-        subarr[t_key]=[]
-      if(-1===subarr[t_key].indexOf(t[0]))  
-        subarr[t_key].push(t[0])
-    }
-    var substr=[]
-    for(var t_key in subarr) {
-      var t_str=&apos;SeeComment&apos;==t_key?&apos;]&apos;:&apos;]&apos;+t_key
-      if(1&lt;subarr[t_key].length) {
-        substr.push(&apos;[&apos;+subarr[t_key].join(&apos;/&apos;)+t_str);
-      } else {
-        substr.push(&apos;[&apos;+subarr[t_key][0]+t_str);
-      }
-    }
-    str.push(&apos;[&apos;+((1&lt;substr.length)?substr.join(&apos;/&apos;):substr[0])+&apos;]:&apos;+key_orig[key])
-  }
-  
-  if(1&lt;str.length) {
-    res=newValue(str.join(&apos;,&apos;),&apos;text&apos;)
-  } else if(1==str.length) {
-    res=newValue(str[0],&apos;text&apos;)
-  }
 }
 res</attribute>
         </attributes>
@@ -700,81 +400,6 @@ if(undefined!==arr &amp;&amp; 0&lt;arr.length) {
 res</attribute>
         </attributes>
       </variable>
-      <variable name="stage_comment_cognitive_test" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
-        <attributes>
-          <attribute name="script" valueType="text">// this script compounds repeated comments by using lowercase comment strings as array keys
-// and further compounds events within actions
-// 
-var v1=$group(&apos;Admin.Action.stage&apos;,&apos;CognitiveTest&apos;,&apos;Admin.Action.comment&apos;).asSequence()
-var v2=$group(&apos;Admin.Action.stage&apos;,&apos;CognitiveTest&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
-var v3=$group(&apos;Admin.Action.stage&apos;,&apos;CognitiveTest&apos;,&apos;Admin.Action.eventReason&apos;).asSequence()
-var res=null
-var c_str=[]  // string array of comments
-var e_str=[]  // string array of events
-var a_str=[]  // string array of actions
-for(var i=0; i&lt;v1.size(); i++) {  
-  if(v1.valueAt(i).isNull().or(v2.valueAt(i).isNull()).value()) continue
-  c_str.push(v1.valueAt(i).value())
-  a_str.push(v2.valueAt(i).value())
-  e_str.push((v3.valueAt(i).isNull().value()?&apos;SeeComment&apos;:v3.valueAt(i).value().slice(14)))
-}
-var v4=$(&apos;clsa-dcs.CognitiveTest:InstrumentRun.skipComment&apos;)
-if(v4.isNull().not().value()) {
-  c_str.push(v4.value())
-  a_str.push(&apos;SKIP&apos;)
-  e_str.push(&apos;SeeComment&apos;)
-}
-if(0&lt;c_str.length) {
-  var arr=[]
-  var key_orig=[]
-  for(var i=0;i&lt;c_str.length;i++) {
-    var key=c_str[i].replace(/[^a-zA-Z0-9 àâäèéêëîïôœùûüÿçÀÂÄÈÉÊËÎÏÔŒÙÛÜŸÇ]/g,&quot;&quot;)
-    var key_lower = key.toLowerCase()    
-    // retain the first encountered instance of the comment
-    if(undefined===key_orig[key_lower])
-      key_orig[key_lower]=key
-    if(0==key_orig[key_lower].length) continue
-    // combine the action and the event
-    var str=a_str[i]+&apos;:&apos;+e_str[i]
-    if(undefined===arr[key_lower])
-      arr[key_lower]=[]
-    if(-1===arr[key_lower].indexOf(str))
-      arr[key_lower].push(str)
-  }
-  
-  var str=[]
-  for(var key in arr) {
-    // compound repeated events 
-    var subarr=[]
-    for(var i=0;i&lt;arr[key].length;i++) {
-      var t=arr[key][i].split(&apos;:&apos;)
-      var t_key=t[1]
-      if(undefined===subarr[t_key])
-        subarr[t_key]=[]
-      if(-1===subarr[t_key].indexOf(t[0]))  
-        subarr[t_key].push(t[0])
-    }
-    var substr=[]
-    for(var t_key in subarr) {
-      var t_str=&apos;SeeComment&apos;==t_key?&apos;]&apos;:&apos;]&apos;+t_key
-      if(1&lt;subarr[t_key].length) {
-        substr.push(&apos;[&apos;+subarr[t_key].join(&apos;/&apos;)+t_str);
-      } else {
-        substr.push(&apos;[&apos;+subarr[t_key][0]+t_str);
-      }
-    }
-    str.push(&apos;[&apos;+((1&lt;substr.length)?substr.join(&apos;/&apos;):substr[0])+&apos;]:&apos;+key_orig[key])
-  }
-  
-  if(1&lt;str.length) {
-    res=newValue(str.join(&apos;,&apos;),&apos;text&apos;)
-  } else if(1==str.length) {
-    res=newValue(str[0],&apos;text&apos;)
-  }
-}
-res</attribute>
-        </attributes>
-      </variable>
       <variable name="data_missing_cognitive_test" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">var stage=newValue($group(&apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,&apos;CognitiveTest&apos;,&apos;Admin.StageInstance.lastState&apos;).asSequence().last(),&apos;text&apos;)
@@ -840,81 +465,6 @@ if(undefined!==arr &amp;&amp; 0&lt;arr.length) {
 res</attribute>
         </attributes>
       </variable>
-      <variable name="stage_comment_hearing" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
-        <attributes>
-          <attribute name="script" valueType="text">// this script compounds repeated comments by using lowercase comment strings as array keys
-// and further compounds events within actions
-// 
-var v1=$group(&apos;Admin.Action.stage&apos;,&apos;Hearing&apos;,&apos;Admin.Action.comment&apos;).asSequence()
-var v2=$group(&apos;Admin.Action.stage&apos;,&apos;Hearing&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
-var v3=$group(&apos;Admin.Action.stage&apos;,&apos;Hearing&apos;,&apos;Admin.Action.eventReason&apos;).asSequence()
-var res=null
-var c_str=[]  // string array of comments
-var e_str=[]  // string array of events
-var a_str=[]  // string array of actions
-for(var i=0; i&lt;v1.size(); i++) {  
-  if(v1.valueAt(i).isNull().or(v2.valueAt(i).isNull()).value()) continue
-  c_str.push(v1.valueAt(i).value())
-  a_str.push(v2.valueAt(i).value())
-  e_str.push((v3.valueAt(i).isNull().value()?&apos;SeeComment&apos;:v3.valueAt(i).value().slice(14)))
-}
-var v4=$(&apos;clsa-dcs.Hearing:InstrumentRun.skipComment&apos;)
-if(v4.isNull().not().value()) {
-  c_str.push(v4.value())
-  a_str.push(&apos;SKIP&apos;)
-  e_str.push(&apos;SeeComment&apos;)
-}
-if(0&lt;c_str.length) {
-  var arr=[]
-  var key_orig=[]
-  for(var i=0;i&lt;c_str.length;i++) {
-    var key=c_str[i].replace(/[^a-zA-Z0-9 àâäèéêëîïôœùûüÿçÀÂÄÈÉÊËÎÏÔŒÙÛÜŸÇ]/g,&quot;&quot;)
-    var key_lower = key.toLowerCase()    
-    // retain the first encountered instance of the comment
-    if(undefined===key_orig[key_lower])
-      key_orig[key_lower]=key
-    if(0==key_orig[key_lower].length) continue
-    // combine the action and the event
-    var str=a_str[i]+&apos;:&apos;+e_str[i]
-    if(undefined===arr[key_lower])
-      arr[key_lower]=[]
-    if(-1===arr[key_lower].indexOf(str))
-      arr[key_lower].push(str)
-  }
-  
-  var str=[]
-  for(var key in arr) {
-    // compound repeated events 
-    var subarr=[]
-    for(var i=0;i&lt;arr[key].length;i++) {
-      var t=arr[key][i].split(&apos;:&apos;)
-      var t_key=t[1]
-      if(undefined===subarr[t_key])
-        subarr[t_key]=[]
-      if(-1===subarr[t_key].indexOf(t[0]))  
-        subarr[t_key].push(t[0])
-    }
-    var substr=[]
-    for(var t_key in subarr) {
-      var t_str=&apos;SeeComment&apos;==t_key?&apos;]&apos;:&apos;]&apos;+t_key
-      if(1&lt;subarr[t_key].length) {
-        substr.push(&apos;[&apos;+subarr[t_key].join(&apos;/&apos;)+t_str);
-      } else {
-        substr.push(&apos;[&apos;+subarr[t_key][0]+t_str);
-      }
-    }
-    str.push(&apos;[&apos;+((1&lt;substr.length)?substr.join(&apos;/&apos;):substr[0])+&apos;]:&apos;+key_orig[key])
-  }
-  
-  if(1&lt;str.length) {
-    res=newValue(str.join(&apos;,&apos;),&apos;text&apos;)
-  } else if(1==str.length) {
-    res=newValue(str[0],&apos;text&apos;)
-  }
-}
-res</attribute>
-        </attributes>
-      </variable>
       <variable name="data_missing_hearing" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">var stage=newValue($group(&apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,&apos;Hearing&apos;,&apos;Admin.StageInstance.lastState&apos;).asSequence().last(),&apos;text&apos;)
@@ -925,17 +475,19 @@ $this(&apos;data_qac_hearing&apos;).isNull().and(stage.any(&apos;Skipped&apos;,&
         <attributes>
           <attribute name="script" valueType="text">var side = [&apos;RIGHT&apos;,&apos;LEFT&apos;]
 var freq = [&apos;1KT&apos;,&apos;500&apos;,&apos;1K&apos;,&apos;2K&apos;,&apos;3K&apos;,&apos;4K&apos;,&apos;6K&apos;,&apos;8K&apos;]
-var count = 0
+var count = {RIGHT:0,LEFT:0}
 for(var i=0;i&lt;side.length;i++) {
-  var v = &apos;clsa-dcs.Hearing:RES_&apos;+side[i]+&apos;_&apos;;
+  var s = side[i]
+  var v = &apos;clsa-dcs.Hearing:RES_&apos; + s + &apos;_&apos;
   for(var j=0;j&lt;freq.length;j++) {
-    if ($(v + freq[j]).isNull().not().value()) count++;
+    var f = v + freq[j]
+    if ($(f).isNull().not().or($(f + &apos;_ERR&apos;).isNull().not()).value()) count[s]++;
   }
 }
-res = (0 == count &amp;&amp; 
+res = (0 == count.RIGHT &amp;&amp; 0 == count.LEFT &amp;&amp; 
   $(&apos;clsa-dcs.Hearing:RES_TEST_ID&apos;).isNull().and(
     $(&apos;clsa-dcs.Hearing:RES_TEST_DATETIME&apos;).isNull()).value()) ?
-      null : newValue(&apos;{freq_count:&apos;+count+&apos;}&apos;,&apos;text&apos;)</attribute>
+      null : newValue(&apos;{freq_left:&apos;+count.LEFT+&apos;,freq_right:&apos;+count.RIGHT+&apos;}&apos;,&apos;text&apos;)</attribute>
         </attributes>
       </variable>
       <variable name="stage_duration_hearing" valueType="decimal" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
@@ -956,8 +508,188 @@ if( $group(
 res</attribute>
         </attributes>
       </variable>
+      <variable name="stage_technician_tonometer" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;clsa-dcs.Tonometer:InstrumentRun.user&apos;).whenNull(
+  $group(&apos;Admin.Action.stage&apos;,&apos;Tonometer&apos;,&apos;Admin.Action.user&apos;).asSequence().last()).lowerCase()</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_contraindicated_tonometer" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$group(&apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,&apos;Tonometer&apos;,
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
+? 1 : 0</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_skip_tonometer" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var v1=$group(&apos;Admin.Action.stage&apos;,&apos;Tonometer&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
+var v2=$group(&apos;Admin.Action.stage&apos;,&apos;Tonometer&apos;,&apos;Admin.Action.eventReason&apos;).asSequence()
+var res=null
+var arr=[]  // string array of events
+for(var i=0; i&lt;v1.size(); i++) {
+  if(v1.valueAt(i).any(&apos;SKIP&apos;).not().value() ||
+     v2.valueAt(i).isNull().value()) continue
+  var key=v2.valueAt(i).value().slice(14)
+  if(-1==arr.indexOf(key))
+    arr.push(key)
+}
+if(undefined!==arr &amp;&amp; 0&lt;arr.length) {
+  res=newValue(arr.pop(),&apos;text&apos;)  
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="data_missing_tonometer" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var stage=newValue($group(&apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,&apos;Tonometer&apos;,&apos;Admin.StageInstance.lastState&apos;).asSequence().last(),&apos;text&apos;)
+$this(&apos;data_qac_tonometer&apos;).isNull().and(stage.any(&apos;Skipped&apos;,&apos;NotApplicable&apos;).not()).value() ? 1 : 0</attribute>
+        </attributes>
+      </variable>
+      <variable name="data_qac_tonometer" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var e=$(&apos;Measure.TON_EYE&apos;).asSequence()
+var q=$(&apos;clsa-dcs.Tonometer:Measure.TON_QUALITYINDEX&apos;).asSequence()
+var res=null
+if(e.isNull().not().and(e.size().eq(q.size())).value()) {
+  var ls=null
+  var rs=null
+  for(var i=0;i&lt;e.size();i++) {
+    if(e.valueAt(i).isNull().value()) 
+      continue
+    var qq=newValue(q.valueAt(i).value(),&apos;text&apos;)
+    var eeL=e.valueAt(i).any(&apos;l&apos;,&apos;L&apos;,&apos;LEFT&apos;,&apos;left&apos;,&apos;LL&apos;,&apos;gauche&apos;,&apos;leeft&apos;,&apos;lrft&apos;,&apos;left eye&apos;,&apos;Left Eye&apos;)
+    var eeR=e.valueAt(i).any(&apos;r&apos;,&apos;R&apos;,&apos;RIGHT&apos;,&apos;right&apos;,&apos;RR&apos;,&apos;droit&apos;,&apos;righr&apos;,&apos;rigth&apos;,&apos;right eye&apos;,&apos;Right Eye&apos;,&apos;rught&apos;)
+    /*
+    var ee=e.valueAt(i).lowerCase().map({
+      &apos;l&apos;:&apos;x&apos;,
+      &apos;r&apos;:&apos;x&apos;,
+      &apos;right&apos;:&apos;R&apos;,
+      &apos;left&apos;:&apos;L&apos;,
+      &apos;left eye&apos;:&apos;L&apos;,
+      &apos;right eye&apos;:&apos;R&apos;,
+      &apos;righr&apos;:&apos;R&apos;,
+      &apos;rigth&apos;:&apos;R&apos;,
+      &apos;rught&apos;:&apos;R&apos;,
+      &apos;lrft&apos;:&apos;L&apos;,
+      &apos;0&apos;:&apos;L&apos;,
+      &apos;1&apos;:&apos;R&apos;,
+      &apos;ll&apos;:&apos;L&apos;,
+      &apos;rr&apos;:&apos;R&apos;,
+      &apos;le&apos;:&apos;L&apos;,
+      &apos;leeft&apos;:&apos;L&apos;,
+      &apos;gauche&apos;:&apos;L&apos;,
+      &apos;droit&apos;:&apos;R&apos;,
+      &apos;droite&apos;:&apos;R&apos;},e.valueAt(i) ).value()
+      */
+    if(qq.matches(/^(\d*\.)?\d+$/)) {
+      if(/*&apos;L&apos;==ee*/eeL.value() &amp;&amp; null==ls) {
+        ls = &apos;{left_quality:x&apos;//+qq.value()   
+      } else if (/*&apos;R&apos;==ee*/ eeR.value() &amp;&amp; null==rs) {
+        rs = &apos;,right_quality:y&apos;//+qq.value()+&apos;}&apos;        
+      }     
+    }
+  }
+  if(!(null==ls &amp;&amp; null==rs)) {
+    if(null==ls)
+      ls=&apos;{left_quality:-1&apos;
+    if(null==rs)
+      rs=&apos;,right_quality:-1}&apos;
+    res=newValue(ls+rs,&apos;text&apos;)
+  }
+}
+res
+
+/*
+$(&apos;clsa-dcs.Tonometer:Measure.TON_EYE&apos;).lowerCase().map({
+  &apos;l&apos;:&apos;myleft&apos;,
+  &apos;r&apos;:&apos;myright&apos;,
+  &apos;left eye&apos;:&apos;L&apos;,
+  &apos;right eye&apos;:&apos;R&apos;,
+  &apos;righr&apos;:&apos;R&apos;,
+  &apos;rigth&apos;:&apos;R&apos;,
+  &apos;rught&apos;:&apos;R&apos;,
+  &apos;lrft&apos;:&apos;L&apos;,
+  &apos;0&apos;:&apos;L&apos;,
+  &apos;1&apos;:&apos;R&apos;,
+  &apos;ll&apos;:&apos;L&apos;,
+  &apos;rr&apos;:&apos;R&apos;,
+  &apos;le&apos;:&apos;L&apos;,
+  &apos;leeft&apos;:&apos;L&apos;,
+  &apos;gauche&apos;:&apos;L&apos;,
+  &apos;droit&apos;:&apos;R&apos;,
+  &apos;droite&apos;:&apos;R&apos;},$(&apos;clsa-dcs.Tonometer:Measure.TON_EYE&apos;))
+  */
+/*
+var e=$(&apos;Measure.TON_EYE&apos;).map({
+  &apos;l&apos;:&apos;L&apos;,
+  &apos;r&apos;:&apos;R&apos;,
+  &apos;Left Eye&apos;:&apos;L&apos;,
+  &apos;Right Eye&apos;:&apos;R&apos;,
+  &apos;RIGHT&apos;:&apos;R&apos;,
+  &apos;LEFT&apos;:&apos;L&apos;,
+  &apos;left eye&apos;:&apos;L&apos;,
+  &apos;right eye&apos;:&apos;R&apos;,
+  &apos;righr&apos;:&apos;R&apos;,
+  &apos;rigth&apos;:&apos;R&apos;,
+  &apos;rught&apos;:&apos;R&apos;,
+  &apos;lrft&apos;:&apos;L&apos;,
+  &apos;0&apos;:&apos;L&apos;,
+  &apos;1&apos;:&apos;R&apos;,
+  &apos;LL&apos;:&apos;L&apos;,
+  &apos;RR&apos;:&apos;R&apos;,
+  &apos;le&apos;:&apos;L&apos;,
+  &apos;leeft&apos;:&apos;L&apos;,
+  &apos;gauche&apos;:&apos;L&apos;,
+  &apos;droit&apos;:&apos;R&apos;,
+  &apos;droite&apos;:&apos;R&apos;},null)
+var q=$(&apos;clsa-dcs.Tonometer:Measure.TON_QUALITYINDEX&apos;).asSequence()
+var res=null
+if(e.isNull().not().and(e.size().eq(q.size())).value()) {
+  var ls=null
+  var rs=null
+  for(var i=0;i&lt;e.size();i++) {
+    var qq=newValue(q.valueAt(i).value(),&apos;text&apos;)
+    var ee=e.valueAt(i).value()
+    if(qq.matches(/^(\d*\.)?\d+$/)) {
+      if(&apos;L&apos;==ee &amp;&amp; null==ls) {
+        ls = &apos;{left_quality:&apos;+qq.valu()  
+      }
+      if(&apos;R&apos;==ee &amp;&amp; null==rs) {
+        rs = &apos;,right_quality:&apos;+qq.value()+&apos;}&apos;  
+      }      
+    }
+  }
+  if(null==ls)
+    ls=&apos;{left_quality:-1&apos;
+  if(null==rs)
+    rs=&apos;,right_quality:-1}&apos;
+  res=newValue(ls+rs,&apos;text&apos;)
+}
+res
+*/</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_duration_tonometer" valueType="decimal" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var res=null
+if( $group(
+  &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
+  &apos;Tonometer&apos;,
+  &apos;Admin.StageInstance.lastState&apos;).asSequence().last().any(&apos;Skipped&apos;,&apos;NotApplicable&apos;).not().value() ) {
+  res=$group(
+    &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
+    &apos;Tonometer&apos;,
+    &apos;Admin.StageInstance.duration&apos;).asSequence().last()
+  if(res.isNull().not().value()) {
+    res=Math.round(res.div(60.0).multiply(10.0).value()) / 10.0
+  }
+}
+res</attribute>
+        </attributes>
+      </variable>
     </variables>
   </variables>
   <created valueType="datetime">2018-05-15T17:37:52.240-04</created>
-  <updated valueType="datetime">2018-05-24T15:31:39.306-04</updated>
+  <updated valueType="datetime">2018-05-28T09:52:36.065-04</updated>
 </org.obiba.magma.views.View>
