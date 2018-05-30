@@ -487,15 +487,15 @@ var freq = [&apos;1KT&apos;,&apos;500&apos;,&apos;1K&apos;,&apos;2K&apos;,&apos;
 var count = {RIGHT:0,LEFT:0}
 for(var i=0;i&lt;side.length;i++) {
   var s = side[i]
-  var v = &apos;clsa-dcs.Hearing:RES_&apos; + s + &apos;_&apos;
+  var v = &apos;clsa-dcs-f1.Hearing:RES_&apos; + s + &apos;_&apos;
   for(var j=0;j&lt;freq.length;j++) {
     var f = v + freq[j]
     if ($(f).isNull().not().or($(f + &apos;_ERR&apos;).isNull().not()).value()) count[s]++;
   }
 }
 res = (0 == count.RIGHT &amp;&amp; 0 == count.LEFT &amp;&amp; 
-  $(&apos;clsa-dcs.Hearing:RES_TEST_ID&apos;).isNull().and(
-    $(&apos;clsa-dcs.Hearing:RES_TEST_DATETIME&apos;).isNull()).value()) ?
+  $(&apos;clsa-dcs-f1.Hearing:RES_TEST_ID&apos;).isNull().and(
+    $(&apos;clsa-dcs-f1.Hearing:RES_TEST_DATETIME&apos;).isNull()).value()) ?
       null : newValue(&apos;{freq_left:&apos;+count.LEFT+&apos;,freq_right:&apos;+count.RIGHT+&apos;}&apos;,&apos;text&apos;)</attribute>
         </attributes>
       </variable>
@@ -509,6 +509,148 @@ if( $group(
   res=$group(
     &apos;clsa-dcs-f1.Participants:Admin.StageInstance.stage&apos;,
     &apos;Hearing&apos;,
+    &apos;Admin.StageInstance.duration&apos;).asSequence().last()
+  if(res.isNull().not().value()) {
+    res=Math.round(res.div(60.0).multiply(10.0).value()) / 10.0
+  }
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_technician_tonometer" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;clsa-dcs-f1.Tonometer:InstrumentRun.user&apos;).whenNull(
+  $group(&apos;Admin.Action.stage&apos;,&apos;Tonometer&apos;,&apos;Admin.Action.user&apos;).asSequence().last()).lowerCase()</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_contraindicated_tonometer" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f1.Participants:Admin.StageInstance.stage&apos;,&apos;Tonometer&apos;,
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
+? 1 : 0</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_skip_tonometer" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var v1=$group(&apos;Admin.Action.stage&apos;,&apos;Tonometer&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
+var v2=$group(&apos;Admin.Action.stage&apos;,&apos;Tonometer&apos;,&apos;Admin.Action.eventReason&apos;).asSequence()
+var res=null
+var arr=[]  // string array of events
+for(var i=0; i&lt;v1.size(); i++) {
+  if(v1.valueAt(i).any(&apos;SKIP&apos;).not().value() ||
+     v2.valueAt(i).isNull().value()) continue
+  var key=v2.valueAt(i).value().slice(14)
+  if(-1==arr.indexOf(key))
+    arr.push(key)
+}
+if(undefined!==arr &amp;&amp; 0&lt;arr.length) {
+  res=newValue(arr.pop(),&apos;text&apos;)  
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="data_missing_tonometer" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var stage=newValue($group(&apos;clsa-dcs-f1.Participants:Admin.StageInstance.stage&apos;,&apos;Tonometer&apos;,&apos;Admin.StageInstance.lastState&apos;).asSequence().last(),&apos;text&apos;)
+$this(&apos;data_qac_tonometer&apos;).isNull().and(stage.any(&apos;Skipped&apos;,&apos;NotApplicable&apos;).not()).value() ? 1 : 0</attribute>
+        </attributes>
+      </variable>
+      <variable name="data_qac_tonometer" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var eye=$(&apos;clsa-dcs-f1.Tonometer:Measure.TON_EYE&apos;).lowerCase().map({
+  &apos;l&apos;:&apos;L&apos;,
+  &apos;r&apos;:&apos;R&apos;,
+  &apos;right&apos;:&apos;R&apos;,
+  &apos;left&apos;:&apos;L&apos;,
+  &apos;left eye&apos;:&apos;L&apos;,
+  &apos;right eye&apos;:&apos;R&apos;,
+  &apos;righr&apos;:&apos;R&apos;,
+  &apos;rigth&apos;:&apos;R&apos;,
+  &apos;rught&apos;:&apos;R&apos;,
+  &apos;lrft&apos;:&apos;L&apos;,
+  &apos;0&apos;:&apos;L&apos;,
+  &apos;1&apos;:&apos;R&apos;,
+  &apos;ll&apos;:&apos;L&apos;,
+  &apos;rr&apos;:&apos;R&apos;,
+  &apos;le&apos;:&apos;L&apos;,
+  &apos;leeft&apos;:&apos;L&apos;,
+  &apos;gauche&apos;:&apos;L&apos;,
+  &apos;droit&apos;:&apos;R&apos;,
+  &apos;droite&apos;:&apos;R&apos;},null)
+
+// bare minimum useful data is IOPcc: Corneal Compensated Intraocular Pressure
+var iopcc=$(&apos;clsa-dcs-f1.Tonometer:Measure.TON_IOPCC&apos;).asSequence() 
+
+// if there is raw applanation and pressure data there will be a quality index
+// for each set of measurements
+var qual=$(&apos;clsa-dcs-f1.Tonometer:Measure.TON_QUALITYINDEX&apos;).asSequence()
+var appl=$(&apos;clsa-dcs-f1.Tonometer:Measure.TON_PRESSURE&apos;).asSequence()
+var pres=$(&apos;clsa-dcs-f1.Tonometer:Measure.TON_APPLANATION&apos;).asSequence()
+
+var has_iopcc=iopcc.size().eq(eye.size()).value()
+var has_qual=qual.size().eq(eye.size()).value()
+var has_appl=appl.size().eq(eye.size()).value()
+var has_pres=pres.size().eq(eye.size()).value()
+var res=null
+if(eye.isNull().not().value()) {
+  var side={L:{left_iopcc:&apos;0&apos;,left_qi:&apos;-1&apos;,left_appl:&apos;0&apos;,left_pres:&apos;0&apos;},
+            R:{right_iopcc:&apos;0&apos;,right_qi:&apos;-1&apos;,right_appl:&apos;0&apos;,right_pres:&apos;0&apos;}}
+  for(var i=0;i&lt;eye.size();i++) {
+    var e=eye.valueAt(i).value()
+    if(has_iopcc) {
+      var q=newValue(iopcc.valueAt(i).value(),&apos;text&apos;)
+      if(q.matches(/^(\d*\.)?\d+$/)) {
+        if(&apos;L&apos;==e) {
+          side[e].left_iopcc=&apos;1&apos;
+        } else if(&apos;R&apos;==e) {
+          side[e].right_iopcc=&apos;1&apos;
+        }
+      }
+    }
+    if(has_qual) {
+      var q=newValue(qual.valueAt(i).round(2).value(),&apos;text&apos;)
+      if(q.matches(/^(\d*\.)?\d+$/)) {
+        if(&apos;L&apos;==e) {
+          side[e].left_qi=q.value()
+        } else if(&apos;R&apos;==e) {
+          side[e].right_qi=q.value()
+        }
+      }
+    }
+    if(has_appl) {
+      var q=appl.valueAt(i).value().split(&apos;,&apos;).length
+      if(&apos;L&apos;==e) {
+        side[e].left_appl=q
+      } else if(&apos;R&apos;==e) {
+        side[e].right_appl=q
+      }      
+    }        
+    if(has_pres) {
+      var q=pres.valueAt(i).value().split(&apos;,&apos;).length
+      if(&apos;L&apos;==e) {
+        side[e].left_pres=q
+      } else if(&apos;R&apos;==e) {
+        side[e].right_pres=q
+      }
+    }
+  }
+  res=newValue(
+    JSON.stringify(side.L).replace(/&quot;/g,&apos;&apos;).replace(/}/g,&apos;,&apos;) +
+    JSON.stringify(side.R).replace(/&quot;/g,&apos;&apos;).replace(/{/g,&apos;&apos;), &apos;text&apos;)
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_duration_tonometer" valueType="decimal" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var res=null
+if( $group(
+  &apos;clsa-dcs-f1.Participants:Admin.StageInstance.stage&apos;,
+  &apos;Tonometer&apos;,
+  &apos;Admin.StageInstance.lastState&apos;).asSequence().last().any(&apos;Skipped&apos;,&apos;NotApplicable&apos;).not().value() ) {
+  res=$group(
+    &apos;clsa-dcs-f1.Participants:Admin.StageInstance.stage&apos;,
+    &apos;Tonometer&apos;,
     &apos;Admin.StageInstance.duration&apos;).asSequence().last()
   if(res.isNull().not().value()) {
     res=Math.round(res.div(60.0).multiply(10.0).value()) / 10.0

@@ -548,62 +548,11 @@ $this(&apos;data_qac_tonometer&apos;).isNull().and(stage.any(&apos;Skipped&apos;
       </variable>
       <variable name="data_qac_tonometer" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">var e=$(&apos;Measure.TON_EYE&apos;).asSequence()
-var q=$(&apos;clsa-dcs.Tonometer:Measure.TON_QUALITYINDEX&apos;).asSequence()
-var res=null
-if(e.isNull().not().and(e.size().eq(q.size())).value()) {
-  var ls=null
-  var rs=null
-  for(var i=0;i&lt;e.size();i++) {
-    if(e.valueAt(i).isNull().value()) 
-      continue
-    var qq=newValue(q.valueAt(i).value(),&apos;text&apos;)
-    var eeL=e.valueAt(i).any(&apos;l&apos;,&apos;L&apos;,&apos;LEFT&apos;,&apos;left&apos;,&apos;LL&apos;,&apos;gauche&apos;,&apos;leeft&apos;,&apos;lrft&apos;,&apos;left eye&apos;,&apos;Left Eye&apos;)
-    var eeR=e.valueAt(i).any(&apos;r&apos;,&apos;R&apos;,&apos;RIGHT&apos;,&apos;right&apos;,&apos;RR&apos;,&apos;droit&apos;,&apos;righr&apos;,&apos;rigth&apos;,&apos;right eye&apos;,&apos;Right Eye&apos;,&apos;rught&apos;)
-    /*
-    var ee=e.valueAt(i).lowerCase().map({
-      &apos;l&apos;:&apos;x&apos;,
-      &apos;r&apos;:&apos;x&apos;,
-      &apos;right&apos;:&apos;R&apos;,
-      &apos;left&apos;:&apos;L&apos;,
-      &apos;left eye&apos;:&apos;L&apos;,
-      &apos;right eye&apos;:&apos;R&apos;,
-      &apos;righr&apos;:&apos;R&apos;,
-      &apos;rigth&apos;:&apos;R&apos;,
-      &apos;rught&apos;:&apos;R&apos;,
-      &apos;lrft&apos;:&apos;L&apos;,
-      &apos;0&apos;:&apos;L&apos;,
-      &apos;1&apos;:&apos;R&apos;,
-      &apos;ll&apos;:&apos;L&apos;,
-      &apos;rr&apos;:&apos;R&apos;,
-      &apos;le&apos;:&apos;L&apos;,
-      &apos;leeft&apos;:&apos;L&apos;,
-      &apos;gauche&apos;:&apos;L&apos;,
-      &apos;droit&apos;:&apos;R&apos;,
-      &apos;droite&apos;:&apos;R&apos;},e.valueAt(i) ).value()
-      */
-    if(qq.matches(/^(\d*\.)?\d+$/)) {
-      if(/*&apos;L&apos;==ee*/eeL.value() &amp;&amp; null==ls) {
-        ls = &apos;{left_quality:x&apos;//+qq.value()   
-      } else if (/*&apos;R&apos;==ee*/ eeR.value() &amp;&amp; null==rs) {
-        rs = &apos;,right_quality:y&apos;//+qq.value()+&apos;}&apos;        
-      }     
-    }
-  }
-  if(!(null==ls &amp;&amp; null==rs)) {
-    if(null==ls)
-      ls=&apos;{left_quality:-1&apos;
-    if(null==rs)
-      rs=&apos;,right_quality:-1}&apos;
-    res=newValue(ls+rs,&apos;text&apos;)
-  }
-}
-res
-
-/*
-$(&apos;clsa-dcs.Tonometer:Measure.TON_EYE&apos;).lowerCase().map({
-  &apos;l&apos;:&apos;myleft&apos;,
-  &apos;r&apos;:&apos;myright&apos;,
+          <attribute name="script" valueType="text">var eye=$(&apos;clsa-dcs.Tonometer:Measure.TON_EYE&apos;).lowerCase().map({
+  &apos;l&apos;:&apos;L&apos;,
+  &apos;r&apos;:&apos;R&apos;,
+  &apos;right&apos;:&apos;R&apos;,
+  &apos;left&apos;:&apos;L&apos;,
   &apos;left eye&apos;:&apos;L&apos;,
   &apos;right eye&apos;:&apos;R&apos;,
   &apos;righr&apos;:&apos;R&apos;,
@@ -618,56 +567,69 @@ $(&apos;clsa-dcs.Tonometer:Measure.TON_EYE&apos;).lowerCase().map({
   &apos;leeft&apos;:&apos;L&apos;,
   &apos;gauche&apos;:&apos;L&apos;,
   &apos;droit&apos;:&apos;R&apos;,
-  &apos;droite&apos;:&apos;R&apos;},$(&apos;clsa-dcs.Tonometer:Measure.TON_EYE&apos;))
-  */
-/*
-var e=$(&apos;Measure.TON_EYE&apos;).map({
-  &apos;l&apos;:&apos;L&apos;,
-  &apos;r&apos;:&apos;R&apos;,
-  &apos;Left Eye&apos;:&apos;L&apos;,
-  &apos;Right Eye&apos;:&apos;R&apos;,
-  &apos;RIGHT&apos;:&apos;R&apos;,
-  &apos;LEFT&apos;:&apos;L&apos;,
-  &apos;left eye&apos;:&apos;L&apos;,
-  &apos;right eye&apos;:&apos;R&apos;,
-  &apos;righr&apos;:&apos;R&apos;,
-  &apos;rigth&apos;:&apos;R&apos;,
-  &apos;rught&apos;:&apos;R&apos;,
-  &apos;lrft&apos;:&apos;L&apos;,
-  &apos;0&apos;:&apos;L&apos;,
-  &apos;1&apos;:&apos;R&apos;,
-  &apos;LL&apos;:&apos;L&apos;,
-  &apos;RR&apos;:&apos;R&apos;,
-  &apos;le&apos;:&apos;L&apos;,
-  &apos;leeft&apos;:&apos;L&apos;,
-  &apos;gauche&apos;:&apos;L&apos;,
-  &apos;droit&apos;:&apos;R&apos;,
   &apos;droite&apos;:&apos;R&apos;},null)
-var q=$(&apos;clsa-dcs.Tonometer:Measure.TON_QUALITYINDEX&apos;).asSequence()
+
+// bare minimum useful data is IOPcc: Corneal Compensated Intraocular Pressure
+var iopcc=$(&apos;clsa-dcs.Tonometer:Measure.TON_IOPCC&apos;).asSequence() 
+
+// if there is raw applanation and pressure data there will be a quality index
+// for each set of measurements
+var qual=$(&apos;clsa-dcs.Tonometer:Measure.TON_QUALITYINDEX&apos;).asSequence()
+var appl=$(&apos;clsa-dcs.Tonometer:Measure.TON_PRESSURE&apos;).asSequence()
+var pres=$(&apos;clsa-dcs.Tonometer:Measure.TON_APPLANATION&apos;).asSequence()
+
+var has_iopcc=iopcc.size().eq(eye.size()).value()
+var has_qual=qual.size().eq(eye.size()).value()
+var has_appl=appl.size().eq(eye.size()).value()
+var has_pres=pres.size().eq(eye.size()).value()
 var res=null
-if(e.isNull().not().and(e.size().eq(q.size())).value()) {
-  var ls=null
-  var rs=null
-  for(var i=0;i&lt;e.size();i++) {
-    var qq=newValue(q.valueAt(i).value(),&apos;text&apos;)
-    var ee=e.valueAt(i).value()
-    if(qq.matches(/^(\d*\.)?\d+$/)) {
-      if(&apos;L&apos;==ee &amp;&amp; null==ls) {
-        ls = &apos;{left_quality:&apos;+qq.valu()  
+if(eye.isNull().not().value()) {
+  var side={L:{left_iopcc:&apos;0&apos;,left_qi:&apos;-1&apos;,left_appl:&apos;0&apos;,left_pres:&apos;0&apos;},
+            R:{right_iopcc:&apos;0&apos;,right_qi:&apos;-1&apos;,right_appl:&apos;0&apos;,right_pres:&apos;0&apos;}}
+  for(var i=0;i&lt;eye.size();i++) {
+    var e=eye.valueAt(i).value()
+    if(has_iopcc) {
+      var q=newValue(iopcc.valueAt(i).value(),&apos;text&apos;)
+      if(q.matches(/^(\d*\.)?\d+$/)) {
+        if(&apos;L&apos;==e) {
+          side[e].left_iopcc=&apos;1&apos;
+        } else if(&apos;R&apos;==e) {
+          side[e].right_iopcc=&apos;1&apos;
+        }
       }
-      if(&apos;R&apos;==ee &amp;&amp; null==rs) {
-        rs = &apos;,right_quality:&apos;+qq.value()+&apos;}&apos;  
+    }
+    if(has_qual) {
+      var q=newValue(qual.valueAt(i).round(2).value(),&apos;text&apos;)
+      if(q.matches(/^(\d*\.)?\d+$/)) {
+        if(&apos;L&apos;==e) {
+          side[e].left_qi=q.value()
+        } else if(&apos;R&apos;==e) {
+          side[e].right_qi=q.value()
+        }
+      }
+    }
+    if(has_appl) {
+      var q=appl.valueAt(i).value().split(&apos;,&apos;).length
+      if(&apos;L&apos;==e) {
+        side[e].left_appl=q
+      } else if(&apos;R&apos;==e) {
+        side[e].right_appl=q
       }      
+    }        
+    if(has_pres) {
+      var q=pres.valueAt(i).value().split(&apos;,&apos;).length
+      if(&apos;L&apos;==e) {
+        side[e].left_pres=q
+      } else if(&apos;R&apos;==e) {
+        side[e].right_pres=q
+      }
     }
   }
-  if(null==ls)
-    ls=&apos;{left_quality:-1&apos;
-  if(null==rs)
-    rs=&apos;,right_quality:-1}&apos;
-  res=newValue(ls+rs,&apos;text&apos;)
+  res=newValue(
+    JSON.stringify(side.L).replace(/&quot;/g,&apos;&apos;).replace(/}/g,&apos;,&apos;) +
+    JSON.stringify(side.R).replace(/&quot;/g,&apos;&apos;).replace(/{/g,&apos;&apos;), &apos;text&apos;)
 }
-res
-*/</attribute>
+res</attribute>
         </attributes>
       </variable>
       <variable name="stage_duration_tonometer" valueType="decimal" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
@@ -691,5 +653,5 @@ res</attribute>
     </variables>
   </variables>
   <created valueType="datetime">2018-05-15T17:37:52.240-04</created>
-  <updated valueType="datetime">2018-05-28T09:52:36.065-04</updated>
+  <updated valueType="datetime">2018-05-28T13:29:44.672-04</updated>
 </org.obiba.magma.views.View>
