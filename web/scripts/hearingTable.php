@@ -177,6 +177,7 @@ $col_groups = array(
 
 $hide_qc = sprintf( '[%s]', implode(',',$col_groups['qc_group']) );
 $hide_skip = sprintf( '[%s]', implode(',',$col_groups['skips']) );
+$page_heading = sprintf( 'HEARING RESULTS - Wave %d (%s - %s)',$rank,$begin_date,$end_date);
 ?>
 
 <!doctype html>
@@ -191,19 +192,50 @@ $hide_skip = sprintf( '[%s]', implode(',',$col_groups['skips']) );
     <link rel="stylesheet" type="text/css" href="../css/datatables.min.css">
     <script type="text/javascript" src="datatables.min.js"></script>
     <script>
+      var page_heading = <?php echo '"' . $page_heading . '"'; ?>;
       var hide_qc = <?php echo $hide_qc; ?>;
       var hide_skip = <?php echo $hide_skip; ?>;
       $( function() {
+        function stripPercentData(data,row,column,node) {
+          return data.replace(/(<br>\([\d*]+\))/g,'');
+        }
+
         $( 'table.clsa' ).DataTable( {
           dom: 'Bfrtpl',
           buttons: [
-            'copyHtml5',
-            'excelHtml5',
-            'csvHtml5',
-            'pdfHtml5',
+            { extend: 'copyHtml5',
+              footer: true,
+              title: page_heading,
+              exportOptions: {
+                format: {
+                  footer: stripPercentData,
+                  body: stripPercentData
+                }
+              }
+            },
+            { extend: 'excelHtml5',
+              footer: true,
+              title: page_heading,
+              exportOptions: {
+                format: {
+                  footer: stripPercentData,
+                  body: stripPercentData
+                }
+              }
+            },
+            { extend: 'csvHtml5',
+              footer: true,
+              title: page_heading,
+              exportOptions: {
+                format: {
+                  footer: stripPercentData,
+                  body: stripPercentData
+                }
+              }
+            },
             {
               extend: 'colvisGroup',
-              text: 'QC Metrics',
+              text: 'Grades',
               show: hide_skip,
               hide: hide_qc
             },
@@ -224,7 +256,7 @@ $hide_skip = sprintf( '[%s]', implode(',',$col_groups['skips']) );
     </script>
   </head>
   <body>
-    <h3><?php echo "HEARING RESULTS - Wave {$rank} ({$begin_date} - {$end_date})"?></h3>
+    <h3><?php echo $page_heading?></h3>
     <ul>
       <?php
         echo "<li>frequency count none: 0 frequencies</li>";
