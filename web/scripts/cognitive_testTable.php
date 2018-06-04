@@ -283,7 +283,7 @@ $page_heading = sprintf( 'COGNITIVE TEST RESULTS - Wave %d (%s - %s)',$rank,$beg
             },
             {
               extend: 'colvisGroup',
-              text: 'Grades',
+              text: 'QC Metric',
               show: hide_skip,
               hide: hide_qc
             },

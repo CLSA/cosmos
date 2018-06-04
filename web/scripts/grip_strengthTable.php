@@ -230,7 +230,7 @@ $page_heading = sprintf( 'GRIP STRENGTH RESULTS - Wave %d (%s - %s)',$rank,$begi
             },
             {
               extend: 'colvisGroup',
-              text: 'Grades',
+              text: 'QC Metric',
               show: hide_skip,
               hide: hide_qc
             },
@@ -251,7 +251,7 @@ $page_heading = sprintf( 'GRIP STRENGTH RESULTS - Wave %d (%s - %s)',$rank,$begi
     </script>
   </head>
   <body>
-    <h3><?php $page_heading?></h3>
+    <h3><?php echo $page_heading?></h3>
     <ul>
       <?php
         echo "<li>trial sub: < 3 trials</li>";

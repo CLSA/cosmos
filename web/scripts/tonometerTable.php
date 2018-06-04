@@ -266,7 +266,7 @@ $page_heading = sprintf( 'TONOMETER RESULTS - Wave %d (%s - %s)',$rank,$begin_da
             },
             {
               extend: 'colvisGroup',
-              text: 'Grades',
+              text: 'QC Metric',
               show: hide_skip,
               hide: hide_qc
             },
@@ -287,7 +287,7 @@ $page_heading = sprintf( 'TONOMETER RESULTS - Wave %d (%s - %s)',$rank,$begin_da
     </script>
   </head>
   <body>
-    <h3><?php $page_heading?></h3>
+    <h3><?php echo $page_heading?></h3>
     <ul>
       <?php 
         echo "<li>tonometer quality index 0 - 10</li>";

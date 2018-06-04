@@ -61,7 +61,7 @@
   <select class="org.obiba.magma.views.support.NoneClause"/>
   <where class="org.obiba.magma.js.views.JavascriptClause">
     <scriptName>customScript</scriptName>
-    <script>$lastupdate().before(newValue(&apos;2018-05-25&apos;,&apos;date&apos;)).and($lastupdate().after(newValue(&apos;2015-05-01&apos;,&apos;date&apos;)))</script>
+    <script>$lastupdate().before(newValue(&apos;2018-06-04&apos;,&apos;date&apos;)).and($lastupdate().after(newValue(&apos;2015-02-28&apos;,&apos;date&apos;)))</script>
   </where>
   <variables class="org.obiba.magma.js.views.VariablesClause">
     <variables class="linked-hash-set">
@@ -659,8 +659,208 @@ if( $group(
 res</attribute>
         </attributes>
       </variable>
+      <variable name="stage_technician_weight" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;clsa-dcs-f1.Weight:InstrumentRun.user&apos;).whenNull(
+  $group(&apos;Admin.Action.stage&apos;,&apos;Weight&apos;,&apos;Admin.Action.user&apos;).asSequence().last()).lowerCase()</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_contraindicated_weight" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f1.Participants:Admin.StageInstance.stage&apos;,&apos;Weight&apos;,
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
+? 1 : 0</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_skip_weight" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var v1=$group(&apos;Admin.Action.stage&apos;,&apos;Weight&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
+var v2=$group(&apos;Admin.Action.stage&apos;,&apos;Weight&apos;,&apos;Admin.Action.eventReason&apos;).asSequence()
+var res=null
+var arr=[]  // string array of events
+for(var i=0; i&lt;v1.size(); i++) {
+  if(v1.valueAt(i).any(&apos;SKIP&apos;).not().value() ||
+     v2.valueAt(i).isNull().value()) continue
+  var key=v2.valueAt(i).value().slice(14)
+  if(-1==arr.indexOf(key))
+    arr.push(key)
+}
+if(undefined!==arr &amp;&amp; 0&lt;arr.length) {
+  res=newValue(arr.pop(),&apos;text&apos;)  
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="data_missing_weight" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var stage=newValue($group(&apos;clsa-dcs-f1.Participants:Admin.StageInstance.stage&apos;,&apos;Weight&apos;,&apos;Admin.StageInstance.lastState&apos;).asSequence().last(),&apos;text&apos;)
+$this(&apos;data_qac_weight&apos;).isNull().and(stage.any(&apos;Skipped&apos;,&apos;NotApplicable&apos;).not()).value() ? 1 : 0</attribute>
+        </attributes>
+      </variable>
+      <variable name="data_qac_weight" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var w=$(&apos;clsa-dcs-f1.Weight:Measure.RES_WEIGHT_MEASURE&apos;)
+var res=null
+if(w.size().gt(1).value()){
+  res=newValue(&apos;{stddev:&apos;+w.stddev().round(6).value()+&apos;,size:&apos;+w.size().value()+&apos;}&apos;,&apos;text&apos;)
+} else if(w.size().eq(1).value()) {
+  res=newValue(&apos;{stddev:0,size:1}&apos;,&apos;text&apos;)
+} 
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_duration_weight" valueType="decimal" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var res=null
+if( $group(
+  &apos;clsa-dcs-f1.Participants:Admin.StageInstance.stage&apos;,
+  &apos;Weight&apos;,
+  &apos;Admin.StageInstance.lastState&apos;).asSequence().last().any(&apos;Skipped&apos;,&apos;NotApplicable&apos;).not().value() ) {
+  res=$group(
+    &apos;clsa-dcs-f1.Participants:Admin.StageInstance.stage&apos;,
+    &apos;Weight&apos;,
+    &apos;Admin.StageInstance.duration&apos;).asSequence().last()
+  if(res.isNull().not().value()) {
+    res=Math.round(res.div(60.0).multiply(10.0).value()) / 10.0
+  }
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_technician_retinal_scan_left" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;clsa-dcs-images-f1.RetinalScanLeft:InstrumentRun.user&apos;).whenNull(
+  $group(&apos;Admin.Action.stage&apos;,&apos;RetinalScanLeft&apos;,&apos;Admin.Action.user&apos;).asSequence().last()).lowerCase()</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_contraindicated_retinal_scan_left" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f1.Participants:Admin.StageInstance.stage&apos;,&apos;RetinalScanLeft&apos;,
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
+? 1 : 0</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_skip_retinal_scan_left" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var v1=$group(&apos;Admin.Action.stage&apos;,&apos;RetinalScanLeft&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
+var v2=$group(&apos;Admin.Action.stage&apos;,&apos;RetinalScanLeft&apos;,&apos;Admin.Action.eventReason&apos;).asSequence()
+var res=null
+var arr=[]  // string array of events
+for(var i=0; i&lt;v1.size(); i++) {
+  if(v1.valueAt(i).any(&apos;SKIP&apos;).not().value() ||
+     v2.valueAt(i).isNull().value()) continue
+  var key=v2.valueAt(i).value().slice(14)
+  if(-1==arr.indexOf(key))
+    arr.push(key)
+}
+if(undefined!==arr &amp;&amp; 0&lt;arr.length) {
+  res=newValue(arr.pop(),&apos;text&apos;)  
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="data_missing_retinal_scan_left" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var stage=newValue($group(&apos;clsa-dcs-f1.Participants:Admin.StageInstance.stage&apos;,&apos;RetinalScanLeft&apos;,&apos;Admin.StageInstance.lastState&apos;).asSequence().last(),&apos;text&apos;)
+$this(&apos;data_qac_retinal_scan_left&apos;).isNull().and(stage.any(&apos;Skipped&apos;,&apos;NotApplicable&apos;).not()).value() ? 1 : 0</attribute>
+        </attributes>
+      </variable>
+      <variable name="data_qac_retinal_scan_left" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var e=$(&apos;clsa-dcs-images-f1.RetinalScanLeft:EYE&apos;)
+var res=null
+if(e.isNull().not().value()) {
+  res=newValue(&apos;{filesize:&apos;+e.length()+&apos;}&apos;,&apos;text&apos;)
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_duration_retinal_scan_left" valueType="decimal" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var res=null
+if( $group(
+  &apos;clsa-dcs-f1.Participants:Admin.StageInstance.stage&apos;,
+  &apos;RetinalScanLeft&apos;,
+  &apos;Admin.StageInstance.lastState&apos;).asSequence().last().any(&apos;Skipped&apos;,&apos;NotApplicable&apos;).not().value() ) {
+  res=$group(
+    &apos;clsa-dcs-f1.Participants:Admin.StageInstance.stage&apos;,
+    &apos;RetinalScanLeft&apos;,
+    &apos;Admin.StageInstance.duration&apos;).asSequence().last()
+  if(res.isNull().not().value()) {
+    res=Math.round(res.div(60.0).multiply(10.0).value()) / 10.0
+  }
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_technician_retinal_scan_right" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;clsa-dcs-images-f1.RetinalScanRight:InstrumentRun.user&apos;).whenNull(
+  $group(&apos;Admin.Action.stage&apos;,&apos;RetinalScanRight&apos;,&apos;Admin.Action.user&apos;).asSequence().last()).lowerCase()</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_contraindicated_retinal_scan_right" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f1.Participants:Admin.StageInstance.stage&apos;,&apos;RetinalScanRight&apos;,
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
+? 1 : 0</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_skip_retinal_scan_right" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var v1=$group(&apos;Admin.Action.stage&apos;,&apos;RetinalScanRight&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
+var v2=$group(&apos;Admin.Action.stage&apos;,&apos;RetinalScanRight&apos;,&apos;Admin.Action.eventReason&apos;).asSequence()
+var res=null
+var arr=[]  // string array of events
+for(var i=0; i&lt;v1.size(); i++) {
+  if(v1.valueAt(i).any(&apos;SKIP&apos;).not().value() ||
+     v2.valueAt(i).isNull().value()) continue
+  var key=v2.valueAt(i).value().slice(14)
+  if(-1==arr.indexOf(key))
+    arr.push(key)
+}
+if(undefined!==arr &amp;&amp; 0&lt;arr.length) {
+  res=newValue(arr.pop(),&apos;text&apos;)  
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="data_missing_retinal_scan_right" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var stage=newValue($group(&apos;clsa-dcs-f1.Participants:Admin.StageInstance.stage&apos;,&apos;RetinalScanRight&apos;,&apos;Admin.StageInstance.lastState&apos;).asSequence().last(),&apos;text&apos;)
+$this(&apos;data_qac_retinal_scan_right&apos;).isNull().and(stage.any(&apos;Skipped&apos;,&apos;NotApplicable&apos;).not()).value() ? 1 : 0</attribute>
+        </attributes>
+      </variable>
+      <variable name="data_qac_retinal_scan_right" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var e=$(&apos;clsa-dcs-images-f1.RetinalScanRight:EYE&apos;)
+var res=null
+if(e.isNull().not().value()) {
+  res=newValue(&apos;{filesize:&apos;+e.length()+&apos;}&apos;,&apos;text&apos;)
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_duration_retinal_scan_right" valueType="decimal" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var res=null
+if( $group(
+  &apos;clsa-dcs-f1.Participants:Admin.StageInstance.stage&apos;,
+  &apos;RetinalScanRight&apos;,
+  &apos;Admin.StageInstance.lastState&apos;).asSequence().last().any(&apos;Skipped&apos;,&apos;NotApplicable&apos;).not().value() ) {
+  res=$group(
+    &apos;clsa-dcs-f1.Participants:Admin.StageInstance.stage&apos;,
+    &apos;RetinalScanRight&apos;,
+    &apos;Admin.StageInstance.duration&apos;).asSequence().last()
+  if(res.isNull().not().value()) {
+    res=Math.round(res.div(60.0).multiply(10.0).value()) / 10.0
+  }
+}
+res</attribute>
+        </attributes>
+      </variable>
     </variables>
   </variables>
   <created valueType="datetime">2018-05-03T13:40:11.946-04</created>
-  <updated valueType="datetime">2018-05-28T10:06:36.292-04</updated>
+  <updated valueType="datetime">2018-06-04T17:06:12.757-04</updated>
 </org.obiba.magma.views.View>

@@ -285,7 +285,7 @@ $page_heading = sprintf( 'ECG RESULTS - Wave %d (%s - %s)',$rank,$begin_date,$en
             },
             {
               extend: 'colvisGroup',
-              text: 'Grades',
+              text: 'QC Metric',
               show: hide_skip,
               hide: hide_qc
             },

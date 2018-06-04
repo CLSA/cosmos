@@ -235,7 +235,7 @@ $page_heading = sprintf( 'HEARING RESULTS - Wave %d (%s - %s)',$rank,$begin_date
             },
             {
               extend: 'colvisGroup',
-              text: 'Grades',
+              text: 'QC Metric',
               show: hide_skip,
               hide: hide_qc
             },

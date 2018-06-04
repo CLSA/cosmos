@@ -768,6 +768,296 @@
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "decimal"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$('clsa-dcs-f2.Weight:InstrumentRun.user').whenNull(\n  $group('Admin.Action.stage','Weight','Admin.Action.user').asSequence().last()).lowerCase()"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_technician_weight", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$group('clsa-dcs-f2.Participants:Admin.StageInstance.stage','Weight',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable').value() \n? 1 : 0"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_contraindicated_weight", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "integer"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "var v1=$group('Admin.Action.stage','Weight','Admin.Action.actionType').asSequence()\nvar v2=$group('Admin.Action.stage','Weight','Admin.Action.eventReason').asSequence()\nvar res=null\nvar arr=[]  // string array of events\nfor(var i=0; i<v1.size(); i++) {\n  if(v1.valueAt(i).any('SKIP').not().value() ||\n     v2.valueAt(i).isNull().value()) continue\n  var key=v2.valueAt(i).value().slice(14)\n  if(-1==arr.indexOf(key))\n    arr.push(key)\n}\nif(undefined!==arr && 0<arr.length) {\n  res=newValue(arr.pop(),'text')  \n}\nres"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_skip_weight", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "var stage=newValue($group('clsa-dcs-f2.Participants:Admin.StageInstance.stage','Weight','Admin.StageInstance.lastState').asSequence().last(),'text')\n$this('data_qac_weight').isNull().and(stage.any('Skipped','NotApplicable').not()).value() ? 1 : 0"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "data_missing_weight", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "integer"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "var w=$('clsa-dcs-f2.Weight:Measure.RES_WEIGHT_MEASURE')\nvar res=null\nif(w.size().gt(1).value()){\n  res=newValue('{stddev:'+w.stddev().round(6).value()+',size:'+w.size().value()+'}','text')\n} else if(w.size().eq(1).value()) {\n  res=newValue('{stddev:0,size:1}','text')\n} \nres"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "data_qac_weight", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "var res=null\nif( $group(\n  'clsa-dcs-f2.Participants:Admin.StageInstance.stage',\n  'Weight',\n  'Admin.StageInstance.lastState').asSequence().last().any('Skipped','NotApplicable').not().value() ) {\n  res=$group(\n    'clsa-dcs-f2.Participants:Admin.StageInstance.stage',\n    'Weight',\n    'Admin.StageInstance.duration').asSequence().last()\n  if(res.isNull().not().value()) {\n    res=Math.round(res.div(60.0).multiply(10.0).value()) / 10.0\n  }\n}\nres"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_duration_weight", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "decimal"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$('clsa-dcs-images-f2.RetinalScanLeft:InstrumentRun.user').whenNull(\n  $group('Admin.Action.stage','RetinalScanLeft','Admin.Action.user').asSequence().last()).lowerCase()"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_technician_retinal_scan_left", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$group('clsa-dcs-f2.Participants:Admin.StageInstance.stage','RetinalScanLeft',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable').value() \n? 1 : 0"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_contraindicated_retinal_scan_left", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "integer"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "var v1=$group('Admin.Action.stage','RetinalScanLeft','Admin.Action.actionType').asSequence()\nvar v2=$group('Admin.Action.stage','RetinalScanLeft','Admin.Action.eventReason').asSequence()\nvar res=null\nvar arr=[]  // string array of events\nfor(var i=0; i<v1.size(); i++) {\n  if(v1.valueAt(i).any('SKIP').not().value() ||\n     v2.valueAt(i).isNull().value()) continue\n  var key=v2.valueAt(i).value().slice(14)\n  if(-1==arr.indexOf(key))\n    arr.push(key)\n}\nif(undefined!==arr && 0<arr.length) {\n  res=newValue(arr.pop(),'text')  \n}\nres"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_skip_retinal_scan_left", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "var stage=newValue($group('clsa-dcs-f2.Participants:Admin.StageInstance.stage','RetinalScanLeft','Admin.StageInstance.lastState').asSequence().last(),'text')\n$this('data_qac_retinal_scan_left').isNull().and(stage.any('Skipped','NotApplicable').not()).value() ? 1 : 0"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "data_missing_retinal_scan_left", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "integer"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "var e=$('clsa-dcs-images-f2.RetinalScanLeft:EYE')\nvar res=null\nif(e.isNull().not().value()) {\n  res=newValue('{filesize:'+e.length()+'}','text')\n}\nres"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "data_qac_retinal_scan_left", 
+        "occurrenceGroup": "", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "var res=null\nif( $group(\n  'clsa-dcs-f2.Participants:Admin.StageInstance.stage',\n  'RetinalScanLeft',\n  'Admin.StageInstance.lastState').asSequence().last().any('Skipped','NotApplicable').not().value() ) {\n  res=$group(\n    'clsa-dcs-f2.Participants:Admin.StageInstance.stage',\n    'RetinalScanLeft',\n    'Admin.StageInstance.duration').asSequence().last()\n  if(res.isNull().not().value()) {\n    res=Math.round(res.div(60.0).multiply(10.0).value()) / 10.0\n  }\n}\nres"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_duration_retinal_scan_left", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "decimal"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$('clsa-dcs-images-f2.RetinalScanRight:InstrumentRun.user').whenNull(\n  $group('Admin.Action.stage','RetinalScanRight','Admin.Action.user').asSequence().last()).lowerCase()"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_technician_retinal_scan_right", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$group('clsa-dcs-f2.Participants:Admin.StageInstance.stage','RetinalScanRight',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable').value() \n? 1 : 0"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_contraindicated_retinal_scan_right", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "integer"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "var v1=$group('Admin.Action.stage','RetinalScanRight','Admin.Action.actionType').asSequence()\nvar v2=$group('Admin.Action.stage','RetinalScanRight','Admin.Action.eventReason').asSequence()\nvar res=null\nvar arr=[]  // string array of events\nfor(var i=0; i<v1.size(); i++) {\n  if(v1.valueAt(i).any('SKIP').not().value() ||\n     v2.valueAt(i).isNull().value()) continue\n  var key=v2.valueAt(i).value().slice(14)\n  if(-1==arr.indexOf(key))\n    arr.push(key)\n}\nif(undefined!==arr && 0<arr.length) {\n  res=newValue(arr.pop(),'text')  \n}\nres"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_skip_retinal_scan_right", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "var stage=newValue($group('clsa-dcs-f2.Participants:Admin.StageInstance.stage','RetinalScanRight','Admin.StageInstance.lastState').asSequence().last(),'text')\n$this('data_qac_retinal_scan_right').isNull().and(stage.any('Skipped','NotApplicable').not()).value() ? 1 : 0"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "data_missing_retinal_scan_right", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "integer"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "var e=$('clsa-dcs-images-f2.RetinalScanRight:EYE')\nvar res=null\nif(e.isNull().not().value()) {\n  res=newValue('{filesize:'+e.length()+'}','text')\n}\nres"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "data_qac_retinal_scan_right", 
+        "occurrenceGroup": "", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "var res=null\nif( $group(\n  'clsa-dcs-f2.Participants:Admin.StageInstance.stage',\n  'RetinalScanRight',\n  'Admin.StageInstance.lastState').asSequence().last().any('Skipped','NotApplicable').not().value() ) {\n  res=$group(\n    'clsa-dcs-f2.Participants:Admin.StageInstance.stage',\n    'RetinalScanRight',\n    'Admin.StageInstance.duration').asSequence().last()\n  if(res.isNull().not().value()) {\n    res=Math.round(res.div(60.0).multiply(10.0).value()) / 10.0\n  }\n}\nres"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_duration_retinal_scan_right", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "decimal"
       }
     ]
   }, 

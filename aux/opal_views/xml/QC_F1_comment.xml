@@ -590,8 +590,83 @@ if(0&lt;c_str.length) {
 res</attribute>
         </attributes>
       </variable>
+      <variable name="stage_comment_weight" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">// this script compounds repeated comments by using lowercase comment strings as array keys
+// and further compounds events within actions
+// 
+var v1=$group(&apos;Admin.Action.stage&apos;,&apos;Weight&apos;,&apos;Admin.Action.comment&apos;).asSequence()
+var v2=$group(&apos;Admin.Action.stage&apos;,&apos;Weight&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
+var v3=$group(&apos;Admin.Action.stage&apos;,&apos;Weight&apos;,&apos;Admin.Action.eventReason&apos;).asSequence()
+var res=null
+var c_str=[]  // string array of comments
+var e_str=[]  // string array of events
+var a_str=[]  // string array of actions
+for(var i=0; i&lt;v1.size(); i++) {  
+  if(v1.valueAt(i).isNull().or(v2.valueAt(i).isNull()).value()) continue
+  c_str.push(v1.valueAt(i).value())
+  a_str.push(v2.valueAt(i).value())
+  e_str.push((v3.valueAt(i).isNull().value()?&apos;SeeComment&apos;:v3.valueAt(i).value().slice(14)))
+}
+var v4=$(&apos;clsa-dcs-f1.Weight:InstrumentRun.skipComment&apos;)
+if(v4.isNull().not().value()) {
+  c_str.push(v4.value())
+  a_str.push(&apos;SKIP&apos;)
+  e_str.push(&apos;SeeComment&apos;)
+}
+if(0&lt;c_str.length) {
+  var arr=[]
+  var key_orig=[]
+  for(var i=0;i&lt;c_str.length;i++) {
+    var key=c_str[i].replace(/[^a-zA-Z0-9 àâäèéêëîïôœùûüÿçÀÂÄÈÉÊËÎÏÔŒÙÛÜŸÇ]/g,&quot;&quot;)
+    var key_lower = key.toLowerCase()    
+    // retain the first encountered instance of the comment
+    if(undefined===key_orig[key_lower])
+      key_orig[key_lower]=key
+    if(0==key_orig[key_lower].length) continue
+    // combine the action and the event
+    var str=a_str[i]+&apos;:&apos;+e_str[i]
+    if(undefined===arr[key_lower])
+      arr[key_lower]=[]
+    if(-1===arr[key_lower].indexOf(str))
+      arr[key_lower].push(str)
+  }
+  
+  var str=[]
+  for(var key in arr) {
+    // compound repeated events 
+    var subarr=[]
+    for(var i=0;i&lt;arr[key].length;i++) {
+      var t=arr[key][i].split(&apos;:&apos;)
+      var t_key=t[1]
+      if(undefined===subarr[t_key])
+        subarr[t_key]=[]
+      if(-1===subarr[t_key].indexOf(t[0]))  
+        subarr[t_key].push(t[0])
+    }
+    var substr=[]
+    for(var t_key in subarr) {
+      var t_str=&apos;SeeComment&apos;==t_key?&apos;]&apos;:&apos;]&apos;+t_key
+      if(1&lt;subarr[t_key].length) {
+        substr.push(&apos;[&apos;+subarr[t_key].join(&apos;/&apos;)+t_str);
+      } else {
+        substr.push(&apos;[&apos;+subarr[t_key][0]+t_str);
+      }
+    }
+    str.push(&apos;[&apos;+((1&lt;substr.length)?substr.join(&apos;/&apos;):substr[0])+&apos;]:&apos;+key_orig[key])
+  }
+  
+  if(1&lt;str.length) {
+    res=newValue(str.join(&apos;,&apos;),&apos;text&apos;)
+  } else if(1==str.length) {
+    res=newValue(str[0],&apos;text&apos;)
+  }
+}
+res</attribute>
+        </attributes>
+      </variable>
     </variables>
   </variables>
   <created valueType="datetime">2018-05-28T10:04:41.326-04</created>
-  <updated valueType="datetime">2018-05-28T10:37:53.936-04</updated>
+  <updated valueType="datetime">2018-06-04T16:13:57.227-04</updated>
 </org.obiba.magma.views.View>
