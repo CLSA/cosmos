@@ -14,7 +14,7 @@ if(''==$begin_date || ''==$end_date ||
   echo sprintf('error: invalid dates %s - %s',$begin_date,$end_date);
   die();
 }
-
+/*
 $sql = sprintf(
   'select avg( '.
   '  if( qcdata is null, null, '.
@@ -56,6 +56,45 @@ if( false === $filesize_avg )
 
 $filesize_min = intval(round($filesize_avg - 2*$filesize_stdev));
 $filesize_max = intval(round($filesize_avg + 2*$filesize_stdev));
+*/
+
+// use mode of filesize as the metric
+$sql = sprintf(
+  'select fsz, count(fsz) as freq '.
+  'from ( '.
+  '  select '.
+  '    trim("}" from '.
+  '      substring_index(qcdata, ":", -1)) as fsz '.
+  '  from interview i '.
+  '  join stage s on i.id=s.interview_id '.
+  '  where rank=%d '.
+  '  and qcdata is not null '.
+  '  and s.name="cognitive_test" '.
+  ') as t '.
+  'where fsz>0 '.
+  'group by fsz '.
+  'order by freq desc limit 1', $rank);
+
+$res = $db->get_row( $sql );  
+$mode = $res['fsz'];
+
+$sql = sprintf(
+  'select min(fsz) as minsz, max(fsz) as maxsz '.
+  'from ( '.
+  '  select '.
+  '    trim("}" from substring_index(qcdata, ":", -1)) as fsz '.
+  '  from interview i '.
+  '  join stage s on i.id=s.interview_id '.
+  '  where rank=%d '.
+  '  and qcdata is not null '.
+  '  and s.name="cognitive_test" '.
+  ') as t '.
+  'where fsz>0', $rank);
+
+$res = $db->get_row( $sql );  
+
+$filesize_min = intval($res['minsz'] + 0.5*($mode-$res['minsz']));
+$filesize_max = intval($mode + 0.5*($res['maxsz']-$mode));
 
 // build the main query
 $sql =
@@ -65,15 +104,15 @@ $sql =
 
 $sql .= sprintf(
   'sum(if(qcdata is null, 0, '.
-  'if(substring_index(substring_index(qcdata,",",1),":",-1)<%d,1,0))) as total_filesize_sub, ',$filesize_min);
+  'if(trim("}" from substring_index(qcdata,":",-1))<%d,1,0))) as total_filesize_sub, ',$filesize_min);
 
 $sql .= sprintf(
   'sum(if(qcdata is null, 0, '.
-  'if(substring_index(substring_index(qcdata,",",1),":",-1) between %d and %d,1,0))) as total_filesize_par, ',$filesize_min,$filesize_max);
+  'if(trim("}" from substring_index(qcdata,":",-1)) between %d and %d,1,0))) as total_filesize_par, ',$filesize_min,$filesize_max);
 
 $sql .= sprintf(
   'sum(if(qcdata is null, 0, '.
-  'if(substring_index(substring_index(qcdata,",",1),":",-1)>%d,1,0))) as total_filesize_sup, ',$filesize_max);
+  'if(trim("}" from substring_index(qcdata,":",-1))>%d,1,0))) as total_filesize_sup, ',$filesize_max);
 
 $sql .= sprintf(
   'sum(case when strcmp(skip,"TechnicalProblem")=0 then 1 else 0 end) as total_skip_technical, '.
@@ -307,9 +346,9 @@ $page_heading = sprintf( 'COGNITIVE TEST RESULTS - Wave %d (%s - %s)',$rank,$beg
     <h3><?php echo $page_heading?></h3>
     <ul>
       <?php 
-        echo "<li>filesize sub: size < {$filesize_min} (mean - 2 SD)</li>";
+        echo "<li>filesize sub: size < {$filesize_min} (0.5 x mode)</li>";
         echo "<li>filesize par: {$filesize_min} <= size <= {$filesize_max}</li>";
-        echo "<li>filesize sup: size > {$filesize_max} (mean + 2 SD)</li>";
+        echo "<li>filesize sup: size > {$filesize_max} (1.5 x mode)</li>";
       ?>
     </ul>
     <!--build the main summary table-->

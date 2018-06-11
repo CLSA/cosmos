@@ -15,47 +15,44 @@ if(''==$begin_date || ''==$end_date ||
   die();
 }
 
+// use mode of filesize as the metric
 $sql = sprintf(
-  'select avg( '.
-  '  if( qcdata is null, null, '.
-  '      substring_index( '.
-  '        substring_index( '.
-  '          qcdata, ",", 1 ), ":", -1 ) ) ) as f_avg '.
-  'from interview i '.
-  'join stage s on i.id=s.interview_id '.
-  'where rank=%d '.
-  'and s.name="ecg"', $rank);
+  'select fsz, count(fsz) as freq '.
+  'from ( '.
+  '  select round( '.
+  '    substring_index( '.
+  '      substring_index(qcdata, ",", 1 ), ":", -1)/1024.0,0) as fsz '.
+  '  from interview i '.
+  '  join stage s on i.id=s.interview_id '.
+  '  where rank=%d '.
+  '  and qcdata is not null '.
+  '  and s.name="ecg" '.
+  ') as t '.
+  'where fsz>0 '.
+  'group by fsz '.
+  'order by freq desc limit 1', $rank);
 
-$filesize_avg = $db->get_one( $sql );
-if( false === $filesize_avg )
-{
-  echo sprintf('failed to get average file size: %s', $db->get_last_error() );
-  echo $sql;
-  die();
-}
+$res = $db->get_row( $sql );
+$mode = $res['fsz'];
 
 $sql = sprintf(
-  'select stddev( '.
-  '  if( qcdata is null, null, '.
-  '      substring_index( '.
-  '        substring_index( '.
-  '          qcdata, ",", 1 ), ":", -1 ) ) ) as f_std '.
-  'from interview i '.
-  'join stage s on i.id=s.interview_id '.
-  'where rank=%d '.
-  'and s.name="ecg"', $rank);
+  'select min(fsz) as minsz, max(fsz) as maxsz '.
+  'from ( '.
+  '  select round('.
+  '    substring_index( '.
+  '      substring_index(qcdata, ",", 1), ":", -1)/1024.0) as fsz '.
+  '  from interview i '.
+  '  join stage s on i.id=s.interview_id '.
+  '  where rank=%d '.
+  '  and qcdata is not null '.
+  '  and s.name="ecg" '.
+  ') as t '.
+  'where fsz>0', $rank);
 
-$filesize_stdev = $db->get_one( $sql );
+$res = $db->get_row( $sql );
 
-if( false === $filesize_avg )
-{
-  echo sprintf('failed to get stddev file size: %s', $db->get_last_error() );
-  echo $sql;
-  die();
-}
-
-$filesize_min = intval(round($filesize_avg - 2*$filesize_stdev));
-$filesize_max = intval(round($filesize_avg + 2*$filesize_stdev));
+$filesize_min = intval($res['minsz'] + 0.5*($mode-$res['minsz']))*1024;
+$filesize_max = intval($mode + 0.5*($res['maxsz']-$mode))*1024;
 
 // build the main query
 $sql =
@@ -308,10 +305,10 @@ $page_heading = sprintf( 'ECG RESULTS - Wave %d (%s - %s)',$rank,$begin_date,$en
   <body>
     <h3><?php echo $page_heading?></h3>
     <ul>
-      <?php 
-        echo "<li>filesize sub: size < {$filesize_min} (mean - 2 SD)</li>";
+      <?php
+        echo "<li>filesize sub: size < {$filesize_min} (min + 0.5 x (mode - min))</li>";
         echo "<li>filesize par: {$filesize_min} <= size <= {$filesize_max}</li>";
-        echo "<li>filesize sup: size > {$filesize_max} (mean + 2 SD)</li>";
+        echo "<li>filesize sup: size > {$filesize_max} (mode + 0.5 x (max - mode))</li>";
         echo "<li>'poor quality' as indicated by ECG diagnosis output text</li>";
       ?>
     </ul>
