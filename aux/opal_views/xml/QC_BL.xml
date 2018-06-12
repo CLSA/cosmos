@@ -50,6 +50,15 @@
       <table inner="false" class="org.obiba.magma.support.ValueTableReference">
         <reference>clsa-dcs.StandingHeight</reference>
       </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs.TUG</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs.HipsWaist</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs.ChairRise</reference>
+      </table>
     </list>
   </from>
   <select class="org.obiba.magma.views.support.NoneClause"/>
@@ -786,8 +795,704 @@ if( $group(
 res</attribute>
         </attributes>
       </variable>
+      <variable name="stage_technician_lateral_bone_density" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">// the user who ran the onyx bone density qnaire stage just before
+// performing the dexa exam
+//
+var q=$(&apos;clsa-dcs.QuestionnaireBoneDensity:QuestionnaireRun.user&apos;).lowerCase()
+
+// the user who ran the dexa image transfer to onyx, who may or may not
+// be the same user who actually performed the exam
+//
+var lu=$(&apos;clsa-dcs-images.LateralBoneDensity:InstrumentRun.user&apos;).whenNull(
+  $group(&apos;Admin.Action.stage&apos;,&apos;LateralBoneDensity&apos;,&apos;Admin.Action.user&apos;).asSequence().last()).lowerCase()
+
+q.whenNull(lu.whenNull(null))</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_contraindicated_lateral_bone_density" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$group(&apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,&apos;LateralBoneDensity&apos;,
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
+? 1 : 0</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_skip_lateral_bone_density" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var v1=$group(&apos;Admin.Action.stage&apos;,&apos;LateralBoneDensity&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
+var v2=$group(&apos;Admin.Action.stage&apos;,&apos;LateralBoneDensity&apos;,&apos;Admin.Action.eventReason&apos;).asSequence()
+var res=null
+var arr=[]  // string array of events
+for(var i=0; i&lt;v1.size(); i++) {
+  if(v1.valueAt(i).any(&apos;SKIP&apos;).not().value() ||
+     v2.valueAt(i).isNull().value()) continue
+  var key=v2.valueAt(i).value().slice(14)
+  if(-1==arr.indexOf(key))
+    arr.push(key)
+}
+if(undefined!==arr &amp;&amp; 0&lt;arr.length) {
+  res=newValue(arr.pop(),&apos;text&apos;)  
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="data_missing_lateral_bone_density" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var stage=newValue($group(&apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,&apos;LateralBoneDensity&apos;,&apos;Admin.StageInstance.lastState&apos;).asSequence().last(),&apos;text&apos;)
+$this(&apos;data_qac_lateral_bone_density&apos;).isNull().and(stage.any(&apos;Skipped&apos;,&apos;NotApplicable&apos;).not()).value() ? 1 : 0</attribute>
+        </attributes>
+      </variable>
+      <variable name="data_qac_lateral_bone_density" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var res=$(&apos;clsa-dcs-images.LateralBoneDensity:RES_SEL_DICOM_MEASURE&apos;)
+if(res.isNull().not().value()) {
+  res = newValue(&apos;{filesize:&apos;+res.length()+&apos;}&apos;,&apos;text&apos;)
+}  
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_duration_lateral_bone_density" valueType="decimal" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var res=null
+if( $group(
+  &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
+  &apos;LateralBoneDensity&apos;,
+  &apos;Admin.StageInstance.lastState&apos;).asSequence().last().any(&apos;Skipped&apos;,&apos;NotApplicable&apos;).not().value() ) {
+  res=$group(
+    &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
+    &apos;LateralBoneDensity&apos;,
+    &apos;Admin.StageInstance.duration&apos;).asSequence().last()
+  if(res.isNull().not().value()) {
+    res=Math.round(res.div(60.0).multiply(10.0).value()) / 10.0
+  }
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_technician_standing_height" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;clsa-dcs.StandingHeight:InstrumentRun.user&apos;).whenNull(
+  $group(&apos;Admin.Action.stage&apos;,&apos;StandingHeight&apos;,&apos;Admin.Action.user&apos;).asSequence().last()).lowerCase()</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_contraindicated_standing_height" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$group(&apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,&apos;StandingHeight&apos;,
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
+? 1 : 0</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_skip_standing_height" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var v1=$group(&apos;Admin.Action.stage&apos;,&apos;StandingHeight&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
+var v2=$group(&apos;Admin.Action.stage&apos;,&apos;StandingHeight&apos;,&apos;Admin.Action.eventReason&apos;).asSequence()
+var res=null
+var arr=[]  // string array of events
+for(var i=0; i&lt;v1.size(); i++) {
+  if(v1.valueAt(i).any(&apos;SKIP&apos;).not().value() ||
+     v2.valueAt(i).isNull().value()) continue
+  var key=v2.valueAt(i).value().slice(14)
+  if(-1==arr.indexOf(key))
+    arr.push(key)
+}
+if(undefined!==arr &amp;&amp; 0&lt;arr.length) {
+  res=newValue(arr.pop(),&apos;text&apos;)  
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="data_missing_standing_height" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var stage=newValue($group(&apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,&apos;StandingHeight&apos;,&apos;Admin.StageInstance.lastState&apos;).asSequence().last(),&apos;text&apos;)
+$this(&apos;data_qac_standing_height&apos;).isNull().and(stage.any(&apos;Skipped&apos;,&apos;NotApplicable&apos;).not()).value() ? 1 : 0</attribute>
+        </attributes>
+      </variable>
+      <variable name="data_qac_standing_height" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var w=$(&apos;clsa-dcs.StandingHeight:Measure.RES_HEIGHT_MEASURE&apos;)
+var res=null
+if(w.size().gt(1).value()){
+  res=newValue(&apos;{stddev:&apos;+w.stddev().round(6).value()+&apos;,size:&apos;+w.size().value()+&apos;}&apos;,&apos;text&apos;)
+} else if(w.size().eq(1).value()) {
+  res=newValue(&apos;{stddev:0,size:1}&apos;,&apos;text&apos;)
+} 
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_duration_standing_height" valueType="decimal" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var res=null
+if( $group(
+  &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
+  &apos;StandingHeight&apos;,
+  &apos;Admin.StageInstance.lastState&apos;).asSequence().last().any(&apos;Skipped&apos;,&apos;NotApplicable&apos;).not().value() ) {
+  res=$group(
+    &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
+    &apos;StandingHeight&apos;,
+    &apos;Admin.StageInstance.duration&apos;).asSequence().last()
+  if(res.isNull().not().value()) {
+    res=Math.round(res.div(60.0).multiply(10.0).value()) / 10.0
+  }
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_technician_forearm_bone_density" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">// the user who ran the onyx bone density qnaire stage just before
+// performing the dexa exam
+//
+var q=$(&apos;clsa-dcs.QuestionnaireBoneDensity:QuestionnaireRun.user&apos;).lowerCase()
+
+// the user who ran the dexa image transfer to onyx, who may or may not
+// be the same user who actually performed the exam
+//
+var lu=$(&apos;clsa-dcs-images.ForearmBoneDensity:InstrumentRun.user&apos;).whenNull(
+  $group(&apos;Admin.Action.stage&apos;,&apos;ForearmBoneDensity&apos;,&apos;Admin.Action.user&apos;).asSequence().last()).lowerCase()
+
+q.whenNull(lu.whenNull(null))</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_contraindicated_forearm_bone_density" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$group(&apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,&apos;ForearmBoneDensity&apos;,
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
+? 1 : 0</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_skip_forearm_bone_density" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var v1=$group(&apos;Admin.Action.stage&apos;,&apos;ForearmBoneDensity&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
+var v2=$group(&apos;Admin.Action.stage&apos;,&apos;ForearmBoneDensity&apos;,&apos;Admin.Action.eventReason&apos;).asSequence()
+var res=null
+var arr=[]  // string array of events
+for(var i=0; i&lt;v1.size(); i++) {
+  if(v1.valueAt(i).any(&apos;SKIP&apos;).not().value() ||
+     v2.valueAt(i).isNull().value()) continue
+  var key=v2.valueAt(i).value().slice(14)
+  if(-1==arr.indexOf(key))
+    arr.push(key)
+}
+if(undefined!==arr &amp;&amp; 0&lt;arr.length) {
+  res=newValue(arr.pop(),&apos;text&apos;)  
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="data_missing_forearm_bone_density" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var stage=newValue($group(&apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,&apos;ForearmBoneDensity&apos;,&apos;Admin.StageInstance.lastState&apos;).asSequence().last(),&apos;text&apos;)
+$this(&apos;data_qac_forearm_bone_density&apos;).isNull().and(stage.any(&apos;Skipped&apos;,&apos;NotApplicable&apos;).not()).value() ? 1 : 0</attribute>
+        </attributes>
+      </variable>
+      <variable name="data_qac_forearm_bone_density" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var l=$group(&apos;OUTPUT_FA_SIDE&apos;,&apos;LEFT&apos;,&apos;RES_FA_DICOM&apos;).asSequence().last()
+var r=$group(&apos;OUTPUT_FA_SIDE&apos;,&apos;RIGHT&apos;,&apos;RES_FA_DICOM&apos;).asSequence().last()
+var res=null
+if(l.isNull().not().value()) {
+  res=newValue(&apos;{filesize:&apos;+ l.length().value() + &apos;}&apos;, &apos;text&apos;)
+} else if(r.isNull().not().value()) {
+  res=newValue(&apos;{filesize:&apos;+ r.length().value() + &apos;}&apos;, &apos;text&apos;)
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_duration_forearm_bone_density" valueType="decimal" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var res=null
+if( $group(
+  &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
+  &apos;ForearmBoneDensity&apos;,
+  &apos;Admin.StageInstance.lastState&apos;).asSequence().last().any(&apos;Skipped&apos;,&apos;NotApplicable&apos;).not().value() ) {
+  res=$group(
+    &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
+    &apos;ForearmBoneDensity&apos;,
+    &apos;Admin.StageInstance.duration&apos;).asSequence().last()
+  if(res.isNull().not().value()) {
+    res=Math.round(res.div(60.0).multiply(10.0).value()) / 10.0
+  }
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_technician_whole_body_bone_density" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">// the user who ran the onyx bone density qnaire stage just before
+// performing the dexa exam
+//
+var q=$(&apos;clsa-dcs.QuestionnaireBoneDensity:QuestionnaireRun.user&apos;).lowerCase()
+
+// the user who ran the dexa image transfer to onyx, who may or may not
+// be the same user who actually performed the exam
+//
+var lu=$(&apos;clsa-dcs-images.WholeBodyBoneDensity:InstrumentRun.user&apos;).whenNull(
+  $group(&apos;Admin.Action.stage&apos;,&apos;WholeBodyBoneDensity&apos;,&apos;Admin.Action.user&apos;).asSequence().last()).lowerCase()
+
+q.whenNull(lu.whenNull(null))</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_contraindicated_whole_body_bone_density" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$group(&apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,&apos;WholeBodyBoneDensity&apos;,
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
+? 1 : 0</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_skip_whole_body_bone_density" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var v1=$group(&apos;Admin.Action.stage&apos;,&apos;WholeBodyBoneDensity&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
+var v2=$group(&apos;Admin.Action.stage&apos;,&apos;WholeBodyBoneDensity&apos;,&apos;Admin.Action.eventReason&apos;).asSequence()
+var res=null
+var arr=[]  // string array of events
+for(var i=0; i&lt;v1.size(); i++) {
+  if(v1.valueAt(i).any(&apos;SKIP&apos;).not().value() ||
+     v2.valueAt(i).isNull().value()) continue
+  var key=v2.valueAt(i).value().slice(14)
+  if(-1==arr.indexOf(key))
+    arr.push(key)
+}
+if(undefined!==arr &amp;&amp; 0&lt;arr.length) {
+  res=newValue(arr.pop(),&apos;text&apos;)  
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="data_missing_whole_body_bone_density" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var stage=newValue($group(&apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,&apos;WholeBodyBoneDensity&apos;,&apos;Admin.StageInstance.lastState&apos;).asSequence().last(),&apos;text&apos;)
+$this(&apos;data_qac_whole_body_bone_density&apos;).isNull().and(stage.any(&apos;Skipped&apos;,&apos;NotApplicable&apos;).not()).value() ? 1 : 0</attribute>
+        </attributes>
+      </variable>
+      <variable name="data_qac_whole_body_bone_density" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var res=$(&apos;clsa-dcs-images.WholeBodyBoneDensity:RES_WB_DICOM_1&apos;)
+if(res.isNull().not().value()) {
+  res = newValue(&apos;{filesize:&apos;+res.length()+&apos;}&apos;,&apos;text&apos;)
+}  
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_duration_whole_body_bone_density" valueType="decimal" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var res=null
+if( $group(
+  &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
+  &apos;WholeBodyBoneDensity&apos;,
+  &apos;Admin.StageInstance.lastState&apos;).asSequence().last().any(&apos;Skipped&apos;,&apos;NotApplicable&apos;).not().value() ) {
+  res=$group(
+    &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
+    &apos;WholeBodyBoneDensity&apos;,
+    &apos;Admin.StageInstance.duration&apos;).asSequence().last()
+  if(res.isNull().not().value()) {
+    res=Math.round(res.div(60.0).multiply(10.0).value()) / 10.0
+  }
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_technician_dual_hip_bone_density" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">// the user who ran the onyx bone density qnaire stage just before
+// performing the dexa exam
+//
+var q=$(&apos;clsa-dcs.QuestionnaireBoneDensity:QuestionnaireRun.user&apos;).lowerCase()
+
+// the user who ran the dexa image transfer to onyx, who may or may not
+// be the same user who actually performed the exam
+//
+var lu=$(&apos;clsa-dcs-images.DualHipBoneDensity:InstrumentRun.user&apos;).whenNull(
+  $group(&apos;Admin.Action.stage&apos;,&apos;DualHipBoneDensity&apos;,&apos;Admin.Action.user&apos;).asSequence().last()).lowerCase()
+
+q.whenNull(lu.whenNull(null))</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_contraindicated_dual_hip_bone_density" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$group(&apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,&apos;DualHipBoneDensity&apos;,
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
+? 1 : 0</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_skip_dual_hip_bone_density" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var v1=$group(&apos;Admin.Action.stage&apos;,&apos;DualHipBoneDensity&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
+var v2=$group(&apos;Admin.Action.stage&apos;,&apos;DualHipBoneDensity&apos;,&apos;Admin.Action.eventReason&apos;).asSequence()
+var res=null
+var arr=[]  // string array of events
+for(var i=0; i&lt;v1.size(); i++) {
+  if(v1.valueAt(i).any(&apos;SKIP&apos;).not().value() ||
+     v2.valueAt(i).isNull().value()) continue
+  var key=v2.valueAt(i).value().slice(14)
+  if(-1==arr.indexOf(key))
+    arr.push(key)
+}
+if(undefined!==arr &amp;&amp; 0&lt;arr.length) {
+  res=newValue(arr.pop(),&apos;text&apos;)  
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="data_missing_dual_hip_bone_density" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var stage=newValue($group(&apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,&apos;DualHipBoneDensity&apos;,&apos;Admin.StageInstance.lastState&apos;).asSequence().last(),&apos;text&apos;)
+$this(&apos;data_qac_dual_hip_bone_density&apos;).isNull().and(stage.any(&apos;Skipped&apos;,&apos;NotApplicable&apos;).not()).value() ? 1 : 0</attribute>
+        </attributes>
+      </variable>
+      <variable name="data_qac_dual_hip_bone_density" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var l=$group(&apos;Measure.OUTPUT_HIP_SIDE&apos;,&apos;LEFT&apos;,&apos;Measure.RES_HIP_DICOM&apos;).asSequence().last()
+var r=$group(&apos;Measure.OUTPUT_HIP_SIDE&apos;,&apos;RIGHT&apos;,&apos;Measure.RES_HIP_DICOM&apos;).asSequence().last()
+var res=null
+if(!l.isNull().and(r.isNull()).value()) {
+  res=newValue(
+    &apos;{filesize_left:&apos;+
+    (l.isNull().value()?&apos;0&apos;:l.length().value())+
+    &apos;,filesize_right:&apos;+
+    (r.isNull().value()?&apos;0&apos;:r.length().value())+
+    &apos;}&apos;, &apos;text&apos;)
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_duration_dual_hip_bone_density" valueType="decimal" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var res=null
+if( $group(
+  &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
+  &apos;DualHipBoneDensity&apos;,
+  &apos;Admin.StageInstance.lastState&apos;).asSequence().last().any(&apos;Skipped&apos;,&apos;NotApplicable&apos;).not().value() ) {
+  res=$group(
+    &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
+    &apos;DualHipBoneDensity&apos;,
+    &apos;Admin.StageInstance.duration&apos;).asSequence().last()
+  if(res.isNull().not().value()) {
+    res=Math.round(res.div(60.0).multiply(10.0).value()) / 10.0
+  }
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_technician_carotid_intima" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">// the user who ran the onyx bone density qnaire stage just before
+// performing the dexa exam
+//
+var q=$(&apos;clsa-dcs.QuestionnaireBoneDensity:QuestionnaireRun.user&apos;).lowerCase()
+
+// the user who ran the dexa image transfer to onyx, who may or may not
+// be the same user who actually performed the exam
+//
+var lu=$(&apos;clsa-dcs-images.CarotidIntima:InstrumentRun.user&apos;).whenNull(
+  $group(&apos;Admin.Action.stage&apos;,&apos;CarotidIntima&apos;,&apos;Admin.Action.user&apos;).asSequence().last()).lowerCase()
+
+q.whenNull(lu.whenNull(null))</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_contraindicated_carotid_intima" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$group(&apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,&apos;CarotidIntima&apos;,
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
+? 1 : 0</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_skip_carotid_intima" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var v1=$group(&apos;Admin.Action.stage&apos;,&apos;CarotidIntima&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
+var v2=$group(&apos;Admin.Action.stage&apos;,&apos;CarotidIntima&apos;,&apos;Admin.Action.eventReason&apos;).asSequence()
+var res=null
+var arr=[]  // string array of events
+for(var i=0; i&lt;v1.size(); i++) {
+  if(v1.valueAt(i).any(&apos;SKIP&apos;).not().value() ||
+     v2.valueAt(i).isNull().value()) continue
+  var key=v2.valueAt(i).value().slice(14)
+  if(-1==arr.indexOf(key))
+    arr.push(key)
+}
+if(undefined!==arr &amp;&amp; 0&lt;arr.length) {
+  res=newValue(arr.pop(),&apos;text&apos;)  
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="data_missing_carotid_intima" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var stage=newValue($group(&apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,&apos;CarotidIntima&apos;,&apos;Admin.StageInstance.lastState&apos;).asSequence().last(),&apos;text&apos;)
+$this(&apos;data_qac_carotid_intima&apos;).isNull().and(stage.any(&apos;Skipped&apos;,&apos;NotApplicable&apos;).not()).value() ? 1 : 0</attribute>
+        </attributes>
+      </variable>
+      <variable name="data_qac_carotid_intima" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var rst=$group(&apos;clsa-dcs-images.CarotidIntima:Measure.SIDE&apos;,&apos;Right&apos;,&apos;Measure.STILL_IMAGE&apos;).asSequence().last()
+var rsr=$group(&apos;clsa-dcs-images.CarotidIntima:Measure.SIDE&apos;,&apos;Right&apos;,&apos;Measure.SR&apos;).asSequence().last()
+var rc1=$group(&apos;clsa-dcs-images.CarotidIntima:Measure.SIDE&apos;,&apos;Right&apos;,&apos;Measure.CINELOOP_1&apos;).asSequence().last()
+var rc2=$group(&apos;clsa-dcs-images.CarotidIntima:Measure.SIDE&apos;,&apos;Right&apos;,&apos;Measure.CINELOOP_2&apos;).asSequence().last()
+var rc3=$group(&apos;clsa-dcs-images.CarotidIntima:Measure.SIDE&apos;,&apos;Right&apos;,&apos;Measure.CINELOOP_3&apos;).asSequence().last()
+var lst=$group(&apos;clsa-dcs-images.CarotidIntima:Measure.SIDE&apos;,&apos;Left&apos;,&apos;Measure.STILL_IMAGE&apos;).asSequence().last()
+var lsr=$group(&apos;clsa-dcs-images.CarotidIntima:Measure.SIDE&apos;,&apos;Left&apos;,&apos;Measure.SR&apos;).asSequence().last()
+var lc1=$group(&apos;clsa-dcs-images.CarotidIntima:Measure.SIDE&apos;,&apos;Left&apos;,&apos;Measure.CINELOOP_1&apos;).asSequence().last()
+var lc2=$group(&apos;clsa-dcs-images.CarotidIntima:Measure.SIDE&apos;,&apos;Left&apos;,&apos;Measure.CINELOOP_2&apos;).asSequence().last()
+var lc3=$group(&apos;clsa-dcs-images.CarotidIntima:Measure.SIDE&apos;,&apos;Left&apos;,&apos;Measure.CINELOOP_3&apos;).asSequence().last()
+var res=null
+if(!rst.isNull().and(rsr.isNull(),rc1.isNull(),rc2.isNull(),rc3.isNull(),
+   lst.isNull(),lsr.isNull(),lc1.isNull(),lc2.isNull(),lc3.isNull()).value()) {
+  var str=&apos;{filesize_left_still:&apos;+(lst.isNull().value()?&apos;0&apos;:lst.length().value())+&apos;,&apos;
+  str+=&apos;filesize_left_sr:&apos;+(lsr.isNull().value()?&apos;0&apos;:lsr.length().value())+&apos;,&apos;
+  str+=&apos;filesize_left_cine_1:&apos;+(lc1.isNull().value()?&apos;0&apos;:lc1.length().value())+&apos;,&apos;
+  str+=&apos;filesize_left_cine_2:&apos;+(lc2.isNull().value()?&apos;0&apos;:lc2.length().value())+&apos;,&apos;
+  str+=&apos;filesize_left_cine_3:&apos;+(lc3.isNull().value()?&apos;0&apos;:lc3.length().value())+&apos;,&apos;
+  str+=&apos;filesize_right_still:&apos;+(rst.isNull().value()?&apos;0&apos;:rst.length().value())+&apos;,&apos;
+  str+=&apos;filesize_right_sr:&apos;+(rsr.isNull().value()?&apos;0&apos;:rsr.length().value())+&apos;,&apos;
+  str+=&apos;filesize_right_cine_1:&apos;+(rc1.isNull().value()?&apos;0&apos;:rc1.length().value())+&apos;,&apos;
+  str+=&apos;filesize_right_cine_2:&apos;+(rc2.isNull().value()?&apos;0&apos;:rc2.length().value())+&apos;,&apos;
+  str+=&apos;filesize_right_cine_3:&apos;+(rc3.isNull().value()?&apos;0&apos;:rc3.length().value())+&apos;}&apos;
+  res=newValue(str,&apos;text&apos;)
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_duration_carotid_intima" valueType="decimal" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var res=null
+if( $group(
+  &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
+  &apos;CarotidIntima&apos;,
+  &apos;Admin.StageInstance.lastState&apos;).asSequence().last().any(&apos;Skipped&apos;,&apos;NotApplicable&apos;).not().value() ) {
+  res=$group(
+    &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
+    &apos;CarotidIntima&apos;,
+    &apos;Admin.StageInstance.duration&apos;).asSequence().last()
+  if(res.isNull().not().value()) {
+    res=Math.round(res.div(60.0).multiply(10.0).value()) / 10.0
+  }
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_technician_tug" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;clsa-dcs.TUG:QuestionnaireRun.user&apos;).whenNull(
+  $group(&apos;Admin.Action.stage&apos;,&apos;TUG&apos;,&apos;Admin.Action.user&apos;).asSequence().last()).lowerCase()</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_contraindicated_tug" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$group(&apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,&apos;TUG&apos;,
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
+? 1 : 0</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_skip_tug" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var v1=$group(&apos;Admin.Action.stage&apos;,&apos;TUG&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
+var v2=$group(&apos;Admin.Action.stage&apos;,&apos;TUG&apos;,&apos;Admin.Action.eventReason&apos;).asSequence()
+var res=null
+var arr=[]  // string array of events
+for(var i=0; i&lt;v1.size(); i++) {
+  if(v1.valueAt(i).any(&apos;SKIP&apos;).not().value() ||
+     v2.valueAt(i).isNull().value()) continue
+  var key=v2.valueAt(i).value().slice(14)
+  if(-1==arr.indexOf(key))
+    arr.push(key)
+}
+if(undefined!==arr &amp;&amp; 0&lt;arr.length) {
+  res=newValue(arr.pop(),&apos;text&apos;)  
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="data_missing_tug" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var stage=newValue($group(&apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,&apos;TUG&apos;,&apos;Admin.StageInstance.lastState&apos;).asSequence().last(),&apos;text&apos;)
+$this(&apos;data_qac_tug&apos;).isNull().and(stage.any(&apos;Skipped&apos;,&apos;NotApplicable&apos;).not()).value() ? 1 : 0</attribute>
+        </attributes>
+      </variable>
+      <variable name="data_qac_tug" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var t1=$(&apos;clsa-dcs.TUG:TUG_TIME&apos;)
+var t2=$(&apos;clsa-dcs.TUG:TUG_TIME_2&apos;)
+var res=null
+if(!t1.isNull().and(t2.isNull()).value()) {
+  var str = &apos;{time:&apos;
+  if(t1.isNull().and(t2.isNull().not()).value()) {
+    str+=t2.round(3).value()
+  } else if(t2.isNull().and(t1.isNull().not()).value()) {
+    str+=t1.round(3).value()
+  }  
+  str+=&apos;}&apos;  
+  res=newValue(str,&apos;text&apos;)
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_duration_tug" valueType="decimal" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var res=null
+if( $group(
+  &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
+  &apos;TUG&apos;,
+  &apos;Admin.StageInstance.lastState&apos;).asSequence().last().any(&apos;Skipped&apos;,&apos;NotApplicable&apos;).not().value() ) {
+  res=$group(
+    &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
+    &apos;TUG&apos;,
+    &apos;Admin.StageInstance.duration&apos;).asSequence().last()
+  if(res.isNull().not().value()) {
+    res=Math.round(res.div(60.0).multiply(10.0).value()) / 10.0
+  }
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_technician_chair_rise" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;clsa-dcs.ChairRise:QuestionnaireRun.user&apos;).whenNull(
+  $group(&apos;Admin.Action.stage&apos;,&apos;ChairRise&apos;,&apos;Admin.Action.user&apos;).asSequence().last()).lowerCase()</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_contraindicated_chair_rise" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$group(&apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,&apos;ChairRise&apos;,
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
+? 1 : 0</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_skip_chair_rise" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var v1=$group(&apos;Admin.Action.stage&apos;,&apos;ChairRise&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
+var v2=$group(&apos;Admin.Action.stage&apos;,&apos;ChairRise&apos;,&apos;Admin.Action.eventReason&apos;).asSequence()
+var res=null
+var arr=[]  // string array of events
+for(var i=0; i&lt;v1.size(); i++) {
+  if(v1.valueAt(i).any(&apos;SKIP&apos;).not().value() ||
+     v2.valueAt(i).isNull().value()) continue
+  var key=v2.valueAt(i).value().slice(14)
+  if(-1==arr.indexOf(key))
+    arr.push(key)
+}
+if(undefined!==arr &amp;&amp; 0&lt;arr.length) {
+  res=newValue(arr.pop(),&apos;text&apos;)  
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="data_missing_chair_rise" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var stage=newValue($group(&apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,&apos;ChairRise&apos;,&apos;Admin.StageInstance.lastState&apos;).asSequence().last(),&apos;text&apos;)
+$this(&apos;data_qac_chair_rise&apos;).isNull().and(stage.any(&apos;Skipped&apos;,&apos;NotApplicable&apos;).not()).value() ? 1 : 0</attribute>
+        </attributes>
+      </variable>
+      <variable name="data_qac_chair_rise" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var t1=$(&apos;clsa-dcs.ChairRise:CR_TIME&apos;)
+var t2=$(&apos;clsa-dcs.ChairRise:CR_TIME_2&apos;)
+var res=null
+if(!t1.isNull().and(t2.isNull()).value()) {
+  var str = &apos;{time:&apos;
+  if(t1.isNull().and(t2.isNull().not()).value()) {
+    str+=t2.round(3).value()
+  } else if(t2.isNull().and(t1.isNull().not()).value()) {
+    str+=t1.round(3).value()
+  }  
+  str+=&apos;}&apos;  
+  res=newValue(str,&apos;text&apos;)
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_duration_chair_rise" valueType="decimal" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var res=null
+if( $group(
+  &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
+  &apos;ChairRise&apos;,
+  &apos;Admin.StageInstance.lastState&apos;).asSequence().last().any(&apos;Skipped&apos;,&apos;NotApplicable&apos;).not().value() ) {
+  res=$group(
+    &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
+    &apos;ChairRise&apos;,
+    &apos;Admin.StageInstance.duration&apos;).asSequence().last()
+  if(res.isNull().not().value()) {
+    res=Math.round(res.div(60.0).multiply(10.0).value()) / 10.0
+  }
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_technician_hips_waist" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;clsa-dcs.HipsWaist:InstrumentRun.user&apos;).whenNull(
+  $group(&apos;Admin.Action.stage&apos;,&apos;HipsWaist&apos;,&apos;Admin.Action.user&apos;).asSequence().last()).lowerCase()</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_contraindicated_hips_waist" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$group(&apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,&apos;HipsWaist&apos;,
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
+? 1 : 0</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_skip_hips_waist" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var v1=$group(&apos;Admin.Action.stage&apos;,&apos;HipsWaist&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
+var v2=$group(&apos;Admin.Action.stage&apos;,&apos;HipsWaist&apos;,&apos;Admin.Action.eventReason&apos;).asSequence()
+var res=null
+var arr=[]  // string array of events
+for(var i=0; i&lt;v1.size(); i++) {
+  if(v1.valueAt(i).any(&apos;SKIP&apos;).not().value() ||
+     v2.valueAt(i).isNull().value()) continue
+  var key=v2.valueAt(i).value().slice(14)
+  if(-1==arr.indexOf(key))
+    arr.push(key)
+}
+if(undefined!==arr &amp;&amp; 0&lt;arr.length) {
+  res=newValue(arr.pop(),&apos;text&apos;)  
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="data_missing_hips_waist" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var stage=newValue($group(&apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,&apos;HipsWaist&apos;,&apos;Admin.StageInstance.lastState&apos;).asSequence().last(),&apos;text&apos;)
+$this(&apos;data_qac_hips_waist&apos;).isNull().and(stage.any(&apos;Skipped&apos;,&apos;NotApplicable&apos;).not()).value() ? 1 : 0</attribute>
+        </attributes>
+      </variable>
+      <variable name="data_qac_hips_waist" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var i=$(&apos;clsa-dcs.HipsWaist:IV_MEASURE_TAKEN&apos;)
+var w=$(&apos;clsa-dcs.HipsWaist:RES_WAIST_SIZE&apos;)
+var h=$(&apos;clsa-dcs.HipsWaist:RES_HIPS_SIZE&apos;)
+var r=$(&apos;clsa-dcs.HipsWaist:CALC_WAIST_TO_HIP_RATIO&apos;)
+var res=null
+if(!i.isNull().and(w.isNull(),h.isNull(),r.isNull()).value()) {
+  var str=&apos;{iv_type:&apos;+(i.isNull().value()?&apos;NA&apos;:i.value())+&apos;,&apos;
+  str+=&apos;size_waist:&apos;+(w.isNull().value()?&apos;0&apos;:w.value())+&apos;,&apos;
+  str+=&apos;size_hips:&apos;+(h.isNull().value()?&apos;0&apos;:h.value())+&apos;,&apos;
+  str+=&apos;ratio:&apos;+(r.isNull().value()?&apos;0&apos;:r.round(3).value())+&apos;}&apos;
+  res=newValue(str,&apos;text&apos;)
+}  
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_duration_hips_waist" valueType="decimal" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var res=null
+if( $group(
+  &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
+  &apos;HipsWaist&apos;,
+  &apos;Admin.StageInstance.lastState&apos;).asSequence().last().any(&apos;Skipped&apos;,&apos;NotApplicable&apos;).not().value() ) {
+  res=$group(
+    &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
+    &apos;HipsWaist&apos;,
+    &apos;Admin.StageInstance.duration&apos;).asSequence().last()
+  if(res.isNull().not().value()) {
+    res=Math.round(res.div(60.0).multiply(10.0).value()) / 10.0
+  }
+}
+res</attribute>
+        </attributes>
+      </variable>
     </variables>
   </variables>
   <created valueType="datetime">2018-05-15T17:37:52.240-04</created>
-  <updated valueType="datetime">2018-06-04T16:27:12.325-04</updated>
+  <updated valueType="datetime">2018-06-12T11:56:05.480-04</updated>
 </org.obiba.magma.views.View>

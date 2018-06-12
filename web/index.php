@@ -65,6 +65,11 @@ $date_ranges = json_encode($db->get_all( $sql ));
           $('#to, #from').datepicker('option','maxDate',date_ranges[num].max_date);
           $('#from').datepicker('option','defaultDate',date_ranges[num].min_date);
           $('#to').datepicker('option','defaultDate',date_ranges[num].max_date);
+          if(1==num) {
+            $('#stage option[value="scripts/spine_bone_densityTable.php"]').hide();
+          } else {
+            $('#stage option[value="scripts/spine_bone_densityTable.php"]').show();
+          }
           console.log('date range: ' + date_ranges[num].min_date + ' -> ' + date_ranges[num].max_date);
         });
       });
@@ -99,15 +104,24 @@ $date_ranges = json_encode($db->get_all( $sql ));
         <div>
           <label for="stage">Stage:</label>
           <select name="stage" id="stage">
-            <option value="scripts/grip_strengthTable.php" selected="selected">Grip Strength</option>
-            <option value="scripts/spirometryTable.php">Spirometry</option>
             <option value="scripts/blood_pressureTable.php">Blood Pressure</option>
-            <option value="scripts/ecgTable.php">ECG</option>
+            <option value="scripts/chair_riseTable.php">Chair Rise</option>
             <option value="scripts/cognitive_testTable.php">Cognitive Test</option>
+            <option value="scripts/dual_hip_bone_densityTable.php">DEXA Dual Hip</option>
+            <option value="scripts/forearm_bone_densityTable.php">DEXA Forearm</option>
+            <option value="scripts/lateral_bone_densityTable.php">DEXA Lateral</option>
+            <option value="scripts/spine_bone_densityTable.php">DEXA Spine</option>
+            <option value="scripts/whole_body_bone_densityTable.php">DEXA Whole Body</option>
+            <option value="scripts/ecgTable.php">ECG</option>
+            <option value="scripts/grip_strengthTable.php" selected="selected">Grip Strength</option>
             <option value="scripts/hearingTable.php">Hearing</option>
-            <option value="scripts/tonometerTable.php">Tonometer</option>
-            <option value="scripts/weightTable.php">Weight</option>
+            <option value="scripts/hips_waistTable.php">Hips Waist</option>
             <option value="scripts/retinal_scanTable.php">Retinal Scan</option>
+            <option value="scripts/spirometryTable.php">Spirometry</option>
+            <option value="scripts/standing_heightTable.php">Standing Height</option>
+            <option value="scripts/tonometerTable.php">Tonometer</option>
+            <option value="scripts/tugTable.php">TUG</option>
+            <option value="scripts/weightTable.php">Weight</option>
           </select>
         </div>
         <div class="button">
