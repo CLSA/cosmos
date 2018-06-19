@@ -22,6 +22,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_technician_spirometry", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -38,6 +39,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "interview_site", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -54,6 +56,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_missing_spirometry", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -70,6 +73,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_skip_spirometry", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -86,6 +90,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_contraindicated_spirometry", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -107,6 +112,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "interview_start_date", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "date"
@@ -132,25 +138,10 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "interview_barcode", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
-      }, 
-      {
-        "attributes": [
-          {
-            "name": "script", 
-            "value": "var res=null\nif( $group(\n  'clsa-dcs-f2.Participants:Admin.StageInstance.stage',\n  'Spirometry',\n  'Admin.StageInstance.lastState').asSequence().last().any('Skipped','NotApplicable').not().value() ) {\n  res=$group(\n    'clsa-dcs-f2.Participants:Admin.StageInstance.stage',\n    'Spirometry',\n    'Admin.StageInstance.duration').asSequence().last()\n  if(res.isNull().not().value()) {\n    res=Math.round(res.div(60.0).multiply(10.0).value()) / 10.0\n  }\n}\nres"
-          }
-        ], 
-        "entityType": "Participant", 
-        "index": 0, 
-        "isRepeatable": false, 
-        "mimeType": "", 
-        "name": "stage_duration_spirometry", 
-        "referencedEntityType": "", 
-        "unit": "", 
-        "valueType": "decimal"
       }, 
       {
         "attributes": [
@@ -189,6 +180,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_spirometry", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -205,6 +197,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_technician_grip_strength", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -221,6 +214,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_contraindicated_grip_strength", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -237,6 +231,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_skip_grip_strength", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -253,6 +248,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_missing_grip_strength", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -269,25 +265,10 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_grip_strength", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
-      }, 
-      {
-        "attributes": [
-          {
-            "name": "script", 
-            "value": "var res=null\nif( $group(\n  'clsa-dcs-f2.Participants:Admin.StageInstance.stage',\n  'GripStrength',\n  'Admin.StageInstance.lastState').asSequence().last().any('Skipped','NotApplicable').not().value() ) {\n  res=$group(\n    'clsa-dcs-f2.Participants:Admin.StageInstance.stage',\n    'GripStrength',\n    'Admin.StageInstance.duration').asSequence().last()\n  if(res.isNull().not().value()) {\n    res=Math.round(res.div(60.0).multiply(10.0).value()) / 10.0\n  }\n}\nres"
-          }
-        ], 
-        "entityType": "Participant", 
-        "index": 0, 
-        "isRepeatable": false, 
-        "mimeType": "", 
-        "name": "stage_duration_grip_strength", 
-        "referencedEntityType": "", 
-        "unit": "", 
-        "valueType": "decimal"
       }, 
       {
         "attributes": [
@@ -301,6 +282,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_technician_blood_pressure", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -317,6 +299,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_contraindicated_blood_pressure", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -333,6 +316,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_skip_blood_pressure", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -349,6 +333,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_missing_blood_pressure", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -365,25 +350,10 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_blood_pressure", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
-      }, 
-      {
-        "attributes": [
-          {
-            "name": "script", 
-            "value": "var res=null\nif( $group(\n  'clsa-dcs-f2.Participants:Admin.StageInstance.stage',\n  'BloodPressure',\n  'Admin.StageInstance.lastState').asSequence().last().any('Skipped','NotApplicable').not().value() ) {\n  res=$group(\n    'clsa-dcs-f2.Participants:Admin.StageInstance.stage',\n    'BloodPressure',\n    'Admin.StageInstance.duration').asSequence().last()\n  if(res.isNull().not().value()) {\n    res=Math.round(res.div(60.0).multiply(10.0).value()) / 10.0\n  }\n}\nres"
-          }
-        ], 
-        "entityType": "Participant", 
-        "index": 0, 
-        "isRepeatable": false, 
-        "mimeType": "", 
-        "name": "stage_duration_blood_pressure", 
-        "referencedEntityType": "", 
-        "unit": "", 
-        "valueType": "decimal"
       }, 
       {
         "attributes": [
@@ -397,6 +367,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_technician_ecg", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -413,6 +384,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_contraindicated_ecg", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -429,6 +401,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_skip_ecg", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -445,6 +418,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_missing_ecg", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -461,25 +435,10 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_ecg", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
-      }, 
-      {
-        "attributes": [
-          {
-            "name": "script", 
-            "value": "var res=null\nif( $group(\n  'clsa-dcs-f2.Participants:Admin.StageInstance.stage',\n  'ECG',\n  'Admin.StageInstance.lastState').asSequence().last().any('Skipped','NotApplicable').not().value() ) {\n  res=$group(\n    'clsa-dcs-f2.Participants:Admin.StageInstance.stage',\n    'ECG',\n    'Admin.StageInstance.duration').asSequence().last()\n  if(res.isNull().not().value()) {\n    res=Math.round(res.div(60.0).multiply(10.0).value()) / 10.0\n  }\n}\nres"
-          }
-        ], 
-        "entityType": "Participant", 
-        "index": 0, 
-        "isRepeatable": false, 
-        "mimeType": "", 
-        "name": "stage_duration_ecg", 
-        "referencedEntityType": "", 
-        "unit": "", 
-        "valueType": "decimal"
       }, 
       {
         "attributes": [
@@ -493,6 +452,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_technician_cognitive_test", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -509,6 +469,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_contraindicated_cognitive_test", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -525,6 +486,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_skip_cognitive_test", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -541,6 +503,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_missing_cognitive_test", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -557,25 +520,10 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_cognitive_test", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
-      }, 
-      {
-        "attributes": [
-          {
-            "name": "script", 
-            "value": "var res=null\nif( $group(\n  'clsa-dcs-f2.Participants:Admin.StageInstance.stage',\n  'CognitiveTest',\n  'Admin.StageInstance.lastState').asSequence().last().any('Skipped','NotApplicable').not().value() ) {\n  res=$group(\n    'clsa-dcs-f2.Participants:Admin.StageInstance.stage',\n    'CognitiveTest',\n    'Admin.StageInstance.duration').asSequence().last()\n  if(res.isNull().not().value()) {\n    res=Math.round(res.div(60.0).multiply(10.0).value()) / 10.0\n  }\n}\nres"
-          }
-        ], 
-        "entityType": "Participant", 
-        "index": 0, 
-        "isRepeatable": false, 
-        "mimeType": "", 
-        "name": "stage_duration_cognitive_test", 
-        "referencedEntityType": "", 
-        "unit": "", 
-        "valueType": "decimal"
       }, 
       {
         "attributes": [
@@ -589,6 +537,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_technician_hearing", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -605,6 +554,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_contraindicated_hearing", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -621,6 +571,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_skip_hearing", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -637,6 +588,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_missing_hearing", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -645,7 +597,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var side = ['RIGHT','LEFT']\nvar freq = ['1KT','500','1K','2K','3K','4K','6K','8K']\nvar count = {RIGHT:0,LEFT:0}\nfor(var i=0;i<side.length;i++) {\n  var s = side[i]\n  var v = 'clsa-dcs-f2.Hearing:RES_' + s + '_'\n  for(var j=0;j<freq.length;j++) {\n    var f = v + freq[j]\n    if ($(f).isNull().not().or($(f + '_ERR').isNull().not()).value()) count[s]++;\n  }\n}\nres = (0 == count.RIGHT && 0 == count.LEFT && \n  $('clsa-dcs-f2.Hearing:RES_TEST_ID').isNull().and(\n    $('clsa-dcs-f2.Hearing:RES_TEST_DATETIME').isNull()).value()) ?\n      null : newValue('{freq_left:'+count.LEFT+',freq_right:'+count.RIGHT+'}','text')"
+            "value": "var side = ['RIGHT','LEFT']\nvar freq = ['1KT','500','1K','2K','3K','4K','6K','8K']\nvar count = {RIGHT:0,LEFT:0}\nvar countfreq = {RIGHT:0,LEFT:0}\nvar counterr = {RIGHT:0,LEFT:0}\nfor(var i=0;i<side.length;i++) {\n  var s = side[i]\n  var v = 'clsa-dcs-f2.Hearing:RES_' + s + '_'\n  for(var j=0;j<freq.length;j++) {\n    var f = v + freq[j]\n    if ($(f).isNull().not().or($(f + '_ERR').isNull().not()).value()) count[s]++;\n    if ($(f).isNull().not().value()) countfreq[s]++;\n    if ($(f + '_ERR').isNull().not().value()) counterr[s]++;\n  }\n}\nres = (0 == count.RIGHT && 0 == count.LEFT && \n  $('clsa-dcs.Hearing:RES_TEST_ID').isNull().and(\n    $('clsa-dcs.Hearing:RES_TEST_DATETIME').isNull()).value()) ?\n      null : newValue(\n        '{response_left:'+count.LEFT+\n        ',response_right:'+count.RIGHT+\n        ',error_left:'+(counterr.LEFT>0 && countfreq.LEFT==0 ? '1' : '0')+\n        ',error_right:'+(counterr.RIGHT>0 && countfreq.RIGHT==0 ? '1' : '0')+\n        '}','text')"
           }
         ], 
         "entityType": "Participant", 
@@ -653,25 +605,10 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_hearing", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
-      }, 
-      {
-        "attributes": [
-          {
-            "name": "script", 
-            "value": "var res=null\nif( $group(\n  'clsa-dcs-f2.Participants:Admin.StageInstance.stage',\n  'Hearing',\n  'Admin.StageInstance.lastState').asSequence().last().any('Skipped','NotApplicable').not().value() ) {\n  res=$group(\n    'clsa-dcs-f2.Participants:Admin.StageInstance.stage',\n    'Hearing',\n    'Admin.StageInstance.duration').asSequence().last()\n  if(res.isNull().not().value()) {\n    res=Math.round(res.div(60.0).multiply(10.0).value()) / 10.0\n  }\n}\nres"
-          }
-        ], 
-        "entityType": "Participant", 
-        "index": 0, 
-        "isRepeatable": false, 
-        "mimeType": "", 
-        "name": "stage_duration_hearing", 
-        "referencedEntityType": "", 
-        "unit": "", 
-        "valueType": "decimal"
       }, 
       {
         "attributes": [
@@ -685,6 +622,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_technician_tonometer", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -701,6 +639,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_contraindicated_tonometer", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -717,6 +656,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_skip_tonometer", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -733,6 +673,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_missing_tonometer", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -749,25 +690,10 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_tonometer", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
-      }, 
-      {
-        "attributes": [
-          {
-            "name": "script", 
-            "value": "var res=null\nif( $group(\n  'clsa-dcs-f2.Participants:Admin.StageInstance.stage',\n  'Tonometer',\n  'Admin.StageInstance.lastState').asSequence().last().any('Skipped','NotApplicable').not().value() ) {\n  res=$group(\n    'clsa-dcs-f2.Participants:Admin.StageInstance.stage',\n    'Tonometer',\n    'Admin.StageInstance.duration').asSequence().last()\n  if(res.isNull().not().value()) {\n    res=Math.round(res.div(60.0).multiply(10.0).value()) / 10.0\n  }\n}\nres"
-          }
-        ], 
-        "entityType": "Participant", 
-        "index": 0, 
-        "isRepeatable": false, 
-        "mimeType": "", 
-        "name": "stage_duration_tonometer", 
-        "referencedEntityType": "", 
-        "unit": "", 
-        "valueType": "decimal"
       }, 
       {
         "attributes": [
@@ -781,6 +707,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_technician_weight", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -797,6 +724,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_contraindicated_weight", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -813,6 +741,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_skip_weight", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -829,6 +758,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_missing_weight", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -845,25 +775,10 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_weight", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
-      }, 
-      {
-        "attributes": [
-          {
-            "name": "script", 
-            "value": "var res=null\nif( $group(\n  'clsa-dcs-f2.Participants:Admin.StageInstance.stage',\n  'Weight',\n  'Admin.StageInstance.lastState').asSequence().last().any('Skipped','NotApplicable').not().value() ) {\n  res=$group(\n    'clsa-dcs-f2.Participants:Admin.StageInstance.stage',\n    'Weight',\n    'Admin.StageInstance.duration').asSequence().last()\n  if(res.isNull().not().value()) {\n    res=Math.round(res.div(60.0).multiply(10.0).value()) / 10.0\n  }\n}\nres"
-          }
-        ], 
-        "entityType": "Participant", 
-        "index": 0, 
-        "isRepeatable": false, 
-        "mimeType": "", 
-        "name": "stage_duration_weight", 
-        "referencedEntityType": "", 
-        "unit": "", 
-        "valueType": "decimal"
       }, 
       {
         "attributes": [
@@ -877,6 +792,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_technician_retinal_scan_left", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -893,6 +809,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_contraindicated_retinal_scan_left", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -909,6 +826,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_skip_retinal_scan_left", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -925,6 +843,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_missing_retinal_scan_left", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -941,25 +860,10 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_retinal_scan_left", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
-      }, 
-      {
-        "attributes": [
-          {
-            "name": "script", 
-            "value": "var res=null\nif( $group(\n  'clsa-dcs-f2.Participants:Admin.StageInstance.stage',\n  'RetinalScanLeft',\n  'Admin.StageInstance.lastState').asSequence().last().any('Skipped','NotApplicable').not().value() ) {\n  res=$group(\n    'clsa-dcs-f2.Participants:Admin.StageInstance.stage',\n    'RetinalScanLeft',\n    'Admin.StageInstance.duration').asSequence().last()\n  if(res.isNull().not().value()) {\n    res=Math.round(res.div(60.0).multiply(10.0).value()) / 10.0\n  }\n}\nres"
-          }
-        ], 
-        "entityType": "Participant", 
-        "index": 0, 
-        "isRepeatable": false, 
-        "mimeType": "", 
-        "name": "stage_duration_retinal_scan_left", 
-        "referencedEntityType": "", 
-        "unit": "", 
-        "valueType": "decimal"
       }, 
       {
         "attributes": [
@@ -973,6 +877,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_technician_retinal_scan_right", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -989,6 +894,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_contraindicated_retinal_scan_right", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -1005,6 +911,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_skip_retinal_scan_right", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1021,6 +928,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_missing_retinal_scan_right", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -1037,25 +945,10 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_retinal_scan_right", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
-      }, 
-      {
-        "attributes": [
-          {
-            "name": "script", 
-            "value": "var res=null\nif( $group(\n  'clsa-dcs-f2.Participants:Admin.StageInstance.stage',\n  'RetinalScanRight',\n  'Admin.StageInstance.lastState').asSequence().last().any('Skipped','NotApplicable').not().value() ) {\n  res=$group(\n    'clsa-dcs-f2.Participants:Admin.StageInstance.stage',\n    'RetinalScanRight',\n    'Admin.StageInstance.duration').asSequence().last()\n  if(res.isNull().not().value()) {\n    res=Math.round(res.div(60.0).multiply(10.0).value()) / 10.0\n  }\n}\nres"
-          }
-        ], 
-        "entityType": "Participant", 
-        "index": 0, 
-        "isRepeatable": false, 
-        "mimeType": "", 
-        "name": "stage_duration_retinal_scan_right", 
-        "referencedEntityType": "", 
-        "unit": "", 
-        "valueType": "decimal"
       }, 
       {
         "attributes": [
@@ -1069,6 +962,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_technician_lateral_bone_density", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1085,6 +979,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_contraindicated_lateral_bone_density", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -1101,6 +996,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_skip_lateral_bone_density", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1117,6 +1013,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_missing_lateral_bone_density", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -1133,25 +1030,10 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_lateral_bone_density", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
-      }, 
-      {
-        "attributes": [
-          {
-            "name": "script", 
-            "value": "var res=null\nif( $group(\n  'clsa-dcs-f2.Participants:Admin.StageInstance.stage',\n  'LateralBoneDensity',\n  'Admin.StageInstance.lastState').asSequence().last().any('Skipped','NotApplicable').not().value() ) {\n  res=$group(\n    'clsa-dcs-f2.Participants:Admin.StageInstance.stage',\n    'LateralBoneDensity',\n    'Admin.StageInstance.duration').asSequence().last()\n  if(res.isNull().not().value()) {\n    res=Math.round(res.div(60.0).multiply(10.0).value()) / 10.0\n  }\n}\nres"
-          }
-        ], 
-        "entityType": "Participant", 
-        "index": 0, 
-        "isRepeatable": false, 
-        "mimeType": "", 
-        "name": "stage_duration_lateral_bone_density", 
-        "referencedEntityType": "", 
-        "unit": "", 
-        "valueType": "decimal"
       }, 
       {
         "attributes": [
@@ -1165,6 +1047,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_technician_standing_height", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1181,6 +1064,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_contraindicated_standing_height", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -1197,6 +1081,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_skip_standing_height", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1213,6 +1098,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_missing_standing_height", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -1229,25 +1115,10 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_standing_height", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
-      }, 
-      {
-        "attributes": [
-          {
-            "name": "script", 
-            "value": "var res=null\nif( $group(\n  'clsa-dcs-f2.Participants:Admin.StageInstance.stage',\n  'StandingHeight',\n  'Admin.StageInstance.lastState').asSequence().last().any('Skipped','NotApplicable').not().value() ) {\n  res=$group(\n    'clsa-dcs-f2.Participants:Admin.StageInstance.stage',\n    'StandingHeight',\n    'Admin.StageInstance.duration').asSequence().last()\n  if(res.isNull().not().value()) {\n    res=Math.round(res.div(60.0).multiply(10.0).value()) / 10.0\n  }\n}\nres"
-          }
-        ], 
-        "entityType": "Participant", 
-        "index": 0, 
-        "isRepeatable": false, 
-        "mimeType": "", 
-        "name": "stage_duration_standing_height", 
-        "referencedEntityType": "", 
-        "unit": "", 
-        "valueType": "decimal"
       }, 
       {
         "attributes": [
@@ -1261,6 +1132,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_technician_spine_bone_density", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1277,6 +1149,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_contraindicated_spine_bone_density", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -1293,6 +1166,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_skip_spine_bone_density", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1309,6 +1183,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_missing_spine_bone_density", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -1325,25 +1200,10 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_spine_bone_density", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
-      }, 
-      {
-        "attributes": [
-          {
-            "name": "script", 
-            "value": "var res=null\nif( $group(\n  'clsa-dcs-f2.Participants:Admin.StageInstance.stage',\n  'SpineBoneDensity',\n  'Admin.StageInstance.lastState').asSequence().last().any('Skipped','NotApplicable').not().value() ) {\n  res=$group(\n    'clsa-dcs-f2.Participants:Admin.StageInstance.stage',\n    'SpineBoneDensity',\n    'Admin.StageInstance.duration').asSequence().last()\n  if(res.isNull().not().value()) {\n    res=Math.round(res.div(60.0).multiply(10.0).value()) / 10.0\n  }\n}\nres"
-          }
-        ], 
-        "entityType": "Participant", 
-        "index": 0, 
-        "isRepeatable": false, 
-        "mimeType": "", 
-        "name": "stage_duration_spine_bone_density", 
-        "referencedEntityType": "", 
-        "unit": "", 
-        "valueType": "decimal"
       }, 
       {
         "attributes": [
@@ -1357,6 +1217,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_technician_forearm_bone_density", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1373,6 +1234,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_contraindicated_forearm_bone_density", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -1389,6 +1251,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_skip_forearm_bone_density", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1405,6 +1268,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_missing_forearm_bone_density", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -1421,25 +1285,10 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_forearm_bone_density", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
-      }, 
-      {
-        "attributes": [
-          {
-            "name": "script", 
-            "value": "var res=null\nif( $group(\n  'clsa-dcs.Participants:Admin.StageInstance.stage',\n  'ForearmBoneDensity',\n  'Admin.StageInstance.lastState').asSequence().last().any('Skipped','NotApplicable').not().value() ) {\n  res=$group(\n    'clsa-dcs.Participants:Admin.StageInstance.stage',\n    'ForearmBoneDensity',\n    'Admin.StageInstance.duration').asSequence().last()\n  if(res.isNull().not().value()) {\n    res=Math.round(res.div(60.0).multiply(10.0).value()) / 10.0\n  }\n}\nres"
-          }
-        ], 
-        "entityType": "Participant", 
-        "index": 0, 
-        "isRepeatable": false, 
-        "mimeType": "", 
-        "name": "stage_duration_forearm_bone_density", 
-        "referencedEntityType": "", 
-        "unit": "", 
-        "valueType": "decimal"
       }, 
       {
         "attributes": [
@@ -1453,6 +1302,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_technician_whole_body_bone_density", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1469,6 +1319,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_contraindicated_whole_body_bone_density", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -1485,6 +1336,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_skip_whole_body_bone_density", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1501,6 +1353,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_missing_whole_body_bone_density", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -1517,25 +1370,10 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_whole_body_bone_density", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
-      }, 
-      {
-        "attributes": [
-          {
-            "name": "script", 
-            "value": "var res=null\nif( $group(\n  'clsa-dcs.Participants:Admin.StageInstance.stage',\n  'WholeBodyBoneDensity',\n  'Admin.StageInstance.lastState').asSequence().last().any('Skipped','NotApplicable').not().value() ) {\n  res=$group(\n    'clsa-dcs.Participants:Admin.StageInstance.stage',\n    'WholeBodyBoneDensity',\n    'Admin.StageInstance.duration').asSequence().last()\n  if(res.isNull().not().value()) {\n    res=Math.round(res.div(60.0).multiply(10.0).value()) / 10.0\n  }\n}\nres"
-          }
-        ], 
-        "entityType": "Participant", 
-        "index": 0, 
-        "isRepeatable": false, 
-        "mimeType": "", 
-        "name": "stage_duration_whole_body_bone_density", 
-        "referencedEntityType": "", 
-        "unit": "", 
-        "valueType": "decimal"
       }, 
       {
         "attributes": [
@@ -1549,6 +1387,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_technician_dual_hip_bone_density", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1565,6 +1404,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_contraindicated_dual_hip_bone_density", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -1581,6 +1421,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_skip_dual_hip_bone_density", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1597,6 +1438,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_missing_dual_hip_bone_density", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -1613,25 +1455,10 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_dual_hip_bone_density", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
-      }, 
-      {
-        "attributes": [
-          {
-            "name": "script", 
-            "value": "var res=null\nif( $group(\n  'clsa-dcs.Participants:Admin.StageInstance.stage',\n  'DualHipBoneDensity',\n  'Admin.StageInstance.lastState').asSequence().last().any('Skipped','NotApplicable').not().value() ) {\n  res=$group(\n    'clsa-dcs.Participants:Admin.StageInstance.stage',\n    'DualHipBoneDensity',\n    'Admin.StageInstance.duration').asSequence().last()\n  if(res.isNull().not().value()) {\n    res=Math.round(res.div(60.0).multiply(10.0).value()) / 10.0\n  }\n}\nres"
-          }
-        ], 
-        "entityType": "Participant", 
-        "index": 0, 
-        "isRepeatable": false, 
-        "mimeType": "", 
-        "name": "stage_duration_dual_hip_bone_density", 
-        "referencedEntityType": "", 
-        "unit": "", 
-        "valueType": "decimal"
       }, 
       {
         "attributes": [
@@ -1645,6 +1472,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_technician_carotid_intima", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1661,6 +1489,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_contraindicated_carotid_intima", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -1677,6 +1506,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_skip_carotid_intima", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1693,6 +1523,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_missing_carotid_intima", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -1709,6 +1540,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_carotid_intima", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1717,23 +1549,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var res=null\nif( $group(\n  'clsa-dcs.Participants:Admin.StageInstance.stage',\n  'CarotidIntima',\n  'Admin.StageInstance.lastState').asSequence().last().any('Skipped','NotApplicable').not().value() ) {\n  res=$group(\n    'clsa-dcs.Participants:Admin.StageInstance.stage',\n    'CarotidIntima',\n    'Admin.StageInstance.duration').asSequence().last()\n  if(res.isNull().not().value()) {\n    res=Math.round(res.div(60.0).multiply(10.0).value()) / 10.0\n  }\n}\nres"
-          }
-        ], 
-        "entityType": "Participant", 
-        "index": 0, 
-        "isRepeatable": false, 
-        "mimeType": "", 
-        "name": "stage_duration_carotid_intima", 
-        "referencedEntityType": "", 
-        "unit": "", 
-        "valueType": "decimal"
-      }, 
-      {
-        "attributes": [
-          {
-            "name": "script", 
-            "value": "$('clsa-dcs.TUG:QuestionnaireRun.user').whenNull(\n  $group('Admin.Action.stage','TUG','Admin.Action.user').asSequence().last()).lowerCase()"
+            "value": "$('clsa-dcs-f2.TUG:QuestionnaireRun.user').whenNull(\n  $group('Admin.Action.stage','TUG','Admin.Action.user').asSequence().last()).lowerCase()"
           }
         ], 
         "entityType": "Participant", 
@@ -1741,6 +1557,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_technician_tug", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1749,7 +1566,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "$group('clsa-dcs.Participants:Admin.StageInstance.stage','TUG',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable').value() \n? 1 : 0"
+            "value": "$group('clsa-dcs-f2.Participants:Admin.StageInstance.stage','TUG',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable').value() \n? 1 : 0"
           }
         ], 
         "entityType": "Participant", 
@@ -1757,6 +1574,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_contraindicated_tug", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -1773,6 +1591,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_skip_tug", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1781,7 +1600,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var stage=newValue($group('clsa-dcs.Participants:Admin.StageInstance.stage','TUG','Admin.StageInstance.lastState').asSequence().last(),'text')\n$this('data_qac_tug').isNull().and(stage.any('Skipped','NotApplicable').not()).value() ? 1 : 0"
+            "value": "var stage=newValue($group('clsa-dcs-f2.Participants:Admin.StageInstance.stage','TUG','Admin.StageInstance.lastState').asSequence().last(),'text')\n$this('data_qac_tug').isNull().and(stage.any('Skipped','NotApplicable').not()).value() ? 1 : 0"
           }
         ], 
         "entityType": "Participant", 
@@ -1789,6 +1608,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_missing_tug", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -1797,7 +1617,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var t1=$('clsa-dcs.TUG:TUG_TIME')\nvar t2=$('clsa-dcs.TUG:TUG_TIME_2')\nvar res=null\nif(!t1.isNull().and(t2.isNull()).value()) {\n  var str = '{time:'\n  if(t1.isNull().and(t2.isNull().not()).value()) {\n    str+=t2.round(3).value()\n  } else if(t2.isNull().and(t1.isNull().not()).value()) {\n    str+=t1.round(3).value()\n  }  \n  str+='}'  \n  res=newValue(str,'text')\n}\nres"
+            "value": "var tt=$('clsa-dcs-f2.TUG:TUG_TIME').whenNull($('clsa-dcs-f2.TUG:TUG_TIME_2'))\nvar res=null\nif(tt.isNull().not().value()) {\n  var wt=$('clsa-dcs-f2.4mWalk:WLK_TIME').whenNull($('clsa-dcs-f2.4mWalk:WLK_TIME_2'))  \n  var ct=$('clsa-dcs-f2.ChairRise:CR_TIME').whenNull($('clsa-dcs-f2.ChairRise:CR_TIME_2'))\n  var str = '0'\n  if(tt.isNull().not().and(ct.isNull().not()).value()) {\n    var cv=ct.div($('clsa-dcs-f2.ChairRise:CR_NB').whenNull(1))\n    str=Math.round(tt.minus(wt.multiply(1.5).plus(cv)).abs().value(),0)\n  } \n  res=newValue(\n    '{time:'+tt.round(3).value()+\n    ',congruency:'+str+\n    '}','text')\n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -1805,6 +1625,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_tug", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1813,23 +1634,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var res=null\nif( $group(\n  'clsa-dcs.Participants:Admin.StageInstance.stage',\n  'TUG',\n  'Admin.StageInstance.lastState').asSequence().last().any('Skipped','NotApplicable').not().value() ) {\n  res=$group(\n    'clsa-dcs.Participants:Admin.StageInstance.stage',\n    'TUG',\n    'Admin.StageInstance.duration').asSequence().last()\n  if(res.isNull().not().value()) {\n    res=Math.round(res.div(60.0).multiply(10.0).value()) / 10.0\n  }\n}\nres"
-          }
-        ], 
-        "entityType": "Participant", 
-        "index": 0, 
-        "isRepeatable": false, 
-        "mimeType": "", 
-        "name": "stage_duration_tug", 
-        "referencedEntityType": "", 
-        "unit": "", 
-        "valueType": "decimal"
-      }, 
-      {
-        "attributes": [
-          {
-            "name": "script", 
-            "value": "$('clsa-dcs.ChairRise:QuestionnaireRun.user').whenNull(\n  $group('Admin.Action.stage','ChairRise','Admin.Action.user').asSequence().last()).lowerCase()"
+            "value": "$('clsa-dcs-f2.ChairRise:QuestionnaireRun.user').whenNull(\n  $group('Admin.Action.stage','ChairRise','Admin.Action.user').asSequence().last()).lowerCase()"
           }
         ], 
         "entityType": "Participant", 
@@ -1837,6 +1642,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_technician_chair_rise", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1845,7 +1651,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "$group('clsa-dcs.Participants:Admin.StageInstance.stage','ChairRise',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable').value() \n? 1 : 0"
+            "value": "$group('clsa-dcs-f2.Participants:Admin.StageInstance.stage','ChairRise',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable').value() \n? 1 : 0"
           }
         ], 
         "entityType": "Participant", 
@@ -1853,6 +1659,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_contraindicated_chair_rise", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -1869,6 +1676,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_skip_chair_rise", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1877,7 +1685,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var stage=newValue($group('clsa-dcs.Participants:Admin.StageInstance.stage','ChairRise','Admin.StageInstance.lastState').asSequence().last(),'text')\n$this('data_qac_chair_rise').isNull().and(stage.any('Skipped','NotApplicable').not()).value() ? 1 : 0"
+            "value": "var stage=newValue($group('clsa-dcs-f2.Participants:Admin.StageInstance.stage','ChairRise','Admin.StageInstance.lastState').asSequence().last(),'text')\n$this('data_qac_chair_rise').isNull().and(stage.any('Skipped','NotApplicable').not()).value() ? 1 : 0"
           }
         ], 
         "entityType": "Participant", 
@@ -1885,6 +1693,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_missing_chair_rise", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -1893,7 +1702,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var t1=$('clsa-dcs.ChairRise:CR_TIME')\nvar t2=$('clsa-dcs.ChairRise:CR_TIME_2')\nvar res=null\nif(!t1.isNull().and(t2.isNull()).value()) {\n  var str = '{time:'\n  if(t1.isNull().and(t2.isNull().not()).value()) {\n    str+=t2.round(3).value()\n  } else if(t2.isNull().and(t1.isNull().not()).value()) {\n    str+=t1.round(3).value()\n  }  \n  str+='}'  \n  res=newValue(str,'text')\n}\nres"
+            "value": "var ct=$('clsa-dcs-f2.ChairRise:CR_TIME').whenNull($('clsa-dcs-f2.ChairRise:CR_TIME_2'))  \nvar res=null\nif(ct.isNull().not().value()) {\n  var wt=$('clsa-dcs-f2.4mWalk:WLK_TIME').whenNull($('clsa-dcs-f2.4mWalk:WLK_TIME_2'))  \n  var tt=$('clsa-dcs-f2.TUG:TUG_TIME').whenNull($('clsa-dcs-f2.TUG:TUG_TIME_2'))\n  var str = '0'\n  if(tt.isNull().not().and(ct.isNull().not()).value()) {\n    var cv=ct.div($('clsa-dcs-f2.ChairRise:CR_NB').whenNull(1))\n    str=Math.round(tt.minus(wt.multiply(1.5).plus(cv)).abs().value(),0)\n  }  \n  res=newValue(\n    '{time:'+ct.round(3).value()+\n    ',congruency:'+str+\n    '}','text')\n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -1901,6 +1710,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_chair_rise", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1909,23 +1719,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var res=null\nif( $group(\n  'clsa-dcs.Participants:Admin.StageInstance.stage',\n  'ChairRise',\n  'Admin.StageInstance.lastState').asSequence().last().any('Skipped','NotApplicable').not().value() ) {\n  res=$group(\n    'clsa-dcs.Participants:Admin.StageInstance.stage',\n    'ChairRise',\n    'Admin.StageInstance.duration').asSequence().last()\n  if(res.isNull().not().value()) {\n    res=Math.round(res.div(60.0).multiply(10.0).value()) / 10.0\n  }\n}\nres"
-          }
-        ], 
-        "entityType": "Participant", 
-        "index": 0, 
-        "isRepeatable": false, 
-        "mimeType": "", 
-        "name": "stage_duration_chair_rise", 
-        "referencedEntityType": "", 
-        "unit": "", 
-        "valueType": "decimal"
-      }, 
-      {
-        "attributes": [
-          {
-            "name": "script", 
-            "value": "$('clsa-dcs.HipsWaist:InstrumentRun.user').whenNull(\n  $group('Admin.Action.stage','HipsWaist','Admin.Action.user').asSequence().last()).lowerCase()"
+            "value": "$('clsa-dcs-f2.HipsWaist:InstrumentRun.user').whenNull(\n  $group('Admin.Action.stage','HipsWaist','Admin.Action.user').asSequence().last()).lowerCase()"
           }
         ], 
         "entityType": "Participant", 
@@ -1933,6 +1727,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_technician_hips_waist", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1941,7 +1736,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "$group('clsa-dcs.Participants:Admin.StageInstance.stage','HipsWaist',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable').value() \n? 1 : 0"
+            "value": "$group('clsa-dcs-f2.Participants:Admin.StageInstance.stage','HipsWaist',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable').value() \n? 1 : 0"
           }
         ], 
         "entityType": "Participant", 
@@ -1949,6 +1744,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_contraindicated_hips_waist", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -1965,6 +1761,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_skip_hips_waist", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1973,7 +1770,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var stage=newValue($group('clsa-dcs.Participants:Admin.StageInstance.stage','HipsWaist','Admin.StageInstance.lastState').asSequence().last(),'text')\n$this('data_qac_hips_waist').isNull().and(stage.any('Skipped','NotApplicable').not()).value() ? 1 : 0"
+            "value": "var stage=newValue($group('clsa-dcs-f2.Participants:Admin.StageInstance.stage','HipsWaist','Admin.StageInstance.lastState').asSequence().last(),'text')\n$this('data_qac_hips_waist').isNull().and(stage.any('Skipped','NotApplicable').not()).value() ? 1 : 0"
           }
         ], 
         "entityType": "Participant", 
@@ -1981,6 +1778,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_missing_hips_waist", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -1989,7 +1787,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var i=$('clsa-dcs.HipsWaist:IV_MEASURE_TAKEN')\nvar w=$('clsa-dcs.HipsWaist:RES_WAIST_SIZE')\nvar h=$('clsa-dcs.HipsWaist:RES_HIPS_SIZE')\nvar r=$('clsa-dcs.HipsWaist:CALC_WAIST_TO_HIP_RATIO')\nvar res=null\nif(!i.isNull().and(w.isNull(),h.isNull(),r.isNull()).value()) {\n  var str='{iv_type:'+(i.isNull().value()?'NA':i.value())+','\n  str+='size_waist:'+(w.isNull().value()?'0':w.value())+','\n  str+='size_hips:'+(h.isNull().value()?'0':h.value())+','\n  str+='ratio:'+(r.isNull().value()?'0':r.round(3).value())+'}'\n  res=newValue(str,'text')\n}  \nres"
+            "value": "var i=$('clsa-dcs-f2.HipsWaist:IV_MEASURE_TAKEN')\nvar w=$('clsa-dcs-f2.HipsWaist:RES_WAIST_SIZE')\nvar h=$('clsa-dcs-f2.HipsWaist:RES_HIPS_SIZE')\nvar r=$('clsa-dcs-f2.HipsWaist:CALC_WAIST_TO_HIP_RATIO')\nvar res=null\nif(!i.isNull().and(w.isNull(),h.isNull(),r.isNull()).value()) {\n  var str='{iv_type:'+(i.isNull().value()?'NA':i.value())+','\n  str+='size_waist:'+(w.isNull().value()?'0':w.value())+','\n  str+='size_hips:'+(h.isNull().value()?'0':h.value())+','\n  str+='ratio:'+(r.isNull().value()?'0':r.round(3).value())+'}'\n  res=newValue(str,'text')\n}  \nres"
           }
         ], 
         "entityType": "Participant", 
@@ -1997,6 +1795,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_hips_waist", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -2005,17 +1804,426 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var res=null\nif( $group(\n  'clsa-dcs.Participants:Admin.StageInstance.stage',\n  'HipsWaist',\n  'Admin.StageInstance.lastState').asSequence().last().any('Skipped','NotApplicable').not().value() ) {\n  res=$group(\n    'clsa-dcs.Participants:Admin.StageInstance.stage',\n    'HipsWaist',\n    'Admin.StageInstance.duration').asSequence().last()\n  if(res.isNull().not().value()) {\n    res=Math.round(res.div(60.0).multiply(10.0).value()) / 10.0\n  }\n}\nres"
+            "value": "$('clsa-dcs-f2.StroopFAS:QuestionnaireRun.user').whenNull(\n  $group('Admin.Action.stage','StroopFAS','Admin.Action.user').asSequence().last()).lowerCase()"
           }
         ], 
         "entityType": "Participant", 
         "index": 0, 
         "isRepeatable": false, 
         "mimeType": "", 
-        "name": "stage_duration_hips_waist", 
+        "name": "stage_technician_neuropsychological_battery", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
-        "valueType": "decimal"
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$group('clsa-dcs-f2.Participants:Admin.StageInstance.stage','StroopFAS',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable').value() \n? 1 : 0"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_contraindicated_neuropsychological_battery", 
+        "occurrenceGroup": "", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "integer"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "var v1=$group('Admin.Action.stage','StroopFAS','Admin.Action.actionType').asSequence()\nvar v2=$group('Admin.Action.stage','StroopFAS','Admin.Action.eventReason').asSequence()\nvar res=null\nvar arr=[]  // string array of events\nfor(var i=0; i<v1.size(); i++) {\n  if(v1.valueAt(i).any('SKIP').not().value() ||\n     v2.valueAt(i).isNull().value()) continue\n  var key=v2.valueAt(i).value().slice(14)\n  if(-1==arr.indexOf(key))\n    arr.push(key)\n}\nif(undefined!==arr && 0<arr.length) {\n  res=newValue(arr.pop(),'text')  \n}\nres"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_skip_neuropsychological_battery", 
+        "occurrenceGroup": "", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "var stage=newValue($group('clsa-dcs-f2.Participants:Admin.StageInstance.stage','StroopFAS','Admin.StageInstance.lastState').asSequence().last(),'text')\n$this('data_qac_neuropsychological_battery').isNull().and(stage.any('Skipped','NotApplicable').not()).value() ? 1 : 0"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "data_missing_neuropsychological_battery", 
+        "occurrenceGroup": "", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "integer"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "var d=$('clsa-dcs-f2.StroopFAS:STP_DOTREC_COF2')\nvar w=$('clsa-dcs-f2.StroopFAS:STP_WORREC_COF2')\nvar c=$('clsa-dcs-f2.StroopFAS:STP_COLREC_COF2')\nvar f=$('clsa-dcs-f2.StroopFAS:FAS_FREC_COF2')\nvar a=$('clsa-dcs-f2.StroopFAS:FAS_AREC_COF2')\nvar s=$('clsa-dcs-f2.StroopFAS:FAS_SREC_COF2')\nvar res=null\nif(!d.isNull().and(w.isNull(),c.isNull(),f.isNull(),a.isNull(),s.isNull()).value()) {\n  var str='{filesize_dot:'+(d.isNull().value()?'0':d.length().value())+','\n  str+='filesize_wor:'+(w.isNull().value()?'0':w.length().value())+','\n  str+='filesize_col:'+(c.isNull().value()?'0':c.length().value())+','\n  str+='filesize_f:'+(f.isNull().value()?'0':f.length().value())+','\n  str+='filesize_a:'+(a.isNull().value()?'0':a.length().value())+','\n  str+='filesize_s:'+(s.isNull().value()?'0':s.length().value())+'}'\n  res=newValue(str,'text')\n}\nres"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "data_qac_neuropsychological_battery", 
+        "occurrenceGroup": "", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$('clsa-dcs-f2.StandingBalance:QuestionnaireRun.user').whenNull(\n  $group('Admin.Action.stage','StandingBalance','Admin.Action.user').asSequence().last()).lowerCase()"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_technician_standing_balance", 
+        "occurrenceGroup": "", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$group('clsa-dcs-f2.Participants:Admin.StageInstance.stage','StandingBalance',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable').value() \n? 1 : 0"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_contraindicated_standing_balance", 
+        "occurrenceGroup": "", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "integer"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "var v1=$group('Admin.Action.stage','StandingBalance','Admin.Action.actionType').asSequence()\nvar v2=$group('Admin.Action.stage','StandingBalance','Admin.Action.eventReason').asSequence()\nvar res=null\nvar arr=[]  // string array of events\nfor(var i=0; i<v1.size(); i++) {\n  if(v1.valueAt(i).any('SKIP').not().value() ||\n     v2.valueAt(i).isNull().value()) continue\n  var key=v2.valueAt(i).value().slice(14)\n  if(-1==arr.indexOf(key))\n    arr.push(key)\n}\nif(undefined!==arr && 0<arr.length) {\n  res=newValue(arr.pop(),'text')  \n}\nif(null===res) {\n  var l1=$('clsa-dcs-f2.StandingBalance:STAND_COMPLETION_LEFT')  \n  var r1=$('clsa-dcs-f2.StandingBalance:STAND_COMPLETION_RIGHT')  \n  if(l1.any('NO').value()) {\n    var l2=$('clsa-dcs-f2.StandingBalance:STAND_UNCOMPLETE_LEFT').map({\n      'TECHNICAL':'TechnicalProblem',\n      'PARTICIPANT-DECISION':'ParticipantDecision',\n      'INTERVIEWER-DECISION':'InterviewerDecision',\n      'OTHER-SPEFICY':'SeeComment'},null)\n    if(l2.isNull().not().value()) {\n      res=l2\n    }  \n  } \n  if (null===res && r1.any('NO').value()) {\n    var r2=$('clsa-dcs-f2.StandingBalance:STAND_UNCOMPLETE_RIGHT').map({\n      'TECHNICAL':'TechnicalProblem',\n      'PARTICIPANT-DECISION':'ParticipantDecision',\n      'INTERVIEWER-DECISION':'InterviewerDecision',\n      'OTHER-SPEFICY':'SeeComment'},null)\n    if(r2.isNull().not().value()) {\n      res=r2\n    }\n  }\n}\nres"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_skip_standing_balance", 
+        "occurrenceGroup": "", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "var stage=newValue($group('clsa-dcs-f2.Participants:Admin.StageInstance.stage','StandingBalance','Admin.StageInstance.lastState').asSequence().last(),'text')\n$this('data_qac_standing_balance').isNull().and(stage.any('Skipped','NotApplicable').not()).value() ? 1 : 0"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "data_missing_standing_balance", 
+        "occurrenceGroup": "", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "integer"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "var b=$('clsa-dcs-f2.StandingBalance:STAND_BEST').whenNull($('clsa-dcs-f2.StandingBalance:STAND_BEST_2'))\nvar lc =$('clsa-dcs-f2.StandingBalance:STAND_COMPLETION_LEFT')\nvar rc =$('clsa-dcs-f2.StandingBalance:STAND_COMPLETION_RIGHT')\nvar res=null\nif(!b.isNull().and(lc.isNull(),rc.isNull()).value()) {\n  var str = '{time_best:'\n  if(b.isNull().not().value()) {\n    str+=b.round(3).value()\n  } else  {\n    str+='-1'\n  }\n  var l=$('clsa-dcs-f2.StandingBalance:STAND_LEFT_TIME').whenNull($('clsa-dcs-f2.StandingBalance:STAND_LEFT_TIME_2'))\n  str+=',time_left:'\n  if(l.isNull().not().value()) {\n    str+=l.round(3).value()\n  } else  {\n    str+='-1'\n  }\n  var r=$('clsa-dcs-f2.StandingBalance:STAND_RIGHT_TIME').whenNull($('clsa-dcs-f2.StandingBalance:STAND_RIGHT_TIME_2'))\n  str+=',time_right:'\n  if(r.isNull().not().value()) {\n    str+=r.round(3).value()\n  } else  {\n    str+='-1'\n  }\n  str+='}'  \n  res=newValue(str,'text')\n}\nres"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "data_qac_standing_balance", 
+        "occurrenceGroup": "", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$('clsa-dcs-f2.4mWalk:QuestionnaireRun.user').whenNull(\n  $group('Admin.Action.stage','4mWalk','Admin.Action.user').asSequence().last()).lowerCase()"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_technician_four_metre_walk", 
+        "occurrenceGroup": "", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$group('clsa-dcs-f2.Participants:Admin.StageInstance.stage','4mWalk',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable').value() \n? 1 : 0"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_contraindicated_four_metre_walk", 
+        "occurrenceGroup": "", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "integer"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "var v1=$group('Admin.Action.stage','4mWalk','Admin.Action.actionType').asSequence()\nvar v2=$group('Admin.Action.stage','4mWalk','Admin.Action.eventReason').asSequence()\nvar res=null\nvar arr=[]  // string array of events\nfor(var i=0; i<v1.size(); i++) {\n  if(v1.valueAt(i).any('SKIP').not().value() ||\n     v2.valueAt(i).isNull().value()) continue\n  var key=v2.valueAt(i).value().slice(14)\n  if(-1==arr.indexOf(key))\n    arr.push(key)\n}\nif(undefined!==arr && 0<arr.length) {\n  res=newValue(arr.pop(),'text')  \n}\nres"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_skip_four_metre_walk", 
+        "occurrenceGroup": "", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "var stage=newValue($group('clsa-dcs-f2.Participants:Admin.StageInstance.stage','4mWalk','Admin.StageInstance.lastState').asSequence().last(),'text')\n$this('data_qac_four_metre_walk').isNull().and(stage.any('Skipped','NotApplicable').not()).value() ? 1 : 0"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "data_missing_four_metre_walk", 
+        "occurrenceGroup": "", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "integer"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "var wt=$('clsa-dcs-f2.4mWalk:WLK_TIME').whenNull($('clsa-dcs-f2.4mWalk:WLK_TIME_2'))\nvar res=null\nif(wt.isNull().not().value()) {\n  var tt=$('clsa-dcs-f2.TUG:TUG_TIME').whenNull($('clsa-dcs-f2.TUG:TUG_TIME_2'))\n  var ct=$('clsa-dcs-f2.ChairRise:CR_TIME').whenNull($('clsa-dcs-f2.ChairRise:CR_TIME_2'))\n  var str = '0'\n  if(tt.isNull().not().and(ct.isNull().not()).value()) {\n    var cv=ct.div($('clsa-dcs-f2.ChairRise:CR_NB').whenNull(1))\n    str=Math.round(tt.minus(wt.multiply(1.5).plus(cv)).abs().value(),0)\n  }\n  res=newValue(\n    '{time:'+wt.round(3).value()+\n    ',congruency:'+str+\n    '}','text')\n}\nres"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "data_qac_four_metre_walk", 
+        "occurrenceGroup": "", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$('clsa-dcs-f2.SittingHeight:InstrumentRun.user').whenNull(\n  $group('Admin.Action.stage','SittingHeight','Admin.Action.user').asSequence().last()).lowerCase()"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_technician_sitting_height", 
+        "occurrenceGroup": "", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$group('clsa-dcs-f2.Participants:Admin.StageInstance.stage','SittingHeight',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable').value() \n? 1 : 0"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_contraindicated_sitting_height", 
+        "occurrenceGroup": "", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "integer"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "var v1=$group('Admin.Action.stage','SittingHeight','Admin.Action.actionType').asSequence()\nvar v2=$group('Admin.Action.stage','SittingHeight','Admin.Action.eventReason').asSequence()\nvar res=null\nvar arr=[]  // string array of events\nfor(var i=0; i<v1.size(); i++) {\n  if(v1.valueAt(i).any('SKIP').not().value() ||\n     v2.valueAt(i).isNull().value()) continue\n  var key=v2.valueAt(i).value().slice(14)\n  if(-1==arr.indexOf(key))\n    arr.push(key)\n}\nif(undefined!==arr && 0<arr.length) {\n  res=newValue(arr.pop(),'text')  \n}\nres"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_skip_sitting_height", 
+        "occurrenceGroup": "", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "var stage=newValue($group('clsa-dcs-f2.Participants:Admin.StageInstance.stage','SittingHeight','Admin.StageInstance.lastState').asSequence().last(),'text')\n$this('data_qac_sitting_height').isNull().and(stage.any('Skipped','NotApplicable').not()).value() ? 1 : 0"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "data_missing_sitting_height", 
+        "occurrenceGroup": "", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "integer"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "var w=$('clsa-dcs-f2.SittingHeight:Measure.RES_SIT_HEIGHT_MEASURE')\nvar res=null\nif(w.size().gt(1).value()){\n  res=newValue('{stddev:'+w.stddev().round(6).value()+',size:'+w.size().value()+'}','text')\n} else if(w.size().eq(1).value()) {\n  res=newValue('{stddev:0,size:1}','text')\n} \nres"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "data_qac_sitting_height", 
+        "occurrenceGroup": "", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$('clsa-dcs-f2.VisionAcuity:QuestionnaireRun.user').whenNull(\n  $group('Admin.Action.stage','VisionAcuity','Admin.Action.user').asSequence().last()).lowerCase()"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_technician_vision_acuity", 
+        "occurrenceGroup": "", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$group('clsa-dcs-f2.Participants:Admin.StageInstance.stage','VisionAcuity',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable').value() \n? 1 : 0"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_contraindicated_vision_acuity", 
+        "occurrenceGroup": "", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "integer"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "var v1=$group('Admin.Action.stage','VisionAcuity','Admin.Action.actionType').asSequence()\nvar v2=$group('Admin.Action.stage','VisionAcuity','Admin.Action.eventReason').asSequence()\nvar res=null\nvar arr=[]  // string array of events\nfor(var i=0; i<v1.size(); i++) {\n  if(v1.valueAt(i).any('SKIP').not().value() ||\n     v2.valueAt(i).isNull().value()) continue\n  var key=v2.valueAt(i).value().slice(14)\n  if(-1==arr.indexOf(key))\n    arr.push(key)\n}\nif(undefined!==arr && 0<arr.length) {\n  res=newValue(arr.pop(),'text')  \n}\nif(null===res) {\n  var tests=['DONE_VA','DONE_BOTH_VA','DONE_LEFT_VA','DONE_RIGHT_VA','DONE_LEFT_PO_VA','DONE_RIGHT_PO_VA']\n  var reasons=['DONE_RSN_VA','DONE_RSN_BOTH_VA','DONE_RSN_LEFT_VA','DONE_RSN_RIGHT_VA','DONE_RSN_LEFT_PO_VA','DONE_RSN_RIGHT_PO_VA']\n  for(var i=0;i<tests.length;i++) {\n    var t=$('clsa-dcs-f2.VisionAcuity:'+tests[i])\n    if(t.any('NO').value()) {\n      var r=$('clsa-dcs-f2.VisionAcuity:'+reasons[i]).map({\n      'TECHNICAL-PROBLEM':'TechnicalProblem',\n      'PARTICIPANT-DECISION':'ParticipantDecision',\n      'INTERVIEWER-DECISION':'InterviewerDecision',\n      'OTHER':'SeeComment'},null)\n      if(r.isNull().not().value()) {\n        res=r\n        break\n      }\n    }\n  }  \n}\nres"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_skip_vision_acuity", 
+        "occurrenceGroup": "", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "var stage=newValue($group('clsa-dcs-f2.Participants:Admin.StageInstance.stage','VisionAcuity','Admin.StageInstance.lastState').asSequence().last(),'text')\n$this('data_qac_vision_acuity').isNull().and(stage.any('Skipped','NotApplicable').not()).value() ? 1 : 0"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "data_missing_vision_acuity", 
+        "occurrenceGroup": "", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "integer"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "var count = {RIGHT:0,LEFT:0}\nvar rtests=['DONE_RIGHT_VA','DONE_RIGHT_PO_VA']\nvar ltests=['DONE_LEFT_VA','DONE_LEFT_PO_VA']\nvar n=0\nfor(var i=0;i<rtests.length;i++) {\n  var t=$('clsa-dcs-f2.VisionAcuity:'+rtests[i])\n  if(t.isNull().value()) n++\n  if(t.any('YES').value()) {\n    count['RIGHT']++\n  }\n  t=$('clsa-dcs-f2.VisionAcuity:'+ltests[i])\n  if(t.isNull().value()) n++\n  if(t.any('YES').value()) {\n    count['LEFT']++\n  }\n}\nvar res=null\nif(4!=n) {\n  res=newValue(\n    '{left_test:'+count['LEFT']+\n    ',right_test:'+count['RIGHT']+\n    '}','text')\n}\nres"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "data_qac_vision_acuity", 
+        "occurrenceGroup": "", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
       }
     ]
   }, 
@@ -2041,7 +2249,12 @@
     "clsa-dcs-images-f2.SpineBoneDensity", 
     "clsa-dcs-f2.ChairRise", 
     "clsa-dcs-f2.HipsWaist", 
-    "clsa-dcs-f2.TUG"
+    "clsa-dcs-f2.TUG", 
+    "clsa-dcs-f2.StandingBalance", 
+    "clsa-dcs-f2.4mWalk", 
+    "clsa-dcs-f2.StroopFAS", 
+    "clsa-dcs-f2.SittingHeight", 
+    "clsa-dcs-f2.VisionAcuity"
   ], 
   "name": "QC_F2", 
   "where": "$lastupdate().before(newValue('BEFORE_DATE','date')).and($lastupdate().after(newValue('AFTER_DATE','date')))"

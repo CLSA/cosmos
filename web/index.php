@@ -109,6 +109,7 @@ $date_ranges = json_encode($db->get_all( $sql ));
             <option value="scripts/cognitive_testTable.php">Cognitive Test</option>
             <option value="scripts/dual_hip_bone_densityTable.php">DEXA Dual Hip</option>
             <option value="scripts/forearm_bone_densityTable.php">DEXA Forearm</option>
+            <option value="scripts/four_metre_walkTable.php">4 m Walk</option>
             <option value="scripts/lateral_bone_densityTable.php">DEXA Lateral</option>
             <option value="scripts/spine_bone_densityTable.php">DEXA Spine</option>
             <option value="scripts/whole_body_bone_densityTable.php">DEXA Whole Body</option>
