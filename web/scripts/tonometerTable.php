@@ -21,7 +21,7 @@ $sql =
   'ifnull(t.name,"NA") as tech, '.
   'site.name as site, ';
 
-$sql .= 
+$sql .=
   'sum(if(qcdata is null, 0, '.
   'if(substring_index(substring_index(qcdata,",",2),":",-1)<2.5,1,0))) as total_quality_low_left, ';
 
@@ -29,11 +29,11 @@ $sql .=
   'sum(if(qcdata is null, 0, '.
   'if(substring_index(substring_index(qcdata,",",2),":",-1) between 2.5 and 7.5,1,0))) as total_quality_medium_left, ';
 
-$sql .= 
+$sql .=
   'sum(if(qcdata is null, 0, '.
   'if(substring_index(substring_index(qcdata,",",2),":",-1)>7.5,1,0))) as total_quality_high_left, ';
 
-$sql .= 
+$sql .=
   'sum(if(qcdata is null, 0, '.
   'if(substring_index(substring_index(qcdata,",",6),":",-1)<2.5,1,0))) as total_quality_low_right, ';
 
@@ -41,16 +41,16 @@ $sql .=
   'sum(if(qcdata is null, 0, '.
   'if(substring_index(substring_index(qcdata,",",6),":",-1) between 2.5 and 7.5,1,0))) as total_quality_medium_right, ';
 
-$sql .= 
+$sql .=
   'sum(if(qcdata is null, 0, '.
   'if(substring_index(substring_index(qcdata,",",6),":",-1)>7.5,1,0))) as total_quality_high_right, ';
 
-$sql .= 
+$sql .=
   'sum(if(qcdata is null, 0, '.
   'if(substring_index(substring_index(qcdata,",",3),":",-1)=400 AND '.
   '   substring_index(substring_index(qcdata,",",4),":",-1)=400,1,0))) as total_curve_left, ';
 
-$sql .= 
+$sql .=
   'sum(if(qcdata is null, 0, '.
   'if(substring_index(substring_index(qcdata,",",7),":",-1)=400 AND '.
   '   trim("}" from substring_index(substring_index(qcdata,",",8),":",-1))=400,1,0))) as total_curve_right, ';
@@ -59,6 +59,7 @@ $sql .= sprintf(
   'sum(case when strcmp(skip,"TechnicalProblem")=0 then 1 else 0 end) as total_skip_technical, '.
   'sum(case when strcmp(skip,"ParticipantDecision")=0 then 1 else 0 end) as total_skip_participant, '.
   'sum(case when strcmp(skip,"InterviewerDecision")=0 then 1 else 0 end) as total_skip_interviewer, '.
+  'sum(case when strcmp(skip,"ModifiedVisit")=0 then 1 else 0 end) as total_skip_modified_visit, '.
   'sum(case when strcmp(skip,"SeeComment")=0 then 1 else 0 end) as total_skip_other, '.
   'sum(if(skip is null,0,1)) as total_skip, '.
   'sum(missing) as total_missing, '.
@@ -202,7 +203,7 @@ $head_str_site .= "</tr>";
 $num_qc_keys = count($qc_keys)+2; // add in curve columns
 // set up the DataTable options for column group hiding
 $col_groups = array(
-  'qc_group'=>range($num_qc_keys+1,$num_qc_keys+4),
+  'qc_group'=>range($num_qc_keys+1,$num_qc_keys+5),
   'skips'=>range(1,$num_qc_keys)
  );
 
@@ -289,7 +290,7 @@ $page_heading = sprintf( 'TONOMETER RESULTS - Wave %d (%s - %s)',$rank,$begin_da
   <body>
     <h3><?php echo $page_heading?></h3>
     <ul>
-      <?php 
+      <?php
         echo "<li>tonometer quality index 0 - 10</li>";
         echo "<li>quality low: q < 2.5</li>";
         echo "<li>quality medium: 2.5 <  q < 7.5</li>";

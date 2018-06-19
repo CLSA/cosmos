@@ -15,15 +15,90 @@ if(''==$begin_date || ''==$end_date ||
   die();
 }
 
-// available grades depend on study wave
-// TODO: consider only using one set of grades A - F for all
-// wave ranks
-$grade_list=array(
-  1=>array('A','B','C','C1','C2','D1','D2','F'),
-  2=>array('A','B'),
-  3=>array('A','B','C','C1','C2','D1','D2','F'));
-$grades = $grade_list[$rank];
-$qc_keys=array();
+$sql = sprintf(
+  'select avg(s_time) as t_avg, stddev(s_time) at t_std from '.
+  '('.
+  '  ( '.
+  '    select '.
+  '        substring_index( '.
+  '          substring_index( '.
+  '            qcdata, ",", 2 ), ":", -1) as s_time '.
+  '    from interview i '.
+  '    join stage s on i.id=s.interview_id '.
+  '    where rank=%d '.
+  '    and qcdata is not null '.
+  '    and s.name="standing_balance" '.
+  '  ) '.
+  '  union all '.
+  '  ( '.
+  '    select '.
+  '      trim( "}" from '.
+  '        substring_index( '.
+  '          substring_index( '.
+  '            qcdata, ",", -1 ), ":", -1 ) ) as s_time '.
+  '    from interview i '.
+  '    join stage s on i.id=s.interview_id '.
+  '    where rank=%d '.
+  '    and qcdata is not null '.
+  '    and s.name="standing_balance" '.
+  '  ) '.
+  ') as t '.
+  'where s_time>0', $rank, $rank);
+
+$res = $db->get_row( $sql );
+if( false === $ratio_avg )
+{
+  echo sprintf('failed to get average standing balance time: %s', $db->get_last_error() );
+  echo $sql;
+  die();
+}
+
+
+$sql = sprintf(
+  'select stddev( '.
+  '  if( qcdata is null, null, '.
+  '      trim("}" from '.
+  '        substring_index( '.
+  '          substring_index( '.
+  '            qcdata, ",", 4), ":", -1 ) ) ) ) as r_avg '.
+  'from interview i '.
+  'join stage s on i.id=s.interview_id '.
+  'where rank=%d '.
+  'and s.name="standing_balance"', $rank);
+
+$ratio_avg = $db->get_one( $sql );
+if( false === $ratio_avg )
+{
+  echo sprintf('failed to get stddev standing balance time: %s', $db->get_last_error() );
+  echo $sql;
+  die();
+}
+
+$sql = sprintf(
+  'select stddev( '.
+  '  if( qcdata is null, null, '.
+  '      trim("}" from '.
+  '        substring_index( '.
+  '          substring_index( '.
+  '            qcdata, ",", 4), ":", -1 ) ) ) ) as r_avg '.
+  'from interview i '.
+  'join stage s on i.id=s.interview_id '.
+  'where rank=%d '.
+  'and s.name="hips_waist"', $rank);
+
+$ratio_stdev = $db->get_one( $sql );
+
+if( false === $ratio_stdev )
+{
+  echo sprintf('failed to get stddev hips to waist ratio: %s', $db->get_last_error() );
+  echo $sql;
+  die();
+}
+
+$ratio_min = round($ratio_avg - 3*$ratio_stdev,3);
+$ratio_min = $ratio_min < 0 ? 0 : $ratio_min;
+
+$ratio_max = round($ratio_avg + 3*$ratio_stdev,3);
 
 // build the main query
 $sql =
@@ -31,11 +106,29 @@ $sql =
   'ifnull(t.name,"NA") as tech, '.
   'site.name as site, ';
 
-foreach($grades as $grade)
-{
-  $sql .= sprintf('sum(case when strcmp(qcdata,"{grade:%s}")=0 then 1 else 0 end) as total_%s, ',$grade,$grade);
-  $qc_keys[] = sprintf('total_%s',$grade);
-}
+$sql .=
+  'sum(if(qcdata is null, 0, '.
+  'if(strcmp("IV_SKIN",substring_index(substring_index(qcdata,",",1),":",-1))=0,1,0))) as total_skin, ';
+
+$sql .=
+  'sum(if(qcdata is null, 0, '.
+  'if(strcmp("IV_ONE_LAYER",substring_index(substring_index(qcdata,",",1),":",-1))=0,1,0))) as total_one_layer, ';
+
+$sql .=
+  'sum(if(qcdata is null, 0, '.
+  'if(strcmp("IV_TWO_LAYERS",substring_index(substring_index(qcdata,",",1),":",-1))=0,1,0))) as total_two_layers, ';
+
+$sql .= sprintf(
+  'sum(if(qcdata is null, 0, '.
+  'if(trim("}" from substring_index(substring_index(qcdata,",",4),":",-1))<%s,1,0))) as total_ratio_sub, ',$ratio_min);
+
+$sql .= sprintf(
+  'sum(if(qcdata is null, 0, '.
+  'if(trim("}" from substring_index(substring_index(qcdata,",",4),":",-1)) between %s and %s,1,0))) as total_ratio_par, ',$ratio_min,$ratio_max);
+
+$sql .= sprintf(
+  'sum(if(qcdata is null, 0, '.
+  'if(trim("}" from substring_index(qcdata,":",-1))>%s,1,0))) as total_ratio_sup, ',$ratio_max);
 
 $sql .= sprintf(
   'sum(case when strcmp(skip,"TechnicalProblem")=0 then 1 else 0 end) as total_skip_technical, '.
@@ -51,17 +144,18 @@ $sql .= sprintf(
   'FROM interview i '.
   'join stage s on i.id=s.interview_id '.
   'join site on site.id=i.site_id '.
-  'left join technician t on t.id=s.technician_id  '.
+  'left join technician t on t.id=s.technician_id '.
   'left join site as s2 on t.site_id=s2.id '.
   'where (start_date between "%s" and "%s") '.
   'and rank=%d '.
-  'and s.name="spirometry" '.
+  'and s.name="hips_waist" '.
   'group by site,tech', $begin_date, $end_date, $rank);
 
 $res = $db->get_all( $sql );
 if(false===$res || !is_array($res))
 {
-  echo 'error: failed query';
+  echo sprintf('error: failed query: %s', $db->get_last_error());
+  echo $sql;
   die();
 }
 
@@ -94,13 +188,15 @@ foreach($res as $row)
   $site_list[$site]['technicians'][$tech]=$row;
 }
 
+$qc_keys=array('total_skin','total_one_layer','total_two_layers','total_ratio_sub','total_ratio_par','total_ratio_sup');
 $percent_keys = array('total_skip','total_missing','total_contraindicated');
 $all_total = $site_list['ALL']['totals']['total_interview'];
 foreach($site_list as $site=>$site_data)
 {
   $qc_total=0;
   foreach($qc_keys as $key)
-    $qc_total+=$site_data['totals'][$key];
+    $qc_total += $site_data['totals'][$key];
+
   if(0<$qc_total)
   {
     foreach($qc_keys as $key)
@@ -132,6 +228,7 @@ foreach($site_list as $site=>$site_data)
     $qc_total = 0;
     foreach( $qc_keys as $key )
       $qc_total += $row[$key];
+
     if( 0 < $qc_total )
     {
       foreach( $qc_keys as $key )
@@ -184,7 +281,7 @@ $col_groups = array(
 
 $hide_qc = sprintf( '[%s]', implode(',',$col_groups['qc_group']) );
 $hide_skip = sprintf( '[%s]', implode(',',$col_groups['skips']) );
-$page_heading = sprintf( 'SPIROMETRY RESULTS - Wave %d (%s - %s)',$rank,$begin_date,$end_date);
+$page_heading = sprintf( 'HIPS TO WAIST RESULTS - Wave %d (%s - %s)',$rank,$begin_date,$end_date);
 ?>
 
 <!doctype html>
@@ -264,7 +361,16 @@ $page_heading = sprintf( 'SPIROMETRY RESULTS - Wave %d (%s - %s)',$rank,$begin_d
   </head>
   <body>
     <h3><?php echo $page_heading?></h3>
-    <p><?php echo sprintf('Grades: %s',implode(', ',$grades))?></p>
+    <ul>
+      <?php
+        echo "<li>measurement over skin</li>";
+        echo "<li>measurement over one layer</li>";
+        echo "<li>measurement over two layers</li>";
+        echo "<li>hips to waist ratio sub: ratio < {$ratio_min} (mean - 3 x SD)</li>";
+        echo "<li>hips to waist ratio par: {$ratio_min} <= ratio <= {$ratio_max}</li>";
+        echo "<li>hips to waist ratio sup: ratio > {$ratio_max} (mean + 3 x SD)</li>";
+      ?>
+    </ul>
     <!--build the main summary table-->
     <table id='summary' class="clsa stripe cell-border order-column" style="width:100%">
       <thead>

@@ -21,17 +21,18 @@ $sql =
   'ifnull(t.name,"NA") as tech, '.
   'site.name as site, ';
 
-$sql .= 'sum(if(qcdata is null, 0, if(substring_index(substring_index(qcdata,",",1),":",-1)=0,1,0))) as total_left_none, ';
+$sql .= 'sum(if(qcdata is null, 0, if(substring_index(substring_index(qcdata,",",3),":",-1)=0,0,1))) as total_left_error_only, ';
 $sql .= 'sum(if(qcdata is null, 0, if(substring_index(substring_index(qcdata,",",1),":",-1) between 1 and 7,1,0))) as total_left_sub, ';
 $sql .= 'sum(if(qcdata is null, 0, if(substring_index(substring_index(qcdata,",",1),":",-1)=8,1,0))) as total_left_par, ';
-$sql .= 'sum(if(qcdata is null, 0, if(trim("}" from substring_index(qcdata,":",-1))=0,1,0))) as total_right_none, ';
-$sql .= 'sum(if(qcdata is null, 0, if(trim("}" from substring_index(qcdata,":",-1)) between 1 and 7,1,0))) as total_right_sub, ';
-$sql .= 'sum(if(qcdata is null, 0, if(trim("}" from substring_index(qcdata,":",-1))=8,1,0))) as total_right_par, ';
+$sql .= 'sum(if(qcdata is null, 0, if(trim("}" from substring_index(substring_index(qcdata,",",4),":",-1))=0,0,1))) as total_right_error_only, ';
+$sql .= 'sum(if(qcdata is null, 0, if(substring_index(substring_index(qcdata,",",2),":",-1) between 1 and 7,1,0))) as total_right_sub, ';
+$sql .= 'sum(if(qcdata is null, 0, if(substring_index(substring_index(qcdata,",",2),":",-1)=8,1,0))) as total_right_par, ';
 
 $sql .= sprintf(
   'sum(case when strcmp(skip,"TechnicalProblem")=0 then 1 else 0 end) as total_skip_technical, '.
   'sum(case when strcmp(skip,"ParticipantDecision")=0 then 1 else 0 end) as total_skip_participant, '.
   'sum(case when strcmp(skip,"InterviewerDecision")=0 then 1 else 0 end) as total_skip_interviewer, '.
+  'sum(case when strcmp(skip,"ModifiedVisit")=0 then 1 else 0 end) as total_skip_modified_visit, '.
   'sum(case when strcmp(skip,"SeeComment")=0 then 1 else 0 end) as total_skip_other, '.
   'sum(if(skip is null,0,1)) as total_skip, '.
   'sum(missing) as total_missing, '.
@@ -85,8 +86,8 @@ foreach($res as $row)
   $site_list[$site]['technicians'][$tech]=$row;
 }
 
-$qc_keys = array('total_left_none','total_left_sub','total_left_par',
-  'total_right_none','total_right_sub','total_right_par');
+$qc_keys = array('total_left_error_only','total_left_sub','total_left_par',
+  'total_right_error_only','total_right_sub','total_right_par');
 $percent_keys = array('total_skip','total_missing','total_contraindicated');
 $all_total = $site_list['ALL']['totals']['total_interview'];
 foreach($site_list as $site=>$site_data)
@@ -171,7 +172,7 @@ $head_str_site .= "</tr>";
 $num_qc_keys = count($qc_keys);
 // set up the DataTable options for column group hiding
 $col_groups = array(
-  'qc_group'=>range($num_qc_keys+1,$num_qc_keys+4),
+  'qc_group'=>range($num_qc_keys+1,$num_qc_keys+5),
   'skips'=>range(1,$num_qc_keys)
  );
 
@@ -259,9 +260,10 @@ $page_heading = sprintf( 'HEARING RESULTS - Wave %d (%s - %s)',$rank,$begin_date
     <h3><?php echo $page_heading?></h3>
     <ul>
       <?php
-        echo "<li>frequency count none: 0 frequencies</li>";
+        echo "<li>frequency error only: 0 frequencies + 1 or more errors</li>";
         echo "<li>frequency count sub:  1 - 7 frequencies</li>";
         echo "<li>frequency count par:  8 frequencies</li>";
+        echo "<li>frequency count sup:  > 8 frequencies</li>";
       ?>
     </ul>
 

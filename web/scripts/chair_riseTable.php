@@ -15,12 +15,14 @@ if(''==$begin_date || ''==$end_date ||
   die();
 }
 
+$test_threshold = 10;
+
 $sql = sprintf(
   'select avg( '.
   '  if( qcdata is null, null, '.
-  '      trim("}" from '.
+  '      substring_index( '.
   '        substring_index( '.
-  '          qcdata, ":", -1 ) ) ) ) as f_avg '.
+  '          qcdata, ",", 1 ), ":", -1 ) ) ) as t_avg '.
   'from interview i '.
   'join stage s on i.id=s.interview_id '.
   'where rank=%d '.
@@ -37,9 +39,9 @@ if( false === $test_time_avg )
 $sql = sprintf(
   'select stddev( '.
   '  if( qcdata is null, null, '.
-  '      trim( "}" from '.
+  '      substring_index( '.
   '        substring_index( '.
-  '          qcdata, ":", -1 ) ) ) ) as f_std '.
+  '          qcdata, ",", 1 ), ":", -1 ) ) ) as t_std '.
   'from interview i '.
   'join stage s on i.id=s.interview_id '.
   'where rank=%d '.
@@ -65,20 +67,25 @@ $sql =
 
 $sql .= sprintf(
   'sum(if(qcdata is null, 0, '.
-  'if(trim("}" from substring_index(qcdata,":",-1))<%d,1,0))) as total_test_time_sub, ',$test_time_min);
+  'if(substring_index(substring_index(qcdata,",", 1),":",-1)<%d,1,0))) as total_test_time_sub, ',$test_time_min);
 
 $sql .= sprintf(
   'sum(if(qcdata is null, 0, '.
-  'if(trim("}" from substring_index(qcdata,":",-1)) between %d and %d,1,0))) as total_test_time_par, ',$test_time_min,$test_time_max);
+  'if(substring_index(substring_index(qcdata,",",1),":",-1) between %d and %d,1,0))) as total_test_time_par, ',$test_time_min,$test_time_max);
 
 $sql .= sprintf(
   'sum(if(qcdata is null, 0, '.
-  'if(trim("}" from substring_index(qcdata,":",-1))>%d,1,0))) as total_test_time_sup, ',$test_time_max);
+  'if(substring_index(substring_index(qcdata,",", 1),":",-1)>%d,1,0))) as total_test_time_sup, ',$test_time_max);
+
+$sql .= sprintf(
+  'sum(if(qcdata is null, 0, '.
+  'if(trim("}" from substring_index(qcdata,":",-1))>%d,1,0))) as total_incongruency, ', $test_threshold);
 
 $sql .= sprintf(
   'sum(case when strcmp(skip,"TechnicalProblem")=0 then 1 else 0 end) as total_skip_technical, '.
   'sum(case when strcmp(skip,"ParticipantDecision")=0 then 1 else 0 end) as total_skip_participant, '.
   'sum(case when strcmp(skip,"InterviewerDecision")=0 then 1 else 0 end) as total_skip_interviewer, '.
+  'sum(case when strcmp(skip,"ModifiedVisit")=0 then 1 else 0 end) as total_skip_modified_visit, '.
   'sum(case when strcmp(skip,"SeeComment")=0 then 1 else 0 end) as total_skip_other, '.
   'sum(if(skip is null,0,1)) as total_skip, '.
   'sum(missing) as total_missing, '.
@@ -133,7 +140,7 @@ foreach($res as $row)
 }
 
 $qc_keys=array('total_test_time_sub','total_test_time_par','total_test_time_sup');
-$percent_keys = array('total_skip','total_missing','total_contraindicated');
+$percent_keys = array('total_incongruency','total_skip','total_missing','total_contraindicated');
 $all_total = $site_list['ALL']['totals']['total_interview'];
 foreach($site_list as $site=>$site_data)
 {
@@ -216,10 +223,10 @@ foreach($total_keys as $key)
 $head_str_tech .= "</tr>";
 $head_str_site .= "</tr>";
 
-$num_qc_keys = count($qc_keys);
+$num_qc_keys = count($qc_keys)+1;
 // set up the DataTable options for column group hiding
 $col_groups = array(
-  'qc_group'=>range($num_qc_keys+1,$num_qc_keys+4),
+  'qc_group'=>range($num_qc_keys+1,$num_qc_keys+5),
   'skips'=>range(1,$num_qc_keys)
  );
 
@@ -310,6 +317,7 @@ $page_heading = sprintf( 'CHAIR RISE RESULTS - Wave %d (%s - %s)',$rank,$begin_d
         echo "<li>test time sub: size < {$test_time_min} sec (mean - 2 x SD)</li>";
         echo "<li>test time par: {$test_time_min} <= size <= {$test_time_max} sec</li>";
         echo "<li>test time sup: size > {$test_time_max} sec (mean + 2 x SD)</li>";
+        echo "<li>congruency threshold = abs( tug - (1.5 x four metre walk + chair rise) ) > {$test_threshold} sec</li>";
       ?>
     </ul>
     <!--build the main summary table-->

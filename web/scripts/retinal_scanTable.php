@@ -215,6 +215,7 @@ $sql .= sprintf(
   'sum(case when strcmp(skip,"TechnicalProblem")=0 then 1 else 0 end) as total_skip_technical, '.
   'sum(case when strcmp(skip,"ParticipantDecision")=0 then 1 else 0 end) as total_skip_participant, '.
   'sum(case when strcmp(skip,"InterviewerDecision")=0 then 1 else 0 end) as total_skip_interviewer, '.
+  'sum(case when strcmp(skip,"ModifiedVisit")=0 then 1 else 0 end) as total_skip_modified_visit, '.
   'sum(case when strcmp(skip,"SeeComment")=0 then 1 else 0 end) as total_skip_other, '.
   'sum(if(skip is null,0,1)) as total_skip, '.
   'sum(missing) as total_missing, '.
@@ -358,7 +359,7 @@ $head_str_site .= "</tr>";
 $num_qc_keys = count($qc_keys);
 // set up the DataTable options for column group hiding
 $col_groups = array(
-  'qc_group'=>range($num_qc_keys+1,$num_qc_keys+4),
+  'qc_group'=>range($num_qc_keys+1,$num_qc_keys+5),
   'skips'=>range(1,$num_qc_keys)
  );
 

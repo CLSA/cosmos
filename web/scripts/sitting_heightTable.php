@@ -5,6 +5,12 @@ $begin_date = htmlspecialchars($_POST['from']);
 $end_date = htmlspecialchars($_POST['to']);
 $rank = htmlspecialchars($_POST['rank']);
 
+if(2==$rank)
+{
+  echo 'error: this stage does not exist for follow-up 1';
+  die();
+}
+
 // query the db for the data we want
 
 if(''==$begin_date || ''==$end_date ||
@@ -15,15 +21,8 @@ if(''==$begin_date || ''==$end_date ||
   die();
 }
 
-// available grades depend on study wave
-// TODO: consider only using one set of grades A - F for all
-// wave ranks
-$grade_list=array(
-  1=>array('A','B','C','C1','C2','D1','D2','F'),
-  2=>array('A','B'),
-  3=>array('A','B','C','C1','C2','D1','D2','F'));
-$grades = $grade_list[$rank];
-$qc_keys=array();
+$height_dev_min = 0.05;  // scale measurement is accurate to +- 0.05 cm
+$height_dev_max = 0.1;
 
 // build the main query
 $sql =
@@ -31,11 +30,22 @@ $sql =
   'ifnull(t.name,"NA") as tech, '.
   'site.name as site, ';
 
-foreach($grades as $grade)
-{
-  $sql .= sprintf('sum(case when strcmp(qcdata,"{grade:%s}")=0 then 1 else 0 end) as total_%s, ',$grade,$grade);
-  $qc_keys[] = sprintf('total_%s',$grade);
-}
+$sql .= sprintf(
+  'sum(if(qcdata is null, 0, '.
+  'if(substring_index(substring_index(qcdata,",",1),":",-1)<%s,1,0))) as total_sitting_height_sub, ', $height_dev_min);
+
+$sql .= sprintf(
+  'sum(if(qcdata is null, 0, '.
+  'if(substring_index(substring_index(qcdata,",",1),":",-1) between %s and %s,1,0))) as total_sitting_height_par, ',$height_dev_min,$height_dev_max);
+
+$sql .= sprintf(
+  'sum(if(qcdata is null, 0, '.
+  'if(substring_index(substring_index(qcdata,",",1),":",-1)>%s,1,0))) as total_sitting_height_sup, ',$height_dev_max);
+
+$sql .=
+  'sum(if(qcdata is null, 0, '.
+  'if(trim("{" from substring_index(substring_index(qcdata,",",2),":",-1))!=2,1,0))) as total_trial_deviation, ';
+
 
 $sql .= sprintf(
   'sum(case when strcmp(skip,"TechnicalProblem")=0 then 1 else 0 end) as total_skip_technical, '.
@@ -51,17 +61,18 @@ $sql .= sprintf(
   'FROM interview i '.
   'join stage s on i.id=s.interview_id '.
   'join site on site.id=i.site_id '.
-  'left join technician t on t.id=s.technician_id  '.
+  'left join technician t on t.id=s.technician_id '.
   'left join site as s2 on t.site_id=s2.id '.
   'where (start_date between "%s" and "%s") '.
   'and rank=%d '.
-  'and s.name="spirometry" '.
+  'and s.name="sitting_height" '.
   'group by site,tech', $begin_date, $end_date, $rank);
 
 $res = $db->get_all( $sql );
 if(false===$res || !is_array($res))
 {
-  echo 'error: failed query';
+  echo sprintf('error: failed query: %s', $db->get_last_error());
+  echo $sql;
   die();
 }
 
@@ -94,13 +105,15 @@ foreach($res as $row)
   $site_list[$site]['technicians'][$tech]=$row;
 }
 
-$percent_keys = array('total_skip','total_missing','total_contraindicated');
+$qc_keys=array('total_sitting_height_sub','total_sitting_height_par','total_sitting_height_sup');
+$percent_keys = array('total_trial_deviation','total_skip','total_missing','total_contraindicated');
 $all_total = $site_list['ALL']['totals']['total_interview'];
 foreach($site_list as $site=>$site_data)
 {
   $qc_total=0;
   foreach($qc_keys as $key)
-    $qc_total+=$site_data['totals'][$key];
+    $qc_total += $site_data['totals'][$key];
+
   if(0<$qc_total)
   {
     foreach($qc_keys as $key)
@@ -132,6 +145,7 @@ foreach($site_list as $site=>$site_data)
     $qc_total = 0;
     foreach( $qc_keys as $key )
       $qc_total += $row[$key];
+
     if( 0 < $qc_total )
     {
       foreach( $qc_keys as $key )
@@ -175,7 +189,7 @@ foreach($total_keys as $key)
 $head_str_tech .= "</tr>";
 $head_str_site .= "</tr>";
 
-$num_qc_keys = count($qc_keys);
+$num_qc_keys = count($qc_keys)+1; // add in trial deviations as a qc metric
 // set up the DataTable options for column group hiding
 $col_groups = array(
   'qc_group'=>range($num_qc_keys+1,$num_qc_keys+5),
@@ -184,7 +198,7 @@ $col_groups = array(
 
 $hide_qc = sprintf( '[%s]', implode(',',$col_groups['qc_group']) );
 $hide_skip = sprintf( '[%s]', implode(',',$col_groups['skips']) );
-$page_heading = sprintf( 'SPIROMETRY RESULTS - Wave %d (%s - %s)',$rank,$begin_date,$end_date);
+$page_heading = sprintf( 'STANDING HEIGHT RESULTS - Wave %d (%s - %s)',$rank,$begin_date,$end_date);
 ?>
 
 <!doctype html>
@@ -264,7 +278,15 @@ $page_heading = sprintf( 'SPIROMETRY RESULTS - Wave %d (%s - %s)',$rank,$begin_d
   </head>
   <body>
     <h3><?php echo $page_heading?></h3>
-    <p><?php echo sprintf('Grades: %s',implode(', ',$grades))?></p>
+    <ul>
+      <li>Height deviation = standard deviation of repeated scale measurements<li>
+      <?php
+        echo "<li>sitting_height deviation sub: size < {$height_dev_min} cm (scale resolution)</li>";
+        echo "<li>sitting_height deviation par: {$height_dev_min} <= size <= {$height_dev_max} cm</li>";
+        echo "<li>sitting_height deviation sup: size > {$height_dev_max} cm</li>";
+      ?>
+      <li>Trial deviation signalled when more or less than 2 measurements made</li>
+    </ul>
     <!--build the main summary table-->
     <table id='summary' class="clsa stripe cell-border order-column" style="width:100%">
       <thead>
