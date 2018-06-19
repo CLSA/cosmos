@@ -12,7 +12,7 @@ function valid_date($date) {
   return preg_match('/^20(1|2)[0-9]-(0|1)[0-9]{1}-[0-3]{1}[0-9]{1}/',$date);
 }
 
-$active_ranks = array(2,3);
+$active_ranks = array(3);
 $view_list = array(1=>'QC_BL', 2=>'QC_F1', 3=>'QC_F2');
 
 $rank = 1; // set default
@@ -115,12 +115,13 @@ util::out( 'getting opal data...' );
 if( in_array($rank,$active_ranks) && null != $before_date && null != $after_date )
 {
   $opal->set_date_range( $before_date, $after_date );
+  util::out('setting date range...');
 }
 $identifier_list = $opal->get_identifiers();
 $list = $opal->get_complete_list();
 $total = count( $list );
 
-util::out( 'processing data...');
+util::out( sprintf('processing data from view %s...',$view_list[$rank]));
 $interview_values = array();
 $technician_values = array();
 $target = count($list);
@@ -159,6 +160,12 @@ foreach( $list as $uid => $row )
   util::show_status( ++$num, $target );
 }
 
+if(0==count($interview_values))
+{
+  util::out('error: no interviews found');
+  die();
+}
+
 $sql =
   'INSERT IGNORE INTO interview '.
   '(site_id, start_date, uid, barcode, rank) '.
@@ -185,6 +192,10 @@ if(false === $db->execute( $sql ) )
   die();
 }
 
+//TODO:
+// comments and durations are in separate opal views
+// write scripts to receive comments and durations
+
 $num = 0;
 foreach($list as $uid=>$row)
 {
@@ -201,7 +212,7 @@ foreach($list as $uid=>$row)
     $contraindicated=$row['stage_contraindicated_'.$stage];
     $skip=$row['stage_skip_'.$stage];
     // $comment=$row['stage_comment_'.$stage];
-    $duration=$row['stage_duration_'.$stage];
+    //$duration=$row['stage_duration_'.$stage];
 
     if( '' == $row['interview_start_date'] || '' == $row['interview_barcode'] ||
         '' == $site )
@@ -239,9 +250,9 @@ foreach($list as $uid=>$row)
 
     $sql = sprintf(
       'INSERT IGNORE INTO stage '.
-      '(interview_id,technician_id,name,missing,contraindicated,qcdata,skip,duration) '.
+      '(interview_id,technician_id,name,missing,contraindicated,qcdata,skip) '.
       //'(interview_id,technician_id,name,missing,contraindicated,comment,qcdata,skip,duration) '.
-      'VALUES(%d,%s,"%s",%d,%d,%s,%s,%s) '.
+      'VALUES(%d,%s,"%s",%d,%d,%s,%s) '.
       //'VALUES(%d,%s,"%s",%d,%d,%s,%s,%s,%s) '.
       'ON DUPLICATE KEY UPDATE '.
       'interview_id = VALUES( interview_id ), '.
@@ -254,8 +265,8 @@ foreach($list as $uid=>$row)
       $contraindicated,
       //$db->format_string($comment),
       $db->format_string($qcdata),
-      $db->format_string($skip),
-      (''==$duration ? 'NULL' : $duration));
+      $db->format_string($skip));
+      //(''==$duration ? 'NULL' : $duration));
 
     if(false===$db->execute( $sql ))
     {
