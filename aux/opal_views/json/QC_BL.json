@@ -1844,7 +1844,6 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_technician_vision_acuity", 
-        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1877,7 +1876,6 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_skip_vision_acuity", 
-        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1910,7 +1908,6 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_vision_acuity", 
-        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"

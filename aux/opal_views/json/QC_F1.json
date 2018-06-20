@@ -65,7 +65,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var v1=$group('Admin.Action.stage','Spirometry','Admin.Action.actionType').asSequence()\nvar v2=$group('Admin.Action.stage','Spirometry','Admin.Action.eventReason').asSequence()\nvar res=null\nvar arr=[]  // string array of events\nfor(var i=0; i<v1.size(); i++) {\n  if(v1.valueAt(i).any('SKIP').not().value() ||\n     v2.valueAt(i).isNull().value()) continue\n  var key=v2.valueAt(i).value().slice(14)\n  if(-1==arr.indexOf(key))\n    arr.push(key)\n}\nif(undefined!==arr && 0<arr.length) {\n  res=newValue(arr.pop(),'text')  \n}\nres"
+            "value": "// if a dcs by phone visit, then the skip will be \"ModifiedVisit\"\nvar res=null\nif($('clsa-dcs-f1.Participants:DCS_PHONE').isNull().not().value()){\n  res=newValue('ModifiedVisit','text')\n} else {\n  var v1=$group('Admin.Action.stage','Spirometry','Admin.Action.actionType').asSequence()\n  var v2=$group('Admin.Action.stage','Spirometry','Admin.Action.eventReason').asSequence()\n\n  var arr=[]  // string array of events\n  for(var i=0; i<v1.size(); i++) {\n    if(v1.valueAt(i).any('SKIP').not().value() ||\n       v2.valueAt(i).isNull().value()) continue\n    var key=v2.valueAt(i).value().slice(14)\n    if(-1==arr.indexOf(key))\n      arr.push(key)\n  }\n  if(undefined!==arr && 0<arr.length) {\n    res=newValue(arr.pop(),'text')  \n  }\n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -223,7 +223,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var v1=$group('Admin.Action.stage','GripStrength','Admin.Action.actionType').asSequence()\nvar v2=$group('Admin.Action.stage','GripStrength','Admin.Action.eventReason').asSequence()\nvar res=null\nvar arr=[]  // string array of events\nfor(var i=0; i<v1.size(); i++) {\n  if(v1.valueAt(i).any('SKIP').not().value() ||\n     v2.valueAt(i).isNull().value()) continue\n  var key=v2.valueAt(i).value().slice(14)\n  if(-1==arr.indexOf(key))\n    arr.push(key)\n}\nif(undefined!==arr && 0<arr.length) {\n  res=newValue(arr.pop(),'text')  \n}\nres"
+            "value": "// if a dcs by phone visit, then the skip will be \"ModifiedVisit\"\nvar res=null\nif($('clsa-dcs-f1.Participants:DCS_PHONE').isNull().not().value()){\n  res=newValue('ModifiedVisit','text')\n} else {\n  var v1=$group('Admin.Action.stage','GripStrength','Admin.Action.actionType').asSequence()\n  var v2=$group('Admin.Action.stage','GripStrength','Admin.Action.eventReason').asSequence()\n\n  var arr=[]  // string array of events\n  for(var i=0; i<v1.size(); i++) {\n    if(v1.valueAt(i).any('SKIP').not().value() ||\n       v2.valueAt(i).isNull().value()) continue\n    var key=v2.valueAt(i).value().slice(14)\n    if(-1==arr.indexOf(key))\n      arr.push(key)\n  }\n  if(undefined!==arr && 0<arr.length) {\n    res=newValue(arr.pop(),'text')  \n  }\n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -308,7 +308,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var v1=$group('Admin.Action.stage','BloodPressure','Admin.Action.actionType').asSequence()\nvar v2=$group('Admin.Action.stage','BloodPressure','Admin.Action.eventReason').asSequence()\nvar res=null\nvar arr=[]  // string array of events\nfor(var i=0; i<v1.size(); i++) {\n  if(v1.valueAt(i).any('SKIP').not().value() ||\n     v2.valueAt(i).isNull().value()) continue\n  var key=v2.valueAt(i).value().slice(14)\n  if(-1==arr.indexOf(key))\n    arr.push(key)\n}\nif(undefined!==arr && 0<arr.length) {\n  res=newValue(arr.pop(),'text')  \n}\nres"
+            "value": "// if a dcs by phone visit, then the skip will be \"ModifiedVisit\"\nvar res=null\nif($('clsa-dcs-f1.Participants:DCS_PHONE').isNull().not().value()){\n  res=newValue('ModifiedVisit','text')\n} else {\n  var v1=$group('Admin.Action.stage','BloodPressure','Admin.Action.actionType').asSequence()\n  var v2=$group('Admin.Action.stage','BloodPressure','Admin.Action.eventReason').asSequence()\n\n  var arr=[]  // string array of events\n  for(var i=0; i<v1.size(); i++) {\n    if(v1.valueAt(i).any('SKIP').not().value() ||\n       v2.valueAt(i).isNull().value()) continue\n    var key=v2.valueAt(i).value().slice(14)\n    if(-1==arr.indexOf(key))\n      arr.push(key)\n  }\n  if(undefined!==arr && 0<arr.length) {\n    res=newValue(arr.pop(),'text')  \n  }\n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -393,7 +393,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var v1=$group('Admin.Action.stage','ECG','Admin.Action.actionType').asSequence()\nvar v2=$group('Admin.Action.stage','ECG','Admin.Action.eventReason').asSequence()\nvar res=null\nvar arr=[]  // string array of events\nfor(var i=0; i<v1.size(); i++) {\n  if(v1.valueAt(i).any('SKIP').not().value() ||\n     v2.valueAt(i).isNull().value()) continue\n  var key=v2.valueAt(i).value().slice(14)\n  if(-1==arr.indexOf(key))\n    arr.push(key)\n}\nif(undefined!==arr && 0<arr.length) {\n  res=newValue(arr.pop(),'text')  \n}\nres"
+            "value": "// if a dcs by phone visit, then the skip will be \"ModifiedVisit\"\nvar res=null\nif($('clsa-dcs-f1.Participants:DCS_PHONE').isNull().and(\n   $('clsa-dcs-f1.Participants:DCSatHOME').isNull()).not().value()){\n  res=newValue('ModifiedVisit','text')\n} else {\n  var v1=$group('Admin.Action.stage','ECG','Admin.Action.actionType').asSequence()\n  var v2=$group('Admin.Action.stage','ECG','Admin.Action.eventReason').asSequence()\n\n  var arr=[]  // string array of events\n  for(var i=0; i<v1.size(); i++) {\n    if(v1.valueAt(i).any('SKIP').not().value() ||\n       v2.valueAt(i).isNull().value()) continue\n    var key=v2.valueAt(i).value().slice(14)\n    if(-1==arr.indexOf(key))\n      arr.push(key)\n  }\n  if(undefined!==arr && 0<arr.length) {\n    res=newValue(arr.pop(),'text')  \n  }\n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -478,7 +478,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var v1=$group('Admin.Action.stage','CognitiveTest','Admin.Action.actionType').asSequence()\nvar v2=$group('Admin.Action.stage','CognitiveTest','Admin.Action.eventReason').asSequence()\nvar res=null\nvar arr=[]  // string array of events\nfor(var i=0; i<v1.size(); i++) {\n  if(v1.valueAt(i).any('SKIP').not().value() ||\n     v2.valueAt(i).isNull().value()) continue\n  var key=v2.valueAt(i).value().slice(14)\n  if(-1==arr.indexOf(key))\n    arr.push(key)\n}\nif(undefined!==arr && 0<arr.length) {\n  res=newValue(arr.pop(),'text')  \n}\nres"
+            "value": "// if a dcs by phone visit, then the skip will be \"ModifiedVisit\"\nvar res=null\nif($('clsa-dcs-f1.Participants:DCS_PHONE').isNull().and(\n   $('clsa-dcs-f1.Participants:DCSatHOME').isNull()).not().value()){\n  res=newValue('ModifiedVisit','text')\n} else {\n  var v1=$group('Admin.Action.stage','CognitiveTest','Admin.Action.actionType').asSequence()\n  var v2=$group('Admin.Action.stage','CognitiveTest','Admin.Action.eventReason').asSequence()\n\n  var arr=[]  // string array of events\n  for(var i=0; i<v1.size(); i++) {\n    if(v1.valueAt(i).any('SKIP').not().value() ||\n       v2.valueAt(i).isNull().value()) continue\n    var key=v2.valueAt(i).value().slice(14)\n    if(-1==arr.indexOf(key))\n      arr.push(key)\n  }\n  if(undefined!==arr && 0<arr.length) {\n    res=newValue(arr.pop(),'text')  \n  }\n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -563,7 +563,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var v1=$group('Admin.Action.stage','Hearing','Admin.Action.actionType').asSequence()\nvar v2=$group('Admin.Action.stage','Hearing','Admin.Action.eventReason').asSequence()\nvar res=null\nvar arr=[]  // string array of events\nfor(var i=0; i<v1.size(); i++) {\n  if(v1.valueAt(i).any('SKIP').not().value() ||\n     v2.valueAt(i).isNull().value()) continue\n  var key=v2.valueAt(i).value().slice(14)\n  if(-1==arr.indexOf(key))\n    arr.push(key)\n}\nif(undefined!==arr && 0<arr.length) {\n  res=newValue(arr.pop(),'text')  \n}\nres"
+            "value": "// if a dcs by phone visit, then the skip will be \"ModifiedVisit\"\nvar res=null\nif($('clsa-dcs-f1.Participants:DCS_PHONE').isNull().and(\n   $('clsa-dcs-f1.Participants:DCSatHOME').isNull()).not().value()){\n  res=newValue('ModifiedVisit','text')\n} else {\n  var v1=$group('Admin.Action.stage','Hearing','Admin.Action.actionType').asSequence()\n  var v2=$group('Admin.Action.stage','Hearing','Admin.Action.eventReason').asSequence()\n\n  var arr=[]  // string array of events\n  for(var i=0; i<v1.size(); i++) {\n    if(v1.valueAt(i).any('SKIP').not().value() ||\n       v2.valueAt(i).isNull().value()) continue\n    var key=v2.valueAt(i).value().slice(14)\n    if(-1==arr.indexOf(key))\n      arr.push(key)\n  }\n  if(undefined!==arr && 0<arr.length) {\n    res=newValue(arr.pop(),'text')  \n  }\n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -597,7 +597,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var side = ['RIGHT','LEFT']\nvar freq = ['1KT','500','1K','2K','3K','4K','6K','8K']\nvar count = {RIGHT:0,LEFT:0}\nvar countfreq = {RIGHT:0,LEFT:0}\nvar counterr = {RIGHT:0,LEFT:0}\nfor(var i=0;i<side.length;i++) {\n  var s = side[i]\n  var v = 'clsa-dcs-f1.Hearing:RES_' + s + '_'\n  for(var j=0;j<freq.length;j++) {\n    var f = v + freq[j]\n    if ($(f).isNull().not().or($(f + '_ERR').isNull().not()).value()) count[s]++;\n    if ($(f).isNull().not().value()) countfreq[s]++;\n    if ($(f + '_ERR').isNull().not().value()) counterr[s]++;\n  }\n}\nres = (0 == count.RIGHT && 0 == count.LEFT && \n  $('clsa-dcs.Hearing:RES_TEST_ID').isNull().and(\n    $('clsa-dcs.Hearing:RES_TEST_DATETIME').isNull()).value()) ?\n      null : newValue(\n        '{response_left:'+count.LEFT+\n        ',response_right:'+count.RIGHT+\n        ',error_left:'+(counterr.LEFT>0 && countfreq.LEFT==0 ? '1' : '0')+\n        ',error_right:'+(counterr.RIGHT>0 && countfreq.RIGHT==0 ? '1' : '0')+\n        '}','text')"
+            "value": "var side = ['RIGHT','LEFT']\nvar freq = ['1KT','500','1K','2K','3K','4K','6K','8K']\nvar count = {RIGHT:0,LEFT:0}\nvar countfreq = {RIGHT:0,LEFT:0}\nvar counterr = {RIGHT:0,LEFT:0}\nfor(var i=0;i<side.length;i++) {\n  var s = side[i]\n  var v = 'clsa-dcs-f1.Hearing:RES_' + s + '_'\n  for(var j=0;j<freq.length;j++) {\n    var f = v + freq[j]\n    if ($(f).isNull().not().or($(f + '_ERR').isNull().not()).value()) count[s]++;\n    if ($(f).isNull().not().value()) countfreq[s]++;\n    if ($(f + '_ERR').isNull().not().value()) counterr[s]++;\n  }\n}\nres = (0 == count.RIGHT && 0 == count.LEFT && \n  $('clsa-dcs-f1.Hearing:RES_TEST_ID').isNull().and(\n    $('clsa-dcs-f1.Hearing:RES_TEST_DATETIME').isNull()).value()) ?\n      null : newValue(\n        '{response_left:'+count.LEFT+\n        ',response_right:'+count.RIGHT+\n        ',error_left:'+(counterr.LEFT>0 && countfreq.LEFT==0 ? '1' : '0')+\n        ',error_right:'+(counterr.RIGHT>0 && countfreq.RIGHT==0 ? '1' : '0')+\n        '}','text')"
           }
         ], 
         "entityType": "Participant", 
@@ -648,7 +648,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var v1=$group('Admin.Action.stage','Tonometer','Admin.Action.actionType').asSequence()\nvar v2=$group('Admin.Action.stage','Tonometer','Admin.Action.eventReason').asSequence()\nvar res=null\nvar arr=[]  // string array of events\nfor(var i=0; i<v1.size(); i++) {\n  if(v1.valueAt(i).any('SKIP').not().value() ||\n     v2.valueAt(i).isNull().value()) continue\n  var key=v2.valueAt(i).value().slice(14)\n  if(-1==arr.indexOf(key))\n    arr.push(key)\n}\nif(undefined!==arr && 0<arr.length) {\n  res=newValue(arr.pop(),'text')  \n}\nres"
+            "value": "// if a dcs by phone visit, then the skip will be \"ModifiedVisit\"\nvar res=null\nif($('clsa-dcs-f1.Participants:DCS_PHONE').isNull().and(\n   $('clsa-dcs-f1.Participants:DCSatHOME').isNull()).not().value()){\n  res=newValue('ModifiedVisit','text')\n} else {\n  var v1=$group('Admin.Action.stage','Tonometer','Admin.Action.actionType').asSequence()\n  var v2=$group('Admin.Action.stage','Tonometer','Admin.Action.eventReason').asSequence()\n\n  var arr=[]  // string array of events\n  for(var i=0; i<v1.size(); i++) {\n    if(v1.valueAt(i).any('SKIP').not().value() ||\n       v2.valueAt(i).isNull().value()) continue\n    var key=v2.valueAt(i).value().slice(14)\n    if(-1==arr.indexOf(key))\n      arr.push(key)\n  }\n  if(undefined!==arr && 0<arr.length) {\n    res=newValue(arr.pop(),'text')  \n  }\n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -733,7 +733,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var v1=$group('Admin.Action.stage','Weight','Admin.Action.actionType').asSequence()\nvar v2=$group('Admin.Action.stage','Weight','Admin.Action.eventReason').asSequence()\nvar res=null\nvar arr=[]  // string array of events\nfor(var i=0; i<v1.size(); i++) {\n  if(v1.valueAt(i).any('SKIP').not().value() ||\n     v2.valueAt(i).isNull().value()) continue\n  var key=v2.valueAt(i).value().slice(14)\n  if(-1==arr.indexOf(key))\n    arr.push(key)\n}\nif(undefined!==arr && 0<arr.length) {\n  res=newValue(arr.pop(),'text')  \n}\nres"
+            "value": "// if a dcs by phone visit, then the skip will be \"ModifiedVisit\"\nvar res=null\nif($('clsa-dcs-f1.Participants:DCS_PHONE').isNull().not().value()){\n  res=newValue('ModifiedVisit','text')\n} else {\n  var v1=$group('Admin.Action.stage','Weight','Admin.Action.actionType').asSequence()\n  var v2=$group('Admin.Action.stage','Weight','Admin.Action.eventReason').asSequence()\n\n  var arr=[]  // string array of events\n  for(var i=0; i<v1.size(); i++) {\n    if(v1.valueAt(i).any('SKIP').not().value() ||\n       v2.valueAt(i).isNull().value()) continue\n    var key=v2.valueAt(i).value().slice(14)\n    if(-1==arr.indexOf(key))\n      arr.push(key)\n  }\n  if(undefined!==arr && 0<arr.length) {\n    res=newValue(arr.pop(),'text')  \n  }\n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -818,7 +818,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var v1=$group('Admin.Action.stage','RetinalScanLeft','Admin.Action.actionType').asSequence()\nvar v2=$group('Admin.Action.stage','RetinalScanLeft','Admin.Action.eventReason').asSequence()\nvar res=null\nvar arr=[]  // string array of events\nfor(var i=0; i<v1.size(); i++) {\n  if(v1.valueAt(i).any('SKIP').not().value() ||\n     v2.valueAt(i).isNull().value()) continue\n  var key=v2.valueAt(i).value().slice(14)\n  if(-1==arr.indexOf(key))\n    arr.push(key)\n}\nif(undefined!==arr && 0<arr.length) {\n  res=newValue(arr.pop(),'text')  \n}\nres"
+            "value": "// if a dcs by phone visit, then the skip will be \"ModifiedVisit\"\nvar res=null\nif($('clsa-dcs-f1.Participants:DCS_PHONE').isNull().and(\n   $('clsa-dcs-f1.Participants:DCSatHOME').isNull()).not().value()){\n  res=newValue('ModifiedVisit','text')\n} else {\n  var v1=$group('Admin.Action.stage','RetinalScanLeft','Admin.Action.actionType').asSequence()\n  var v2=$group('Admin.Action.stage','RetinalScanLeft','Admin.Action.eventReason').asSequence()\n\n  var arr=[]  // string array of events\n  for(var i=0; i<v1.size(); i++) {\n    if(v1.valueAt(i).any('SKIP').not().value() ||\n       v2.valueAt(i).isNull().value()) continue\n    var key=v2.valueAt(i).value().slice(14)\n    if(-1==arr.indexOf(key))\n      arr.push(key)\n  }\n  if(undefined!==arr && 0<arr.length) {\n    res=newValue(arr.pop(),'text')  \n  }\n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -903,7 +903,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var v1=$group('Admin.Action.stage','RetinalScanRight','Admin.Action.actionType').asSequence()\nvar v2=$group('Admin.Action.stage','RetinalScanRight','Admin.Action.eventReason').asSequence()\nvar res=null\nvar arr=[]  // string array of events\nfor(var i=0; i<v1.size(); i++) {\n  if(v1.valueAt(i).any('SKIP').not().value() ||\n     v2.valueAt(i).isNull().value()) continue\n  var key=v2.valueAt(i).value().slice(14)\n  if(-1==arr.indexOf(key))\n    arr.push(key)\n}\nif(undefined!==arr && 0<arr.length) {\n  res=newValue(arr.pop(),'text')  \n}\nres"
+            "value": "// if a dcs by phone visit, then the skip will be \"ModifiedVisit\"\nvar res=null\nif($('clsa-dcs-f1.Participants:DCS_PHONE').isNull().and(\n   $('clsa-dcs-f1.Participants:DCSatHOME').isNull()).not().value()){\n  res=newValue('ModifiedVisit','text')\n} else {\n  var v1=$group('Admin.Action.stage','RetinalScanRight','Admin.Action.actionType').asSequence()\n  var v2=$group('Admin.Action.stage','RetinalScanRight','Admin.Action.eventReason').asSequence()\n\n  var arr=[]  // string array of events\n  for(var i=0; i<v1.size(); i++) {\n    if(v1.valueAt(i).any('SKIP').not().value() ||\n       v2.valueAt(i).isNull().value()) continue\n    var key=v2.valueAt(i).value().slice(14)\n    if(-1==arr.indexOf(key))\n      arr.push(key)\n  }\n  if(undefined!==arr && 0<arr.length) {\n    res=newValue(arr.pop(),'text')  \n  }\n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -988,7 +988,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var v1=$group('Admin.Action.stage','LateralBoneDensity','Admin.Action.actionType').asSequence()\nvar v2=$group('Admin.Action.stage','LateralBoneDensity','Admin.Action.eventReason').asSequence()\nvar res=null\nvar arr=[]  // string array of events\nfor(var i=0; i<v1.size(); i++) {\n  if(v1.valueAt(i).any('SKIP').not().value() ||\n     v2.valueAt(i).isNull().value()) continue\n  var key=v2.valueAt(i).value().slice(14)\n  if(-1==arr.indexOf(key))\n    arr.push(key)\n}\nif(undefined!==arr && 0<arr.length) {\n  res=newValue(arr.pop(),'text')  \n}\nres"
+            "value": "// if a dcs by phone visit, then the skip will be \"ModifiedVisit\"\nvar res=null\nif($('clsa-dcs-f1.Participants:DCS_PHONE').isNull().and(\n   $('clsa-dcs-f1.Participants:DCSatHOME').isNull()).not().value()){\n  res=newValue('ModifiedVisit','text')\n} else {\n  var v1=$group('Admin.Action.stage','LateralBoneDensity','Admin.Action.actionType').asSequence()\n  var v2=$group('Admin.Action.stage','LateralBoneDensity','Admin.Action.eventReason').asSequence()\n\n  var arr=[]  // string array of events\n  for(var i=0; i<v1.size(); i++) {\n    if(v1.valueAt(i).any('SKIP').not().value() ||\n       v2.valueAt(i).isNull().value()) continue\n    var key=v2.valueAt(i).value().slice(14)\n    if(-1==arr.indexOf(key))\n      arr.push(key)\n  }\n  if(undefined!==arr && 0<arr.length) {\n    res=newValue(arr.pop(),'text')  \n  }\n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -1073,7 +1073,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var v1=$group('Admin.Action.stage','StandingHeight','Admin.Action.actionType').asSequence()\nvar v2=$group('Admin.Action.stage','StandingHeight','Admin.Action.eventReason').asSequence()\nvar res=null\nvar arr=[]  // string array of events\nfor(var i=0; i<v1.size(); i++) {\n  if(v1.valueAt(i).any('SKIP').not().value() ||\n     v2.valueAt(i).isNull().value()) continue\n  var key=v2.valueAt(i).value().slice(14)\n  if(-1==arr.indexOf(key))\n    arr.push(key)\n}\nif(undefined!==arr && 0<arr.length) {\n  res=newValue(arr.pop(),'text')  \n}\nres"
+            "value": "// if a dcs by phone visit, then the skip will be \"ModifiedVisit\"\nvar res=null\nif($('clsa-dcs-f1.Participants:DCS_PHONE').isNull().not().value()){\n  res=newValue('ModifiedVisit','text')\n} else {\n  var v1=$group('Admin.Action.stage','StandingHeight','Admin.Action.actionType').asSequence()\n  var v2=$group('Admin.Action.stage','StandingHeight','Admin.Action.eventReason').asSequence()\n\n  var arr=[]  // string array of events\n  for(var i=0; i<v1.size(); i++) {\n    if(v1.valueAt(i).any('SKIP').not().value() ||\n       v2.valueAt(i).isNull().value()) continue\n    var key=v2.valueAt(i).value().slice(14)\n    if(-1==arr.indexOf(key))\n      arr.push(key)\n  }\n  if(undefined!==arr && 0<arr.length) {\n    res=newValue(arr.pop(),'text')  \n  }\n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -1158,7 +1158,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var v1=$group('Admin.Action.stage','SpineBoneDensity','Admin.Action.actionType').asSequence()\nvar v2=$group('Admin.Action.stage','SpineBoneDensity','Admin.Action.eventReason').asSequence()\nvar res=null\nvar arr=[]  // string array of events\nfor(var i=0; i<v1.size(); i++) {\n  if(v1.valueAt(i).any('SKIP').not().value() ||\n     v2.valueAt(i).isNull().value()) continue\n  var key=v2.valueAt(i).value().slice(14)\n  if(-1==arr.indexOf(key))\n    arr.push(key)\n}\nif(undefined!==arr && 0<arr.length) {\n  res=newValue(arr.pop(),'text')  \n}\nres"
+            "value": "// if a dcs by phone visit, then the skip will be \"ModifiedVisit\"\nvar res=null\nif($('clsa-dcs-f1.Participants:DCS_PHONE').isNull().and(\n   $('clsa-dcs-f1.Participants:DCSatHOME').isNull()).not().value()){\n  res=newValue('ModifiedVisit','text')\n} else {\n  var v1=$group('Admin.Action.stage','SpineBoneDensity','Admin.Action.actionType').asSequence()\n  var v2=$group('Admin.Action.stage','SpineBoneDensity','Admin.Action.eventReason').asSequence()\n\n  var arr=[]  // string array of events\n  for(var i=0; i<v1.size(); i++) {\n    if(v1.valueAt(i).any('SKIP').not().value() ||\n       v2.valueAt(i).isNull().value()) continue\n    var key=v2.valueAt(i).value().slice(14)\n    if(-1==arr.indexOf(key))\n      arr.push(key)\n  }\n  if(undefined!==arr && 0<arr.length) {\n    res=newValue(arr.pop(),'text')  \n  }\n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -1243,7 +1243,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var v1=$group('Admin.Action.stage','ForearmBoneDensity','Admin.Action.actionType').asSequence()\nvar v2=$group('Admin.Action.stage','ForearmBoneDensity','Admin.Action.eventReason').asSequence()\nvar res=null\nvar arr=[]  // string array of events\nfor(var i=0; i<v1.size(); i++) {\n  if(v1.valueAt(i).any('SKIP').not().value() ||\n     v2.valueAt(i).isNull().value()) continue\n  var key=v2.valueAt(i).value().slice(14)\n  if(-1==arr.indexOf(key))\n    arr.push(key)\n}\nif(undefined!==arr && 0<arr.length) {\n  res=newValue(arr.pop(),'text')  \n}\nres"
+            "value": "// if a dcs by phone visit, then the skip will be \"ModifiedVisit\"\nvar res=null\nif($('clsa-dcs-f1.Participants:DCS_PHONE').isNull().and(\n   $('clsa-dcs-f1.Participants:DCSatHOME').isNull()).not().value()){\n  res=newValue('ModifiedVisit','text')\n} else {\n  var v1=$group('Admin.Action.stage','ForearmBoneDensity','Admin.Action.actionType').asSequence()\n  var v2=$group('Admin.Action.stage','ForearmBoneDensity','Admin.Action.eventReason').asSequence()\n\n  var arr=[]  // string array of events\n  for(var i=0; i<v1.size(); i++) {\n    if(v1.valueAt(i).any('SKIP').not().value() ||\n       v2.valueAt(i).isNull().value()) continue\n    var key=v2.valueAt(i).value().slice(14)\n    if(-1==arr.indexOf(key))\n      arr.push(key)\n  }\n  if(undefined!==arr && 0<arr.length) {\n    res=newValue(arr.pop(),'text')  \n  }\n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -1328,7 +1328,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var v1=$group('Admin.Action.stage','WholeBodyBoneDensity','Admin.Action.actionType').asSequence()\nvar v2=$group('Admin.Action.stage','WholeBodyBoneDensity','Admin.Action.eventReason').asSequence()\nvar res=null\nvar arr=[]  // string array of events\nfor(var i=0; i<v1.size(); i++) {\n  if(v1.valueAt(i).any('SKIP').not().value() ||\n     v2.valueAt(i).isNull().value()) continue\n  var key=v2.valueAt(i).value().slice(14)\n  if(-1==arr.indexOf(key))\n    arr.push(key)\n}\nif(undefined!==arr && 0<arr.length) {\n  res=newValue(arr.pop(),'text')  \n}\nres"
+            "value": "// if a dcs by phone visit, then the skip will be \"ModifiedVisit\"\nvar res=null\nif($('clsa-dcs-f1.Participants:DCS_PHONE').isNull().and(\n   $('clsa-dcs-f1.Participants:DCSatHOME').isNull()).not().value()){\n  res=newValue('ModifiedVisit','text')\n} else {\n  var v1=$group('Admin.Action.stage','WholeBodyBoneDensity','Admin.Action.actionType').asSequence()\n  var v2=$group('Admin.Action.stage','WholeBodyBoneDensity','Admin.Action.eventReason').asSequence()\n\n  var arr=[]  // string array of events\n  for(var i=0; i<v1.size(); i++) {\n    if(v1.valueAt(i).any('SKIP').not().value() ||\n       v2.valueAt(i).isNull().value()) continue\n    var key=v2.valueAt(i).value().slice(14)\n    if(-1==arr.indexOf(key))\n      arr.push(key)\n  }\n  if(undefined!==arr && 0<arr.length) {\n    res=newValue(arr.pop(),'text')  \n  }\n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -1413,7 +1413,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var v1=$group('Admin.Action.stage','DualHipBoneDensity','Admin.Action.actionType').asSequence()\nvar v2=$group('Admin.Action.stage','DualHipBoneDensity','Admin.Action.eventReason').asSequence()\nvar res=null\nvar arr=[]  // string array of events\nfor(var i=0; i<v1.size(); i++) {\n  if(v1.valueAt(i).any('SKIP').not().value() ||\n     v2.valueAt(i).isNull().value()) continue\n  var key=v2.valueAt(i).value().slice(14)\n  if(-1==arr.indexOf(key))\n    arr.push(key)\n}\nif(undefined!==arr && 0<arr.length) {\n  res=newValue(arr.pop(),'text')  \n}\nres"
+            "value": "// if a dcs by phone visit, then the skip will be \"ModifiedVisit\"\nvar res=null\nif($('clsa-dcs-f1.Participants:DCS_PHONE').isNull().and(\n   $('clsa-dcs-f1.Participants:DCSatHOME').isNull()).not().value()){\n  res=newValue('ModifiedVisit','text')\n} else {\n  var v1=$group('Admin.Action.stage','DualHipBoneDensity','Admin.Action.actionType').asSequence()\n  var v2=$group('Admin.Action.stage','DualHipBoneDensity','Admin.Action.eventReason').asSequence()\n\n  var arr=[]  // string array of events\n  for(var i=0; i<v1.size(); i++) {\n    if(v1.valueAt(i).any('SKIP').not().value() ||\n       v2.valueAt(i).isNull().value()) continue\n    var key=v2.valueAt(i).value().slice(14)\n    if(-1==arr.indexOf(key))\n      arr.push(key)\n  }\n  if(undefined!==arr && 0<arr.length) {\n    res=newValue(arr.pop(),'text')  \n  }\n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -1498,7 +1498,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var v1=$group('Admin.Action.stage','CarotidIntima','Admin.Action.actionType').asSequence()\nvar v2=$group('Admin.Action.stage','CarotidIntima','Admin.Action.eventReason').asSequence()\nvar res=null\nvar arr=[]  // string array of events\nfor(var i=0; i<v1.size(); i++) {\n  if(v1.valueAt(i).any('SKIP').not().value() ||\n     v2.valueAt(i).isNull().value()) continue\n  var key=v2.valueAt(i).value().slice(14)\n  if(-1==arr.indexOf(key))\n    arr.push(key)\n}\nif(undefined!==arr && 0<arr.length) {\n  res=newValue(arr.pop(),'text')  \n}\nres"
+            "value": "// if a dcs by phone visit, then the skip will be \"ModifiedVisit\"\nvar res=null\nif($('clsa-dcs-f1.Participants:DCS_PHONE').isNull().and(\n   $('clsa-dcs-f1.Participants:DCSatHOME').isNull()).not().value()){\n  res=newValue('ModifiedVisit','text')\n} else {\n  var v1=$group('Admin.Action.stage','CarotidIntima','Admin.Action.actionType').asSequence()\n  var v2=$group('Admin.Action.stage','CarotidIntima','Admin.Action.eventReason').asSequence()\n\n  var arr=[]  // string array of events\n  for(var i=0; i<v1.size(); i++) {\n    if(v1.valueAt(i).any('SKIP').not().value() ||\n       v2.valueAt(i).isNull().value()) continue\n    var key=v2.valueAt(i).value().slice(14)\n    if(-1==arr.indexOf(key))\n      arr.push(key)\n  }\n  if(undefined!==arr && 0<arr.length) {\n    res=newValue(arr.pop(),'text')  \n  }\n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -1583,7 +1583,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var v1=$group('Admin.Action.stage','TUG','Admin.Action.actionType').asSequence()\nvar v2=$group('Admin.Action.stage','TUG','Admin.Action.eventReason').asSequence()\nvar res=null\nvar arr=[]  // string array of events\nfor(var i=0; i<v1.size(); i++) {\n  if(v1.valueAt(i).any('SKIP').not().value() ||\n     v2.valueAt(i).isNull().value()) continue\n  var key=v2.valueAt(i).value().slice(14)\n  if(-1==arr.indexOf(key))\n    arr.push(key)\n}\nif(undefined!==arr && 0<arr.length) {\n  res=newValue(arr.pop(),'text')  \n}\nres"
+            "value": "// if a dcs by phone visit, then the skip will be \"ModifiedVisit\"\nvar res=null\nif($('clsa-dcs-f1.Participants:DCS_PHONE').isNull().and(\n   $('clsa-dcs-f1.Participants:DCSatHOME').isNull()).not().value()){\n  res=newValue('ModifiedVisit','text')\n} else {\n  var v1=$group('Admin.Action.stage','TUG','Admin.Action.actionType').asSequence()\n  var v2=$group('Admin.Action.stage','TUG','Admin.Action.eventReason').asSequence()\n\n  var arr=[]  // string array of events\n  for(var i=0; i<v1.size(); i++) {\n    if(v1.valueAt(i).any('SKIP').not().value() ||\n       v2.valueAt(i).isNull().value()) continue\n    var key=v2.valueAt(i).value().slice(14)\n    if(-1==arr.indexOf(key))\n      arr.push(key)\n  }\n  if(undefined!==arr && 0<arr.length) {\n    res=newValue(arr.pop(),'text')  \n  }\n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -1668,7 +1668,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var v1=$group('Admin.Action.stage','ChairRise','Admin.Action.actionType').asSequence()\nvar v2=$group('Admin.Action.stage','ChairRise','Admin.Action.eventReason').asSequence()\nvar res=null\nvar arr=[]  // string array of events\nfor(var i=0; i<v1.size(); i++) {\n  if(v1.valueAt(i).any('SKIP').not().value() ||\n     v2.valueAt(i).isNull().value()) continue\n  var key=v2.valueAt(i).value().slice(14)\n  if(-1==arr.indexOf(key))\n    arr.push(key)\n}\nif(undefined!==arr && 0<arr.length) {\n  res=newValue(arr.pop(),'text')  \n}\nres"
+            "value": "// if a dcs by phone visit, then the skip will be \"ModifiedVisit\"\nvar res=null\nif($('clsa-dcs-f1.Participants:DCS_PHONE').isNull().and(\n   $('clsa-dcs-f1.Participants:DCSatHOME').isNull()).not().value()){\n  res=newValue('ModifiedVisit','text')\n} else {\n  var v1=$group('Admin.Action.stage','ChairRise','Admin.Action.actionType').asSequence()\n  var v2=$group('Admin.Action.stage','ChairRise','Admin.Action.eventReason').asSequence()\n\n  var arr=[]  // string array of events\n  for(var i=0; i<v1.size(); i++) {\n    if(v1.valueAt(i).any('SKIP').not().value() ||\n       v2.valueAt(i).isNull().value()) continue\n    var key=v2.valueAt(i).value().slice(14)\n    if(-1==arr.indexOf(key))\n      arr.push(key)\n  }\n  if(undefined!==arr && 0<arr.length) {\n    res=newValue(arr.pop(),'text')  \n  }\n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -1753,7 +1753,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var v1=$group('Admin.Action.stage','HipsWaist','Admin.Action.actionType').asSequence()\nvar v2=$group('Admin.Action.stage','HipsWaist','Admin.Action.eventReason').asSequence()\nvar res=null\nvar arr=[]  // string array of events\nfor(var i=0; i<v1.size(); i++) {\n  if(v1.valueAt(i).any('SKIP').not().value() ||\n     v2.valueAt(i).isNull().value()) continue\n  var key=v2.valueAt(i).value().slice(14)\n  if(-1==arr.indexOf(key))\n    arr.push(key)\n}\nif(undefined!==arr && 0<arr.length) {\n  res=newValue(arr.pop(),'text')  \n}\nres"
+            "value": "// if a dcs by phone visit, then the skip will be \"ModifiedVisit\"\nvar res=null\nif($('clsa-dcs-f1.Participants:DCS_PHONE').isNull().not().value()){\n  res=newValue('ModifiedVisit','text')\n} else {\n  var v1=$group('Admin.Action.stage','HipsWaist','Admin.Action.actionType').asSequence()\n  var v2=$group('Admin.Action.stage','HipsWaist','Admin.Action.eventReason').asSequence()\n\n  var arr=[]  // string array of events\n  for(var i=0; i<v1.size(); i++) {\n    if(v1.valueAt(i).any('SKIP').not().value() ||\n       v2.valueAt(i).isNull().value()) continue\n    var key=v2.valueAt(i).value().slice(14)\n    if(-1==arr.indexOf(key))\n      arr.push(key)\n  }\n  if(undefined!==arr && 0<arr.length) {\n    res=newValue(arr.pop(),'text')  \n  }\n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -1838,7 +1838,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var v1=$group('Admin.Action.stage','NeuropsychologicalBattery','Admin.Action.actionType').asSequence()\nvar v2=$group('Admin.Action.stage','NeuropsychologicalBattery','Admin.Action.eventReason').asSequence()\nvar res=null\nvar arr=[]  // string array of events\nfor(var i=0; i<v1.size(); i++) {\n  if(v1.valueAt(i).any('SKIP').not().value() ||\n     v2.valueAt(i).isNull().value()) continue\n  var key=v2.valueAt(i).value().slice(14)\n  if(-1==arr.indexOf(key))\n    arr.push(key)\n}\nif(undefined!==arr && 0<arr.length) {\n  res=newValue(arr.pop(),'text')  \n}\nres"
+            "value": "// if a dcs by phone visit, then the skip will be \"ModifiedVisit\"\nvar res=null\nif($('clsa-dcs-f1.Participants:DCS_PHONE').isNull().not().value()){\n  res=newValue('ModifiedVisit','text')\n} else {\n  var v1=$group('Admin.Action.stage','NeuropsychologicalBattery','Admin.Action.actionType').asSequence()\n  var v2=$group('Admin.Action.stage','NeuropsychologicalBattery','Admin.Action.eventReason').asSequence()\n\n  var arr=[]  // string array of events\n  for(var i=0; i<v1.size(); i++) {\n    if(v1.valueAt(i).any('SKIP').not().value() ||\n       v2.valueAt(i).isNull().value()) continue\n    var key=v2.valueAt(i).value().slice(14)\n    if(-1==arr.indexOf(key))\n      arr.push(key)\n  }\n  if(undefined!==arr && 0<arr.length) {\n    res=newValue(arr.pop(),'text')  \n  }\n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -1872,7 +1872,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var d=$('clsa-dcs-f1.NeuropsychologicalBattery:STP_DOTREC_DCS')\nvar w=$('clsa-dcs-f1.NeuropsychologicalBattery:STP_WORREC_DCS')\nvar c=$('clsa-dcs-f1.NeuropsychologicalBattery:STP_COLREC_DCS')\nvar f=$('clsa-dcs-f1.NeuropsychologicalBattery:FAS_FREC_DCS')\nvar a=$('clsa-dcs-f1.NeuropsychologicalBattery:FAS_AREC_DCS')\nvar s=$('clsa-dcs-f1.NeuropsychologicalBattery:FAS_SREC_DCS')\nvar res=null\nif(!d.isNull().and(w.isNull(),c.isNull(),f.isNull(),a.isNull(),s.isNull()).value()) {\n  var str='{filesize_dot:'+(d.isNull().value()?'0':d.length().value())+','\n  str+='filesize_wor:'+(w.isNull().value()?'0':w.length().value())+','\n  str+='filesize_col:'+(c.isNull().value()?'0':c.length().value())+','\n  str+='filesize_f:'+(f.isNull().value()?'0':f.length().value())+','\n  str+='filesize_a:'+(a.isNull().value()?'0':a.length().value())+','\n  str+='filesize_s:'+(s.isNull().value()?'0':s.length().value())+'}'\n  res=newValue(str,'text')\n}\nres"
+            "value": "var d=$('clsa-dcs-f1.NeuropsychologicalBattery:STP_DOTREC_COF1')\nvar w=$('clsa-dcs-f1.NeuropsychologicalBattery:STP_WORREC_COF1')\nvar c=$('clsa-dcs-f1.NeuropsychologicalBattery:STP_COLREC_COF1')\nvar f=$('clsa-dcs-f1.NeuropsychologicalBattery:FAS_FREC_COF1')\nvar a=$('clsa-dcs-f1.NeuropsychologicalBattery:FAS_AREC_COF1')\nvar s=$('clsa-dcs-f1.NeuropsychologicalBattery:FAS_SREC_COF1')\nvar res=null\nif(!d.isNull().and(w.isNull(),c.isNull(),f.isNull(),a.isNull(),s.isNull()).value()) {\n  var str='{filesize_dot:'+(d.isNull().value()?'0':d.length().value())+','\n  str+='filesize_wor:'+(w.isNull().value()?'0':w.length().value())+','\n  str+='filesize_col:'+(c.isNull().value()?'0':c.length().value())+','\n  str+='filesize_f:'+(f.isNull().value()?'0':f.length().value())+','\n  str+='filesize_a:'+(a.isNull().value()?'0':a.length().value())+','\n  str+='filesize_s:'+(s.isNull().value()?'0':s.length().value())+'}'\n  res=newValue(str,'text')\n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -1923,7 +1923,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var v1=$group('Admin.Action.stage','StandingBalance','Admin.Action.actionType').asSequence()\nvar v2=$group('Admin.Action.stage','StandingBalance','Admin.Action.eventReason').asSequence()\nvar res=null\nvar arr=[]  // string array of events\nfor(var i=0; i<v1.size(); i++) {\n  if(v1.valueAt(i).any('SKIP').not().value() ||\n     v2.valueAt(i).isNull().value()) continue\n  var key=v2.valueAt(i).value().slice(14)\n  if(-1==arr.indexOf(key))\n    arr.push(key)\n}\nif(undefined!==arr && 0<arr.length) {\n  res=newValue(arr.pop(),'text')  \n}\nif(null===res) {\n  var l1=$('clsa-dcs-f1.StandingBalance:STAND_COMPLETION_LEFT')  \n  var r1=$('clsa-dcs-f1.StandingBalance:STAND_COMPLETION_RIGHT')  \n  if(l1.any('NO').value()) {\n    var l2=$('clsa-dcs-f1.StandingBalance:STAND_UNCOMPLETE_LEFT').map({\n      'TECHNICAL':'TechnicalProblem',\n      'PARTICIPANT-DECISION':'ParticipantDecision',\n      'INTERVIEWER-DECISION':'InterviewerDecision',\n      'OTHER-SPEFICY':'SeeComment'},null)\n    if(l2.isNull().not().value()) {\n      res=l2\n    }  \n  } \n  if (null===res && r1.any('NO').value()) {\n    var r2=$('clsa-dcs-f1.StandingBalance:STAND_UNCOMPLETE_RIGHT').map({\n      'TECHNICAL':'TechnicalProblem',\n      'PARTICIPANT-DECISION':'ParticipantDecision',\n      'INTERVIEWER-DECISION':'InterviewerDecision',\n      'OTHER-SPEFICY':'SeeComment'},null)\n    if(r2.isNull().not().value()) {\n      res=r2\n    }\n  }\n}\nres"
+            "value": "// if a dcs by phone visit, then the skip will be \"ModifiedVisit\"\nvar res=null\nif($('clsa-dcs-f1.Participants:DCS_PHONE').isNull().and(\n   $('clsa-dcs-f1.Participants:DCSatHOME').isNull()).not().value()){\n  res=newValue('ModifiedVisit','text')\n} else {\n  var v1=$group('Admin.Action.stage','StandingBalance','Admin.Action.actionType').asSequence()\n  var v2=$group('Admin.Action.stage','StandingBalance','Admin.Action.eventReason').asSequence()\n  var arr=[]  // string array of events\n  for(var i=0; i<v1.size(); i++) {\n    if(v1.valueAt(i).any('SKIP').not().value() ||\n       v2.valueAt(i).isNull().value()) continue\n    var key=v2.valueAt(i).value().slice(14)\n    if(-1==arr.indexOf(key))\n      arr.push(key)\n  }\n  if(undefined!==arr && 0<arr.length) {\n    res=newValue(arr.pop(),'text')  \n  }\n  if(null===res) {\n    var l1=$('clsa-dcs-f1.StandingBalance:STAND_COMPLETION_LEFT')  \n    var r1=$('clsa-dcs-f1.StandingBalance:STAND_COMPLETION_RIGHT')  \n    if(l1.any('NO').value()) {\n      var l2=$('clsa-dcs-f1.StandingBalance:STAND_UNCOMPLETE_LEFT').map({\n        'TECHNICAL':'TechnicalProblem',\n        'PARTICIPANT-DECISION':'ParticipantDecision',\n        'INTERVIEWER-DECISION':'InterviewerDecision',\n        'OTHER-SPEFICY':'SeeComment'},null)\n      if(l2.isNull().not().value()) {\n        res=l2\n      }  \n    } \n    if (null===res && r1.any('NO').value()) {\n      var r2=$('clsa-dcs-f1.StandingBalance:STAND_UNCOMPLETE_RIGHT').map({\n        'TECHNICAL':'TechnicalProblem',\n        'PARTICIPANT-DECISION':'ParticipantDecision',\n        'INTERVIEWER-DECISION':'InterviewerDecision',\n        'OTHER-SPEFICY':'SeeComment'},null)\n      if(r2.isNull().not().value()) {\n        res=r2\n      }\n    }\n  }\n}  \nres"
           }
         ], 
         "entityType": "Participant", 
@@ -2008,7 +2008,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var v1=$group('Admin.Action.stage','4mWalk','Admin.Action.actionType').asSequence()\nvar v2=$group('Admin.Action.stage','4mWalk','Admin.Action.eventReason').asSequence()\nvar res=null\nvar arr=[]  // string array of events\nfor(var i=0; i<v1.size(); i++) {\n  if(v1.valueAt(i).any('SKIP').not().value() ||\n     v2.valueAt(i).isNull().value()) continue\n  var key=v2.valueAt(i).value().slice(14)\n  if(-1==arr.indexOf(key))\n    arr.push(key)\n}\nif(undefined!==arr && 0<arr.length) {\n  res=newValue(arr.pop(),'text')  \n}\nres"
+            "value": "// if a dcs by phone visit, then the skip will be \"ModifiedVisit\"\nvar res=null\nif($('clsa-dcs-f1.Participants:DCS_PHONE').isNull().and(\n   $('clsa-dcs-f1.Participants:DCSatHOME').isNull()).not().value()){\n  res=newValue('ModifiedVisit','text')\n} else {\n  var v1=$group('Admin.Action.stage','4mWalk','Admin.Action.actionType').asSequence()\n  var v2=$group('Admin.Action.stage','4mWalk','Admin.Action.eventReason').asSequence()\n\n  var arr=[]  // string array of events\n  for(var i=0; i<v1.size(); i++) {\n    if(v1.valueAt(i).any('SKIP').not().value() ||\n       v2.valueAt(i).isNull().value()) continue\n    var key=v2.valueAt(i).value().slice(14)\n    if(-1==arr.indexOf(key))\n      arr.push(key)\n  }\n  if(undefined!==arr && 0<arr.length) {\n    res=newValue(arr.pop(),'text')  \n  }\n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -2093,7 +2093,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var v1=$group('Admin.Action.stage','VisionAcuity','Admin.Action.actionType').asSequence()\nvar v2=$group('Admin.Action.stage','VisionAcuity','Admin.Action.eventReason').asSequence()\nvar res=null\nvar arr=[]  // string array of events\nfor(var i=0; i<v1.size(); i++) {\n  if(v1.valueAt(i).any('SKIP').not().value() ||\n     v2.valueAt(i).isNull().value()) continue\n  var key=v2.valueAt(i).value().slice(14)\n  if(-1==arr.indexOf(key))\n    arr.push(key)\n}\nif(undefined!==arr && 0<arr.length) {\n  res=newValue(arr.pop(),'text')  \n}\nif(null===res) {\n  var tests=['DONE_VA','DONE_BOTH_VA','DONE_LEFT_VA','DONE_RIGHT_VA','DONE_LEFT_PO_VA','DONE_RIGHT_PO_VA']\n  var reasons=['DONE_RSN_VA','DONE_RSN_BOTH_VA','DONE_RSN_LEFT_VA','DONE_RSN_RIGHT_VA','DONE_RSN_LEFT_PO_VA','DONE_RSN_RIGHT_PO_VA']\n  for(var i=0;i<tests.length;i++) {\n    var t=$('clsa-dcs-f1.VisionAcuity:'+tests[i])\n    if(t.any('NO').value()) {\n      var r=$('clsa-dcs-f1.VisionAcuity:'+reasons[i]).map({\n      'TECHNICAL-PROBLEM':'TechnicalProblem',\n      'PARTICIPANT-DECISION':'ParticipantDecision',\n      'INTERVIEWER-DECISION':'InterviewerDecision',\n      'OTHER':'SeeComment'},null)\n      if(r.isNull().not().value()) {\n        res=r\n        break\n      }\n    }\n  }  \n}\nres"
+            "value": "// if a dcs by phone visit, then the skip will be \"ModifiedVisit\"\nvar res=null\nif($('clsa-dcs-f1.Participants:DCS_PHONE').isNull().and(\n   $('clsa-dcs-f1.Participants:DCSatHOME').isNull()).not().value()){\n  res=newValue('ModifiedVisit','text')\n} else {\n  var v1=$group('Admin.Action.stage','VisionAcuity','Admin.Action.actionType').asSequence()\n  var v2=$group('Admin.Action.stage','VisionAcuity','Admin.Action.eventReason').asSequence()\n  var arr=[]  // string array of events\n  for(var i=0; i<v1.size(); i++) {\n    if(v1.valueAt(i).any('SKIP').not().value() ||\n       v2.valueAt(i).isNull().value()) continue\n    var key=v2.valueAt(i).value().slice(14)\n    if(-1==arr.indexOf(key))\n      arr.push(key)\n  }\n  if(undefined!==arr && 0<arr.length) {\n    res=newValue(arr.pop(),'text')  \n  }\n  if(null===res) {\n    var tests=['DONE_VA','DONE_BOTH_VA','DONE_LEFT_VA','DONE_RIGHT_VA','DONE_LEFT_PO_VA','DONE_RIGHT_PO_VA']\n    var reasons=['DONE_RSN_VA','DONE_RSN_BOTH_VA','DONE_RSN_LEFT_VA','DONE_RSN_RIGHT_VA','DONE_RSN_LEFT_PO_VA','DONE_RSN_RIGHT_PO_VA']\n    for(var i=0;i<tests.length;i++) {\n      var t=$('clsa-dcs-f1.VisionAcuity:'+tests[i])\n      if(t.any('NO').value()) {\n        var r=$('clsa-dcs-f1.VisionAcuity:'+reasons[i]).map({\n        'TECHNICAL-PROBLEM':'TechnicalProblem',\n        'PARTICIPANT-DECISION':'ParticipantDecision',\n        'INTERVIEWER-DECISION':'InterviewerDecision',\n        'OTHER':'SeeComment'},null)\n        if(r.isNull().not().value()) {\n          res=r\n          break\n        }\n      }\n    }\n  }\n}  \nres"
           }
         ], 
         "entityType": "Participant", 
@@ -2167,7 +2167,8 @@
     "clsa-dcs-f1.TUG", 
     "clsa-dcs-f1.StandingBalance", 
     "clsa-dcs-f1.NeuropsychologicalBattery", 
-    "clsa-dcs-f1.VisionAcuity"
+    "clsa-dcs-f1.VisionAcuity", 
+    "clsa-dcs-f1.4mWalk"
   ], 
   "name": "QC_F1"
 }
