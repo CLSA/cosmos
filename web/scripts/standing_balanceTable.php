@@ -16,7 +16,7 @@ if(''==$begin_date || ''==$end_date ||
 }
 
 $sql = sprintf(
-  'select avg(s_time) as t_avg, stddev(s_time) at t_std from '.
+  'select avg(s_time) as t_avg from '.
   '('.
   '  ( '.
   '    select '.
@@ -45,60 +45,59 @@ $sql = sprintf(
   ') as t '.
   'where s_time>0', $rank, $rank);
 
-$res = $db->get_row( $sql );
-if( false === $ratio_avg )
+$res = $db->get_one( $sql );
+if( false === $res )
 {
   echo sprintf('failed to get average standing balance time: %s', $db->get_last_error() );
   echo $sql;
   die();
 }
-
+$time_avg = $res;
 
 $sql = sprintf(
-  'select stddev( '.
-  '  if( qcdata is null, null, '.
-  '      trim("}" from '.
+  'select stddev(s_time) as t_std from '.
+  '('.
+  '  ( '.
+  '    select '.
   '        substring_index( '.
   '          substring_index( '.
-  '            qcdata, ",", 4), ":", -1 ) ) ) ) as r_avg '.
-  'from interview i '.
-  'join stage s on i.id=s.interview_id '.
-  'where rank=%d '.
-  'and s.name="standing_balance"', $rank);
+  '            qcdata, ",", 2 ), ":", -1) as s_time '.
+  '    from interview i '.
+  '    join stage s on i.id=s.interview_id '.
+  '    where rank=%d '.
+  '    and qcdata is not null '.
+  '    and s.name="standing_balance" '.
+  '  ) '.
+  '  union all '.
+  '  ( '.
+  '    select '.
+  '      trim( "}" from '.
+  '        substring_index( '.
+  '          substring_index( '.
+  '            qcdata, ",", -1 ), ":", -1 ) ) as s_time '.
+  '    from interview i '.
+  '    join stage s on i.id=s.interview_id '.
+  '    where rank=%d '.
+  '    and qcdata is not null '.
+  '    and s.name="standing_balance" '.
+  '  ) '.
+  ') as t '.
+  'where s_time>0', $rank, $rank);
 
-$ratio_avg = $db->get_one( $sql );
-if( false === $ratio_avg )
+$res = $db->get_one( $sql );
+if( false === $res )
 {
   echo sprintf('failed to get stddev standing balance time: %s', $db->get_last_error() );
   echo $sql;
   die();
 }
+$time_std = $res;
 
-$sql = sprintf(
-  'select stddev( '.
-  '  if( qcdata is null, null, '.
-  '      trim("}" from '.
-  '        substring_index( '.
-  '          substring_index( '.
-  '            qcdata, ",", 4), ":", -1 ) ) ) ) as r_avg '.
-  'from interview i '.
-  'join stage s on i.id=s.interview_id '.
-  'where rank=%d '.
-  'and s.name="hips_waist"', $rank);
 
-$ratio_stdev = $db->get_one( $sql );
+$time_min = round($time_avg - 2*$time_std,3);
+$time_min = $time_min < 0 ? 0 : $time_min;
 
-if( false === $ratio_stdev )
-{
-  echo sprintf('failed to get stddev hips to waist ratio: %s', $db->get_last_error() );
-  echo $sql;
-  die();
-}
-
-$ratio_min = round($ratio_avg - 3*$ratio_stdev,3);
-$ratio_min = $ratio_min < 0 ? 0 : $ratio_min;
-
-$ratio_max = round($ratio_avg + 3*$ratio_stdev,3);
+$time_max = round($time_avg + 2*$time_std,3);
 
 // build the main query
 $sql =
@@ -106,29 +105,17 @@ $sql =
   'ifnull(t.name,"NA") as tech, '.
   'site.name as site, ';
 
-$sql .=
+$sql .= sprintf(
   'sum(if(qcdata is null, 0, '.
-  'if(strcmp("IV_SKIN",substring_index(substring_index(qcdata,",",1),":",-1))=0,1,0))) as total_skin, ';
-
-$sql .=
-  'sum(if(qcdata is null, 0, '.
-  'if(strcmp("IV_ONE_LAYER",substring_index(substring_index(qcdata,",",1),":",-1))=0,1,0))) as total_one_layer, ';
-
-$sql .=
-  'sum(if(qcdata is null, 0, '.
-  'if(strcmp("IV_TWO_LAYERS",substring_index(substring_index(qcdata,",",1),":",-1))=0,1,0))) as total_two_layers, ';
+  'if(substring_index(substring_index(qcdata,",",1),":",-1)<%s,1,0))) as total_best_time_sub, ',$time_min);
 
 $sql .= sprintf(
   'sum(if(qcdata is null, 0, '.
-  'if(trim("}" from substring_index(substring_index(qcdata,",",4),":",-1))<%s,1,0))) as total_ratio_sub, ',$ratio_min);
+  'if(substring_index(substring_index(qcdata,",",1),":",-1) between %s and %s,1,0))) as total_best_time_par, ',$time_min,$time_max);
 
 $sql .= sprintf(
   'sum(if(qcdata is null, 0, '.
-  'if(trim("}" from substring_index(substring_index(qcdata,",",4),":",-1)) between %s and %s,1,0))) as total_ratio_par, ',$ratio_min,$ratio_max);
-
-$sql .= sprintf(
-  'sum(if(qcdata is null, 0, '.
-  'if(trim("}" from substring_index(qcdata,":",-1))>%s,1,0))) as total_ratio_sup, ',$ratio_max);
+  'if(substring_index(substring_index(qcdata,",",1),":",-1)>%s,1,0))) as total_best_time_sup, ',$time_max);
 
 $sql .= sprintf(
   'sum(case when strcmp(skip,"TechnicalProblem")=0 then 1 else 0 end) as total_skip_technical, '.
@@ -148,7 +135,7 @@ $sql .= sprintf(
   'left join site as s2 on t.site_id=s2.id '.
   'where (start_date between "%s" and "%s") '.
   'and rank=%d '.
-  'and s.name="hips_waist" '.
+  'and s.name="standing_balance" '.
   'group by site,tech', $begin_date, $end_date, $rank);
 
 $res = $db->get_all( $sql );
@@ -188,7 +175,7 @@ foreach($res as $row)
   $site_list[$site]['technicians'][$tech]=$row;
 }
 
-$qc_keys=array('total_skin','total_one_layer','total_two_layers','total_ratio_sub','total_ratio_par','total_ratio_sup');
+$qc_keys=array('total_best_time_sub','total_best_time_par','total_best_time_sup');
 $percent_keys = array('total_skip','total_missing','total_contraindicated');
 $all_total = $site_list['ALL']['totals']['total_interview'];
 foreach($site_list as $site=>$site_data)
@@ -281,7 +268,7 @@ $col_groups = array(
 
 $hide_qc = sprintf( '[%s]', implode(',',$col_groups['qc_group']) );
 $hide_skip = sprintf( '[%s]', implode(',',$col_groups['skips']) );
-$page_heading = sprintf( 'HIPS TO WAIST RESULTS - Wave %d (%s - %s)',$rank,$begin_date,$end_date);
+$page_heading = sprintf( 'STANDING BALANCE RESULTS - Wave %d (%s - %s)',$rank,$begin_date,$end_date);
 ?>
 
 <!doctype html>
@@ -363,12 +350,9 @@ $page_heading = sprintf( 'HIPS TO WAIST RESULTS - Wave %d (%s - %s)',$rank,$begi
     <h3><?php echo $page_heading?></h3>
     <ul>
       <?php
-        echo "<li>measurement over skin</li>";
-        echo "<li>measurement over one layer</li>";
-        echo "<li>measurement over two layers</li>";
-        echo "<li>hips to waist ratio sub: ratio < {$ratio_min} (mean - 3 x SD)</li>";
-        echo "<li>hips to waist ratio par: {$ratio_min} <= ratio <= {$ratio_max}</li>";
-        echo "<li>hips to waist ratio sup: ratio > {$ratio_max} (mean + 3 x SD)</li>";
+        echo "<li>best time sub: time < {$time_min} (mean - 2 x SD)</li>";
+        echo "<li>best time par: {$time_min} <= time <= {$time_max}</li>";
+        echo "<li>best time sup: time > {$time_max} (mean + 2 x SD)</li>";
       ?>
     </ul>
     <!--build the main summary table-->

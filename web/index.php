@@ -65,6 +65,11 @@ $date_ranges = json_encode($db->get_all( $sql ));
           $('#to, #from').datepicker('option','maxDate',date_ranges[num].max_date);
           $('#from').datepicker('option','defaultDate',date_ranges[num].min_date);
           $('#to').datepicker('option','defaultDate',date_ranges[num].max_date);
+          if(2==num) {
+            $('#stage option[value="scripts/sitting_heightTable.php"]').hide();
+          } else {
+            $('#stage option[value="scripts/sitting_heightTable.php"]').show();
+          }
           if(1==num) {
             $('#stage option[value="scripts/spine_bone_densityTable.php"]').hide();
           } else {
@@ -118,7 +123,9 @@ $date_ranges = json_encode($db->get_all( $sql ));
             <option value="scripts/hearingTable.php">Hearing</option>
             <option value="scripts/hips_waistTable.php">Hips Waist</option>
             <option value="scripts/retinal_scanTable.php">Retinal Scan</option>
+            <option value="scripts/sitting_heightTable.php">Sitting Height</option>
             <option value="scripts/spirometryTable.php">Spirometry</option>
+            <option value="scripts/standing_balanceTable.php">Standing Balance</option>
             <option value="scripts/standing_heightTable.php">Standing Height</option>
             <option value="scripts/tonometerTable.php">Tonometer</option>
             <option value="scripts/tugTable.php">TUG</option>
