@@ -944,7 +944,7 @@ res</attribute>
       </variable>
       <variable name="stage_contraindicated_forearm_bone_density" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">$group(&apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,&apos;ForearmBoneDensity&apos;,
+          <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f1.Participants:Admin.StageInstance.stage&apos;,&apos;ForearmBoneDensity&apos;,
 &apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
 ? 1 : 0</attribute>
         </attributes>
@@ -977,7 +977,7 @@ res</attribute>
       </variable>
       <variable name="data_missing_forearm_bone_density" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">var stage=newValue($group(&apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,&apos;ForearmBoneDensity&apos;,&apos;Admin.StageInstance.lastState&apos;).asSequence().last(),&apos;text&apos;)
+          <attribute name="script" valueType="text">var stage=newValue($group(&apos;clsa-dcs-f1.Participants:Admin.StageInstance.stage&apos;,&apos;ForearmBoneDensity&apos;,&apos;Admin.StageInstance.lastState&apos;).asSequence().last(),&apos;text&apos;)
 $this(&apos;data_qac_forearm_bone_density&apos;).isNull().and(stage.any(&apos;Skipped&apos;,&apos;NotApplicable&apos;).not()).value() ? 1 : 0</attribute>
         </attributes>
       </variable>
@@ -1002,7 +1002,7 @@ res</attribute>
       </variable>
       <variable name="stage_contraindicated_whole_body_bone_density" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">$group(&apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,&apos;WholeBodyBoneDensity&apos;,
+          <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f1.Participants:Admin.StageInstance.stage&apos;,&apos;WholeBodyBoneDensity&apos;,
 &apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
 ? 1 : 0</attribute>
         </attributes>
@@ -1035,7 +1035,7 @@ res</attribute>
       </variable>
       <variable name="data_missing_whole_body_bone_density" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">var stage=newValue($group(&apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,&apos;WholeBodyBoneDensity&apos;,&apos;Admin.StageInstance.lastState&apos;).asSequence().last(),&apos;text&apos;)
+          <attribute name="script" valueType="text">var stage=newValue($group(&apos;clsa-dcs-f1.Participants:Admin.StageInstance.stage&apos;,&apos;WholeBodyBoneDensity&apos;,&apos;Admin.StageInstance.lastState&apos;).asSequence().last(),&apos;text&apos;)
 $this(&apos;data_qac_whole_body_bone_density&apos;).isNull().and(stage.any(&apos;Skipped&apos;,&apos;NotApplicable&apos;).not()).value() ? 1 : 0</attribute>
         </attributes>
       </variable>
@@ -1056,7 +1056,7 @@ res</attribute>
       </variable>
       <variable name="stage_contraindicated_dual_hip_bone_density" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">$group(&apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,&apos;DualHipBoneDensity&apos;,
+          <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f1.Participants:Admin.StageInstance.stage&apos;,&apos;DualHipBoneDensity&apos;,
 &apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
 ? 1 : 0</attribute>
         </attributes>
@@ -1089,7 +1089,7 @@ res</attribute>
       </variable>
       <variable name="data_missing_dual_hip_bone_density" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">var stage=newValue($group(&apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,&apos;DualHipBoneDensity&apos;,&apos;Admin.StageInstance.lastState&apos;).asSequence().last(),&apos;text&apos;)
+          <attribute name="script" valueType="text">var stage=newValue($group(&apos;clsa-dcs-f1.Participants:Admin.StageInstance.stage&apos;,&apos;DualHipBoneDensity&apos;,&apos;Admin.StageInstance.lastState&apos;).asSequence().last(),&apos;text&apos;)
 $this(&apos;data_qac_dual_hip_bone_density&apos;).isNull().and(stage.any(&apos;Skipped&apos;,&apos;NotApplicable&apos;).not()).value() ? 1 : 0</attribute>
         </attributes>
       </variable>
@@ -1117,7 +1117,7 @@ res</attribute>
       </variable>
       <variable name="stage_contraindicated_carotid_intima" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">$group(&apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,&apos;CarotidIntima&apos;,
+          <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f1.Participants:Admin.StageInstance.stage&apos;,&apos;CarotidIntima&apos;,
 &apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
 ? 1 : 0</attribute>
         </attributes>
@@ -1150,7 +1150,7 @@ res</attribute>
       </variable>
       <variable name="data_missing_carotid_intima" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">var stage=newValue($group(&apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,&apos;CarotidIntima&apos;,&apos;Admin.StageInstance.lastState&apos;).asSequence().last(),&apos;text&apos;)
+          <attribute name="script" valueType="text">var stage=newValue($group(&apos;clsa-dcs-f1.Participants:Admin.StageInstance.stage&apos;,&apos;CarotidIntima&apos;,&apos;Admin.StageInstance.lastState&apos;).asSequence().last(),&apos;text&apos;)
 $this(&apos;data_qac_carotid_intima&apos;).isNull().and(stage.any(&apos;Skipped&apos;,&apos;NotApplicable&apos;).not()).value() ? 1 : 0</attribute>
         </attributes>
       </variable>
@@ -1699,5 +1699,5 @@ res</attribute>
     </variables>
   </variables>
   <created valueType="datetime">2018-05-03T13:40:11.946-04</created>
-  <updated valueType="datetime">2018-06-20T11:51:37.231-04</updated>
+  <updated valueType="datetime">2018-06-20T13:28:09.525-04</updated>
 </org.obiba.magma.views.View>

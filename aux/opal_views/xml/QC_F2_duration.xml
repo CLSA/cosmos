@@ -297,11 +297,11 @@ res</attribute>
         <attributes>
           <attribute name="script" valueType="text">var res=null
 if( $group(
-  &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
+  &apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,
   &apos;ForearmBoneDensity&apos;,
   &apos;Admin.StageInstance.lastState&apos;).asSequence().last().any(&apos;Skipped&apos;,&apos;NotApplicable&apos;).not().value() ) {
   res=$group(
-    &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
+    &apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,
     &apos;ForearmBoneDensity&apos;,
     &apos;Admin.StageInstance.duration&apos;).asSequence().last()
   if(res.isNull().not().value()) {
@@ -315,11 +315,11 @@ res</attribute>
         <attributes>
           <attribute name="script" valueType="text">var res=null
 if( $group(
-  &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
+  &apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,
   &apos;WholeBodyBoneDensity&apos;,
   &apos;Admin.StageInstance.lastState&apos;).asSequence().last().any(&apos;Skipped&apos;,&apos;NotApplicable&apos;).not().value() ) {
   res=$group(
-    &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
+    &apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,
     &apos;WholeBodyBoneDensity&apos;,
     &apos;Admin.StageInstance.duration&apos;).asSequence().last()
   if(res.isNull().not().value()) {
@@ -333,11 +333,11 @@ res</attribute>
         <attributes>
           <attribute name="script" valueType="text">var res=null
 if( $group(
-  &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
+  &apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,
   &apos;DualHipBoneDensity&apos;,
   &apos;Admin.StageInstance.lastState&apos;).asSequence().last().any(&apos;Skipped&apos;,&apos;NotApplicable&apos;).not().value() ) {
   res=$group(
-    &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
+    &apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,
     &apos;DualHipBoneDensity&apos;,
     &apos;Admin.StageInstance.duration&apos;).asSequence().last()
   if(res.isNull().not().value()) {
@@ -351,11 +351,11 @@ res</attribute>
         <attributes>
           <attribute name="script" valueType="text">var res=null
 if( $group(
-  &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
+  &apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,
   &apos;CarotidIntima&apos;,
   &apos;Admin.StageInstance.lastState&apos;).asSequence().last().any(&apos;Skipped&apos;,&apos;NotApplicable&apos;).not().value() ) {
   res=$group(
-    &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
+    &apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,
     &apos;CarotidIntima&apos;,
     &apos;Admin.StageInstance.duration&apos;).asSequence().last()
   if(res.isNull().not().value()) {

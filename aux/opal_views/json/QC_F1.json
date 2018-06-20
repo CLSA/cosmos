@@ -909,7 +909,6 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_technician_lateral_bone_density", 
-        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1070,7 +1069,6 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_technician_spine_bone_density", 
-        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1151,7 +1149,6 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_technician_forearm_bone_density", 
-        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1160,7 +1157,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "$group('clsa-dcs.Participants:Admin.StageInstance.stage','ForearmBoneDensity',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable').value() \n? 1 : 0"
+            "value": "$group('clsa-dcs-f1.Participants:Admin.StageInstance.stage','ForearmBoneDensity',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable').value() \n? 1 : 0"
           }
         ], 
         "entityType": "Participant", 
@@ -1192,7 +1189,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var stage=newValue($group('clsa-dcs.Participants:Admin.StageInstance.stage','ForearmBoneDensity','Admin.StageInstance.lastState').asSequence().last(),'text')\n$this('data_qac_forearm_bone_density').isNull().and(stage.any('Skipped','NotApplicable').not()).value() ? 1 : 0"
+            "value": "var stage=newValue($group('clsa-dcs-f1.Participants:Admin.StageInstance.stage','ForearmBoneDensity','Admin.StageInstance.lastState').asSequence().last(),'text')\n$this('data_qac_forearm_bone_density').isNull().and(stage.any('Skipped','NotApplicable').not()).value() ? 1 : 0"
           }
         ], 
         "entityType": "Participant", 
@@ -1232,7 +1229,6 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_technician_whole_body_bone_density", 
-        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1241,7 +1237,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "$group('clsa-dcs.Participants:Admin.StageInstance.stage','WholeBodyBoneDensity',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable').value() \n? 1 : 0"
+            "value": "$group('clsa-dcs-f1.Participants:Admin.StageInstance.stage','WholeBodyBoneDensity',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable').value() \n? 1 : 0"
           }
         ], 
         "entityType": "Participant", 
@@ -1273,7 +1269,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var stage=newValue($group('clsa-dcs.Participants:Admin.StageInstance.stage','WholeBodyBoneDensity','Admin.StageInstance.lastState').asSequence().last(),'text')\n$this('data_qac_whole_body_bone_density').isNull().and(stage.any('Skipped','NotApplicable').not()).value() ? 1 : 0"
+            "value": "var stage=newValue($group('clsa-dcs-f1.Participants:Admin.StageInstance.stage','WholeBodyBoneDensity','Admin.StageInstance.lastState').asSequence().last(),'text')\n$this('data_qac_whole_body_bone_density').isNull().and(stage.any('Skipped','NotApplicable').not()).value() ? 1 : 0"
           }
         ], 
         "entityType": "Participant", 
@@ -1313,7 +1309,6 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_technician_dual_hip_bone_density", 
-        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1322,7 +1317,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "$group('clsa-dcs.Participants:Admin.StageInstance.stage','DualHipBoneDensity',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable').value() \n? 1 : 0"
+            "value": "$group('clsa-dcs-f1.Participants:Admin.StageInstance.stage','DualHipBoneDensity',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable').value() \n? 1 : 0"
           }
         ], 
         "entityType": "Participant", 
@@ -1354,7 +1349,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var stage=newValue($group('clsa-dcs.Participants:Admin.StageInstance.stage','DualHipBoneDensity','Admin.StageInstance.lastState').asSequence().last(),'text')\n$this('data_qac_dual_hip_bone_density').isNull().and(stage.any('Skipped','NotApplicable').not()).value() ? 1 : 0"
+            "value": "var stage=newValue($group('clsa-dcs-f1.Participants:Admin.StageInstance.stage','DualHipBoneDensity','Admin.StageInstance.lastState').asSequence().last(),'text')\n$this('data_qac_dual_hip_bone_density').isNull().and(stage.any('Skipped','NotApplicable').not()).value() ? 1 : 0"
           }
         ], 
         "entityType": "Participant", 
@@ -1394,7 +1389,6 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_technician_carotid_intima", 
-        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1403,7 +1397,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "$group('clsa-dcs.Participants:Admin.StageInstance.stage','CarotidIntima',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable').value() \n? 1 : 0"
+            "value": "$group('clsa-dcs-f1.Participants:Admin.StageInstance.stage','CarotidIntima',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable').value() \n? 1 : 0"
           }
         ], 
         "entityType": "Participant", 
@@ -1435,7 +1429,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var stage=newValue($group('clsa-dcs.Participants:Admin.StageInstance.stage','CarotidIntima','Admin.StageInstance.lastState').asSequence().last(),'text')\n$this('data_qac_carotid_intima').isNull().and(stage.any('Skipped','NotApplicable').not()).value() ? 1 : 0"
+            "value": "var stage=newValue($group('clsa-dcs-f1.Participants:Admin.StageInstance.stage','CarotidIntima','Admin.StageInstance.lastState').asSequence().last(),'text')\n$this('data_qac_carotid_intima').isNull().and(stage.any('Skipped','NotApplicable').not()).value() ? 1 : 0"
           }
         ], 
         "entityType": "Participant", 

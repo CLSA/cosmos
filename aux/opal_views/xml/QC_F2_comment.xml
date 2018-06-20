@@ -1511,7 +1511,7 @@ for(var i=0; i&lt;v1.size(); i++) {
   a_str.push(v2.valueAt(i).value())
   e_str.push((v3.valueAt(i).isNull().value()?&apos;SeeComment&apos;:v3.valueAt(i).value().slice(14)))
 }
-var v4=$(&apos;clsa-dcs-f1.CarotidIntima:InstrumentRun.skipComment&apos;)
+var v4=$(&apos;clsa-dcs-f2.CarotidIntima:InstrumentRun.skipComment&apos;)
 if(v4.isNull().not().value()) {
   c_str.push(v4.value())
   a_str.push(&apos;SKIP&apos;)
