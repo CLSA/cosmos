@@ -796,7 +796,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "// the user who ran the onyx bone density qnaire stage just before\n// performing the dexa exam\n//\nvar q=$('clsa-dcs.QuestionnaireBoneDensity:QuestionnaireRun.user').lowerCase()\n\n// the user who ran the dexa image transfer to onyx, who may or may not\n// be the same user who actually performed the exam\n//\nvar lu=$('clsa-dcs-images.LateralBoneDensity:InstrumentRun.user').whenNull(\n  $group('Admin.Action.stage','LateralBoneDensity','Admin.Action.user').asSequence().last()).lowerCase()\n\nq.whenNull(lu.whenNull(null))"
+            "value": "$('clsa-dcs-images.LateralBoneDensity:InstrumentRun.user').whenNull(\n  $group('Admin.Action.stage','LateralBoneDensity','Admin.Action.user').asSequence().last()).lowerCase()"
           }
         ], 
         "entityType": "Participant", 
@@ -804,6 +804,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_technician_lateral_bone_density", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -956,7 +957,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "// the user who ran the onyx bone density qnaire stage just before\n// performing the dexa exam\n//\nvar q=$('clsa-dcs.QuestionnaireBoneDensity:QuestionnaireRun.user').lowerCase()\n\n// the user who ran the dexa image transfer to onyx, who may or may not\n// be the same user who actually performed the exam\n//\nvar lu=$('clsa-dcs-images.ForearmBoneDensity:InstrumentRun.user').whenNull(\n  $group('Admin.Action.stage','ForearmBoneDensity','Admin.Action.user').asSequence().last()).lowerCase()\n\nq.whenNull(lu.whenNull(null))"
+            "value": "$('clsa-dcs-images.ForearmBoneDensity:InstrumentRun.user').whenNull(\n  $group('Admin.Action.stage','ForearmBoneDensity','Admin.Action.user').asSequence().last()).lowerCase()"
           }
         ], 
         "entityType": "Participant", 
@@ -964,6 +965,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_technician_forearm_bone_density", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1036,7 +1038,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "// the user who ran the onyx bone density qnaire stage just before\n// performing the dexa exam\n//\nvar q=$('clsa-dcs.QuestionnaireBoneDensity:QuestionnaireRun.user').lowerCase()\n\n// the user who ran the dexa image transfer to onyx, who may or may not\n// be the same user who actually performed the exam\n//\nvar lu=$('clsa-dcs-images.WholeBodyBoneDensity:InstrumentRun.user').whenNull(\n  $group('Admin.Action.stage','WholeBodyBoneDensity','Admin.Action.user').asSequence().last()).lowerCase()\n\nq.whenNull(lu.whenNull(null))"
+            "value": "$('clsa-dcs-images.WholeBodyBoneDensity:InstrumentRun.user').whenNull(\n  $group('Admin.Action.stage','WholeBodyBoneDensity','Admin.Action.user').asSequence().last()).lowerCase()"
           }
         ], 
         "entityType": "Participant", 
@@ -1044,6 +1046,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_technician_whole_body_bone_density", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1116,7 +1119,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "// the user who ran the onyx bone density qnaire stage just before\n// performing the dexa exam\n//\nvar q=$('clsa-dcs.QuestionnaireBoneDensity:QuestionnaireRun.user').lowerCase()\n\n// the user who ran the dexa image transfer to onyx, who may or may not\n// be the same user who actually performed the exam\n//\nvar lu=$('clsa-dcs-images.DualHipBoneDensity:InstrumentRun.user').whenNull(\n  $group('Admin.Action.stage','DualHipBoneDensity','Admin.Action.user').asSequence().last()).lowerCase()\n\nq.whenNull(lu.whenNull(null))"
+            "value": "$('clsa-dcs-images.DualHipBoneDensity:InstrumentRun.user').whenNull(\n  $group('Admin.Action.stage','DualHipBoneDensity','Admin.Action.user').asSequence().last()).lowerCase()"
           }
         ], 
         "entityType": "Participant", 
@@ -1124,6 +1127,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_technician_dual_hip_bone_density", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1196,7 +1200,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "// the user who ran the onyx bone density qnaire stage just before\n// performing the dexa exam\n//\nvar q=$('clsa-dcs.QuestionnaireBoneDensity:QuestionnaireRun.user').lowerCase()\n\n// the user who ran the dexa image transfer to onyx, who may or may not\n// be the same user who actually performed the exam\n//\nvar lu=$('clsa-dcs-images.CarotidIntima:InstrumentRun.user').whenNull(\n  $group('Admin.Action.stage','CarotidIntima','Admin.Action.user').asSequence().last()).lowerCase()\n\nq.whenNull(lu.whenNull(null))"
+            "value": "$('clsa-dcs-images.CarotidIntima:InstrumentRun.user').whenNull(\n  $group('Admin.Action.stage','CarotidIntima','Admin.Action.user').asSequence().last()).lowerCase()"
           }
         ], 
         "entityType": "Participant", 
@@ -1204,6 +1208,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_technician_carotid_intima", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"

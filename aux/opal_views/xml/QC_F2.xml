@@ -85,7 +85,7 @@
   <select class="org.obiba.magma.views.support.NoneClause"/>
   <where class="org.obiba.magma.js.views.JavascriptClause">
     <scriptName>customScript</scriptName>
-    <script>$lastupdate().before(newValue(&apos;2018-06-18&apos;,&apos;date&apos;)).and($lastupdate().after(newValue(&apos;2018-04-01&apos;,&apos;date&apos;)))</script>
+    <script>$lastupdate().before(newValue(&apos;2018-06-20&apos;,&apos;date&apos;)).and($lastupdate().after(newValue(&apos;2015-04-01&apos;,&apos;date&apos;)))</script>
   </where>
   <variables class="org.obiba.magma.js.views.VariablesClause">
     <variables class="linked-hash-set">
@@ -780,18 +780,8 @@ res</attribute>
       </variable>
       <variable name="stage_technician_lateral_bone_density" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">// the user who ran the onyx bone density qnaire stage just before
-// performing the dexa exam
-//
-var q=$(&apos;clsa-dcs-f2.QuestionnaireBoneDensity:QuestionnaireRun.user&apos;).lowerCase()
-
-// the user who ran the dexa image transfer to onyx, who may or may not
-// be the same user who actually performed the exam
-//
-var lu=$(&apos;clsa-dcs-images-f2.LateralBoneDensity:InstrumentRun.user&apos;).whenNull(
-  $group(&apos;Admin.Action.stage&apos;,&apos;LateralBoneDensity&apos;,&apos;Admin.Action.user&apos;).asSequence().last()).lowerCase()
-
-q.whenNull(lu.whenNull(null))</attribute>
+          <attribute name="script" valueType="text">$(&apos;clsa-dcs-images-f2.LateralBoneDensity:InstrumentRun.user&apos;).whenNull(
+  $group(&apos;Admin.Action.stage&apos;,&apos;LateralBoneDensity&apos;,&apos;Admin.Action.user&apos;).asSequence().last()).lowerCase()</attribute>
         </attributes>
       </variable>
       <variable name="stage_contraindicated_lateral_bone_density" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
@@ -900,18 +890,8 @@ res</attribute>
       </variable>
       <variable name="stage_technician_spine_bone_density" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">// the user who ran the onyx bone density qnaire stage just before
-// performing the dexa exam
-//
-var q=$(&apos;clsa-dcs-f2.QuestionnaireBoneDensity:QuestionnaireRun.user&apos;).lowerCase()
-
-// the user who ran the dexa image transfer to onyx, who may or may not
-// be the same user who actually performed the exam
-//
-var lu=$(&apos;clsa-dcs-images-f2.SpineBoneDensity:InstrumentRun.user&apos;).whenNull(
-  $group(&apos;Admin.Action.stage&apos;,&apos;SpineBoneDensity&apos;,&apos;Admin.Action.user&apos;).asSequence().last()).lowerCase()
-
-q.whenNull(lu.whenNull(null))</attribute>
+          <attribute name="script" valueType="text">$(&apos;clsa-dcs-images-f2.SpineBoneDensity:InstrumentRun.user&apos;).whenNull(
+  $group(&apos;Admin.Action.stage&apos;,&apos;SpineBoneDensity&apos;,&apos;Admin.Action.user&apos;).asSequence().last()).lowerCase()</attribute>
         </attributes>
       </variable>
       <variable name="stage_contraindicated_spine_bone_density" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
@@ -964,18 +944,8 @@ res</attribute>
       </variable>
       <variable name="stage_technician_forearm_bone_density" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">// the user who ran the onyx bone density qnaire stage just before
-// performing the dexa exam
-//
-var q=$(&apos;clsa-dcs.QuestionnaireBoneDensity:QuestionnaireRun.user&apos;).lowerCase()
-
-// the user who ran the dexa image transfer to onyx, who may or may not
-// be the same user who actually performed the exam
-//
-var lu=$(&apos;clsa-dcs-images-f2.ForearmBoneDensity:InstrumentRun.user&apos;).whenNull(
-  $group(&apos;Admin.Action.stage&apos;,&apos;ForearmBoneDensity&apos;,&apos;Admin.Action.user&apos;).asSequence().last()).lowerCase()
-
-q.whenNull(lu.whenNull(null))</attribute>
+          <attribute name="script" valueType="text">$(&apos;clsa-dcs-images-f2.ForearmBoneDensity:InstrumentRun.user&apos;).whenNull(
+  $group(&apos;Admin.Action.stage&apos;,&apos;ForearmBoneDensity&apos;,&apos;Admin.Action.user&apos;).asSequence().last()).lowerCase()</attribute>
         </attributes>
       </variable>
       <variable name="stage_contraindicated_forearm_bone_density" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
@@ -1032,18 +1002,8 @@ res</attribute>
       </variable>
       <variable name="stage_technician_whole_body_bone_density" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">// the user who ran the onyx bone density qnaire stage just before
-// performing the dexa exam
-//
-var q=$(&apos;clsa-dcs.QuestionnaireBoneDensity:QuestionnaireRun.user&apos;).lowerCase()
-
-// the user who ran the dexa image transfer to onyx, who may or may not
-// be the same user who actually performed the exam
-//
-var lu=$(&apos;clsa-dcs-images-f2.WholeBodyBoneDensity:InstrumentRun.user&apos;).whenNull(
-  $group(&apos;Admin.Action.stage&apos;,&apos;WholeBodyBoneDensity&apos;,&apos;Admin.Action.user&apos;).asSequence().last()).lowerCase()
-
-q.whenNull(lu.whenNull(null))</attribute>
+          <attribute name="script" valueType="text">$(&apos;clsa-dcs-images-f2.WholeBodyBoneDensity:InstrumentRun.user&apos;).whenNull(
+  $group(&apos;Admin.Action.stage&apos;,&apos;WholeBodyBoneDensity&apos;,&apos;Admin.Action.user&apos;).asSequence().last()).lowerCase()</attribute>
         </attributes>
       </variable>
       <variable name="stage_contraindicated_whole_body_bone_density" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
@@ -1096,18 +1056,8 @@ res</attribute>
       </variable>
       <variable name="stage_technician_dual_hip_bone_density" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">// the user who ran the onyx bone density qnaire stage just before
-// performing the dexa exam
-//
-var q=$(&apos;clsa-dcs.QuestionnaireBoneDensity:QuestionnaireRun.user&apos;).lowerCase()
-
-// the user who ran the dexa image transfer to onyx, who may or may not
-// be the same user who actually performed the exam
-//
-var lu=$(&apos;clsa-dcs-images-f2.DualHipBoneDensity:InstrumentRun.user&apos;).whenNull(
-  $group(&apos;Admin.Action.stage&apos;,&apos;DualHipBoneDensity&apos;,&apos;Admin.Action.user&apos;).asSequence().last()).lowerCase()
-
-q.whenNull(lu.whenNull(null))</attribute>
+          <attribute name="script" valueType="text">$(&apos;clsa-dcs-images-f2.DualHipBoneDensity:InstrumentRun.user&apos;).whenNull(
+  $group(&apos;Admin.Action.stage&apos;,&apos;DualHipBoneDensity&apos;,&apos;Admin.Action.user&apos;).asSequence().last()).lowerCase()</attribute>
         </attributes>
       </variable>
       <variable name="stage_contraindicated_dual_hip_bone_density" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
@@ -1167,18 +1117,8 @@ res</attribute>
       </variable>
       <variable name="stage_technician_carotid_intima" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">// the user who ran the onyx bone density qnaire stage just before
-// performing the dexa exam
-//
-var q=$(&apos;clsa-dcs.QuestionnaireBoneDensity:QuestionnaireRun.user&apos;).lowerCase()
-
-// the user who ran the dexa image transfer to onyx, who may or may not
-// be the same user who actually performed the exam
-//
-var lu=$(&apos;clsa-dcs-images-f2.CarotidIntima:InstrumentRun.user&apos;).whenNull(
-  $group(&apos;Admin.Action.stage&apos;,&apos;CarotidIntima&apos;,&apos;Admin.Action.user&apos;).asSequence().last()).lowerCase()
-
-q.whenNull(lu.whenNull(null))</attribute>
+          <attribute name="script" valueType="text">$(&apos;clsa-dcs-images-f2.CarotidIntima:InstrumentRun.user&apos;).whenNull(
+  $group(&apos;Admin.Action.stage&apos;,&apos;CarotidIntima&apos;,&apos;Admin.Action.user&apos;).asSequence().last()).lowerCase()</attribute>
         </attributes>
       </variable>
       <variable name="stage_contraindicated_carotid_intima" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
@@ -1438,71 +1378,6 @@ if(!i.isNull().and(w.isNull(),h.isNull(),r.isNull()).value()) {
   str+=&apos;ratio:&apos;+(r.isNull().value()?&apos;0&apos;:r.round(3).value())+&apos;}&apos;
   res=newValue(str,&apos;text&apos;)
 }  
-res</attribute>
-        </attributes>
-      </variable>
-      <variable name="stage_technician_neuropsychological_battery" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
-        <attributes>
-          <attribute name="script" valueType="text">$(&apos;clsa-dcs-f2.StroopFAS:QuestionnaireRun.user&apos;).whenNull(
-  $group(&apos;Admin.Action.stage&apos;,&apos;StroopFAS&apos;,&apos;Admin.Action.user&apos;).asSequence().last()).lowerCase()</attribute>
-        </attributes>
-      </variable>
-      <variable name="stage_contraindicated_neuropsychological_battery" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
-        <attributes>
-          <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,&apos;StroopFAS&apos;,
-&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
-? 1 : 0</attribute>
-        </attributes>
-      </variable>
-      <variable name="stage_skip_neuropsychological_battery" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
-        <attributes>
-          <attribute name="script" valueType="text">// if a dcs by phone visit, then the skip will be &quot;ModifiedVisit&quot;
-var res=null
-if($(&apos;clsa-dcs-f2.Participants:DCS_PHONE&apos;).isNull().not().value()){
-  res=newValue(&apos;ModifiedVisit&apos;,&apos;text&apos;)
-} else {
-  var v1=$group(&apos;Admin.Action.stage&apos;,&apos;StroopFAS&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
-  var v2=$group(&apos;Admin.Action.stage&apos;,&apos;StroopFAS&apos;,&apos;Admin.Action.eventReason&apos;).asSequence()
-
-  var arr=[]  // string array of events
-  for(var i=0; i&lt;v1.size(); i++) {
-    if(v1.valueAt(i).any(&apos;SKIP&apos;).not().value() ||
-       v2.valueAt(i).isNull().value()) continue
-    var key=v2.valueAt(i).value().slice(14)
-    if(-1==arr.indexOf(key))
-      arr.push(key)
-  }
-  if(undefined!==arr &amp;&amp; 0&lt;arr.length) {
-    res=newValue(arr.pop(),&apos;text&apos;)  
-  }
-}
-res</attribute>
-        </attributes>
-      </variable>
-      <variable name="data_missing_neuropsychological_battery" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
-        <attributes>
-          <attribute name="script" valueType="text">var stage=newValue($group(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,&apos;StroopFAS&apos;,&apos;Admin.StageInstance.lastState&apos;).asSequence().last(),&apos;text&apos;)
-$this(&apos;data_qac_neuropsychological_battery&apos;).isNull().and(stage.any(&apos;Skipped&apos;,&apos;NotApplicable&apos;).not()).value() ? 1 : 0</attribute>
-        </attributes>
-      </variable>
-      <variable name="data_qac_neuropsychological_battery" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
-        <attributes>
-          <attribute name="script" valueType="text">var d=$(&apos;clsa-dcs-f2.StroopFAS:STP_DOTREC_COF2&apos;)
-var w=$(&apos;clsa-dcs-f2.StroopFAS:STP_WORREC_COF2&apos;)
-var c=$(&apos;clsa-dcs-f2.StroopFAS:STP_COLREC_COF2&apos;)
-var f=$(&apos;clsa-dcs-f2.StroopFAS:FAS_FREC_COF2&apos;)
-var a=$(&apos;clsa-dcs-f2.StroopFAS:FAS_AREC_COF2&apos;)
-var s=$(&apos;clsa-dcs-f2.StroopFAS:FAS_SREC_COF2&apos;)
-var res=null
-if(!d.isNull().and(w.isNull(),c.isNull(),f.isNull(),a.isNull(),s.isNull()).value()) {
-  var str=&apos;{filesize_dot:&apos;+(d.isNull().value()?&apos;0&apos;:d.length().value())+&apos;,&apos;
-  str+=&apos;filesize_wor:&apos;+(w.isNull().value()?&apos;0&apos;:w.length().value())+&apos;,&apos;
-  str+=&apos;filesize_col:&apos;+(c.isNull().value()?&apos;0&apos;:c.length().value())+&apos;,&apos;
-  str+=&apos;filesize_f:&apos;+(f.isNull().value()?&apos;0&apos;:f.length().value())+&apos;,&apos;
-  str+=&apos;filesize_a:&apos;+(a.isNull().value()?&apos;0&apos;:a.length().value())+&apos;,&apos;
-  str+=&apos;filesize_s:&apos;+(s.isNull().value()?&apos;0&apos;:s.length().value())+&apos;}&apos;
-  res=newValue(str,&apos;text&apos;)
-}
 res</attribute>
         </attributes>
       </variable>
@@ -1818,8 +1693,73 @@ if(4!=n) {
 res</attribute>
         </attributes>
       </variable>
+      <variable name="stage_technician_stroop_fas" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;clsa-dcs-f2.StroopFAS:QuestionnaireRun.user&apos;).whenNull(
+  $group(&apos;Admin.Action.stage&apos;,&apos;StroopFAS&apos;,&apos;Admin.Action.user&apos;).asSequence().last()).lowerCase()</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_contraindicated_stroop_fas" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,&apos;StroopFAS&apos;,
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
+? 1 : 0</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_skip_stroop_fas" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">// if a dcs by phone visit, then the skip will be &quot;ModifiedVisit&quot;
+var res=null
+if($(&apos;clsa-dcs-f2.Participants:DCS_PHONE&apos;).isNull().not().value()){
+  res=newValue(&apos;ModifiedVisit&apos;,&apos;text&apos;)
+} else {
+  var v1=$group(&apos;Admin.Action.stage&apos;,&apos;StroopFAS&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
+  var v2=$group(&apos;Admin.Action.stage&apos;,&apos;StroopFAS&apos;,&apos;Admin.Action.eventReason&apos;).asSequence()
+
+  var arr=[]  // string array of events
+  for(var i=0; i&lt;v1.size(); i++) {
+    if(v1.valueAt(i).any(&apos;SKIP&apos;).not().value() ||
+       v2.valueAt(i).isNull().value()) continue
+    var key=v2.valueAt(i).value().slice(14)
+    if(-1==arr.indexOf(key))
+      arr.push(key)
+  }
+  if(undefined!==arr &amp;&amp; 0&lt;arr.length) {
+    res=newValue(arr.pop(),&apos;text&apos;)  
+  }
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="data_missing_stroop_fas" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var stage=newValue($group(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,&apos;StroopFAS&apos;,&apos;Admin.StageInstance.lastState&apos;).asSequence().last(),&apos;text&apos;)
+$this(&apos;data_qac_stroop_fas&apos;).isNull().and(stage.any(&apos;Skipped&apos;,&apos;NotApplicable&apos;).not()).value() ? 1 : 0</attribute>
+        </attributes>
+      </variable>
+      <variable name="data_qac_stroop_fas" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var d=$(&apos;clsa-dcs-f2.StroopFAS:STP_DOTREC_COF2&apos;)
+var w=$(&apos;clsa-dcs-f2.StroopFAS:STP_WORREC_COF2&apos;)
+var c=$(&apos;clsa-dcs-f2.StroopFAS:STP_COLREC_COF2&apos;)
+var f=$(&apos;clsa-dcs-f2.StroopFAS:FAS_FREC_COF2&apos;)
+var a=$(&apos;clsa-dcs-f2.StroopFAS:FAS_AREC_COF2&apos;)
+var s=$(&apos;clsa-dcs-f2.StroopFAS:FAS_SREC_COF2&apos;)
+var res=null
+if(!d.isNull().and(w.isNull(),c.isNull(),f.isNull(),a.isNull(),s.isNull()).value()) {
+  var str=&apos;{filesize_dot:&apos;+(d.isNull().value()?&apos;0&apos;:d.length().value())+&apos;,&apos;
+  str+=&apos;filesize_wor:&apos;+(w.isNull().value()?&apos;0&apos;:w.length().value())+&apos;,&apos;
+  str+=&apos;filesize_col:&apos;+(c.isNull().value()?&apos;0&apos;:c.length().value())+&apos;,&apos;
+  str+=&apos;filesize_f:&apos;+(f.isNull().value()?&apos;0&apos;:f.length().value())+&apos;,&apos;
+  str+=&apos;filesize_a:&apos;+(a.isNull().value()?&apos;0&apos;:a.length().value())+&apos;,&apos;
+  str+=&apos;filesize_s:&apos;+(s.isNull().value()?&apos;0&apos;:s.length().value())+&apos;}&apos;
+  res=newValue(str,&apos;text&apos;)
+}
+res</attribute>
+        </attributes>
+      </variable>
     </variables>
   </variables>
   <created valueType="datetime">2018-05-15T13:40:50.956-04</created>
-  <updated valueType="datetime">2018-06-19T20:05:45.456-04</updated>
+  <updated valueType="datetime">2018-06-20T11:58:34.676-04</updated>
 </org.obiba.magma.views.View>

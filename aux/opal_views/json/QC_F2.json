@@ -381,7 +381,6 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_skip_ecg", 
-        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -462,7 +461,6 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_skip_cognitive_test", 
-        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -543,7 +541,6 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_skip_hearing", 
-        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -624,7 +621,6 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_skip_tonometer", 
-        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -785,7 +781,6 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_skip_retinal_scan_left", 
-        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -866,7 +861,6 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_skip_retinal_scan_right", 
-        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -907,7 +901,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "// the user who ran the onyx bone density qnaire stage just before\n// performing the dexa exam\n//\nvar q=$('clsa-dcs-f2.QuestionnaireBoneDensity:QuestionnaireRun.user').lowerCase()\n\n// the user who ran the dexa image transfer to onyx, who may or may not\n// be the same user who actually performed the exam\n//\nvar lu=$('clsa-dcs-images-f2.LateralBoneDensity:InstrumentRun.user').whenNull(\n  $group('Admin.Action.stage','LateralBoneDensity','Admin.Action.user').asSequence().last()).lowerCase()\n\nq.whenNull(lu.whenNull(null))"
+            "value": "$('clsa-dcs-images-f2.LateralBoneDensity:InstrumentRun.user').whenNull(\n  $group('Admin.Action.stage','LateralBoneDensity','Admin.Action.user').asSequence().last()).lowerCase()"
           }
         ], 
         "entityType": "Participant", 
@@ -915,6 +909,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_technician_lateral_bone_density", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -947,7 +942,6 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_skip_lateral_bone_density", 
-        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1068,7 +1062,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "// the user who ran the onyx bone density qnaire stage just before\n// performing the dexa exam\n//\nvar q=$('clsa-dcs-f2.QuestionnaireBoneDensity:QuestionnaireRun.user').lowerCase()\n\n// the user who ran the dexa image transfer to onyx, who may or may not\n// be the same user who actually performed the exam\n//\nvar lu=$('clsa-dcs-images-f2.SpineBoneDensity:InstrumentRun.user').whenNull(\n  $group('Admin.Action.stage','SpineBoneDensity','Admin.Action.user').asSequence().last()).lowerCase()\n\nq.whenNull(lu.whenNull(null))"
+            "value": "$('clsa-dcs-images-f2.SpineBoneDensity:InstrumentRun.user').whenNull(\n  $group('Admin.Action.stage','SpineBoneDensity','Admin.Action.user').asSequence().last()).lowerCase()"
           }
         ], 
         "entityType": "Participant", 
@@ -1076,6 +1070,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_technician_spine_bone_density", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1108,7 +1103,6 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_skip_spine_bone_density", 
-        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1149,7 +1143,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "// the user who ran the onyx bone density qnaire stage just before\n// performing the dexa exam\n//\nvar q=$('clsa-dcs.QuestionnaireBoneDensity:QuestionnaireRun.user').lowerCase()\n\n// the user who ran the dexa image transfer to onyx, who may or may not\n// be the same user who actually performed the exam\n//\nvar lu=$('clsa-dcs-images-f2.ForearmBoneDensity:InstrumentRun.user').whenNull(\n  $group('Admin.Action.stage','ForearmBoneDensity','Admin.Action.user').asSequence().last()).lowerCase()\n\nq.whenNull(lu.whenNull(null))"
+            "value": "$('clsa-dcs-images-f2.ForearmBoneDensity:InstrumentRun.user').whenNull(\n  $group('Admin.Action.stage','ForearmBoneDensity','Admin.Action.user').asSequence().last()).lowerCase()"
           }
         ], 
         "entityType": "Participant", 
@@ -1157,6 +1151,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_technician_forearm_bone_density", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1189,7 +1184,6 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_skip_forearm_bone_density", 
-        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1230,7 +1224,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "// the user who ran the onyx bone density qnaire stage just before\n// performing the dexa exam\n//\nvar q=$('clsa-dcs.QuestionnaireBoneDensity:QuestionnaireRun.user').lowerCase()\n\n// the user who ran the dexa image transfer to onyx, who may or may not\n// be the same user who actually performed the exam\n//\nvar lu=$('clsa-dcs-images-f2.WholeBodyBoneDensity:InstrumentRun.user').whenNull(\n  $group('Admin.Action.stage','WholeBodyBoneDensity','Admin.Action.user').asSequence().last()).lowerCase()\n\nq.whenNull(lu.whenNull(null))"
+            "value": "$('clsa-dcs-images-f2.WholeBodyBoneDensity:InstrumentRun.user').whenNull(\n  $group('Admin.Action.stage','WholeBodyBoneDensity','Admin.Action.user').asSequence().last()).lowerCase()"
           }
         ], 
         "entityType": "Participant", 
@@ -1238,6 +1232,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_technician_whole_body_bone_density", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1270,7 +1265,6 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_skip_whole_body_bone_density", 
-        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1311,7 +1305,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "// the user who ran the onyx bone density qnaire stage just before\n// performing the dexa exam\n//\nvar q=$('clsa-dcs.QuestionnaireBoneDensity:QuestionnaireRun.user').lowerCase()\n\n// the user who ran the dexa image transfer to onyx, who may or may not\n// be the same user who actually performed the exam\n//\nvar lu=$('clsa-dcs-images-f2.DualHipBoneDensity:InstrumentRun.user').whenNull(\n  $group('Admin.Action.stage','DualHipBoneDensity','Admin.Action.user').asSequence().last()).lowerCase()\n\nq.whenNull(lu.whenNull(null))"
+            "value": "$('clsa-dcs-images-f2.DualHipBoneDensity:InstrumentRun.user').whenNull(\n  $group('Admin.Action.stage','DualHipBoneDensity','Admin.Action.user').asSequence().last()).lowerCase()"
           }
         ], 
         "entityType": "Participant", 
@@ -1319,6 +1313,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_technician_dual_hip_bone_density", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1351,7 +1346,6 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_skip_dual_hip_bone_density", 
-        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1392,7 +1386,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "// the user who ran the onyx bone density qnaire stage just before\n// performing the dexa exam\n//\nvar q=$('clsa-dcs.QuestionnaireBoneDensity:QuestionnaireRun.user').lowerCase()\n\n// the user who ran the dexa image transfer to onyx, who may or may not\n// be the same user who actually performed the exam\n//\nvar lu=$('clsa-dcs-images-f2.CarotidIntima:InstrumentRun.user').whenNull(\n  $group('Admin.Action.stage','CarotidIntima','Admin.Action.user').asSequence().last()).lowerCase()\n\nq.whenNull(lu.whenNull(null))"
+            "value": "$('clsa-dcs-images-f2.CarotidIntima:InstrumentRun.user').whenNull(\n  $group('Admin.Action.stage','CarotidIntima','Admin.Action.user').asSequence().last()).lowerCase()"
           }
         ], 
         "entityType": "Participant", 
@@ -1400,6 +1394,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_technician_carotid_intima", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1432,7 +1427,6 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_skip_carotid_intima", 
-        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1513,7 +1507,6 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_skip_tug", 
-        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1594,7 +1587,6 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_skip_chair_rise", 
-        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1715,86 +1707,6 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "$('clsa-dcs-f2.StroopFAS:QuestionnaireRun.user').whenNull(\n  $group('Admin.Action.stage','StroopFAS','Admin.Action.user').asSequence().last()).lowerCase()"
-          }
-        ], 
-        "entityType": "Participant", 
-        "index": 0, 
-        "isRepeatable": false, 
-        "mimeType": "", 
-        "name": "stage_technician_neuropsychological_battery", 
-        "referencedEntityType": "", 
-        "unit": "", 
-        "valueType": "text"
-      }, 
-      {
-        "attributes": [
-          {
-            "name": "script", 
-            "value": "$group('clsa-dcs-f2.Participants:Admin.StageInstance.stage','StroopFAS',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable').value() \n? 1 : 0"
-          }
-        ], 
-        "entityType": "Participant", 
-        "index": 0, 
-        "isRepeatable": false, 
-        "mimeType": "", 
-        "name": "stage_contraindicated_neuropsychological_battery", 
-        "referencedEntityType": "", 
-        "unit": "", 
-        "valueType": "integer"
-      }, 
-      {
-        "attributes": [
-          {
-            "name": "script", 
-            "value": "// if a dcs by phone visit, then the skip will be \"ModifiedVisit\"\nvar res=null\nif($('clsa-dcs-f2.Participants:DCS_PHONE').isNull().not().value()){\n  res=newValue('ModifiedVisit','text')\n} else {\n  var v1=$group('Admin.Action.stage','StroopFAS','Admin.Action.actionType').asSequence()\n  var v2=$group('Admin.Action.stage','StroopFAS','Admin.Action.eventReason').asSequence()\n\n  var arr=[]  // string array of events\n  for(var i=0; i<v1.size(); i++) {\n    if(v1.valueAt(i).any('SKIP').not().value() ||\n       v2.valueAt(i).isNull().value()) continue\n    var key=v2.valueAt(i).value().slice(14)\n    if(-1==arr.indexOf(key))\n      arr.push(key)\n  }\n  if(undefined!==arr && 0<arr.length) {\n    res=newValue(arr.pop(),'text')  \n  }\n}\nres"
-          }
-        ], 
-        "entityType": "Participant", 
-        "index": 0, 
-        "isRepeatable": false, 
-        "mimeType": "", 
-        "name": "stage_skip_neuropsychological_battery", 
-        "referencedEntityType": "", 
-        "unit": "", 
-        "valueType": "text"
-      }, 
-      {
-        "attributes": [
-          {
-            "name": "script", 
-            "value": "var stage=newValue($group('clsa-dcs-f2.Participants:Admin.StageInstance.stage','StroopFAS','Admin.StageInstance.lastState').asSequence().last(),'text')\n$this('data_qac_neuropsychological_battery').isNull().and(stage.any('Skipped','NotApplicable').not()).value() ? 1 : 0"
-          }
-        ], 
-        "entityType": "Participant", 
-        "index": 0, 
-        "isRepeatable": false, 
-        "mimeType": "", 
-        "name": "data_missing_neuropsychological_battery", 
-        "referencedEntityType": "", 
-        "unit": "", 
-        "valueType": "integer"
-      }, 
-      {
-        "attributes": [
-          {
-            "name": "script", 
-            "value": "var d=$('clsa-dcs-f2.StroopFAS:STP_DOTREC_COF2')\nvar w=$('clsa-dcs-f2.StroopFAS:STP_WORREC_COF2')\nvar c=$('clsa-dcs-f2.StroopFAS:STP_COLREC_COF2')\nvar f=$('clsa-dcs-f2.StroopFAS:FAS_FREC_COF2')\nvar a=$('clsa-dcs-f2.StroopFAS:FAS_AREC_COF2')\nvar s=$('clsa-dcs-f2.StroopFAS:FAS_SREC_COF2')\nvar res=null\nif(!d.isNull().and(w.isNull(),c.isNull(),f.isNull(),a.isNull(),s.isNull()).value()) {\n  var str='{filesize_dot:'+(d.isNull().value()?'0':d.length().value())+','\n  str+='filesize_wor:'+(w.isNull().value()?'0':w.length().value())+','\n  str+='filesize_col:'+(c.isNull().value()?'0':c.length().value())+','\n  str+='filesize_f:'+(f.isNull().value()?'0':f.length().value())+','\n  str+='filesize_a:'+(a.isNull().value()?'0':a.length().value())+','\n  str+='filesize_s:'+(s.isNull().value()?'0':s.length().value())+'}'\n  res=newValue(str,'text')\n}\nres"
-          }
-        ], 
-        "entityType": "Participant", 
-        "index": 0, 
-        "isRepeatable": false, 
-        "mimeType": "", 
-        "name": "data_qac_neuropsychological_battery", 
-        "referencedEntityType": "", 
-        "unit": "", 
-        "valueType": "text"
-      }, 
-      {
-        "attributes": [
-          {
-            "name": "script", 
             "value": "$('clsa-dcs-f2.StandingBalance:QuestionnaireRun.user').whenNull(\n  $group('Admin.Action.stage','StandingBalance','Admin.Action.user').asSequence().last()).lowerCase()"
           }
         ], 
@@ -1835,7 +1747,6 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_skip_standing_balance", 
-        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1916,7 +1827,6 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_skip_four_metre_walk", 
-        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1997,7 +1907,6 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_skip_sitting_height", 
-        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -2078,7 +1987,6 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_skip_vision_acuity", 
-        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -2111,6 +2019,91 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_vision_acuity", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$('clsa-dcs-f2.StroopFAS:QuestionnaireRun.user').whenNull(\n  $group('Admin.Action.stage','StroopFAS','Admin.Action.user').asSequence().last()).lowerCase()"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_technician_stroop_fas", 
+        "occurrenceGroup": "", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$group('clsa-dcs-f2.Participants:Admin.StageInstance.stage','StroopFAS',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable').value() \n? 1 : 0"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_contraindicated_stroop_fas", 
+        "occurrenceGroup": "", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "integer"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "// if a dcs by phone visit, then the skip will be \"ModifiedVisit\"\nvar res=null\nif($('clsa-dcs-f2.Participants:DCS_PHONE').isNull().not().value()){\n  res=newValue('ModifiedVisit','text')\n} else {\n  var v1=$group('Admin.Action.stage','StroopFAS','Admin.Action.actionType').asSequence()\n  var v2=$group('Admin.Action.stage','StroopFAS','Admin.Action.eventReason').asSequence()\n\n  var arr=[]  // string array of events\n  for(var i=0; i<v1.size(); i++) {\n    if(v1.valueAt(i).any('SKIP').not().value() ||\n       v2.valueAt(i).isNull().value()) continue\n    var key=v2.valueAt(i).value().slice(14)\n    if(-1==arr.indexOf(key))\n      arr.push(key)\n  }\n  if(undefined!==arr && 0<arr.length) {\n    res=newValue(arr.pop(),'text')  \n  }\n}\nres"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_skip_stroop_fas", 
+        "occurrenceGroup": "", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "var stage=newValue($group('clsa-dcs-f2.Participants:Admin.StageInstance.stage','StroopFAS','Admin.StageInstance.lastState').asSequence().last(),'text')\n$this('data_qac_stroop_fas').isNull().and(stage.any('Skipped','NotApplicable').not()).value() ? 1 : 0"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "data_missing_stroop_fas", 
+        "occurrenceGroup": "", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "integer"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "var d=$('clsa-dcs-f2.StroopFAS:STP_DOTREC_COF2')\nvar w=$('clsa-dcs-f2.StroopFAS:STP_WORREC_COF2')\nvar c=$('clsa-dcs-f2.StroopFAS:STP_COLREC_COF2')\nvar f=$('clsa-dcs-f2.StroopFAS:FAS_FREC_COF2')\nvar a=$('clsa-dcs-f2.StroopFAS:FAS_AREC_COF2')\nvar s=$('clsa-dcs-f2.StroopFAS:FAS_SREC_COF2')\nvar res=null\nif(!d.isNull().and(w.isNull(),c.isNull(),f.isNull(),a.isNull(),s.isNull()).value()) {\n  var str='{filesize_dot:'+(d.isNull().value()?'0':d.length().value())+','\n  str+='filesize_wor:'+(w.isNull().value()?'0':w.length().value())+','\n  str+='filesize_col:'+(c.isNull().value()?'0':c.length().value())+','\n  str+='filesize_f:'+(f.isNull().value()?'0':f.length().value())+','\n  str+='filesize_a:'+(a.isNull().value()?'0':a.length().value())+','\n  str+='filesize_s:'+(s.isNull().value()?'0':s.length().value())+'}'\n  res=newValue(str,'text')\n}\nres"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "data_qac_stroop_fas", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"

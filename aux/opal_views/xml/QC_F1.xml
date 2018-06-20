@@ -774,18 +774,8 @@ res</attribute>
       </variable>
       <variable name="stage_technician_lateral_bone_density" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">// the user who ran the onyx bone density qnaire stage just before
-// performing the dexa exam
-//
-var q=$(&apos;clsa-dcs-f1.QuestionnaireBoneDensity:QuestionnaireRun.user&apos;).lowerCase()
-
-// the user who ran the dexa image transfer to onyx, who may or may not
-// be the same user who actually performed the exam
-//
-var lu=$(&apos;clsa-dcs-images-f1.LateralBoneDensity:InstrumentRun.user&apos;).whenNull(
-  $group(&apos;Admin.Action.stage&apos;,&apos;LateralBoneDensity&apos;,&apos;Admin.Action.user&apos;).asSequence().last()).lowerCase()
-
-q.whenNull(lu.whenNull(null))</attribute>
+          <attribute name="script" valueType="text">$(&apos;clsa-dcs-images-f1.LateralBoneDensity:InstrumentRun.user&apos;).whenNull(
+  $group(&apos;Admin.Action.stage&apos;,&apos;LateralBoneDensity&apos;,&apos;Admin.Action.user&apos;).asSequence().last()).lowerCase()</attribute>
         </attributes>
       </variable>
       <variable name="stage_contraindicated_lateral_bone_density" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
@@ -894,18 +884,8 @@ res</attribute>
       </variable>
       <variable name="stage_technician_spine_bone_density" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">// the user who ran the onyx bone density qnaire stage just before
-// performing the dexa exam
-//
-var q=$(&apos;clsa-dcs-f1.QuestionnaireBoneDensity:QuestionnaireRun.user&apos;).lowerCase()
-
-// the user who ran the dexa image transfer to onyx, who may or may not
-// be the same user who actually performed the exam
-//
-var lu=$(&apos;clsa-dcs-images-f1.SpineBoneDensity:InstrumentRun.user&apos;).whenNull(
-  $group(&apos;Admin.Action.stage&apos;,&apos;SpineBoneDensity&apos;,&apos;Admin.Action.user&apos;).asSequence().last()).lowerCase()
-
-q.whenNull(lu.whenNull(null))</attribute>
+          <attribute name="script" valueType="text">$(&apos;clsa-dcs-images-f1.SpineBoneDensity:InstrumentRun.user&apos;).whenNull(
+  $group(&apos;Admin.Action.stage&apos;,&apos;SpineBoneDensity&apos;,&apos;Admin.Action.user&apos;).asSequence().last()).lowerCase()</attribute>
         </attributes>
       </variable>
       <variable name="stage_contraindicated_spine_bone_density" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
@@ -958,18 +938,8 @@ res</attribute>
       </variable>
       <variable name="stage_technician_forearm_bone_density" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">// the user who ran the onyx bone density qnaire stage just before
-// performing the dexa exam
-//
-var q=$(&apos;clsa-dcs.QuestionnaireBoneDensity:QuestionnaireRun.user&apos;).lowerCase()
-
-// the user who ran the dexa image transfer to onyx, who may or may not
-// be the same user who actually performed the exam
-//
-var lu=$(&apos;clsa-dcs-images-f1.ForearmBoneDensity:InstrumentRun.user&apos;).whenNull(
-  $group(&apos;Admin.Action.stage&apos;,&apos;ForearmBoneDensity&apos;,&apos;Admin.Action.user&apos;).asSequence().last()).lowerCase()
-
-q.whenNull(lu.whenNull(null))</attribute>
+          <attribute name="script" valueType="text">$(&apos;clsa-dcs-images-f1.ForearmBoneDensity:InstrumentRun.user&apos;).whenNull(
+  $group(&apos;Admin.Action.stage&apos;,&apos;ForearmBoneDensity&apos;,&apos;Admin.Action.user&apos;).asSequence().last()).lowerCase()</attribute>
         </attributes>
       </variable>
       <variable name="stage_contraindicated_forearm_bone_density" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
@@ -1026,18 +996,8 @@ res</attribute>
       </variable>
       <variable name="stage_technician_whole_body_bone_density" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">// the user who ran the onyx bone density qnaire stage just before
-// performing the dexa exam
-//
-var q=$(&apos;clsa-dcs.QuestionnaireBoneDensity:QuestionnaireRun.user&apos;).lowerCase()
-
-// the user who ran the dexa image transfer to onyx, who may or may not
-// be the same user who actually performed the exam
-//
-var lu=$(&apos;clsa-dcs-images-f1.WholeBodyBoneDensity:InstrumentRun.user&apos;).whenNull(
-  $group(&apos;Admin.Action.stage&apos;,&apos;WholeBodyBoneDensity&apos;,&apos;Admin.Action.user&apos;).asSequence().last()).lowerCase()
-
-q.whenNull(lu.whenNull(null))</attribute>
+          <attribute name="script" valueType="text">$(&apos;clsa-dcs-images-f1.WholeBodyBoneDensity:InstrumentRun.user&apos;).whenNull(
+  $group(&apos;Admin.Action.stage&apos;,&apos;WholeBodyBoneDensity&apos;,&apos;Admin.Action.user&apos;).asSequence().last()).lowerCase()</attribute>
         </attributes>
       </variable>
       <variable name="stage_contraindicated_whole_body_bone_density" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
@@ -1090,18 +1050,8 @@ res</attribute>
       </variable>
       <variable name="stage_technician_dual_hip_bone_density" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">// the user who ran the onyx bone density qnaire stage just before
-// performing the dexa exam
-//
-var q=$(&apos;clsa-dcs.QuestionnaireBoneDensity:QuestionnaireRun.user&apos;).lowerCase()
-
-// the user who ran the dexa image transfer to onyx, who may or may not
-// be the same user who actually performed the exam
-//
-var lu=$(&apos;clsa-dcs-images-f1.DualHipBoneDensity:InstrumentRun.user&apos;).whenNull(
-  $group(&apos;Admin.Action.stage&apos;,&apos;DualHipBoneDensity&apos;,&apos;Admin.Action.user&apos;).asSequence().last()).lowerCase()
-
-q.whenNull(lu.whenNull(null))</attribute>
+          <attribute name="script" valueType="text">$(&apos;clsa-dcs-images-f1.DualHipBoneDensity:InstrumentRun.user&apos;).whenNull(
+  $group(&apos;Admin.Action.stage&apos;,&apos;DualHipBoneDensity&apos;,&apos;Admin.Action.user&apos;).asSequence().last()).lowerCase()</attribute>
         </attributes>
       </variable>
       <variable name="stage_contraindicated_dual_hip_bone_density" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
@@ -1161,18 +1111,8 @@ res</attribute>
       </variable>
       <variable name="stage_technician_carotid_intima" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">// the user who ran the onyx bone density qnaire stage just before
-// performing the dexa exam
-//
-var q=$(&apos;clsa-dcs.QuestionnaireBoneDensity:QuestionnaireRun.user&apos;).lowerCase()
-
-// the user who ran the dexa image transfer to onyx, who may or may not
-// be the same user who actually performed the exam
-//
-var lu=$(&apos;clsa-dcs-images-f1.CarotidIntima:InstrumentRun.user&apos;).whenNull(
-  $group(&apos;Admin.Action.stage&apos;,&apos;CarotidIntima&apos;,&apos;Admin.Action.user&apos;).asSequence().last()).lowerCase()
-
-q.whenNull(lu.whenNull(null))</attribute>
+          <attribute name="script" valueType="text">$(&apos;clsa-dcs-images-f1.CarotidIntima:InstrumentRun.user&apos;).whenNull(
+  $group(&apos;Admin.Action.stage&apos;,&apos;CarotidIntima&apos;,&apos;Admin.Action.user&apos;).asSequence().last()).lowerCase()</attribute>
         </attributes>
       </variable>
       <variable name="stage_contraindicated_carotid_intima" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
@@ -1759,5 +1699,5 @@ res</attribute>
     </variables>
   </variables>
   <created valueType="datetime">2018-05-03T13:40:11.946-04</created>
-  <updated valueType="datetime">2018-06-19T19:52:51.702-04</updated>
+  <updated valueType="datetime">2018-06-20T11:51:37.231-04</updated>
 </org.obiba.magma.views.View>
