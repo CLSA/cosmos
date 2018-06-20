@@ -309,7 +309,8 @@ res</attribute>
         <attributes>
           <attribute name="script" valueType="text">// if a dcs by phone visit, then the skip will be &quot;ModifiedVisit&quot;
 var res=null
-if($(&apos;clsa-dcs-f2.Participants:DCS_PHONE&apos;).isNull().not().value()){
+if($(&apos;clsa-dcs-f2.Participants:DCS_PHONE&apos;).isNull().and(
+   $(&apos;clsa-dcs-f2.Participants:DCSatHOME&apos;).isNull()).not().value()){
   res=newValue(&apos;ModifiedVisit&apos;,&apos;text&apos;)
 } else {
   var v1=$group(&apos;Admin.Action.stage&apos;,&apos;ECG&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
@@ -370,7 +371,8 @@ res</attribute>
         <attributes>
           <attribute name="script" valueType="text">// if a dcs by phone visit, then the skip will be &quot;ModifiedVisit&quot;
 var res=null
-if($(&apos;clsa-dcs-f2.Participants:DCS_PHONE&apos;).isNull().not().value()){
+if($(&apos;clsa-dcs-f2.Participants:DCS_PHONE&apos;).isNull().and(
+   $(&apos;clsa-dcs-f2.Participants:DCSatHOME&apos;).isNull()).not().value()){
   res=newValue(&apos;ModifiedVisit&apos;,&apos;text&apos;)
 } else {
   var v1=$group(&apos;Admin.Action.stage&apos;,&apos;CognitiveTest&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
@@ -423,7 +425,8 @@ res</attribute>
         <attributes>
           <attribute name="script" valueType="text">// if a dcs by phone visit, then the skip will be &quot;ModifiedVisit&quot;
 var res=null
-if($(&apos;clsa-dcs-f2.Participants:DCS_PHONE&apos;).isNull().not().value()){
+if($(&apos;clsa-dcs-f2.Participants:DCS_PHONE&apos;).isNull().and(
+   $(&apos;clsa-dcs-f2.Participants:DCSatHOME&apos;).isNull()).not().value()){
   res=newValue(&apos;ModifiedVisit&apos;,&apos;text&apos;)
 } else {
   var v1=$group(&apos;Admin.Action.stage&apos;,&apos;Hearing&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
@@ -495,7 +498,8 @@ res = (0 == count.RIGHT &amp;&amp; 0 == count.LEFT &amp;&amp;
         <attributes>
           <attribute name="script" valueType="text">// if a dcs by phone visit, then the skip will be &quot;ModifiedVisit&quot;
 var res=null
-if($(&apos;clsa-dcs-f2.Participants:DCS_PHONE&apos;).isNull().not().value()){
+if($(&apos;clsa-dcs-f2.Participants:DCS_PHONE&apos;).isNull().and(
+   $(&apos;clsa-dcs-f2.Participants:DCSatHOME&apos;).isNull()).not().value()){
   res=newValue(&apos;ModifiedVisit&apos;,&apos;text&apos;)
 } else {
   var v1=$group(&apos;Admin.Action.stage&apos;,&apos;Tonometer&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
@@ -681,7 +685,8 @@ res</attribute>
         <attributes>
           <attribute name="script" valueType="text">// if a dcs by phone visit, then the skip will be &quot;ModifiedVisit&quot;
 var res=null
-if($(&apos;clsa-dcs-f2.Participants:DCS_PHONE&apos;).isNull().not().value()){
+if($(&apos;clsa-dcs-f2.Participants:DCS_PHONE&apos;).isNull().and(
+   $(&apos;clsa-dcs-f2.Participants:DCSatHOME&apos;).isNull()).not().value()){
   res=newValue(&apos;ModifiedVisit&apos;,&apos;text&apos;)
 } else {
   var v1=$group(&apos;Admin.Action.stage&apos;,&apos;RetinalScanLeft&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
@@ -735,7 +740,8 @@ res</attribute>
         <attributes>
           <attribute name="script" valueType="text">// if a dcs by phone visit, then the skip will be &quot;ModifiedVisit&quot;
 var res=null
-if($(&apos;clsa-dcs-f2.Participants:DCS_PHONE&apos;).isNull().not().value()){
+if($(&apos;clsa-dcs-f2.Participants:DCS_PHONE&apos;).isNull().and(
+   $(&apos;clsa-dcs-f2.Participants:DCSatHOME&apos;).isNull()).not().value()){
   res=newValue(&apos;ModifiedVisit&apos;,&apos;text&apos;)
 } else {
   var v1=$group(&apos;Admin.Action.stage&apos;,&apos;RetinalScanRight&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
@@ -799,7 +805,8 @@ q.whenNull(lu.whenNull(null))</attribute>
         <attributes>
           <attribute name="script" valueType="text">// if a dcs by phone visit, then the skip will be &quot;ModifiedVisit&quot;
 var res=null
-if($(&apos;clsa-dcs-f2.Participants:DCS_PHONE&apos;).isNull().not().value()){
+if($(&apos;clsa-dcs-f2.Participants:DCS_PHONE&apos;).isNull().and(
+   $(&apos;clsa-dcs-f2.Participants:DCSatHOME&apos;).isNull()).not().value()){
   res=newValue(&apos;ModifiedVisit&apos;,&apos;text&apos;)
 } else {
   var v1=$group(&apos;Admin.Action.stage&apos;,&apos;LateralBoneDensity&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
@@ -918,7 +925,8 @@ q.whenNull(lu.whenNull(null))</attribute>
         <attributes>
           <attribute name="script" valueType="text">// if a dcs by phone visit, then the skip will be &quot;ModifiedVisit&quot;
 var res=null
-if($(&apos;clsa-dcs-f2.Participants:DCS_PHONE&apos;).isNull().not().value()){
+if($(&apos;clsa-dcs-f2.Participants:DCS_PHONE&apos;).isNull().and(
+   $(&apos;clsa-dcs-f2.Participants:DCSatHOME&apos;).isNull()).not().value()){
   res=newValue(&apos;ModifiedVisit&apos;,&apos;text&apos;)
 } else {
   var v1=$group(&apos;Admin.Action.stage&apos;,&apos;SpineBoneDensity&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
@@ -981,7 +989,8 @@ q.whenNull(lu.whenNull(null))</attribute>
         <attributes>
           <attribute name="script" valueType="text">// if a dcs by phone visit, then the skip will be &quot;ModifiedVisit&quot;
 var res=null
-if($(&apos;clsa-dcs-f2.Participants:DCS_PHONE&apos;).isNull().not().value()){
+if($(&apos;clsa-dcs-f2.Participants:DCS_PHONE&apos;).isNull().and(
+   $(&apos;clsa-dcs-f2.Participants:DCSatHOME&apos;).isNull()).not().value()){
   res=newValue(&apos;ModifiedVisit&apos;,&apos;text&apos;)
 } else {
   var v1=$group(&apos;Admin.Action.stage&apos;,&apos;ForearmBoneDensity&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
@@ -1048,7 +1057,8 @@ q.whenNull(lu.whenNull(null))</attribute>
         <attributes>
           <attribute name="script" valueType="text">// if a dcs by phone visit, then the skip will be &quot;ModifiedVisit&quot;
 var res=null
-if($(&apos;clsa-dcs-f2.Participants:DCS_PHONE&apos;).isNull().not().value()){
+if($(&apos;clsa-dcs-f2.Participants:DCS_PHONE&apos;).isNull().and(
+   $(&apos;clsa-dcs-f2.Participants:DCSatHOME&apos;).isNull()).not().value()){
   res=newValue(&apos;ModifiedVisit&apos;,&apos;text&apos;)
 } else {
   var v1=$group(&apos;Admin.Action.stage&apos;,&apos;WholeBodyBoneDensity&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
@@ -1111,7 +1121,8 @@ q.whenNull(lu.whenNull(null))</attribute>
         <attributes>
           <attribute name="script" valueType="text">// if a dcs by phone visit, then the skip will be &quot;ModifiedVisit&quot;
 var res=null
-if($(&apos;clsa-dcs-f2.Participants:DCS_PHONE&apos;).isNull().not().value()){
+if($(&apos;clsa-dcs-f2.Participants:DCS_PHONE&apos;).isNull().and(
+   $(&apos;clsa-dcs-f2.Participants:DCSatHOME&apos;).isNull()).not().value()){
   res=newValue(&apos;ModifiedVisit&apos;,&apos;text&apos;)
 } else {
   var v1=$group(&apos;Admin.Action.stage&apos;,&apos;DualHipBoneDensity&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
@@ -1181,7 +1192,8 @@ q.whenNull(lu.whenNull(null))</attribute>
         <attributes>
           <attribute name="script" valueType="text">// if a dcs by phone visit, then the skip will be &quot;ModifiedVisit&quot;
 var res=null
-if($(&apos;clsa-dcs-f2.Participants:DCS_PHONE&apos;).isNull().not().value()){
+if($(&apos;clsa-dcs-f2.Participants:DCS_PHONE&apos;).isNull().and(
+   $(&apos;clsa-dcs-f2.Participants:DCSatHOME&apos;).isNull()).not().value()){
   res=newValue(&apos;ModifiedVisit&apos;,&apos;text&apos;)
 } else {
   var v1=$group(&apos;Admin.Action.stage&apos;,&apos;CarotidIntima&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
@@ -1255,7 +1267,8 @@ res</attribute>
         <attributes>
           <attribute name="script" valueType="text">// if a dcs by phone visit, then the skip will be &quot;ModifiedVisit&quot;
 var res=null
-if($(&apos;clsa-dcs-f2.Participants:DCS_PHONE&apos;).isNull().not().value()){
+if($(&apos;clsa-dcs-f2.Participants:DCS_PHONE&apos;).isNull().and(
+   $(&apos;clsa-dcs-f2.Participants:DCSatHOME&apos;).isNull()).not().value()){
   res=newValue(&apos;ModifiedVisit&apos;,&apos;text&apos;)
 } else {
   var v1=$group(&apos;Admin.Action.stage&apos;,&apos;TUG&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
@@ -1319,7 +1332,8 @@ res</attribute>
         <attributes>
           <attribute name="script" valueType="text">// if a dcs by phone visit, then the skip will be &quot;ModifiedVisit&quot;
 var res=null
-if($(&apos;clsa-dcs-f2.Participants:DCS_PHONE&apos;).isNull().not().value()){
+if($(&apos;clsa-dcs-f2.Participants:DCS_PHONE&apos;).isNull().and(
+   $(&apos;clsa-dcs-f2.Participants:DCSatHOME&apos;).isNull()).not().value()){
   res=newValue(&apos;ModifiedVisit&apos;,&apos;text&apos;)
 } else {
   var v1=$group(&apos;Admin.Action.stage&apos;,&apos;ChairRise&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
@@ -1509,7 +1523,8 @@ res</attribute>
         <attributes>
           <attribute name="script" valueType="text">// if a dcs by phone visit, then the skip will be &quot;ModifiedVisit&quot;
 var res=null
-if($(&apos;clsa-dcs-f2.Participants:DCS_PHONE&apos;).isNull().not().value()){
+if($(&apos;clsa-dcs-f2.Participants:DCS_PHONE&apos;).isNull().and(
+   $(&apos;clsa-dcs-f2.Participants:DCSatHOME&apos;).isNull()).not().value()){
   res=newValue(&apos;ModifiedVisit&apos;,&apos;text&apos;)
 } else {
   var v1=$group(&apos;Admin.Action.stage&apos;,&apos;StandingBalance&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
@@ -1609,7 +1624,8 @@ res</attribute>
         <attributes>
           <attribute name="script" valueType="text">// if a dcs by phone visit, then the skip will be &quot;ModifiedVisit&quot;
 var res=null
-if($(&apos;clsa-dcs-f2.Participants:DCS_PHONE&apos;).isNull().not().value()){
+if($(&apos;clsa-dcs-f2.Participants:DCS_PHONE&apos;).isNull().and(
+   $(&apos;clsa-dcs-f2.Participants:DCSatHOME&apos;).isNull()).not().value()){
   res=newValue(&apos;ModifiedVisit&apos;,&apos;text&apos;)
 } else {
   var v1=$group(&apos;Admin.Action.stage&apos;,&apos;4mWalk&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
@@ -1671,20 +1687,26 @@ res</attribute>
       </variable>
       <variable name="stage_skip_sitting_height" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">var v1=$group(&apos;Admin.Action.stage&apos;,&apos;SittingHeight&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
-var v2=$group(&apos;Admin.Action.stage&apos;,&apos;SittingHeight&apos;,&apos;Admin.Action.eventReason&apos;).asSequence()
+          <attribute name="script" valueType="text">// if a dcs by phone visit, then the skip will be &quot;ModifiedVisit&quot;
 var res=null
-var arr=[]  // string array of events
-for(var i=0; i&lt;v1.size(); i++) {
-  if(v1.valueAt(i).any(&apos;SKIP&apos;).not().value() ||
-     v2.valueAt(i).isNull().value()) continue
-  var key=v2.valueAt(i).value().slice(14)
-  if(-1==arr.indexOf(key))
-    arr.push(key)
-}
-if(undefined!==arr &amp;&amp; 0&lt;arr.length) {
-  res=newValue(arr.pop(),&apos;text&apos;)  
-}
+if($(&apos;clsa-dcs-f2.Participants:DCS_PHONE&apos;).isNull().and(
+   $(&apos;clsa-dcs-f2.Participants:DCSatHOME&apos;).isNull()).not().value()){
+  res=newValue(&apos;ModifiedVisit&apos;,&apos;text&apos;)
+} else {
+  var v1=$group(&apos;Admin.Action.stage&apos;,&apos;SittingHeight&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
+  var v2=$group(&apos;Admin.Action.stage&apos;,&apos;SittingHeight&apos;,&apos;Admin.Action.eventReason&apos;).asSequence()
+  var arr=[]  // string array of events
+  for(var i=0; i&lt;v1.size(); i++) {
+    if(v1.valueAt(i).any(&apos;SKIP&apos;).not().value() ||
+       v2.valueAt(i).isNull().value()) continue
+    var key=v2.valueAt(i).value().slice(14)
+    if(-1==arr.indexOf(key))
+      arr.push(key)
+  }
+  if(undefined!==arr &amp;&amp; 0&lt;arr.length) {
+    res=newValue(arr.pop(),&apos;text&apos;)  
+  }
+}  
 res</attribute>
         </attributes>
       </variable>
@@ -1723,7 +1745,8 @@ res</attribute>
         <attributes>
           <attribute name="script" valueType="text">// if a dcs by phone visit, then the skip will be &quot;ModifiedVisit&quot;
 var res=null
-if($(&apos;clsa-dcs-f2.Participants:DCS_PHONE&apos;).isNull().not().value()){
+if($(&apos;clsa-dcs-f2.Participants:DCS_PHONE&apos;).isNull().and(
+   $(&apos;clsa-dcs-f2.Participants:DCSatHOME&apos;).isNull()).not().value()){
   res=newValue(&apos;ModifiedVisit&apos;,&apos;text&apos;)
 } else {
   var v1=$group(&apos;Admin.Action.stage&apos;,&apos;VisionAcuity&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
@@ -1798,5 +1821,5 @@ res</attribute>
     </variables>
   </variables>
   <created valueType="datetime">2018-05-15T13:40:50.956-04</created>
-  <updated valueType="datetime">2018-06-19T15:05:27.659-04</updated>
+  <updated valueType="datetime">2018-06-19T20:05:45.456-04</updated>
 </org.obiba.magma.views.View>
