@@ -53,10 +53,10 @@ $sql .= sprintf(
   'sum(case when strcmp(skip,"InterviewerDecision")=0 then 1 else 0 end) as total_skip_interviewer, '.
   'sum(case when strcmp(skip,"ModifiedVisit")=0 then 1 else 0 end) as total_skip_modified_visit, '.
   'sum(case when strcmp(skip,"SeeComment")=0 then 1 else 0 end) as total_skip_other, '.
-  'sum(if(skip is null,0,1)) as total_skip, '.
-  'sum(missing) as total_missing, '.
+  'sum(!isnull(skip)) as total_skip, '.
+  'sum(if(missing,isnull(skip),0)) as total_unexplained_missing, '.
   'sum(contraindicated) as total_contraindicated, '.
-  'sum(if(t.name is null,0,1)) as total_tech, '.
+  'sum(!isnull(t.name)) as total_tech, '.
   'sum(1) as total_interview '.
   'FROM interview i '.
   'join stage s on i.id=s.interview_id '.
@@ -106,7 +106,7 @@ foreach($res as $row)
 }
 
 $qc_keys=array('total_sitting_height_sub','total_sitting_height_par','total_sitting_height_sup');
-$percent_keys = array('total_trial_deviation','total_skip','total_missing','total_contraindicated');
+$percent_keys = array('total_trial_deviation','total_skip','total_unexplained_missing','total_contraindicated');
 $all_total = $site_list['ALL']['totals']['total_interview'];
 foreach($site_list as $site=>$site_data)
 {
@@ -198,7 +198,7 @@ $col_groups = array(
 
 $hide_qc = sprintf( '[%s]', implode(',',$col_groups['qc_group']) );
 $hide_skip = sprintf( '[%s]', implode(',',$col_groups['skips']) );
-$page_heading = sprintf( 'STANDING HEIGHT RESULTS - Wave %d (%s - %s)',$rank,$begin_date,$end_date);
+$page_heading = sprintf( 'SITTING HEIGHT RESULTS - Wave %d (%s - %s)',$rank,$begin_date,$end_date);
 ?>
 
 <!doctype html>

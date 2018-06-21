@@ -97,16 +97,15 @@ $sql .= sprintf(
   'sum(case when strcmp(skip,"InterviewerDecision")=0 then 1 else 0 end) as total_skip_interviewer, '.
   'sum(case when strcmp(skip,"ModifiedVisit")=0 then 1 else 0 end) as total_skip_modified_visit, '.
   'sum(case when strcmp(skip,"SeeComment")=0 then 1 else 0 end) as total_skip_other, '.
-  'sum(if(skip is null,0,1)) as total_skip, '.
-  'sum(missing) as total_missing, '.
+  'sum(!isnull(skip)) as total_skip, '.
+  'sum(if(missing,isnull(skip),0)) as total_unexplained_missing, '.
   'sum(contraindicated) as total_contraindicated, '.
-  'sum(if(t.name is null,0,1)) as total_tech, '.
+  'sum(!isnull(t.name)) as total_tech, '.
   'sum(1) as total_interview '.
   'FROM interview i '.
   'join stage s on i.id=s.interview_id '.
   'join site on site.id=i.site_id '.
-  'left join technician t on t.id=s.technician_id '.
-  'left join site as s2 on t.site_id=s2.id '.
+  'left join technician t on t.id=s.technician_id and t.site_id=site.id '.
   'where (start_date between "%s" and "%s") '.
   'and rank=%d '.
   'and s.name="hips_waist" '.
@@ -150,7 +149,7 @@ foreach($res as $row)
 }
 
 $qc_keys=array('total_skin','total_one_layer','total_two_layers','total_ratio_sub','total_ratio_par','total_ratio_sup');
-$percent_keys = array('total_skip','total_missing','total_contraindicated');
+$percent_keys = array('total_skip','total_unexplained_missing','total_contraindicated');
 $all_total = $site_list['ALL']['totals']['total_interview'];
 foreach($site_list as $site=>$site_data)
 {
