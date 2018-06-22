@@ -15,6 +15,8 @@ if(''==$begin_date || ''==$end_date ||
   die();
 }
 
+$stdev_scale = 3;
+
 $sql = sprintf(
   'select avg( '.
   '  if( qcdata is null, null, '.
@@ -48,7 +50,6 @@ $sql = sprintf(
   'and s.name="hips_waist"', $rank);
 
 $ratio_stdev = $db->get_one( $sql );
-
 if( false === $ratio_stdev )
 {
   echo sprintf('failed to get stddev hips to waist ratio: %s', $db->get_last_error() );
@@ -56,10 +57,8 @@ if( false === $ratio_stdev )
   die();
 }
 
-$ratio_min = round($ratio_avg - 3*$ratio_stdev,3);
-$ratio_min = $ratio_min < 0 ? 0 : $ratio_min;
-
-$ratio_max = round($ratio_avg + 3*$ratio_stdev,3);
+$ratio_min = max(round($ratio_avg - $stdev_scale*$ratio_stdev,3),0);
+$ratio_max = round($ratio_avg + $stdev_scale*$ratio_stdev,3);
 
 // build the main query
 $sql =
@@ -242,6 +241,13 @@ $col_groups = array(
 $hide_qc = sprintf( '[%s]', implode(',',$col_groups['qc_group']) );
 $hide_skip = sprintf( '[%s]', implode(',',$col_groups['skips']) );
 $page_heading = sprintf( 'HIPS TO WAIST RESULTS - Wave %d (%s - %s)',$rank,$begin_date,$end_date);
+$page_explanation=array();
+$page_explanation[]='<li>measurement over skin</li>';
+$page_explanation[]='<li>measurement over one layer</li>';
+$page_explanation[]='<li>measurement over two layers</li>';
+$page_explanation[]=sprintf('<li>hips to waist ratio sub: ratio < %s (mean - %s x SD)</li>',$ratio_min,$stdev_scale);
+$page_explanation[]=sprintf('<li>hips to waist ratio par: %s <= ratio <= %s</li>',$ratio_min,$ratio_max);
+$page_explanation[]=sprintf('<li>hips to waist ratio sup: ratio > %s (mean + %s x SD)</li>',$ratio_max,$stdev_scale);
 ?>
 
 <!doctype html>
@@ -323,12 +329,8 @@ $page_heading = sprintf( 'HIPS TO WAIST RESULTS - Wave %d (%s - %s)',$rank,$begi
     <h3><?php echo $page_heading?></h3>
     <ul>
       <?php
-        echo "<li>measurement over skin</li>";
-        echo "<li>measurement over one layer</li>";
-        echo "<li>measurement over two layers</li>";
-        echo "<li>hips to waist ratio sub: ratio < {$ratio_min} (mean - 3 x SD)</li>";
-        echo "<li>hips to waist ratio par: {$ratio_min} <= ratio <= {$ratio_max}</li>";
-        echo "<li>hips to waist ratio sup: ratio > {$ratio_max} (mean + 3 x SD)</li>";
+        foreach($page_explanation as $item)
+          echo $item;
       ?>
     </ul>
     <!--build the main summary table-->

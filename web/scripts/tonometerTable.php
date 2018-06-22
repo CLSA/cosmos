@@ -209,6 +209,12 @@ $col_groups = array(
 $hide_qc = sprintf( '[%s]', implode(',',$col_groups['qc_group']) );
 $hide_skip = sprintf( '[%s]', implode(',',$col_groups['skips']) );
 $page_heading = sprintf( 'TONOMETER RESULTS - Wave %d (%s - %s)',$rank,$begin_date,$end_date);
+$page_explanation = array();
+$page_explanation[]='<li>tonometer quality index 0 - 10</li>';
+$page_explanation[]='<li>quality low: q < 2.5</li>';
+$page_explanation[]='<li>quality medium: 2.5 <  q < 7.5</li>';
+$page_explanation[]='<li>quality high: q > 7.5</li>';
+$page_explanation[]='<li>curve availability if both pressure and applanation data are present</li>';
 ?>
 
 <!doctype html>
@@ -290,11 +296,8 @@ $page_heading = sprintf( 'TONOMETER RESULTS - Wave %d (%s - %s)',$rank,$begin_da
     <h3><?php echo $page_heading?></h3>
     <ul>
       <?php
-        echo "<li>tonometer quality index 0 - 10</li>";
-        echo "<li>quality low: q < 2.5</li>";
-        echo "<li>quality medium: 2.5 <  q < 7.5</li>";
-        echo "<li>quality high: q > 7.5</li>";
-        echo "<li>curve availability if both pressure and applanation data are present</li>";
+        foreach($page_explanation as $item)
+          echo $item;
       ?>
     </ul>
     <!--build the main summary table-->

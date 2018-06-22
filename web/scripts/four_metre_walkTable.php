@@ -16,6 +16,7 @@ if(''==$begin_date || ''==$end_date ||
 }
 
 $test_threshold = 10;
+$stdev_scale = 2;
 
 $sql = sprintf(
   'select avg( '.
@@ -48,7 +49,6 @@ $sql = sprintf(
   'and s.name="four_metre_walk"', $rank);
 
 $test_time_stdev = $db->get_one( $sql );
-
 if( false === $test_time_avg )
 {
   echo sprintf('failed to get stddev test time: %s', $db->get_last_error() );
@@ -56,9 +56,8 @@ if( false === $test_time_avg )
   die();
 }
 
-$test_time_min = intval(round($test_time_avg - 2*$test_time_stdev));
-
-$test_time_max = intval(round($test_time_avg + 2*$test_time_stdev));
+$test_time_min = intval(round($test_time_avg - $stdev_scale*$test_time_stdev));
+$test_time_max = intval(round($test_time_avg + $stdev_scale*$test_time_stdev));
 
 // build the main query
 $sql =
@@ -233,6 +232,12 @@ $col_groups = array(
 $hide_qc = sprintf( '[%s]', implode(',',$col_groups['qc_group']) );
 $hide_skip = sprintf( '[%s]', implode(',',$col_groups['skips']) );
 $page_heading = sprintf( '4m WALK RESULTS - Wave %d (%s - %s)',$rank,$begin_date,$end_date);
+$page_explanation=array();
+$page_explanation[]=sprintf('<li>test time sub: time < %s sec (mean - %s x SD)</li>',$test_time_min, $stdev_scale);
+$page_explanation[]=sprintf('<li>test time par: %s <= time <= %s sec</li>',$test_time_min,$test_time_max);
+$page_explanation[]=sprintf('<li>test time sup: time > %s sec (mean + %s x SD)</li>',$test_time_max, $stdev_scale);
+$page_explanation[]=sprintf(
+  '<li>congruency threshold = abs( tug - (1.5 x four metre walk + chair rise) ) > %s sec</li>',$test_threshold);
 ?>
 
 <!doctype html>
@@ -314,10 +319,8 @@ $page_heading = sprintf( '4m WALK RESULTS - Wave %d (%s - %s)',$rank,$begin_date
     <h3><?php echo $page_heading?></h3>
     <ul>
       <?php
-        echo "<li>test time sub: time < {$test_time_min} sec (mean - 2 x SD)</li>";
-        echo "<li>test time par: {$test_time_min} <= time <= {$test_time_max} sec</li>";
-        echo "<li>test time sup: time > {$test_time_max} sec (mean + 2 x SD)</li>";
-        echo "<li>congruency threshold = abs( tug - (1.5 x four metre walk + chair rise) ) > {$test_threshold} sec</li>";
+        foreach($page_explanation as $item)
+          echo $item;
       ?>
     </ul>
     <!--build the main summary table-->

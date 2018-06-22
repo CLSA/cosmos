@@ -46,7 +46,6 @@ $sql .=
   'sum(if(qcdata is null, 0, '.
   'if(trim("{" from substring_index(substring_index(qcdata,",",2),":",-1))!=2,1,0))) as total_trial_deviation, ';
 
-
 $sql .= sprintf(
   'sum(case when strcmp(skip,"TechnicalProblem")=0 then 1 else 0 end) as total_skip_technical, '.
   'sum(case when strcmp(skip,"ParticipantDecision")=0 then 1 else 0 end) as total_skip_participant, '.
@@ -199,6 +198,12 @@ $col_groups = array(
 $hide_qc = sprintf( '[%s]', implode(',',$col_groups['qc_group']) );
 $hide_skip = sprintf( '[%s]', implode(',',$col_groups['skips']) );
 $page_heading = sprintf( 'SITTING HEIGHT RESULTS - Wave %d (%s - %s)',$rank,$begin_date,$end_date);
+$page_explanation = array();
+$page_explanation[]='<li>Height deviation = standard deviation of repeated scale measurements</li>';
+$page_explanation[]=sprintf('<li>sitting height deviation sub: size < %s cm (scale resolution)</li>',$height_dev_min);
+$page_explanation[]=sprintf('<li>sitting height deviation par: %s <= size <= %s cm</li>',$height_dev_min,$height_dev_max);
+$page_explanation[]=sprintf('<li>sitting height deviation sup: size > %s cm</li>',$height_dev_max);
+$page_explanation[]='<li>Trial deviation signalled when more or less than 2 measurements made</li>';
 ?>
 
 <!doctype html>
@@ -279,13 +284,10 @@ $page_heading = sprintf( 'SITTING HEIGHT RESULTS - Wave %d (%s - %s)',$rank,$beg
   <body>
     <h3><?php echo $page_heading?></h3>
     <ul>
-      <li>Height deviation = standard deviation of repeated scale measurements<li>
       <?php
-        echo "<li>sitting_height deviation sub: size < {$height_dev_min} cm (scale resolution)</li>";
-        echo "<li>sitting_height deviation par: {$height_dev_min} <= size <= {$height_dev_max} cm</li>";
-        echo "<li>sitting_height deviation sup: size > {$height_dev_max} cm</li>";
+        foreach($page_explanation as $item)
+          echo $item;
       ?>
-      <li>Trial deviation signalled when more or less than 2 measurements made</li>
     </ul>
     <!--build the main summary table-->
     <table id='summary' class="clsa stripe cell-border order-column" style="width:100%">

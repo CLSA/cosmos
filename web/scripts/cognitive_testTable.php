@@ -14,87 +14,82 @@ if(''==$begin_date || ''==$end_date ||
   echo sprintf('error: invalid dates %s - %s',$begin_date,$end_date);
   die();
 }
-/*
-$sql = sprintf(
-  'select avg( '.
-  '  if( qcdata is null, null, '.
-  '      substring_index( '.
-  '        substring_index( '.
-  '          qcdata, ",", 1 ), ":", -1 ) ) ) as f_avg '.
-  'from interview i '.
-  'join stage s on i.id=s.interview_id '.
-  'where rank=%d '.
-  'and s.name="cognitive_test"', $rank);
 
-$filesize_avg = $db->get_one( $sql );
-if( false === $filesize_avg )
+$stdev_scale=2;
+$use_mode=true;
+$filesize_min=0;
+$filesize_max=0;
+if($use_mode)
 {
-  echo sprintf('failed to get average file size: %s', $db->get_last_error() );
-  echo $sql;
-  die();
+  $minsz=0;
+  $maxsz=0;
+  $mode=0;
+  $sql = sprintf(
+    'select fsz, count(fsz) as freq '.
+    'from ( '.
+    '  select '.
+    '    trim("}" from '.
+    '      substring_index(qcdata, ":", -1)) as fsz '.
+    '  from interview i '.
+    '  join stage s on i.id=s.interview_id '.
+    '  where rank=%d '.
+    '  and qcdata is not null '.
+    '  and s.name="cognitive_test" '.
+    ') as t '.
+    'where fsz>0 '.
+    'group by fsz '.
+    'order by freq desc limit 1', $rank);
+
+  $res = $db->get_row( $sql );
+  $mode = $res['fsz'];
+
+  $sql = sprintf(
+    'select min(fsz) as minsz, max(fsz) as maxsz '.
+    'from ( '.
+    '  select '.
+    '    trim("}" from substring_index(qcdata, ":", -1)) as fsz '.
+    '  from interview i '.
+    '  join stage s on i.id=s.interview_id '.
+    '  where rank=%d '.
+    '  and qcdata is not null '.
+    '  and s.name="cognitive_test" '.
+    ') as t '.
+    'where fsz>0', $rank);
+
+  $res = $db->get_row( $sql );
+  $minsz = $res['minsz'];
+  $maxsz = $res['maxsz'];
+  $filesize_min = max(intval($minsz + 0.5*($mode-$minsz)),0);
+  $filesize_max = intval($mode + 0.5*($maxsz-$mode));
 }
-
-$sql = sprintf(
-  'select stddev( '.
-  '  if( qcdata is null, null, '.
-  '      substring_index( '.
-  '        substring_index( '.
-  '          qcdata, ",", 1 ), ":", -1 ) ) ) as f_std '.
-  'from interview i '.
-  'join stage s on i.id=s.interview_id '.
-  'where rank=%d '.
-  'and s.name="cognitive_test"', $rank);
-
-$filesize_stdev = $db->get_one( $sql );
-
-if( false === $filesize_avg )
+else
 {
-  echo sprintf('failed to get stddev file size: %s', $db->get_last_error() );
-  echo $sql;
-  die();
+  $avg=0;
+  $stdev=0;
+  $sql = sprintf(
+    'select avg( '.
+    ' trim("}" from substring_index(qcdata, ":", -1))) as favg '.
+    'from interview i '.
+    'join stage s on i.id=s.interview_id '.
+    'where rank=%d '.
+    'and qcdata is not null '.
+    'and s.name="cognitive_test"', $rank);
+
+  $avg = $db->get_one( $sql );
+
+  $sql = sprintf(
+    'select stddev( '.
+    '  trim("}" from substring_index(qcdata, ":", -1))) as fstd '.
+    'from interview i '.
+    'join stage s on i.id=s.interview_id '.
+    'where rank=%d '.
+    'and qcdata is not null '.
+    'and s.name="cognitive_test"', $rank);
+
+  $stdev = $db->get_one( $sql );
+  $filesize_min = max(intval($avg - $stdev_scale*$stdev),0);
+  $filesize_max = intval($avg + $stdev_scale*$stdev);
 }
-
-$filesize_min = intval(round($filesize_avg - 2*$filesize_stdev));
-$filesize_max = intval(round($filesize_avg + 2*$filesize_stdev));
-*/
-
-// use mode of filesize as the metric
-$sql = sprintf(
-  'select fsz, count(fsz) as freq '.
-  'from ( '.
-  '  select '.
-  '    trim("}" from '.
-  '      substring_index(qcdata, ":", -1)) as fsz '.
-  '  from interview i '.
-  '  join stage s on i.id=s.interview_id '.
-  '  where rank=%d '.
-  '  and qcdata is not null '.
-  '  and s.name="cognitive_test" '.
-  ') as t '.
-  'where fsz>0 '.
-  'group by fsz '.
-  'order by freq desc limit 1', $rank);
-
-$res = $db->get_row( $sql );
-$mode = $res['fsz'];
-
-$sql = sprintf(
-  'select min(fsz) as minsz, max(fsz) as maxsz '.
-  'from ( '.
-  '  select '.
-  '    trim("}" from substring_index(qcdata, ":", -1)) as fsz '.
-  '  from interview i '.
-  '  join stage s on i.id=s.interview_id '.
-  '  where rank=%d '.
-  '  and qcdata is not null '.
-  '  and s.name="cognitive_test" '.
-  ') as t '.
-  'where fsz>0', $rank);
-
-$res = $db->get_row( $sql );
-
-$filesize_min = intval($res['minsz'] + 0.5*($mode-$res['minsz']));
-$filesize_max = intval($mode + 0.5*($res['maxsz']-$mode));
 
 // build the main query
 $sql =
@@ -265,6 +260,19 @@ $col_groups = array(
 $hide_qc = sprintf( '[%s]', implode(',',$col_groups['qc_group']) );
 $hide_skip = sprintf( '[%s]', implode(',',$col_groups['skips']) );
 $page_heading = sprintf( 'COGNITIVE TEST RESULTS - Wave %d (%s - %s)',$rank,$begin_date,$end_date);
+$page_explanation = array();
+if($use_mode)
+{
+  $page_explanation[]=sprintf('<li>filesize sub: size < %d (min + 0.5 x (mode - min))</li>',$filesize_min);
+  $page_explanation[]=sprintf('<li>filesize par: %d <= size <= %d</li>',$filesize_min,$filesize_max);
+  $page_explanation[]=sprintf('<li>filesize sup: size > %d (mode + 0.5 x (max - mode))</li>',$filesize_max);
+}
+else
+{
+  $page_explanation[]=sprintf('<li>filesize sub: size < %d (mean - %s x SD)</li>',$filesize_min,$stdev_scale);
+  $page_explanation[]=sprintf('<li>filesize par: %d <= size <= %d</li>',$filesize_min,$filesize_max);
+  $page_explanation[]=sprintf('<li>filesize sup: size > %d (mean + %s x SD)</li>',$filesize_max,$stdev_scale);
+}
 ?>
 
 <!doctype html>
@@ -346,9 +354,8 @@ $page_heading = sprintf( 'COGNITIVE TEST RESULTS - Wave %d (%s - %s)',$rank,$beg
     <h3><?php echo $page_heading?></h3>
     <ul>
       <?php
-        echo "<li>filesize sub: size < {$filesize_min} (0.5 x mode)</li>";
-        echo "<li>filesize par: {$filesize_min} <= size <= {$filesize_max}</li>";
-        echo "<li>filesize sup: size > {$filesize_max} (1.5 x mode)</li>";
+        foreach($page_explanation as $item)
+          echo $item;
       ?>
     </ul>
     <!--build the main summary table-->

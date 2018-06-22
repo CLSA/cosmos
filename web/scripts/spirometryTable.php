@@ -184,6 +184,8 @@ $col_groups = array(
 $hide_qc = sprintf( '[%s]', implode(',',$col_groups['qc_group']) );
 $hide_skip = sprintf( '[%s]', implode(',',$col_groups['skips']) );
 $page_heading = sprintf( 'SPIROMETRY RESULTS - Wave %d (%s - %s)',$rank,$begin_date,$end_date);
+$page_explanation=array();
+$page_explanation[]=sprintf('<li>Grades: %s</li>',implode(', ',$grades));
 ?>
 
 <!doctype html>
@@ -263,7 +265,12 @@ $page_heading = sprintf( 'SPIROMETRY RESULTS - Wave %d (%s - %s)',$rank,$begin_d
   </head>
   <body>
     <h3><?php echo $page_heading?></h3>
-    <p><?php echo sprintf('Grades: %s',implode(', ',$grades))?></p>
+    <ul>
+      <?php
+        foreach($page_explanation as $item)
+          echo $item;
+      ?>
+    </ul>
     <!--build the main summary table-->
     <table id='summary' class="clsa stripe cell-border order-column" style="width:100%">
       <thead>

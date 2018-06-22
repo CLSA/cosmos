@@ -14,48 +14,9 @@ if(''==$begin_date || ''==$end_date ||
   echo sprintf('error: invalid dates %s - %s',$begin_date,$end_date);
   die();
 }
-/*
-$sql = sprintf(
-  'select avg( '.
-  '  if( qcdata is null, null, '.
-  '      substring_index( '.
-  '        substring_index( '.
-  '          qcdata, ",", 1 ), ":", -1 ) ) ) as f_avg '.
-  'from interview i '.
-  'join stage s on i.id=s.interview_id '.
-  'where rank=%d '.
-  'and s.name="weight"', $rank);
 
-$weight_dev_avg = $db->get_one( $sql );
-if( false === $weight_dev_avg )
-{
-  echo sprintf('failed to get average stddev: %s', $db->get_last_error() );
-  echo $sql;
-  die();
-}
-
-$sql = sprintf(
-  'select stddev( '.
-  '  if( qcdata is null, null, '.
-  '      substring_index( '.
-  '        substring_index( '.
-  '          qcdata, ",", 1 ), ":", -1 ) ) ) as f_std '.
-  'from interview i '.
-  'join stage s on i.id=s.interview_id '.
-  'where rank=%d '.
-  'and s.name="weight"', $rank);
-
-$weight_dev_stdev = $db->get_one( $sql );
-
-if( false === $weight_dev_stdev )
-{
-  echo sprintf('failed to get stddev of weight stddev: %s', $db->get_last_error() );
-  echo $sql;
-  die();
-}
-*/
-$weight_dev_min = 0.05;  //
-$weight_dev_max = 1.0; // $weight_dev_avg + 3*$weight_dev_stdev;
+$weight_dev_min = 0.05;
+$weight_dev_max = 1.0;
 
 // build the main query
 $sql =
@@ -231,6 +192,12 @@ $col_groups = array(
 $hide_qc = sprintf( '[%s]', implode(',',$col_groups['qc_group']) );
 $hide_skip = sprintf( '[%s]', implode(',',$col_groups['skips']) );
 $page_heading = sprintf( 'WEIGHT RESULTS - Wave %d (%s - %s)',$rank,$begin_date,$end_date);
+$page_explanation = array();
+$page_explanation[]='<li>Weight deviation = standard deviation of repeated scale measurements</li>';
+$page_explanation[]=sprintf('<li>weight deviation sub: size < %s kg (scale resolution)</li>',$weight_dev_min);
+$page_explanation[]=sprintf('<li>weight deviation par: %s <= size <= %s kg</li>',$weight_dev_min,$weight_dev_max);
+$page_explanation[]=sprintf('<li>weight deviation sup: size > %s kg</li>',$weight_dev_max);
+$page_explanation[]='<li>Trial deviation signalled when more or less than 2 measurements made</li>';
 ?>
 
 <!doctype html>
@@ -311,13 +278,10 @@ $page_heading = sprintf( 'WEIGHT RESULTS - Wave %d (%s - %s)',$rank,$begin_date,
   <body>
     <h3><?php echo $page_heading?></h3>
     <ul>
-      <li>Weight deviation = standard deviation of repeated scale measurements<li>
       <?php
-        echo "<li>weight deviation sub: size < {$weight_dev_min} kg (scale resolution)</li>";
-        echo "<li>weight deviation par: {$weight_dev_min} <= size <= {$weight_dev_max} kg</li>";
-        echo "<li>weight deviation sup: size > {$weight_dev_max} kg</li>";
+        foreach($page_explanation as $item)
+                  echo $item;
       ?>
-      <li>Trial deviation signalled when more or less than 2 measurements made</li>
     </ul>
     <!--build the main summary table-->
     <table id='summary' class="clsa stripe cell-border order-column" style="width:100%">

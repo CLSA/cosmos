@@ -173,6 +173,10 @@ $col_groups = array(
 $hide_qc = sprintf( '[%s]', implode(',',$col_groups['qc_group']) );
 $hide_skip = sprintf( '[%s]', implode(',',$col_groups['skips']) );
 $page_heading = sprintf( 'BLOOD PRESSURE RESULTS - Wave %d (%s - %s)',$rank,$begin_date,$end_date);
+$page_explanation=array();
+$page_explanation[]='<li>trial sub: < 5 trials</li>';
+$page_explanation[]='<li>trial par: = 5 trials</li>';
+$page_explanation[]='<li>trial sup: > 5 trials</li>';
 ?>
 
 <!doctype html>
@@ -254,9 +258,8 @@ $page_heading = sprintf( 'BLOOD PRESSURE RESULTS - Wave %d (%s - %s)',$rank,$beg
     <h3><?php echo $page_heading?></h3>
     <ul>
       <?php
-        echo "<li>trial sub: < 5 trials</li>";
-        echo "<li>trial par: = 5 trials</li>";
-        echo "<li>trial sup: > 5 trials</li>";
+        foreach($page_explanation as $item)
+          echo $item;
       ?>
     </ul>
 

@@ -122,7 +122,7 @@ $date_ranges = json_encode($db->get_all( $sql ));
             <option value="scripts/spine_bone_densityTable.php">DEXA Spine</option>
             <option value="scripts/whole_body_bone_densityTable.php">DEXA Whole Body</option>
             <option value="scripts/ecgTable.php">ECG</option>
-            <option value="scripts/grip_strengthTable.php" selected="selected">Grip Strength</option>
+            <option value="scripts/grip_strengthTable.php">Grip Strength</option>
             <option value="scripts/hearingTable.php">Hearing</option>
             <option value="scripts/hips_waistTable.php">Hips Waist</option>
             <option value="scripts/retinal_scanTable.php">Retinal Scan</option>

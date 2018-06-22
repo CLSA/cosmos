@@ -15,45 +15,96 @@ if(''==$begin_date || ''==$end_date ||
   die();
 }
 
-// use mode of filesize as the metric
-$sql = sprintf(
-  'select fsz, count(fsz) as freq '.
-  'from ( '.
-  '  select '.
-  '   round( '.
-  '    trim("}" from '.
-  '      substring_index(qcdata, ":", -1))/1024.0) as fsz '.
-  '  from interview i '.
-  '  join stage s on i.id=s.interview_id '.
-  '  where rank=%d '.
-  '  and qcdata is not null '.
-  '  and s.name="lateral_bone_density" '.
-  ') as t '.
-  'where fsz>0 '.
-  'group by fsz '.
-  'order by freq desc limit 1', $rank);
+$stdev_scale=2;
+$use_mode=false;
+$filesize_min=0;
+$filesize_max=0;
+if($use_mode)
+{
+  $minsz=0;
+  $maxsz=0;
+  $mode=0;
+  $sql = sprintf(
+    'select fsz, count(fsz) as freq '.
+    'from ( '.
+    '  select '.
+    '   round( '.
+    '    trim("}" from '.
+    '      substring_index(qcdata, ":", -1))/1024.0) as fsz '.
+    '  from interview i '.
+    '  join stage s on i.id=s.interview_id '.
+    '  where rank=%d '.
+    '  and qcdata is not null '.
+    '  and s.name="lateral_bone_density" '.
+    ') as t '.
+    'where fsz>0 '.
+    'group by fsz '.
+    'order by freq desc limit 1', $rank);
 
-$res = $db->get_row( $sql );
-$mode = $res['fsz'];
+  $res = $db->get_row( $sql );
+  $mode = $res['fsz'];
 
-$sql = sprintf(
-  'select min(fsz) as minsz, max(fsz) as maxsz '.
-  'from ( '.
-  '  select '.
-  '  round( '.
-  '    trim("}" from substring_index(qcdata, ":", -1))/1024.0) as fsz '.
-  '  from interview i '.
-  '  join stage s on i.id=s.interview_id '.
-  '  where rank=%d '.
-  '  and qcdata is not null '.
-  '  and s.name="lateral_bone_density" '.
-  ') as t '.
-  'where fsz>0', $rank);
+  $sql = sprintf(
+    'select min(fsz) as minsz, max(fsz) as maxsz '.
+    'from ( '.
+    '  select '.
+    '  round( '.
+    '    trim("}" from substring_index(qcdata, ":", -1))/1024.0) as fsz '.
+    '  from interview i '.
+    '  join stage s on i.id=s.interview_id '.
+    '  where rank=%d '.
+    '  and qcdata is not null '.
+    '  and s.name="lateral_bone_density" '.
+    ') as t '.
+    'where fsz>0', $rank);
 
-$res = $db->get_row( $sql );
+  $res = $db->get_row( $sql );
+  $minsz = $res['minsz'];
+  $maxsz = $res['maxsz'];
+  $filesize_min = max(intval(($minsz + 0.5*($mode-$minsz))*1024),0);
+  $filesize_max = intval(($mode + 0.5*($maxsz-$mode))*1024);
+}
+else
+{
+  $avg=0;
+  $stdev=0;
+  $sql = sprintf(
+    'select avg(fsz) as favg '.
+    'from ( '.
+    '  select '.
+    '   round( '.
+    '    trim("}" from '.
+    '      substring_index(qcdata, ":", -1))/1024.0) as fsz '.
+    '  from interview i '.
+    '  join stage s on i.id=s.interview_id '.
+    '  where rank=%d '.
+    '  and qcdata is not null '.
+    '  and s.name="lateral_bone_density" '.
+    ') as t '.
+    'where fsz>0', $rank);
 
-$filesize_min = intval($res['minsz'] + 0.5*($mode-$res['minsz']))*1024;
-$filesize_max = intval($mode + 0.5*($res['maxsz']-$mode))*1024;
+  $res = $db->get_row( $sql );
+  $avg = $res['favg'];
+
+  $sql = sprintf(
+    'select stddev(fsz) as fstd '.
+    'from ( '.
+    '  select '.
+    '  round( '.
+    '    trim("}" from substring_index(qcdata, ":", -1))/1024.0) as fsz '.
+    '  from interview i '.
+    '  join stage s on i.id=s.interview_id '.
+    '  where rank=%d '.
+    '  and qcdata is not null '.
+    '  and s.name="lateral_bone_density" '.
+    ') as t '.
+    'where fsz>0', $rank);
+
+  $res = $db->get_row( $sql );
+  $stdev = $res['fstd'];
+  $filesize_min = max(intval(($avg - $stdev_scale*$stdev)*1024),0);
+  $filesize_max = intval(($avg + $stdev_scale*$stdev)*1024);
+}
 
 // build the main query
 $sql =
@@ -79,9 +130,9 @@ $sql .= sprintf(
   'sum(case when strcmp(skip,"InterviewerDecision")=0 then 1 else 0 end) as total_skip_interviewer, '.
   'sum(case when strcmp(skip,"ModifiedVisit")=0 then 1 else 0 end) as total_skip_modified_visit, '.
   'sum(case when strcmp(skip,"SeeComment")=0 then 1 else 0 end) as total_skip_other, '.
-  'sum(!isnull(skip)) as total_skip, '.
+  'sum(!isnull(skip) and isnull(qcdata)) as total_skip, '.
   'sum(if(missing,isnull(skip),0)) as total_unexplained_missing, '.
-  'sum(contraindicated) as total_contraindicated, '.
+  'sum(contraindicated and isnull(qcdata) and isnull(skip)) as total_contraindicated, '.
   'sum(!isnull(t.name)) as total_tech, '.
   'sum(1) as total_interview '.
   'FROM interview i '.
@@ -224,6 +275,19 @@ $col_groups = array(
 $hide_qc = sprintf( '[%s]', implode(',',$col_groups['qc_group']) );
 $hide_skip = sprintf( '[%s]', implode(',',$col_groups['skips']) );
 $page_heading = sprintf( 'DEXA LATERAL RESULTS - Wave %d (%s - %s)',$rank,$begin_date,$end_date);
+$page_explanation=array();
+if($use_mode)
+{
+  $page_explanation[]=sprintf('<li>filesize sub: size < %d (min + 0.5 x (mode - min))</li>',$filesize_min);
+  $page_explanation[]=sprintf('<li>filesize par: %d <= size <= %d</li>',$filesize_min,$filesize_max);
+  $page_explanation[]=sprintf('<li>filesize sup: size > %d (mode + 0.5 x (max - mode))</li>',$filesize_max);
+}
+else
+{
+  $page_explanation[]=sprintf('<li>filesize sub: size < %d (mean - %s x SD)</li>',$filesize_min,$stdev_scale);
+  $page_explanation[]=sprintf('<li>filesize par: %d <= size <= %d</li>',$filesize_min,$filesize_max);
+  $page_explanation[]=sprintf('<li>filesize sup: size > %d (mean + %s x SD)</li>',$filesize_max,$stdev_scale);
+}
 ?>
 
 <!doctype html>
@@ -305,9 +369,8 @@ $page_heading = sprintf( 'DEXA LATERAL RESULTS - Wave %d (%s - %s)',$rank,$begin
     <h3><?php echo $page_heading?></h3>
     <ul>
       <?php
-        echo "<li>filesize sub: size < {$filesize_min} (min + 0.5 x (mode - min))</li>";
-        echo "<li>filesize par: {$filesize_min} <= size <= {$filesize_max}</li>";
-        echo "<li>filesize sup: size > {$filesize_max} (mode + 0.5 x (max - mode))</li>";
+        foreach($page_explanation as $item)
+          echo $item;
       ?>
     </ul>
     <!--build the main summary table-->

@@ -15,6 +15,8 @@ if(''==$begin_date || ''==$end_date ||
   die();
 }
 
+$stdev_scale = 1;
+
 $sql = sprintf(
   'select avg(s_time) as t_avg from '.
   '('.
@@ -53,7 +55,6 @@ if( false === $res )
   die();
 }
 $time_avg = $res;
-
 $sql = sprintf(
   'select stddev(s_time) as t_std from '.
   '('.
@@ -92,12 +93,8 @@ if( false === $res )
   die();
 }
 $time_std = $res;
-
-
-$time_min = round($time_avg - 2*$time_std,3);
-$time_min = $time_min < 0 ? 0 : $time_min;
-
-$time_max = round($time_avg + 2*$time_std,3);
+$time_min = max(round($time_avg - $stdev_scale*$time_std,3),0);
+$time_max = round($time_avg + $stdev_scale*$time_std,3);
 
 // build the main query
 $sql =
@@ -268,6 +265,10 @@ $col_groups = array(
 $hide_qc = sprintf( '[%s]', implode(',',$col_groups['qc_group']) );
 $hide_skip = sprintf( '[%s]', implode(',',$col_groups['skips']) );
 $page_heading = sprintf( 'STANDING BALANCE RESULTS - Wave %d (%s - %s)',$rank,$begin_date,$end_date);
+$page_explanation=array();
+$page_explanation[]=sprintf('<li>best time sub: time < %s (mean - %s x SD)</li>',$time_min,$stdev_scale);
+$page_explanation[]=sprintf('<li>best time par: %s <= time <= %s</li>',$time_min,$time_max);
+$page_explanation[]=sprintf('<li>best time sup: time > %s (mean + %s x SD)</li>',$time_max,$stdev_scale);
 ?>
 
 <!doctype html>
@@ -349,9 +350,8 @@ $page_heading = sprintf( 'STANDING BALANCE RESULTS - Wave %d (%s - %s)',$rank,$b
     <h3><?php echo $page_heading?></h3>
     <ul>
       <?php
-        echo "<li>best time sub: time < {$time_min} (mean - 2 x SD)</li>";
-        echo "<li>best time par: {$time_min} <= time <= {$time_max}</li>";
-        echo "<li>best time sup: time > {$time_max} (mean + 2 x SD)</li>";
+        foreach($page_explanation as $item)
+          echo $item;
       ?>
     </ul>
     <!--build the main summary table-->

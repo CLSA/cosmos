@@ -178,6 +178,10 @@ $col_groups = array(
 $hide_qc = sprintf( '[%s]', implode(',',$col_groups['qc_group']) );
 $hide_skip = sprintf( '[%s]', implode(',',$col_groups['skips']) );
 $page_heading = sprintf( 'HEARING RESULTS - Wave %d (%s - %s)',$rank,$begin_date,$end_date);
+$page_explanation=array();
+$page_explanation[]='<li>frequency error only: 0 frequencies + 1 or more errors</li>';
+$page_explanation[]='<li>frequency count sub:  1 - 7 frequencies</li>';
+$page_explanation[]='<li>frequency count par:  8 frequencies</li>';
 ?>
 
 <!doctype html>
@@ -259,10 +263,8 @@ $page_heading = sprintf( 'HEARING RESULTS - Wave %d (%s - %s)',$rank,$begin_date
     <h3><?php echo $page_heading?></h3>
     <ul>
       <?php
-        echo "<li>frequency error only: 0 frequencies + 1 or more errors</li>";
-        echo "<li>frequency count sub:  1 - 7 frequencies</li>";
-        echo "<li>frequency count par:  8 frequencies</li>";
-        echo "<li>frequency count sup:  > 8 frequencies</li>";
+        foreach($page_explanation as $item)
+          echo $item;
       ?>
     </ul>
 
