@@ -79,18 +79,13 @@ else
 
   $res = $db->get_row( $sql );
   $avg = $res['favg'];
-  echo $sql;
-  echo "</br>";
 
   $sql = 'select stddev(fsz) as fstd from ( '.
           implode( ' union all ', $union_sql ) .
          ' ) as t where fsz>0';
 
   $res = $db->get_row( $sql );
-  echo $sql;
-  echo "</br>";
   $stdev = $res['fstd'];
-  echo sprintf('%s %s ',$avg*1024,$stdev*1024);
   $filesize_min = max(intval(($avg - $stdev_scale*$stdev)*1024),0);
   $filesize_max = intval(($avg + $stdev_scale*$stdev)*1024);
 }
