@@ -78,7 +78,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "$group('clsa-dcs-f1.Participants:Admin.StageInstance.stage','Spirometry',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable').value() \n? 1 : 0"
+            "value": "$('clsa-dcs-f1.Participants:DCS_PHONE').isNull().and(\n  $group('clsa-dcs-f1.Participants:Admin.StageInstance.stage','Spirometry',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable')).value() \n? 1 : 0"
           }
         ], 
         "entityType": "Participant", 
@@ -86,6 +86,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_contraindicated_spirometry", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -197,7 +198,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "$group('clsa-dcs-f1.Participants:Admin.StageInstance.stage','GripStrength',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable').value() \n? 1 : 0"
+            "value": "$('clsa-dcs-f1.Participants:DCS_PHONE').isNull().and(\n  $group('clsa-dcs-f1.Participants:Admin.StageInstance.stage','GripStrength',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable')).value() \n? 1 : 0"
           }
         ], 
         "entityType": "Participant", 
@@ -205,6 +206,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_contraindicated_grip_strength", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -277,7 +279,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "$group('clsa-dcs-f1.Participants:Admin.StageInstance.stage','BloodPressure',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable').value() \n? 1 : 0"
+            "value": "$('clsa-dcs-f1.Participants:DCS_PHONE').isNull().and(\n  $group('clsa-dcs-f1.Participants:Admin.StageInstance.stage','BloodPressure',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable')).value() \n? 1 : 0"
           }
         ], 
         "entityType": "Participant", 
@@ -285,6 +287,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_contraindicated_blood_pressure", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -357,7 +360,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "$group('clsa-dcs-f1.Participants:Admin.StageInstance.stage','ECG',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable').value() \n? 1 : 0"
+            "value": "$('clsa-dcs-f1.Participants:DCSatHOME').isNull().and(\n  $('clsa-dcs-f1.Participants:DCS_PHONE').isNull(),\n  $group('clsa-dcs-f1.Participants:Admin.StageInstance.stage','ECG',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable')).value() \n? 1 : 0"
           }
         ], 
         "entityType": "Participant", 
@@ -517,7 +520,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "$group('clsa-dcs-f1.Participants:Admin.StageInstance.stage','Hearing',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable').value() \n? 1 : 0"
+            "value": "$('clsa-dcs-f1.Participants:DCSatHOME').isNull().and(\n  $('clsa-dcs-f1.Participants:DCS_PHONE').isNull(),\n  $group('clsa-dcs-f1.Participants:Admin.StageInstance.stage','Hearing',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable')).value() \n? 1 : 0"
           }
         ], 
         "entityType": "Participant", 
@@ -525,6 +528,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_contraindicated_hearing", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -597,7 +601,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "$group('clsa-dcs-f1.Participants:Admin.StageInstance.stage','Tonometer',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable').value() \n? 1 : 0"
+            "value": "$('clsa-dcs-f1.Participants:DCSatHOME').isNull().and(\n  $('clsa-dcs-f1.Participants:DCS_PHONE').isNull(),\n  $group('clsa-dcs-f1.Participants:Admin.StageInstance.stage','Tonometer',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable')).value() \n? 1 : 0"
           }
         ], 
         "entityType": "Participant", 
@@ -605,6 +609,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_contraindicated_tonometer", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -757,7 +762,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "$group('clsa-dcs-f1.Participants:Admin.StageInstance.stage','RetinalScanLeft',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable').value() \n? 1 : 0"
+            "value": "$('clsa-dcs-f1.Participants:DCSatHOME').isNull().and(\n  $('clsa-dcs-f1.Participants:DCS_PHONE').isNull(),\n  $group('clsa-dcs-f1.Participants:Admin.StageInstance.stage','RetinalScanLeft',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable')).value() \n? 1 : 0"
           }
         ], 
         "entityType": "Participant", 
@@ -837,7 +842,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "$group('clsa-dcs-f1.Participants:Admin.StageInstance.stage','RetinalScanRight',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable').value() \n? 1 : 0"
+            "value": "$('clsa-dcs-f1.Participants:DCSatHOME').isNull().and(\n  $('clsa-dcs-f1.Participants:DCS_PHONE').isNull(),\n  $group('clsa-dcs-f1.Participants:Admin.StageInstance.stage','RetinalScanRight',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable')).value() \n? 1 : 0"
           }
         ], 
         "entityType": "Participant", 
@@ -917,7 +922,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "$group('clsa-dcs-f1.Participants:Admin.StageInstance.stage','LateralBoneDensity',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable').value() \n? 1 : 0"
+            "value": "$('clsa-dcs-f1.Participants:DCSatHOME').isNull().and(\n  $('clsa-dcs-f1.Participants:DCS_PHONE').isNull(),\n  $group('clsa-dcs-f1.Participants:Admin.StageInstance.stage','LateralBoneDensity',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable')).value() \n? 1 : 0"
           }
         ], 
         "entityType": "Participant", 
@@ -997,7 +1002,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "$group('clsa-dcs-f1.Participants:Admin.StageInstance.stage','StandingHeight',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable').value() \n? 1 : 0"
+            "value": "$('clsa-dcs-f1.Participants:DCS_PHONE').isNull().and(\n  $group('clsa-dcs-f1.Participants:Admin.StageInstance.stage','StandingHeight',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable')).value() \n? 1 : null"
           }
         ], 
         "entityType": "Participant", 
@@ -1005,6 +1010,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_contraindicated_standing_height", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -1077,7 +1083,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "$group('clsa-dcs-f1.Participants:Admin.StageInstance.stage','SpineBoneDensity',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable').value() \n? 1 : 0"
+            "value": "$('clsa-dcs-f1.Participants:DCSatHOME').isNull().and(\n  $('clsa-dcs-f1.Participants:DCS_PHONE').isNull(),\n  $grouIp('clsa-dcs-f1.Participants:Admin.StageInstance.stage','SpineBoneDensity',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable')).value() \n? 1 : 0"
           }
         ], 
         "entityType": "Participant", 
@@ -1157,7 +1163,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "$group('clsa-dcs-f1.Participants:Admin.StageInstance.stage','ForearmBoneDensity',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable').value() \n? 1 : 0"
+            "value": "$('clsa-dcs-f1.Participants:DCSatHOME').isNull().and(\n  $('clsa-dcs-f1.Participants:DCS_PHONE').isNull(),\n  $group('clsa-dcs-f1.Participants:Admin.StageInstance.stage','ForearmBoneDensity',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable')).value() \n? 1 : 0"
           }
         ], 
         "entityType": "Participant", 
@@ -1237,7 +1243,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "$group('clsa-dcs-f1.Participants:Admin.StageInstance.stage','WholeBodyBoneDensity',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable').value() \n? 1 : 0"
+            "value": "$('clsa-dcs-f1.Participants:DCSatHOME').isNull().and(\n  $('clsa-dcs-f1.Participants:DCS_PHONE').isNull(),\n  $group('clsa-dcs-f1.Participants:Admin.StageInstance.stage','WholeBodyBoneDensity',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable')).value() \n? 1 : 0"
           }
         ], 
         "entityType": "Participant", 
@@ -1317,7 +1323,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "$group('clsa-dcs-f1.Participants:Admin.StageInstance.stage','DualHipBoneDensity',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable').value() \n? 1 : 0"
+            "value": "$('clsa-dcs-f1.Participants:DCSatHOME').isNull().and(\n  $('clsa-dcs-f1.Participants:DCS_PHONE').isNull(),\n  $group('clsa-dcs-f1.Participants:Admin.StageInstance.stage','DualHipBoneDensity',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable')).value() \n? 1 : 0"
           }
         ], 
         "entityType": "Participant", 
@@ -1325,6 +1331,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_contraindicated_dual_hip_bone_density", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -1397,7 +1404,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "$group('clsa-dcs-f1.Participants:Admin.StageInstance.stage','CarotidIntima',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable').value() \n? 1 : 0"
+            "value": "$('clsa-dcs-f1.Participants:DCSatHOME').isNull().and(\n  $('clsa-dcs-f1.Participants:DCS_PHONE').isNull(),\n  $group('clsa-dcs-f1.Participants:Admin.StageInstance.stage','CarotidIntima',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable')).value() \n? 1 : 0"
           }
         ], 
         "entityType": "Participant", 
@@ -1477,7 +1484,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "$group('clsa-dcs-f1.Participants:Admin.StageInstance.stage','TUG',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable').value() \n? 1 : 0"
+            "value": "$('clsa-dcs-f1.Participants:DCSatHOME').isNull().and(\n  $('clsa-dcs-f1.Participants:DCS_PHONE').isNull(),\n  $group('clsa-dcs-f1.Participants:Admin.StageInstance.stage','TUG',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable')).value() \n? 1 : 0"
           }
         ], 
         "entityType": "Participant", 
@@ -1485,6 +1492,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_contraindicated_tug", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -1557,7 +1565,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "$group('clsa-dcs-f1.Participants:Admin.StageInstance.stage','ChairRise',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable').value() \n? 1 : 0"
+            "value": "$('clsa-dcs-f1.Participants:DCSatHOME').isNull().and(\n  $('clsa-dcs-f1.Participants:DCS_PHONE').isNull(),\n  $group('clsa-dcs-f1.Participants:Admin.StageInstance.stage','ChairRise',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable')).value() \n? 1 : 0"
           }
         ], 
         "entityType": "Participant", 
@@ -1565,6 +1573,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_contraindicated_chair_rise", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -1637,7 +1646,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "$group('clsa-dcs-f1.Participants:Admin.StageInstance.stage','HipsWaist',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable').value() \n? 1 : 0"
+            "value": "$('clsa-dcs-f1.Participants:DCS_PHONE').isNull().and(\n  $group('clsa-dcs-f1.Participants:Admin.StageInstance.stage','HipsWaist',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable')).value() \n? 1 : 0"
           }
         ], 
         "entityType": "Participant", 
@@ -1645,6 +1654,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_contraindicated_hips_waist", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -1717,7 +1727,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "$group('clsa-dcs-f1.Participants:Admin.StageInstance.stage','NeuropsychologicalBattery',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable').value() \n? 1 : 0"
+            "value": "$('clsa-dcs-f1.Participants:DCS_PHONE').isNull().and(\n  $group('clsa-dcs-f1.Participants:Admin.StageInstance.stage','NeuropsychologicalBattery',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable')).value() \n? 1 : null"
           }
         ], 
         "entityType": "Participant", 
@@ -1725,6 +1735,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_contraindicated_neuropsychological_battery", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -1797,7 +1808,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "$group('clsa-dcs-f1.Participants:Admin.StageInstance.stage','StandingBalance',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable').value() \n? 1 : 0"
+            "value": "$('clsa-dcs-f1.Participants:DCSatHOME').isNull().and(\n  $('clsa-dcs-f1.Participants:DCS_PHONE').isNull(),\n  $group('clsa-dcs-f1.Participants:Admin.StageInstance.stage','StandingBalance',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable')).value() \n? 1 : 0"
           }
         ], 
         "entityType": "Participant", 
@@ -1805,6 +1816,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_contraindicated_standing_balance", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -1877,7 +1889,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "$group('clsa-dcs-f1.Participants:Admin.StageInstance.stage','4mWalk',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable').value() \n? 1 : 0"
+            "value": "$('clsa-dcs-f1.Participants:DCSatHOME').isNull().and(\n  $('clsa-dcs-f1.Participants:DCS_PHONE').isNull(),\n  $group('clsa-dcs-f1.Participants:Admin.StageInstance.stage','4mWalk',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable')).value() \n? 1 : 0"
           }
         ], 
         "entityType": "Participant", 
@@ -1885,6 +1897,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_contraindicated_four_metre_walk", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -1957,7 +1970,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "$group('clsa-dcs-f1.Participants:Admin.StageInstance.stage','VisionAcuity',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable').value() \n? 1 : 0"
+            "value": "$('clsa-dcs-f1.Participants:DCSatHOME').isNull().and(\n  $('clsa-dcs-f1.Participants:DCS_PHONE').isNull(),\n  $group('clsa-dcs-f1.Participants:Admin.StageInstance.stage','VisionAcuity',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable')).value() \n? 1 : 0"
           }
         ], 
         "entityType": "Participant", 
@@ -1965,6 +1978,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_contraindicated_vision_acuity", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
