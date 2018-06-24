@@ -1083,7 +1083,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "$('clsa-dcs-f1.Participants:DCSatHOME').isNull().and(\n  $('clsa-dcs-f1.Participants:DCS_PHONE').isNull(),\n  $grouIp('clsa-dcs-f1.Participants:Admin.StageInstance.stage','SpineBoneDensity',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable')).value() \n? 1 : 0"
+            "value": "$('clsa-dcs-f1.Participants:DCSatHOME').isNull().and(\n  $('clsa-dcs-f1.Participants:DCS_PHONE').isNull(),\n  $group('clsa-dcs-f1.Participants:Admin.StageInstance.stage','SpineBoneDensity',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable')).value() \n? 1 : 0"
           }
         ], 
         "entityType": "Participant", 
@@ -1091,6 +1091,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_contraindicated_spine_bone_density", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"

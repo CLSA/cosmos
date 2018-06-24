@@ -908,7 +908,7 @@ res</attribute>
         <attributes>
           <attribute name="script" valueType="text">$(&apos;clsa-dcs-f1.Participants:DCSatHOME&apos;).isNull().and(
   $(&apos;clsa-dcs-f1.Participants:DCS_PHONE&apos;).isNull(),
-  $grouIp(&apos;clsa-dcs-f1.Participants:Admin.StageInstance.stage&apos;,&apos;SpineBoneDensity&apos;,
+  $group(&apos;clsa-dcs-f1.Participants:Admin.StageInstance.stage&apos;,&apos;SpineBoneDensity&apos;,
 &apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;)).value() 
 ? 1 : 0</attribute>
         </attributes>
