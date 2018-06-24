@@ -85,7 +85,7 @@
   <select class="org.obiba.magma.views.support.NoneClause"/>
   <where class="org.obiba.magma.js.views.JavascriptClause">
     <scriptName>customScript</scriptName>
-    <script>$lastupdate().before(newValue(&apos;2018-06-21&apos;,&apos;date&apos;)).and($lastupdate().after(newValue(&apos;2015-04-01&apos;,&apos;date&apos;)))</script>
+    <script>$lastupdate().before(newValue(&apos;2018-06-25&apos;,&apos;date&apos;)).and($lastupdate().after(newValue(&apos;2018-04-01&apos;,&apos;date&apos;)))</script>
   </where>
   <variables class="org.obiba.magma.js.views.VariablesClause">
     <variables class="linked-hash-set">
@@ -1777,12 +1777,12 @@ $this(&apos;data_qac_stroop_fas&apos;).isNull().and(stage.any(&apos;Skipped&apos
       </variable>
       <variable name="data_qac_stroop_fas" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">var d=$(&apos;clsa-dcs-f2.StroopFAS:STP_DOTREC_COF1&apos;)
-var w=$(&apos;clsa-dcs-f2.StroopFAS:STP_WORREC_COF1&apos;)
-var c=$(&apos;clsa-dcs-f2.StroopFAS:STP_COLREC_COF1&apos;)
-var f=$(&apos;clsa-dcs-f2.StroopFAS:FAS_FREC_COF1&apos;)
-var a=$(&apos;clsa-dcs-f2.StroopFAS:FAS_AREC_COF1&apos;)
-var s=$(&apos;clsa-dcs-f2.StroopFAS:FAS_SREC_COF1&apos;)
+          <attribute name="script" valueType="text">var d=$(&apos;clsa-dcs-f2.StroopFAS:STP_DOTREC_COF2&apos;)
+var w=$(&apos;clsa-dcs-f2.StroopFAS:STP_WORREC_COF2&apos;)
+var c=$(&apos;clsa-dcs-f2.StroopFAS:STP_COLREC_COF2&apos;)
+var f=$(&apos;clsa-dcs-f2.StroopFAS:FAS_FREC_COF2&apos;)
+var a=$(&apos;clsa-dcs-f2.StroopFAS:FAS_AREC_COF2&apos;)
+var s=$(&apos;clsa-dcs-f2.StroopFAS:FAS_SREC_COF2&apos;)
 var res=null
 if(!d.isNull().and(w.isNull(),c.isNull(),f.isNull(),a.isNull(),s.isNull()).value()) {
   var str=&apos;{filesize_dot:&apos;+(d.isNull().value()?&apos;0&apos;:d.length().value())+&apos;,&apos;
@@ -1799,5 +1799,5 @@ res</attribute>
     </variables>
   </variables>
   <created valueType="datetime">2018-05-15T13:40:50.956-04</created>
-  <updated valueType="datetime">2018-06-24T11:49:57.229-04</updated>
+  <updated valueType="datetime">2018-06-24T12:31:57.722-04</updated>
 </org.obiba.magma.views.View>
