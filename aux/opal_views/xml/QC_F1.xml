@@ -147,8 +147,9 @@ res</attribute>
       </variable>
       <variable name="stage_contraindicated_spirometry" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f1.Participants:Admin.StageInstance.stage&apos;,&apos;Spirometry&apos;,
-&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
+          <attribute name="script" valueType="text">$(&apos;clsa-dcs-f1.Participants:DCS_PHONE&apos;).isNull().and(
+  $group(&apos;clsa-dcs-f1.Participants:Admin.StageInstance.stage&apos;,&apos;Spirometry&apos;,
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;)).value() 
 ? 1 : 0</attribute>
         </attributes>
       </variable>
@@ -188,8 +189,9 @@ res</attribute>
       </variable>
       <variable name="stage_contraindicated_grip_strength" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f1.Participants:Admin.StageInstance.stage&apos;,&apos;GripStrength&apos;,
-&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
+          <attribute name="script" valueType="text">$(&apos;clsa-dcs-f1.Participants:DCS_PHONE&apos;).isNull().and(
+  $group(&apos;clsa-dcs-f1.Participants:Admin.StageInstance.stage&apos;,&apos;GripStrength&apos;,
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;)).value() 
 ? 1 : 0</attribute>
         </attributes>
       </variable>
@@ -241,8 +243,9 @@ res</attribute>
       </variable>
       <variable name="stage_contraindicated_blood_pressure" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f1.Participants:Admin.StageInstance.stage&apos;,&apos;BloodPressure&apos;,
-&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
+          <attribute name="script" valueType="text">$(&apos;clsa-dcs-f1.Participants:DCS_PHONE&apos;).isNull().and(
+  $group(&apos;clsa-dcs-f1.Participants:Admin.StageInstance.stage&apos;,&apos;BloodPressure&apos;,
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;)).value() 
 ? 1 : 0</attribute>
         </attributes>
       </variable>
@@ -294,8 +297,10 @@ res</attribute>
       </variable>
       <variable name="stage_contraindicated_ecg" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f1.Participants:Admin.StageInstance.stage&apos;,&apos;ECG&apos;,
-&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
+          <attribute name="script" valueType="text">$(&apos;clsa-dcs-f1.Participants:DCSatHOME&apos;).isNull().and(
+  $(&apos;clsa-dcs-f1.Participants:DCS_PHONE&apos;).isNull(),
+  $group(&apos;clsa-dcs-f1.Participants:Admin.StageInstance.stage&apos;,&apos;ECG&apos;,
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;)).value() 
 ? 1 : 0</attribute>
         </attributes>
       </variable>
@@ -410,8 +415,10 @@ res</attribute>
       </variable>
       <variable name="stage_contraindicated_hearing" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f1.Participants:Admin.StageInstance.stage&apos;,&apos;Hearing&apos;,
-&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
+          <attribute name="script" valueType="text">$(&apos;clsa-dcs-f1.Participants:DCSatHOME&apos;).isNull().and(
+  $(&apos;clsa-dcs-f1.Participants:DCS_PHONE&apos;).isNull(),
+  $group(&apos;clsa-dcs-f1.Participants:Admin.StageInstance.stage&apos;,&apos;Hearing&apos;,
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;)).value() 
 ? 1 : 0</attribute>
         </attributes>
       </variable>
@@ -483,8 +490,10 @@ res = (0 == count.RIGHT &amp;&amp; 0 == count.LEFT &amp;&amp;
       </variable>
       <variable name="stage_contraindicated_tonometer" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f1.Participants:Admin.StageInstance.stage&apos;,&apos;Tonometer&apos;,
-&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
+          <attribute name="script" valueType="text">$(&apos;clsa-dcs-f1.Participants:DCSatHOME&apos;).isNull().and(
+  $(&apos;clsa-dcs-f1.Participants:DCS_PHONE&apos;).isNull(),
+  $group(&apos;clsa-dcs-f1.Participants:Admin.StageInstance.stage&apos;,&apos;Tonometer&apos;,
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;)).value() 
 ? 1 : 0</attribute>
         </attributes>
       </variable>
@@ -670,8 +679,10 @@ res</attribute>
       </variable>
       <variable name="stage_contraindicated_retinal_scan_left" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f1.Participants:Admin.StageInstance.stage&apos;,&apos;RetinalScanLeft&apos;,
-&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
+          <attribute name="script" valueType="text">$(&apos;clsa-dcs-f1.Participants:DCSatHOME&apos;).isNull().and(
+  $(&apos;clsa-dcs-f1.Participants:DCS_PHONE&apos;).isNull(),
+  $group(&apos;clsa-dcs-f1.Participants:Admin.StageInstance.stage&apos;,&apos;RetinalScanLeft&apos;,
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;)).value() 
 ? 1 : 0</attribute>
         </attributes>
       </variable>
@@ -725,8 +736,10 @@ res</attribute>
       </variable>
       <variable name="stage_contraindicated_retinal_scan_right" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f1.Participants:Admin.StageInstance.stage&apos;,&apos;RetinalScanRight&apos;,
-&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
+          <attribute name="script" valueType="text">$(&apos;clsa-dcs-f1.Participants:DCSatHOME&apos;).isNull().and(
+  $(&apos;clsa-dcs-f1.Participants:DCS_PHONE&apos;).isNull(),
+  $group(&apos;clsa-dcs-f1.Participants:Admin.StageInstance.stage&apos;,&apos;RetinalScanRight&apos;,
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;)).value() 
 ? 1 : 0</attribute>
         </attributes>
       </variable>
@@ -780,8 +793,10 @@ res</attribute>
       </variable>
       <variable name="stage_contraindicated_lateral_bone_density" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f1.Participants:Admin.StageInstance.stage&apos;,&apos;LateralBoneDensity&apos;,
-&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
+          <attribute name="script" valueType="text">$(&apos;clsa-dcs-f1.Participants:DCSatHOME&apos;).isNull().and(
+  $(&apos;clsa-dcs-f1.Participants:DCS_PHONE&apos;).isNull(),
+  $group(&apos;clsa-dcs-f1.Participants:Admin.StageInstance.stage&apos;,&apos;LateralBoneDensity&apos;,
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;)).value() 
 ? 1 : 0</attribute>
         </attributes>
       </variable>
@@ -834,9 +849,10 @@ res</attribute>
       </variable>
       <variable name="stage_contraindicated_standing_height" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f1.Participants:Admin.StageInstance.stage&apos;,&apos;StandingHeight&apos;,
-&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
-? 1 : 0</attribute>
+          <attribute name="script" valueType="text">$(&apos;clsa-dcs-f1.Participants:DCS_PHONE&apos;).isNull().and(
+  $group(&apos;clsa-dcs-f1.Participants:Admin.StageInstance.stage&apos;,&apos;StandingHeight&apos;,
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;)).value() 
+? 1 : null</attribute>
         </attributes>
       </variable>
       <variable name="stage_skip_standing_height" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
@@ -890,8 +906,10 @@ res</attribute>
       </variable>
       <variable name="stage_contraindicated_spine_bone_density" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f1.Participants:Admin.StageInstance.stage&apos;,&apos;SpineBoneDensity&apos;,
-&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
+          <attribute name="script" valueType="text">$(&apos;clsa-dcs-f1.Participants:DCSatHOME&apos;).isNull().and(
+  $(&apos;clsa-dcs-f1.Participants:DCS_PHONE&apos;).isNull(),
+  $grouIp(&apos;clsa-dcs-f1.Participants:Admin.StageInstance.stage&apos;,&apos;SpineBoneDensity&apos;,
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;)).value() 
 ? 1 : 0</attribute>
         </attributes>
       </variable>
@@ -944,8 +962,10 @@ res</attribute>
       </variable>
       <variable name="stage_contraindicated_forearm_bone_density" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f1.Participants:Admin.StageInstance.stage&apos;,&apos;ForearmBoneDensity&apos;,
-&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
+          <attribute name="script" valueType="text">$(&apos;clsa-dcs-f1.Participants:DCSatHOME&apos;).isNull().and(
+  $(&apos;clsa-dcs-f1.Participants:DCS_PHONE&apos;).isNull(),
+  $group(&apos;clsa-dcs-f1.Participants:Admin.StageInstance.stage&apos;,&apos;ForearmBoneDensity&apos;,
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;)).value() 
 ? 1 : 0</attribute>
         </attributes>
       </variable>
@@ -1002,8 +1022,10 @@ res</attribute>
       </variable>
       <variable name="stage_contraindicated_whole_body_bone_density" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f1.Participants:Admin.StageInstance.stage&apos;,&apos;WholeBodyBoneDensity&apos;,
-&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
+          <attribute name="script" valueType="text">$(&apos;clsa-dcs-f1.Participants:DCSatHOME&apos;).isNull().and(
+  $(&apos;clsa-dcs-f1.Participants:DCS_PHONE&apos;).isNull(),
+  $group(&apos;clsa-dcs-f1.Participants:Admin.StageInstance.stage&apos;,&apos;WholeBodyBoneDensity&apos;,
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;)).value() 
 ? 1 : 0</attribute>
         </attributes>
       </variable>
@@ -1056,8 +1078,10 @@ res</attribute>
       </variable>
       <variable name="stage_contraindicated_dual_hip_bone_density" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f1.Participants:Admin.StageInstance.stage&apos;,&apos;DualHipBoneDensity&apos;,
-&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
+          <attribute name="script" valueType="text">$(&apos;clsa-dcs-f1.Participants:DCSatHOME&apos;).isNull().and(
+  $(&apos;clsa-dcs-f1.Participants:DCS_PHONE&apos;).isNull(),
+  $group(&apos;clsa-dcs-f1.Participants:Admin.StageInstance.stage&apos;,&apos;DualHipBoneDensity&apos;,
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;)).value() 
 ? 1 : 0</attribute>
         </attributes>
       </variable>
@@ -1117,8 +1141,10 @@ res</attribute>
       </variable>
       <variable name="stage_contraindicated_carotid_intima" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f1.Participants:Admin.StageInstance.stage&apos;,&apos;CarotidIntima&apos;,
-&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
+          <attribute name="script" valueType="text">$(&apos;clsa-dcs-f1.Participants:DCSatHOME&apos;).isNull().and(
+  $(&apos;clsa-dcs-f1.Participants:DCS_PHONE&apos;).isNull(),
+  $group(&apos;clsa-dcs-f1.Participants:Admin.StageInstance.stage&apos;,&apos;CarotidIntima&apos;,
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;)).value() 
 ? 1 : 0</attribute>
         </attributes>
       </variable>
@@ -1192,8 +1218,10 @@ res</attribute>
       </variable>
       <variable name="stage_contraindicated_tug" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f1.Participants:Admin.StageInstance.stage&apos;,&apos;TUG&apos;,
-&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
+          <attribute name="script" valueType="text">$(&apos;clsa-dcs-f1.Participants:DCSatHOME&apos;).isNull().and(
+  $(&apos;clsa-dcs-f1.Participants:DCS_PHONE&apos;).isNull(),
+  $group(&apos;clsa-dcs-f1.Participants:Admin.StageInstance.stage&apos;,&apos;TUG&apos;,
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;)).value() 
 ? 1 : 0</attribute>
         </attributes>
       </variable>
@@ -1257,8 +1285,10 @@ res</attribute>
       </variable>
       <variable name="stage_contraindicated_chair_rise" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f1.Participants:Admin.StageInstance.stage&apos;,&apos;ChairRise&apos;,
-&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
+          <attribute name="script" valueType="text">$(&apos;clsa-dcs-f1.Participants:DCSatHOME&apos;).isNull().and(
+  $(&apos;clsa-dcs-f1.Participants:DCS_PHONE&apos;).isNull(),
+  $group(&apos;clsa-dcs-f1.Participants:Admin.StageInstance.stage&apos;,&apos;ChairRise&apos;,
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;)).value() 
 ? 1 : 0</attribute>
         </attributes>
       </variable>
@@ -1322,8 +1352,9 @@ res</attribute>
       </variable>
       <variable name="stage_contraindicated_hips_waist" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f1.Participants:Admin.StageInstance.stage&apos;,&apos;HipsWaist&apos;,
-&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
+          <attribute name="script" valueType="text">$(&apos;clsa-dcs-f1.Participants:DCS_PHONE&apos;).isNull().and(
+  $group(&apos;clsa-dcs-f1.Participants:Admin.StageInstance.stage&apos;,&apos;HipsWaist&apos;,
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;)).value() 
 ? 1 : 0</attribute>
         </attributes>
       </variable>
@@ -1383,9 +1414,10 @@ res</attribute>
       </variable>
       <variable name="stage_contraindicated_neuropsychological_battery" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f1.Participants:Admin.StageInstance.stage&apos;,&apos;NeuropsychologicalBattery&apos;,
-&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
-? 1 : 0</attribute>
+          <attribute name="script" valueType="text">$(&apos;clsa-dcs-f1.Participants:DCS_PHONE&apos;).isNull().and(
+  $group(&apos;clsa-dcs-f1.Participants:Admin.StageInstance.stage&apos;,&apos;NeuropsychologicalBattery&apos;,
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;)).value() 
+? 1 : null</attribute>
         </attributes>
       </variable>
       <variable name="stage_skip_neuropsychological_battery" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
@@ -1448,8 +1480,10 @@ res</attribute>
       </variable>
       <variable name="stage_contraindicated_standing_balance" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f1.Participants:Admin.StageInstance.stage&apos;,&apos;StandingBalance&apos;,
-&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
+          <attribute name="script" valueType="text">$(&apos;clsa-dcs-f1.Participants:DCSatHOME&apos;).isNull().and(
+  $(&apos;clsa-dcs-f1.Participants:DCS_PHONE&apos;).isNull(),
+  $group(&apos;clsa-dcs-f1.Participants:Admin.StageInstance.stage&apos;,&apos;StandingBalance&apos;,
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;)).value() 
 ? 1 : 0</attribute>
         </attributes>
       </variable>
@@ -1549,8 +1583,10 @@ res</attribute>
       </variable>
       <variable name="stage_contraindicated_four_metre_walk" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f1.Participants:Admin.StageInstance.stage&apos;,&apos;4mWalk&apos;,
-&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
+          <attribute name="script" valueType="text">$(&apos;clsa-dcs-f1.Participants:DCSatHOME&apos;).isNull().and(
+  $(&apos;clsa-dcs-f1.Participants:DCS_PHONE&apos;).isNull(),
+  $group(&apos;clsa-dcs-f1.Participants:Admin.StageInstance.stage&apos;,&apos;4mWalk&apos;,
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;)).value() 
 ? 1 : 0</attribute>
         </attributes>
       </variable>
@@ -1614,8 +1650,10 @@ res</attribute>
       </variable>
       <variable name="stage_contraindicated_vision_acuity" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f1.Participants:Admin.StageInstance.stage&apos;,&apos;VisionAcuity&apos;,
-&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
+          <attribute name="script" valueType="text">$(&apos;clsa-dcs-f1.Participants:DCSatHOME&apos;).isNull().and(
+  $(&apos;clsa-dcs-f1.Participants:DCS_PHONE&apos;).isNull(),
+  $group(&apos;clsa-dcs-f1.Participants:Admin.StageInstance.stage&apos;,&apos;VisionAcuity&apos;,
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;)).value() 
 ? 1 : 0</attribute>
         </attributes>
       </variable>
@@ -1699,5 +1737,5 @@ res</attribute>
     </variables>
   </variables>
   <created valueType="datetime">2018-05-03T13:40:11.946-04</created>
-  <updated valueType="datetime">2018-06-20T13:28:09.525-04</updated>
+  <updated valueType="datetime">2018-06-24T11:46:23.262-04</updated>
 </org.obiba.magma.views.View>
