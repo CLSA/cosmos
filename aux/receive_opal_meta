@@ -121,7 +121,7 @@ $identifier_list = $opal->get_identifiers();
 $list = $opal->get_complete_list();
 $total = count( $list );
 
-util::out( sprintf('processing data from view %s...',$view_list[$rank]));
+util::out( sprintf('processing data from view %s with %d participants...',$view_list[$rank],$total));
 $interview_values = array();
 $technician_values = array();
 $target = count($list);
