@@ -5,6 +5,10 @@ $begin_date = htmlspecialchars($_POST['from']);
 $end_date = htmlspecialchars($_POST['to']);
 $rank = htmlspecialchars($_POST['rank']);
 
+$use_mode=false;
+if(array_key_exists('stat-option',$_POST))
+  $use_mode = 'mode'==htmlspecialchars($_POST['stat-option']);
+
 // query the db for the data we want
 
 if(''==$begin_date || ''==$end_date ||
@@ -16,7 +20,6 @@ if(''==$begin_date || ''==$end_date ||
 }
 
 $stdev_scale=2;
-$use_mode=true;
 $filesize_min=0;
 $filesize_max=0;
 // after baseline, retinal imaging switched to two separate interview stages

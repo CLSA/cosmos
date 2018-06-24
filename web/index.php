@@ -24,6 +24,18 @@ $date_ranges = json_encode($db->get_all( $sql ));
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script>
+      var stat_stages =[
+        'scripts/retinal_scanTable.php',
+        'scripts/lateral_bone_densityTable.php',
+        'scripts/cognitive_testTable.php',
+        'scripts/carotid_intima_stillTable.php',
+        'scripts/whole_body_bone_densityTable.php',
+        'scripts/forearm_bone_densityTable.php',
+        'scripts/ecgTable.php',
+        'scripts/carotid_intima_cineloopTable.php',
+        'scripts/dual_hip_bone_densityTable.php',
+        'scripts/carotid_intima_srTable.php',
+        'scripts/spine_bone_densityTable.php'];
       var date_json = <?php echo $date_ranges; ?>;
       var date_ranges = [];
       date_json.forEach(function(obj){
@@ -33,7 +45,12 @@ $date_ranges = json_encode($db->get_all( $sql ));
         $('#stage').change( function() {
           $('#qacform').attr('action', $(this).val());
           console.log('changing action to : '+$(this).val());
-        });
+          if(stat_stages.indexOf($(this).val()) > -1) {
+            $('#stat-option').prop('disabled',false).change();
+          } else {
+            $('#stat-option').prop('disabled',true).change();
+          }
+        }).change();
 
         $('#from').datepicker({
           dateFormat: 'yy-mm-dd',
@@ -134,6 +151,13 @@ $date_ranges = json_encode($db->get_all( $sql ));
             <option value="scripts/tugTable.php">TUG</option>
             <option value="scripts/weightTable.php">Weight</option>
           </select>
+        </div>
+        <div class="stat-option">
+          <label for="stat-option">Statistic:</label>
+          <select name="stat-option" id="stat-option">
+            <option value="mode">Mode Calculation</option>
+            <option value="mean">Mean Calculation</option>
+          </select>  
         </div>
         <div class="button">
           <button type="submit">Request Data</button>
