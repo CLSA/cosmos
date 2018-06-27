@@ -113,8 +113,10 @@
       </variable>
       <variable name="data_missing_spirometry" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">var stage=newValue($group(&apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,&apos;Spirometry&apos;,&apos;Admin.StageInstance.lastState&apos;).asSequence().last(),&apos;text&apos;)
-$this(&apos;data_qac_spirometry&apos;).isNull().and(stage.any(&apos;Skipped&apos;,&apos;NotApplicable&apos;).not()).value() ? 1 : 0</attribute>
+          <attribute name="script" valueType="text">$this(&apos;data_qac_spirometry&apos;).isNull().and(
+  $this(&apos;stage_contraindicated_spirometry&apos;).eq(0),
+  $this(&apos;stage_skip_spirometry&apos;).isNull()
+).value() ? 1 : 0</attribute>
         </attributes>
       </variable>
       <variable name="stage_skip_spirometry" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
@@ -199,8 +201,10 @@ res</attribute>
       </variable>
       <variable name="data_missing_grip_strength" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">var stage=newValue($group(&apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,&apos;GripStrength&apos;,&apos;Admin.StageInstance.lastState&apos;).asSequence().last(),&apos;text&apos;)
-$this(&apos;data_qac_grip_strength&apos;).isNull().and(stage.any(&apos;Skipped&apos;,&apos;NotApplicable&apos;).not()).value() ? 1 : 0</attribute>
+          <attribute name="script" valueType="text">$this(&apos;data_qac_grip_strength&apos;).isNull().and(
+  $this(&apos;stage_contraindicated_grip_strength&apos;).eq(0),
+  $this(&apos;stage_skip_grip_strength&apos;).isNull()
+).value() ? 1 : 0</attribute>
         </attributes>
       </variable>
       <variable name="data_qac_grip_strength" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
@@ -246,8 +250,10 @@ res</attribute>
       </variable>
       <variable name="data_missing_blood_pressure" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">var stage=newValue($group(&apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,&apos;BloodPressure&apos;,&apos;Admin.StageInstance.lastState&apos;).asSequence().last(),&apos;text&apos;)
-$this(&apos;data_qac_blood_pressure&apos;).isNull().and(stage.any(&apos;Skipped&apos;,&apos;NotApplicable&apos;).not()).value() ? 1 : 0</attribute>
+          <attribute name="script" valueType="text">$this(&apos;data_qac_blood_pressure&apos;).isNull().and(
+  $this(&apos;stage_contraindicated_blood_pressure&apos;).eq(0),
+  $this(&apos;stage_skip_blood_pressure&apos;).isNull()
+).value() ? 1 : 0</attribute>
         </attributes>
       </variable>
       <variable name="data_qac_blood_pressure" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
@@ -293,8 +299,10 @@ res</attribute>
       </variable>
       <variable name="data_missing_ecg" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">var stage=newValue($group(&apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,&apos;ECG&apos;,&apos;Admin.StageInstance.lastState&apos;).asSequence().last(),&apos;text&apos;)
-$this(&apos;data_qac_ecg&apos;).isNull().and(stage.any(&apos;Skipped&apos;,&apos;NotApplicable&apos;).not()).value() ? 1 : 0</attribute>
+          <attribute name="script" valueType="text">$this(&apos;data_qac_ecg&apos;).isNull().and(
+  $this(&apos;stage_contraindicated_ecg&apos;).eq(0),
+  $this(&apos;stage_skip_ecg&apos;).isNull()
+).value() ? 1 : 0</attribute>
         </attributes>
       </variable>
       <variable name="data_qac_ecg" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
@@ -348,8 +356,10 @@ res</attribute>
       </variable>
       <variable name="data_missing_cognitive_test" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">var stage=newValue($group(&apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,&apos;CognitiveTest&apos;,&apos;Admin.StageInstance.lastState&apos;).asSequence().last(),&apos;text&apos;)
-$this(&apos;data_qac_cognitive_test&apos;).isNull().and(stage.any(&apos;Skipped&apos;,&apos;NotApplicable&apos;).not()).value() ? 1 : 0</attribute>
+          <attribute name="script" valueType="text">$this(&apos;data_qac_cognitive_test&apos;).isNull().and(
+  $this(&apos;stage_contraindicated_cognitive_test&apos;).eq(0),
+  $this(&apos;stage_skip_cognitive_test&apos;).isNull()
+).value() ? 1 : 0</attribute>
         </attributes>
       </variable>
       <variable name="data_qac_cognitive_test" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
@@ -395,8 +405,10 @@ res</attribute>
       </variable>
       <variable name="data_missing_hearing" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">var stage=newValue($group(&apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,&apos;Hearing&apos;,&apos;Admin.StageInstance.lastState&apos;).asSequence().last(),&apos;text&apos;)
-$this(&apos;data_qac_hearing&apos;).isNull().and(stage.any(&apos;Skipped&apos;,&apos;NotApplicable&apos;).not()).value() ? 1 : 0</attribute>
+          <attribute name="script" valueType="text">$this(&apos;data_qac_hearing&apos;).isNull().and(
+  $this(&apos;stage_contraindicated_hearing&apos;).eq(0),
+  $this(&apos;stage_skip_hearing&apos;).isNull()
+).value() ? 1 : 0</attribute>
         </attributes>
       </variable>
       <variable name="data_qac_hearing" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
@@ -461,8 +473,10 @@ res</attribute>
       </variable>
       <variable name="data_missing_tonometer" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">var stage=newValue($group(&apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,&apos;Tonometer&apos;,&apos;Admin.StageInstance.lastState&apos;).asSequence().last(),&apos;text&apos;)
-$this(&apos;data_qac_tonometer&apos;).isNull().and(stage.any(&apos;Skipped&apos;,&apos;NotApplicable&apos;).not()).value() ? 1 : 0</attribute>
+          <attribute name="script" valueType="text">$this(&apos;data_qac_tonometer&apos;).isNull().and(
+  $this(&apos;stage_contraindicated_tonometer&apos;).eq(0),
+  $this(&apos;stage_skip_tonometer&apos;).isNull()
+).value() ? 1: 0</attribute>
         </attributes>
       </variable>
       <variable name="data_qac_tonometer" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
@@ -585,8 +599,10 @@ res</attribute>
       </variable>
       <variable name="data_missing_weight" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">var stage=newValue($group(&apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,&apos;Weight&apos;,&apos;Admin.StageInstance.lastState&apos;).asSequence().last(),&apos;text&apos;)
-$this(&apos;data_qac_weight&apos;).isNull().and(stage.any(&apos;Skipped&apos;,&apos;NotApplicable&apos;).not()).value() ? 1 : 0</attribute>
+          <attribute name="script" valueType="text">$this(&apos;data_qac_weight&apos;).isNull().and(
+  $this(&apos;stage_contraindicated_weight&apos;).eq(0),
+  $this(&apos;stage_skip_weight&apos;).isNull()
+).value() ? 1 : 0</attribute>
         </attributes>
       </variable>
       <variable name="data_qac_weight" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
@@ -635,8 +651,10 @@ res</attribute>
       </variable>
       <variable name="data_missing_retinal_scan" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">var stage=newValue($group(&apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,&apos;RetinalScan&apos;,&apos;Admin.StageInstance.lastState&apos;).asSequence().last(),&apos;text&apos;)
-$this(&apos;data_qac_retinal_scan&apos;).isNull().and(stage.any(&apos;Skipped&apos;,&apos;NotApplicable&apos;).not()).value() ? 1 : 0</attribute>
+          <attribute name="script" valueType="text">$this(&apos;data_qac_retinal_scan&apos;).isNull().and(
+  $this(&apos;stage_contraindicated_retinal_scan&apos;).eq(0),
+  $this(&apos;stage_skip_retinal_scan&apos;).isNull()
+).value() ? 1 : 0</attribute>
         </attributes>
       </variable>
       <variable name="data_qac_retinal_scan" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
@@ -691,8 +709,10 @@ res</attribute>
       </variable>
       <variable name="data_missing_lateral_bone_density" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">var stage=newValue($group(&apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,&apos;LateralBoneDensity&apos;,&apos;Admin.StageInstance.lastState&apos;).asSequence().last(),&apos;text&apos;)
-$this(&apos;data_qac_lateral_bone_density&apos;).isNull().and(stage.any(&apos;Skipped&apos;,&apos;NotApplicable&apos;).not()).value() ? 1 : 0</attribute>
+          <attribute name="script" valueType="text">$this(&apos;data_qac_lateral_bone_density&apos;).isNull().and(
+  $this(&apos;stage_contraindicated_lateral_bone_density&apos;).eq(0),
+  $this(&apos;stage_skip_lateral_bone_density&apos;).isNull()
+).value() ? 1 : 0</attribute>
         </attributes>
       </variable>
       <variable name="data_qac_lateral_bone_density" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
@@ -738,8 +758,10 @@ res</attribute>
       </variable>
       <variable name="data_missing_standing_height" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">var stage=newValue($group(&apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,&apos;StandingHeight&apos;,&apos;Admin.StageInstance.lastState&apos;).asSequence().last(),&apos;text&apos;)
-$this(&apos;data_qac_standing_height&apos;).isNull().and(stage.any(&apos;Skipped&apos;,&apos;NotApplicable&apos;).not()).value() ? 1 : 0</attribute>
+          <attribute name="script" valueType="text">$this(&apos;data_qac_standing_height&apos;).isNull().and(
+  $this(&apos;stage_contraindicated_standing_height&apos;).eq(0),
+  $this(&apos;stage_skip_standing_height&apos;).isNull()
+).value() ? 1 : 0</attribute>
         </attributes>
       </variable>
       <variable name="data_qac_standing_height" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
@@ -788,8 +810,10 @@ res</attribute>
       </variable>
       <variable name="data_missing_forearm_bone_density" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">var stage=newValue($group(&apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,&apos;ForearmBoneDensity&apos;,&apos;Admin.StageInstance.lastState&apos;).asSequence().last(),&apos;text&apos;)
-$this(&apos;data_qac_forearm_bone_density&apos;).isNull().and(stage.any(&apos;Skipped&apos;,&apos;NotApplicable&apos;).not()).value() ? 1 : 0</attribute>
+          <attribute name="script" valueType="text">$this(&apos;data_qac_forearm_bone_density&apos;).isNull().and(
+  $this(&apos;stage_contraindicated_forearm_bone_density&apos;).eq(0),
+  $this(&apos;stage_skip_forearm_bone_density&apos;).isNull()
+).value() ? 1 : 0</attribute>
         </attributes>
       </variable>
       <variable name="data_qac_forearm_bone_density" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
@@ -839,8 +863,10 @@ res</attribute>
       </variable>
       <variable name="data_missing_whole_body_bone_density" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">var stage=newValue($group(&apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,&apos;WholeBodyBoneDensity&apos;,&apos;Admin.StageInstance.lastState&apos;).asSequence().last(),&apos;text&apos;)
-$this(&apos;data_qac_whole_body_bone_density&apos;).isNull().and(stage.any(&apos;Skipped&apos;,&apos;NotApplicable&apos;).not()).value() ? 1 : 0</attribute>
+          <attribute name="script" valueType="text">$this(&apos;data_qac_whole_body_bone_density&apos;).isNull().and(
+  $this(&apos;stage_contraindicated_whole_body_bone_density&apos;).eq(0),
+  $this(&apos;stage_skip_whole_body_bone_density&apos;).isNull()
+).value() ? 1 : 0</attribute>
         </attributes>
       </variable>
       <variable name="data_qac_whole_body_bone_density" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
@@ -886,8 +912,10 @@ res</attribute>
       </variable>
       <variable name="data_missing_dual_hip_bone_density" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">var stage=newValue($group(&apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,&apos;DualHipBoneDensity&apos;,&apos;Admin.StageInstance.lastState&apos;).asSequence().last(),&apos;text&apos;)
-$this(&apos;data_qac_dual_hip_bone_density&apos;).isNull().and(stage.any(&apos;Skipped&apos;,&apos;NotApplicable&apos;).not()).value() ? 1 : 0</attribute>
+          <attribute name="script" valueType="text">$this(&apos;data_qac_dual_hip_bone_density&apos;).isNull().and(
+  $this(&apos;stage_contraindicated_dual_hip_bone_density&apos;).eq(0),
+  $this(&apos;stage_skip_dual_hip_bone_density&apos;).isNull()
+).value() ? 1 : 0</attribute>
         </attributes>
       </variable>
       <variable name="data_qac_dual_hip_bone_density" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
@@ -940,8 +968,10 @@ res</attribute>
       </variable>
       <variable name="data_missing_carotid_intima" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">var stage=newValue($group(&apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,&apos;CarotidIntima&apos;,&apos;Admin.StageInstance.lastState&apos;).asSequence().last(),&apos;text&apos;)
-$this(&apos;data_qac_carotid_intima&apos;).isNull().and(stage.any(&apos;Skipped&apos;,&apos;NotApplicable&apos;).not()).value() ? 1 : 0</attribute>
+          <attribute name="script" valueType="text">$this(&apos;data_qac_carotid_intima&apos;).isNull().and(
+  $this(&apos;stage_contraindicated_carotid_intima&apos;).eq(0),
+  $this(&apos;stage_skip_carotid_intima&apos;).isNull()
+).value() ? 1 : 0</attribute>
         </attributes>
       </variable>
       <variable name="data_qac_carotid_intima" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
@@ -1008,8 +1038,10 @@ res</attribute>
       </variable>
       <variable name="data_missing_tug" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">var stage=newValue($group(&apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,&apos;TUG&apos;,&apos;Admin.StageInstance.lastState&apos;).asSequence().last(),&apos;text&apos;)
-$this(&apos;data_qac_tug&apos;).isNull().and(stage.any(&apos;Skipped&apos;,&apos;NotApplicable&apos;).not()).value() ? 1 : 0</attribute>
+          <attribute name="script" valueType="text">$this(&apos;data_qac_tug&apos;).isNull().and(
+  $this(&apos;stage_contraindicated_tug&apos;).eq(0),
+  $this(&apos;stage_skip_tug&apos;).isNull()
+).value() ? 1 : 0</attribute>
         </attributes>
       </variable>
       <variable name="data_qac_tug" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
@@ -1066,8 +1098,10 @@ res</attribute>
       </variable>
       <variable name="data_missing_chair_rise" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">var stage=newValue($group(&apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,&apos;ChairRise&apos;,&apos;Admin.StageInstance.lastState&apos;).asSequence().last(),&apos;text&apos;)
-$this(&apos;data_qac_chair_rise&apos;).isNull().and(stage.any(&apos;Skipped&apos;,&apos;NotApplicable&apos;).not()).value() ? 1 : 0</attribute>
+          <attribute name="script" valueType="text">$this(&apos;data_qac_chair_rise&apos;).isNull().and(
+  $this(&apos;stage_contraindicated_chair_rise&apos;).eq(0),
+  $this(&apos;stage_skip_chair_rise&apos;).isNull()
+).value() ? 1 : 0</attribute>
         </attributes>
       </variable>
       <variable name="data_qac_chair_rise" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
@@ -1124,8 +1158,10 @@ res</attribute>
       </variable>
       <variable name="data_missing_hips_waist" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">var stage=newValue($group(&apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,&apos;HipsWaist&apos;,&apos;Admin.StageInstance.lastState&apos;).asSequence().last(),&apos;text&apos;)
-$this(&apos;data_qac_hips_waist&apos;).isNull().and(stage.any(&apos;Skipped&apos;,&apos;NotApplicable&apos;).not()).value() ? 1 : 0</attribute>
+          <attribute name="script" valueType="text">$this(&apos;data_qac_hips_waist&apos;).isNull().and(
+  $this(&apos;stage_contraindicated_hips_waist&apos;).eq(0),
+  $this(&apos;stage_skip_hips_waist&apos;).isNull()
+).value() ? 1 : 0</attribute>
         </attributes>
       </variable>
       <variable name="data_qac_hips_waist" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
@@ -1179,8 +1215,10 @@ res</attribute>
       </variable>
       <variable name="data_missing_neuropsychological_battery" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">var stage=newValue($group(&apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,&apos;NeuropsychologicalBattery&apos;,&apos;Admin.StageInstance.lastState&apos;).asSequence().last(),&apos;text&apos;)
-$this(&apos;data_qac_neuropsychological_battery&apos;).isNull().and(stage.any(&apos;Skipped&apos;,&apos;NotApplicable&apos;).not()).value() ? 1 : 0</attribute>
+          <attribute name="script" valueType="text">$this(&apos;data_qac_neuropsychological_battery&apos;).isNull().and(
+  $this(&apos;stage_contraindicated_neuropsychological_battery&apos;).eq(0),
+  $this(&apos;stage_skip_neuropsychological_battery&apos;).isNull()
+).value() ? 1 : 0</attribute>
         </attributes>
       </variable>
       <variable name="data_qac_neuropsychological_battery" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
@@ -1262,8 +1300,10 @@ res</attribute>
       </variable>
       <variable name="data_missing_standing_balance" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">var stage=newValue($group(&apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,&apos;StandingBalance&apos;,&apos;Admin.StageInstance.lastState&apos;).asSequence().last(),&apos;text&apos;)
-$this(&apos;data_qac_standing_balance&apos;).isNull().and(stage.any(&apos;Skipped&apos;,&apos;NotApplicable&apos;).not()).value() ? 1 : 0</attribute>
+          <attribute name="script" valueType="text">$this(&apos;data_qac_standing_balance&apos;).isNull().and(
+  $this(&apos;stage_contraindicated_standing_balance&apos;).eq(0),
+  $this(&apos;stage_skip_standing_balance&apos;).isNull()
+).value() ? 1 : 0</attribute>
         </attributes>
       </variable>
       <variable name="data_qac_standing_balance" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
@@ -1333,8 +1373,10 @@ res</attribute>
       </variable>
       <variable name="data_missing_four_metre_walk" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">var stage=newValue($group(&apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,&apos;4mWalk&apos;,&apos;Admin.StageInstance.lastState&apos;).asSequence().last(),&apos;text&apos;)
-$this(&apos;data_qac_four_metre_walk&apos;).isNull().and(stage.any(&apos;Skipped&apos;,&apos;NotApplicable&apos;).not()).value() ? 1 : 0</attribute>
+          <attribute name="script" valueType="text">$this(&apos;data_qac_four_metre_walk&apos;).isNull().and(
+  $this(&apos;stage_contraindicated_four_metre_walk&apos;).eq(0),
+  $this(&apos;stage_skip_four_metre_walk&apos;).isNull()
+).value() ? 1 : 0</attribute>
         </attributes>
       </variable>
       <variable name="data_qac_four_metre_walk" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
@@ -1391,8 +1433,10 @@ res</attribute>
       </variable>
       <variable name="data_missing_sitting_height" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">var stage=newValue($group(&apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,&apos;SittingHeight&apos;,&apos;Admin.StageInstance.lastState&apos;).asSequence().last(),&apos;text&apos;)
-$this(&apos;data_qac_sitting_height&apos;).isNull().and(stage.any(&apos;Skipped&apos;,&apos;NotApplicable&apos;).not()).value() ? 1 : 0</attribute>
+          <attribute name="script" valueType="text">$this(&apos;data_qac_sitting_height&apos;).isNull().and(
+  $this(&apos;stage_contraindicated_sitting_height&apos;).eq(0),
+  $this(&apos;stage_skip_sitting_height&apos;).isNull()
+).value() ? 1 : 0</attribute>
         </attributes>
       </variable>
       <variable name="data_qac_sitting_height" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
@@ -1475,8 +1519,10 @@ res</attribute>
       </variable>
       <variable name="data_missing_vision_acuity" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">var stage=newValue($group(&apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,&apos;VisionAcuity&apos;,&apos;Admin.StageInstance.lastState&apos;).asSequence().last(),&apos;text&apos;)
-$this(&apos;data_qac_vision_acuity&apos;).isNull().and(stage.any(&apos;Skipped&apos;,&apos;NotApplicable&apos;).not()).value() ? 1 : 0</attribute>
+          <attribute name="script" valueType="text">$this(&apos;data_qac_vision_acuity&apos;).isNull().and(
+  $this(&apos;stage_contraindicated_vision_acuity&apos;).eq(0),
+  $this(&apos;stage_skip_vision_acuity&apos;).isNull()
+).value() ? 1 : 0</attribute>
         </attributes>
       </variable>
       <variable name="data_qac_vision_acuity" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
@@ -1510,5 +1556,5 @@ res</attribute>
     </variables>
   </variables>
   <created valueType="datetime">2018-05-15T17:37:52.240-04</created>
-  <updated valueType="datetime">2018-06-20T11:48:28.945-04</updated>
+  <updated valueType="datetime">2018-06-25T09:58:06.515-04</updated>
 </org.obiba.magma.views.View>

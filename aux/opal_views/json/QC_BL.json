@@ -46,7 +46,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var stage=newValue($group('clsa-dcs.Participants:Admin.StageInstance.stage','Spirometry','Admin.StageInstance.lastState').asSequence().last(),'text')\n$this('data_qac_spirometry').isNull().and(stage.any('Skipped','NotApplicable').not()).value() ? 1 : 0"
+            "value": "$this('data_qac_spirometry').isNull().and(\n  $this('stage_contraindicated_spirometry').eq(0),\n  $this('stage_skip_spirometry').isNull()\n).value() ? 1 : 0"
           }
         ], 
         "entityType": "Participant", 
@@ -204,7 +204,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var stage=newValue($group('clsa-dcs.Participants:Admin.StageInstance.stage','GripStrength','Admin.StageInstance.lastState').asSequence().last(),'text')\n$this('data_qac_grip_strength').isNull().and(stage.any('Skipped','NotApplicable').not()).value() ? 1 : 0"
+            "value": "$this('data_qac_grip_strength').isNull().and(\n  $this('stage_contraindicated_grip_strength').eq(0),\n  $this('stage_skip_grip_strength').isNull()\n).value() ? 1 : 0"
           }
         ], 
         "entityType": "Participant", 
@@ -284,7 +284,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var stage=newValue($group('clsa-dcs.Participants:Admin.StageInstance.stage','BloodPressure','Admin.StageInstance.lastState').asSequence().last(),'text')\n$this('data_qac_blood_pressure').isNull().and(stage.any('Skipped','NotApplicable').not()).value() ? 1 : 0"
+            "value": "$this('data_qac_blood_pressure').isNull().and(\n  $this('stage_contraindicated_blood_pressure').eq(0),\n  $this('stage_skip_blood_pressure').isNull()\n).value() ? 1 : 0"
           }
         ], 
         "entityType": "Participant", 
@@ -364,7 +364,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var stage=newValue($group('clsa-dcs.Participants:Admin.StageInstance.stage','ECG','Admin.StageInstance.lastState').asSequence().last(),'text')\n$this('data_qac_ecg').isNull().and(stage.any('Skipped','NotApplicable').not()).value() ? 1 : 0"
+            "value": "$this('data_qac_ecg').isNull().and(\n  $this('stage_contraindicated_ecg').eq(0),\n  $this('stage_skip_ecg').isNull()\n).value() ? 1 : 0"
           }
         ], 
         "entityType": "Participant", 
@@ -444,7 +444,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var stage=newValue($group('clsa-dcs.Participants:Admin.StageInstance.stage','CognitiveTest','Admin.StageInstance.lastState').asSequence().last(),'text')\n$this('data_qac_cognitive_test').isNull().and(stage.any('Skipped','NotApplicable').not()).value() ? 1 : 0"
+            "value": "$this('data_qac_cognitive_test').isNull().and(\n  $this('stage_contraindicated_cognitive_test').eq(0),\n  $this('stage_skip_cognitive_test').isNull()\n).value() ? 1 : 0"
           }
         ], 
         "entityType": "Participant", 
@@ -524,7 +524,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var stage=newValue($group('clsa-dcs.Participants:Admin.StageInstance.stage','Hearing','Admin.StageInstance.lastState').asSequence().last(),'text')\n$this('data_qac_hearing').isNull().and(stage.any('Skipped','NotApplicable').not()).value() ? 1 : 0"
+            "value": "$this('data_qac_hearing').isNull().and(\n  $this('stage_contraindicated_hearing').eq(0),\n  $this('stage_skip_hearing').isNull()\n).value() ? 1 : 0"
           }
         ], 
         "entityType": "Participant", 
@@ -604,7 +604,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var stage=newValue($group('clsa-dcs.Participants:Admin.StageInstance.stage','Tonometer','Admin.StageInstance.lastState').asSequence().last(),'text')\n$this('data_qac_tonometer').isNull().and(stage.any('Skipped','NotApplicable').not()).value() ? 1 : 0"
+            "value": "$this('data_qac_tonometer').isNull().and(\n  $this('stage_contraindicated_tonometer').eq(0),\n  $this('stage_skip_tonometer').isNull()\n).value() ? 1: 0"
           }
         ], 
         "entityType": "Participant", 
@@ -684,7 +684,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var stage=newValue($group('clsa-dcs.Participants:Admin.StageInstance.stage','Weight','Admin.StageInstance.lastState').asSequence().last(),'text')\n$this('data_qac_weight').isNull().and(stage.any('Skipped','NotApplicable').not()).value() ? 1 : 0"
+            "value": "$this('data_qac_weight').isNull().and(\n  $this('stage_contraindicated_weight').eq(0),\n  $this('stage_skip_weight').isNull()\n).value() ? 1 : 0"
           }
         ], 
         "entityType": "Participant", 
@@ -764,7 +764,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var stage=newValue($group('clsa-dcs.Participants:Admin.StageInstance.stage','RetinalScan','Admin.StageInstance.lastState').asSequence().last(),'text')\n$this('data_qac_retinal_scan').isNull().and(stage.any('Skipped','NotApplicable').not()).value() ? 1 : 0"
+            "value": "$this('data_qac_retinal_scan').isNull().and(\n  $this('stage_contraindicated_retinal_scan').eq(0),\n  $this('stage_skip_retinal_scan').isNull()\n).value() ? 1 : 0"
           }
         ], 
         "entityType": "Participant", 
@@ -804,7 +804,6 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_technician_lateral_bone_density", 
-        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -845,7 +844,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var stage=newValue($group('clsa-dcs.Participants:Admin.StageInstance.stage','LateralBoneDensity','Admin.StageInstance.lastState').asSequence().last(),'text')\n$this('data_qac_lateral_bone_density').isNull().and(stage.any('Skipped','NotApplicable').not()).value() ? 1 : 0"
+            "value": "$this('data_qac_lateral_bone_density').isNull().and(\n  $this('stage_contraindicated_lateral_bone_density').eq(0),\n  $this('stage_skip_lateral_bone_density').isNull()\n).value() ? 1 : 0"
           }
         ], 
         "entityType": "Participant", 
@@ -925,7 +924,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var stage=newValue($group('clsa-dcs.Participants:Admin.StageInstance.stage','StandingHeight','Admin.StageInstance.lastState').asSequence().last(),'text')\n$this('data_qac_standing_height').isNull().and(stage.any('Skipped','NotApplicable').not()).value() ? 1 : 0"
+            "value": "$this('data_qac_standing_height').isNull().and(\n  $this('stage_contraindicated_standing_height').eq(0),\n  $this('stage_skip_standing_height').isNull()\n).value() ? 1 : 0"
           }
         ], 
         "entityType": "Participant", 
@@ -965,7 +964,6 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_technician_forearm_bone_density", 
-        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1006,7 +1004,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var stage=newValue($group('clsa-dcs.Participants:Admin.StageInstance.stage','ForearmBoneDensity','Admin.StageInstance.lastState').asSequence().last(),'text')\n$this('data_qac_forearm_bone_density').isNull().and(stage.any('Skipped','NotApplicable').not()).value() ? 1 : 0"
+            "value": "$this('data_qac_forearm_bone_density').isNull().and(\n  $this('stage_contraindicated_forearm_bone_density').eq(0),\n  $this('stage_skip_forearm_bone_density').isNull()\n).value() ? 1 : 0"
           }
         ], 
         "entityType": "Participant", 
@@ -1046,7 +1044,6 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_technician_whole_body_bone_density", 
-        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1087,7 +1084,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var stage=newValue($group('clsa-dcs.Participants:Admin.StageInstance.stage','WholeBodyBoneDensity','Admin.StageInstance.lastState').asSequence().last(),'text')\n$this('data_qac_whole_body_bone_density').isNull().and(stage.any('Skipped','NotApplicable').not()).value() ? 1 : 0"
+            "value": "$this('data_qac_whole_body_bone_density').isNull().and(\n  $this('stage_contraindicated_whole_body_bone_density').eq(0),\n  $this('stage_skip_whole_body_bone_density').isNull()\n).value() ? 1 : 0"
           }
         ], 
         "entityType": "Participant", 
@@ -1127,7 +1124,6 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_technician_dual_hip_bone_density", 
-        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1168,7 +1164,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var stage=newValue($group('clsa-dcs.Participants:Admin.StageInstance.stage','DualHipBoneDensity','Admin.StageInstance.lastState').asSequence().last(),'text')\n$this('data_qac_dual_hip_bone_density').isNull().and(stage.any('Skipped','NotApplicable').not()).value() ? 1 : 0"
+            "value": "$this('data_qac_dual_hip_bone_density').isNull().and(\n  $this('stage_contraindicated_dual_hip_bone_density').eq(0),\n  $this('stage_skip_dual_hip_bone_density').isNull()\n).value() ? 1 : 0"
           }
         ], 
         "entityType": "Participant", 
@@ -1208,7 +1204,6 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_technician_carotid_intima", 
-        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1249,7 +1244,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var stage=newValue($group('clsa-dcs.Participants:Admin.StageInstance.stage','CarotidIntima','Admin.StageInstance.lastState').asSequence().last(),'text')\n$this('data_qac_carotid_intima').isNull().and(stage.any('Skipped','NotApplicable').not()).value() ? 1 : 0"
+            "value": "$this('data_qac_carotid_intima').isNull().and(\n  $this('stage_contraindicated_carotid_intima').eq(0),\n  $this('stage_skip_carotid_intima').isNull()\n).value() ? 1 : 0"
           }
         ], 
         "entityType": "Participant", 
@@ -1329,7 +1324,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var stage=newValue($group('clsa-dcs.Participants:Admin.StageInstance.stage','TUG','Admin.StageInstance.lastState').asSequence().last(),'text')\n$this('data_qac_tug').isNull().and(stage.any('Skipped','NotApplicable').not()).value() ? 1 : 0"
+            "value": "$this('data_qac_tug').isNull().and(\n  $this('stage_contraindicated_tug').eq(0),\n  $this('stage_skip_tug').isNull()\n).value() ? 1 : 0"
           }
         ], 
         "entityType": "Participant", 
@@ -1409,7 +1404,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var stage=newValue($group('clsa-dcs.Participants:Admin.StageInstance.stage','ChairRise','Admin.StageInstance.lastState').asSequence().last(),'text')\n$this('data_qac_chair_rise').isNull().and(stage.any('Skipped','NotApplicable').not()).value() ? 1 : 0"
+            "value": "$this('data_qac_chair_rise').isNull().and(\n  $this('stage_contraindicated_chair_rise').eq(0),\n  $this('stage_skip_chair_rise').isNull()\n).value() ? 1 : 0"
           }
         ], 
         "entityType": "Participant", 
@@ -1489,7 +1484,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var stage=newValue($group('clsa-dcs.Participants:Admin.StageInstance.stage','HipsWaist','Admin.StageInstance.lastState').asSequence().last(),'text')\n$this('data_qac_hips_waist').isNull().and(stage.any('Skipped','NotApplicable').not()).value() ? 1 : 0"
+            "value": "$this('data_qac_hips_waist').isNull().and(\n  $this('stage_contraindicated_hips_waist').eq(0),\n  $this('stage_skip_hips_waist').isNull()\n).value() ? 1 : 0"
           }
         ], 
         "entityType": "Participant", 
@@ -1569,7 +1564,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var stage=newValue($group('clsa-dcs.Participants:Admin.StageInstance.stage','NeuropsychologicalBattery','Admin.StageInstance.lastState').asSequence().last(),'text')\n$this('data_qac_neuropsychological_battery').isNull().and(stage.any('Skipped','NotApplicable').not()).value() ? 1 : 0"
+            "value": "$this('data_qac_neuropsychological_battery').isNull().and(\n  $this('stage_contraindicated_neuropsychological_battery').eq(0),\n  $this('stage_skip_neuropsychological_battery').isNull()\n).value() ? 1 : 0"
           }
         ], 
         "entityType": "Participant", 
@@ -1649,7 +1644,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var stage=newValue($group('clsa-dcs.Participants:Admin.StageInstance.stage','StandingBalance','Admin.StageInstance.lastState').asSequence().last(),'text')\n$this('data_qac_standing_balance').isNull().and(stage.any('Skipped','NotApplicable').not()).value() ? 1 : 0"
+            "value": "$this('data_qac_standing_balance').isNull().and(\n  $this('stage_contraindicated_standing_balance').eq(0),\n  $this('stage_skip_standing_balance').isNull()\n).value() ? 1 : 0"
           }
         ], 
         "entityType": "Participant", 
@@ -1729,7 +1724,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var stage=newValue($group('clsa-dcs.Participants:Admin.StageInstance.stage','4mWalk','Admin.StageInstance.lastState').asSequence().last(),'text')\n$this('data_qac_four_metre_walk').isNull().and(stage.any('Skipped','NotApplicable').not()).value() ? 1 : 0"
+            "value": "$this('data_qac_four_metre_walk').isNull().and(\n  $this('stage_contraindicated_four_metre_walk').eq(0),\n  $this('stage_skip_four_metre_walk').isNull()\n).value() ? 1 : 0"
           }
         ], 
         "entityType": "Participant", 
@@ -1809,7 +1804,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var stage=newValue($group('clsa-dcs.Participants:Admin.StageInstance.stage','SittingHeight','Admin.StageInstance.lastState').asSequence().last(),'text')\n$this('data_qac_sitting_height').isNull().and(stage.any('Skipped','NotApplicable').not()).value() ? 1 : 0"
+            "value": "$this('data_qac_sitting_height').isNull().and(\n  $this('stage_contraindicated_sitting_height').eq(0),\n  $this('stage_skip_sitting_height').isNull()\n).value() ? 1 : 0"
           }
         ], 
         "entityType": "Participant", 
@@ -1889,7 +1884,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var stage=newValue($group('clsa-dcs.Participants:Admin.StageInstance.stage','VisionAcuity','Admin.StageInstance.lastState').asSequence().last(),'text')\n$this('data_qac_vision_acuity').isNull().and(stage.any('Skipped','NotApplicable').not()).value() ? 1 : 0"
+            "value": "$this('data_qac_vision_acuity').isNull().and(\n  $this('stage_contraindicated_vision_acuity').eq(0),\n  $this('stage_skip_vision_acuity').isNull()\n).value() ? 1 : 0"
           }
         ], 
         "entityType": "Participant", 
