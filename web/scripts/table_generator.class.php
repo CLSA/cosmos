@@ -4,7 +4,7 @@ require_once 'common.php';
 
 abstract class table_generator
 {
-  public function __construct( $_stage, $_rank, $_begin_date = null, $_end_date = null)
+  public function __construct($_stage, $_rank, $_begin_date = null, $_end_date = null)
   {
     if(''==$_begin_date || ''==$_end_date ||
        !(preg_match('/^20(1|2)[0-9]-(0|1)[0-9]{1}-[0-3]{1}[0-9]{1}/',$_begin_date) &&
@@ -380,9 +380,9 @@ HTML;
 
   private $site_data_list;
 
-  private $indicator_keys;
+  protected $indicator_keys;
 
-  private $percent_keys;
+  protected $percent_keys;
 
   private $total_keys;
 
