@@ -54,6 +54,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_missing_spirometry", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -62,7 +63,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var v1=$group('Admin.Action.stage','Spirometry','Admin.Action.actionType').asSequence()\nvar v2=$group('Admin.Action.stage','Spirometry','Admin.Action.eventReason').asSequence()\nvar res=null\nvar arr=[]  // string array of events\nfor(var i=0; i<v1.size(); i++) {\n  if(v1.valueAt(i).any('SKIP').not().value() ||\n     v2.valueAt(i).isNull().value()) continue\n  var key=v2.valueAt(i).value().slice(14)\n  if(-1==arr.indexOf(key))\n    arr.push(key)\n}\nif(undefined!==arr && 0<arr.length) {\n  res=newValue(arr.pop(),'text')  \n}\nres"
+            "value": "var action=$group('Admin.Action.stage','Spirometry','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','Spirometry','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  var j=action.indexOf('SKIP')\n  return j==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -86,6 +87,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_contraindicated_spirometry", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -148,6 +150,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_spirometry", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -164,6 +167,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_technician_grip_strength", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -180,6 +184,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_contraindicated_grip_strength", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -188,7 +193,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var v1=$group('Admin.Action.stage','GripStrength','Admin.Action.actionType').asSequence()\nvar v2=$group('Admin.Action.stage','GripStrength','Admin.Action.eventReason').asSequence()\nvar res=null\nvar arr=[]  // string array of events\nfor(var i=0; i<v1.size(); i++) {\n  if(v1.valueAt(i).any('SKIP').not().value() ||\n     v2.valueAt(i).isNull().value()) continue\n  var key=v2.valueAt(i).value().slice(14)\n  if(-1==arr.indexOf(key))\n    arr.push(key)\n}\nif(undefined!==arr && 0<arr.length) {\n  res=newValue(arr.pop(),'text')  \n}\nres"
+            "value": "var action=$group('Admin.Action.stage','GripStrength','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','GripStrength','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  var j=action.indexOf('SKIP')\n  return j==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -212,6 +217,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_missing_grip_strength", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -228,6 +234,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_grip_strength", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -244,6 +251,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_technician_blood_pressure", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -260,6 +268,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_contraindicated_blood_pressure", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -268,7 +277,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var v1=$group('Admin.Action.stage','BloodPressure','Admin.Action.actionType').asSequence()\nvar v2=$group('Admin.Action.stage','BloodPressure','Admin.Action.eventReason').asSequence()\nvar res=null\nvar arr=[]  // string array of events\nfor(var i=0; i<v1.size(); i++) {\n  if(v1.valueAt(i).any('SKIP').not().value() ||\n     v2.valueAt(i).isNull().value()) continue\n  var key=v2.valueAt(i).value().slice(14)\n  if(-1==arr.indexOf(key))\n    arr.push(key)\n}\nif(undefined!==arr && 0<arr.length) {\n  res=newValue(arr.pop(),'text')  \n}\nres"
+            "value": "var action=$group('Admin.Action.stage','BloodPressure','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','BloodPressure','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  var j=action.indexOf('SKIP')\n  return j==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -292,6 +301,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_missing_blood_pressure", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -308,6 +318,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_blood_pressure", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -324,6 +335,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_technician_ecg", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -340,6 +352,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_contraindicated_ecg", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -348,7 +361,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var v1=$group('Admin.Action.stage','ECG','Admin.Action.actionType').asSequence()\nvar v2=$group('Admin.Action.stage','ECG','Admin.Action.eventReason').asSequence()\nvar res=null\nvar arr=[]  // string array of events\nfor(var i=0; i<v1.size(); i++) {\n  if(v1.valueAt(i).any('SKIP').not().value() ||\n     v2.valueAt(i).isNull().value()) continue\n  var key=v2.valueAt(i).value().slice(14)\n  if(-1==arr.indexOf(key))\n    arr.push(key)\n}\nif(undefined!==arr && 0<arr.length) {\n  res=newValue(arr.pop(),'text')  \n}\nres"
+            "value": "var action=$group('Admin.Action.stage','ECG','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','ECG','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  var j=action.indexOf('SKIP')\n  return j==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -372,6 +385,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_missing_ecg", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -388,6 +402,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_ecg", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -404,6 +419,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_technician_cognitive_test", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -420,6 +436,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_contraindicated_cognitive_test", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -428,7 +445,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var v1=$group('Admin.Action.stage','CognitiveTest','Admin.Action.actionType').asSequence()\nvar v2=$group('Admin.Action.stage','CognitiveTest','Admin.Action.eventReason').asSequence()\nvar res=null\nvar arr=[]  // string array of events\nfor(var i=0; i<v1.size(); i++) {\n  if(v1.valueAt(i).any('SKIP').not().value() ||\n     v2.valueAt(i).isNull().value()) continue\n  var key=v2.valueAt(i).value().slice(14)\n  if(-1==arr.indexOf(key))\n    arr.push(key)\n}\nif(undefined!==arr && 0<arr.length) {\n  res=newValue(arr.pop(),'text')  \n}\nres"
+            "value": "var action=$group('Admin.Action.stage','CognitiveTest','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','CognitiveTest','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  var j=action.indexOf('SKIP')\n  return j==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -452,6 +469,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_missing_cognitive_test", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -468,6 +486,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_cognitive_test", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -484,6 +503,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_technician_hearing", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -500,6 +520,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_contraindicated_hearing", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -508,7 +529,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var v1=$group('Admin.Action.stage','Hearing','Admin.Action.actionType').asSequence()\nvar v2=$group('Admin.Action.stage','Hearing','Admin.Action.eventReason').asSequence()\nvar res=null\nvar arr=[]  // string array of events\nfor(var i=0; i<v1.size(); i++) {\n  if(v1.valueAt(i).any('SKIP').not().value() ||\n     v2.valueAt(i).isNull().value()) continue\n  var key=v2.valueAt(i).value().slice(14)\n  if(-1==arr.indexOf(key))\n    arr.push(key)\n}\nif(undefined!==arr && 0<arr.length) {\n  res=newValue(arr.pop(),'text')  \n}\nres"
+            "value": "var action=$group('Admin.Action.stage','Hearing','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','Hearing','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  var j=action.indexOf('SKIP')\n  return j==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -532,6 +553,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_missing_hearing", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -548,6 +570,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_hearing", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -564,6 +587,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_technician_tonometer", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -580,6 +604,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_contraindicated_tonometer", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -588,7 +613,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var v1=$group('Admin.Action.stage','Tonometer','Admin.Action.actionType').asSequence()\nvar v2=$group('Admin.Action.stage','Tonometer','Admin.Action.eventReason').asSequence()\nvar res=null\nvar arr=[]  // string array of events\nfor(var i=0; i<v1.size(); i++) {\n  if(v1.valueAt(i).any('SKIP').not().value() ||\n     v2.valueAt(i).isNull().value()) continue\n  var key=v2.valueAt(i).value().slice(14)\n  if(-1==arr.indexOf(key))\n    arr.push(key)\n}\nif(undefined!==arr && 0<arr.length) {\n  res=newValue(arr.pop(),'text')  \n}\nres"
+            "value": "var action=$group('Admin.Action.stage','Tonometer','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','Tonometer','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  var j=action.indexOf('SKIP')\n  return j==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -612,6 +637,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_missing_tonometer", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -628,6 +654,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_tonometer", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -644,6 +671,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_technician_weight", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -660,6 +688,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_contraindicated_weight", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -668,7 +697,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var v1=$group('Admin.Action.stage','Weight','Admin.Action.actionType').asSequence()\nvar v2=$group('Admin.Action.stage','Weight','Admin.Action.eventReason').asSequence()\nvar res=null\nvar arr=[]  // string array of events\nfor(var i=0; i<v1.size(); i++) {\n  if(v1.valueAt(i).any('SKIP').not().value() ||\n     v2.valueAt(i).isNull().value()) continue\n  var key=v2.valueAt(i).value().slice(14)\n  if(-1==arr.indexOf(key))\n    arr.push(key)\n}\nif(undefined!==arr && 0<arr.length) {\n  res=newValue(arr.pop(),'text')  \n}\nres"
+            "value": "var action=$group('Admin.Action.stage','Weight','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','Weight','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  var j=action.indexOf('SKIP')\n  return j==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -692,6 +721,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_missing_weight", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -708,6 +738,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_weight", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -724,6 +755,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_technician_retinal_scan", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -740,6 +772,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_contraindicated_retinal_scan", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -748,7 +781,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var v1=$group('Admin.Action.stage','RetinalScan','Admin.Action.actionType').asSequence()\nvar v2=$group('Admin.Action.stage','RetinalScan','Admin.Action.eventReason').asSequence()\nvar res=null\nvar arr=[]  // string array of events\nfor(var i=0; i<v1.size(); i++) {\n  if(v1.valueAt(i).any('SKIP').not().value() ||\n     v2.valueAt(i).isNull().value()) continue\n  var key=v2.valueAt(i).value().slice(14)\n  if(-1==arr.indexOf(key))\n    arr.push(key)\n}\nif(undefined!==arr && 0<arr.length) {\n  res=newValue(arr.pop(),'text')  \n}\nres"
+            "value": "var action=$group('Admin.Action.stage','RetinalScan','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','RetinalScan','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  var j=action.indexOf('SKIP')\n  return j==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -756,6 +789,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_skip_retinal_scan", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -772,6 +806,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_missing_retinal_scan", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -788,6 +823,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_retinal_scan", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -804,6 +840,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_technician_lateral_bone_density", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -820,6 +857,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_contraindicated_lateral_bone_density", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -828,7 +866,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var v1=$group('Admin.Action.stage','LateralBoneDensity','Admin.Action.actionType').asSequence()\nvar v2=$group('Admin.Action.stage','LateralBoneDensity','Admin.Action.eventReason').asSequence()\nvar res=null\nvar arr=[]  // string array of events\nfor(var i=0; i<v1.size(); i++) {\n  if(v1.valueAt(i).any('SKIP').not().value() ||\n     v2.valueAt(i).isNull().value()) continue\n  var key=v2.valueAt(i).value().slice(14)\n  if(-1==arr.indexOf(key))\n    arr.push(key)\n}\nif(undefined!==arr && 0<arr.length) {\n  res=newValue(arr.pop(),'text')  \n}\nres"
+            "value": "var action=$group('Admin.Action.stage','LateralBoneDensity','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','LateralBoneDensity','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  var j=action.indexOf('SKIP')\n  return j==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')\n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -852,6 +890,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_missing_lateral_bone_density", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -868,6 +907,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_lateral_bone_density", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -884,6 +924,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_technician_standing_height", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -900,6 +941,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_contraindicated_standing_height", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -908,7 +950,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var v1=$group('Admin.Action.stage','StandingHeight','Admin.Action.actionType').asSequence()\nvar v2=$group('Admin.Action.stage','StandingHeight','Admin.Action.eventReason').asSequence()\nvar res=null\nvar arr=[]  // string array of events\nfor(var i=0; i<v1.size(); i++) {\n  if(v1.valueAt(i).any('SKIP').not().value() ||\n     v2.valueAt(i).isNull().value()) continue\n  var key=v2.valueAt(i).value().slice(14)\n  if(-1==arr.indexOf(key))\n    arr.push(key)\n}\nif(undefined!==arr && 0<arr.length) {\n  res=newValue(arr.pop(),'text')  \n}\nres"
+            "value": "var action=$group('Admin.Action.stage','StandingHeight','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','StandingHeight','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  var j=action.indexOf('SKIP')\n  return j==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')\n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -932,6 +974,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_missing_standing_height", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -948,6 +991,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_standing_height", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -964,6 +1008,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_technician_forearm_bone_density", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -980,6 +1025,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_contraindicated_forearm_bone_density", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -988,7 +1034,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var v1=$group('Admin.Action.stage','ForearmBoneDensity','Admin.Action.actionType').asSequence()\nvar v2=$group('Admin.Action.stage','ForearmBoneDensity','Admin.Action.eventReason').asSequence()\nvar res=null\nvar arr=[]  // string array of events\nfor(var i=0; i<v1.size(); i++) {\n  if(v1.valueAt(i).any('SKIP').not().value() ||\n     v2.valueAt(i).isNull().value()) continue\n  var key=v2.valueAt(i).value().slice(14)\n  if(-1==arr.indexOf(key))\n    arr.push(key)\n}\nif(undefined!==arr && 0<arr.length) {\n  res=newValue(arr.pop(),'text')  \n}\nres"
+            "value": "var action=$group('Admin.Action.stage','ForearmBoneDensity','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','ForearmBoneDensity','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  var j=action.indexOf('SKIP')\n  return j==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -1012,6 +1058,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_missing_forearm_bone_density", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -1028,6 +1075,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_forearm_bone_density", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1044,6 +1092,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_technician_whole_body_bone_density", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1060,6 +1109,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_contraindicated_whole_body_bone_density", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -1068,7 +1118,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var v1=$group('Admin.Action.stage','WholeBodyBoneDensity','Admin.Action.actionType').asSequence()\nvar v2=$group('Admin.Action.stage','WholeBodyBoneDensity','Admin.Action.eventReason').asSequence()\nvar res=null\nvar arr=[]  // string array of events\nfor(var i=0; i<v1.size(); i++) {\n  if(v1.valueAt(i).any('SKIP').not().value() ||\n     v2.valueAt(i).isNull().value()) continue\n  var key=v2.valueAt(i).value().slice(14)\n  if(-1==arr.indexOf(key))\n    arr.push(key)\n}\nif(undefined!==arr && 0<arr.length) {\n  res=newValue(arr.pop(),'text')  \n}\nres"
+            "value": "var action=$group('Admin.Action.stage','WholeBodyBoneDensity','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','WholeBodyBoneDensity','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  var j=action.indexOf('SKIP')\n  return j==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -1092,6 +1142,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_missing_whole_body_bone_density", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -1108,6 +1159,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_whole_body_bone_density", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1124,6 +1176,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_technician_dual_hip_bone_density", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1140,6 +1193,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_contraindicated_dual_hip_bone_density", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -1148,7 +1202,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var v1=$group('Admin.Action.stage','DualHipBoneDensity','Admin.Action.actionType').asSequence()\nvar v2=$group('Admin.Action.stage','DualHipBoneDensity','Admin.Action.eventReason').asSequence()\nvar res=null\nvar arr=[]  // string array of events\nfor(var i=0; i<v1.size(); i++) {\n  if(v1.valueAt(i).any('SKIP').not().value() ||\n     v2.valueAt(i).isNull().value()) continue\n  var key=v2.valueAt(i).value().slice(14)\n  if(-1==arr.indexOf(key))\n    arr.push(key)\n}\nif(undefined!==arr && 0<arr.length) {\n  res=newValue(arr.pop(),'text')  \n}\nres"
+            "value": "var action=$group('Admin.Action.stage','DualHipBoneDensity','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','DualHipBoneDensity','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  var j=action.indexOf('SKIP')\n  return j==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -1172,6 +1226,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_missing_dual_hip_bone_density", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -1188,6 +1243,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_dual_hip_bone_density", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1204,6 +1260,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_technician_carotid_intima", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1220,6 +1277,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_contraindicated_carotid_intima", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -1228,7 +1286,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var v1=$group('Admin.Action.stage','CarotidIntima','Admin.Action.actionType').asSequence()\nvar v2=$group('Admin.Action.stage','CarotidIntima','Admin.Action.eventReason').asSequence()\nvar res=null\nvar arr=[]  // string array of events\nfor(var i=0; i<v1.size(); i++) {\n  if(v1.valueAt(i).any('SKIP').not().value() ||\n     v2.valueAt(i).isNull().value()) continue\n  var key=v2.valueAt(i).value().slice(14)\n  if(-1==arr.indexOf(key))\n    arr.push(key)\n}\nif(undefined!==arr && 0<arr.length) {\n  res=newValue(arr.pop(),'text')  \n}\nres"
+            "value": "var action=$group('Admin.Action.stage','CarotidIntima','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','CarotidIntima','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  var j=action.indexOf('SKIP')\n  return j==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -1252,6 +1310,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_missing_carotid_intima", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -1268,6 +1327,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_carotid_intima", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1284,6 +1344,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_technician_tug", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1300,6 +1361,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_contraindicated_tug", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -1308,7 +1370,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var v1=$group('Admin.Action.stage','TUG','Admin.Action.actionType').asSequence()\nvar v2=$group('Admin.Action.stage','TUG','Admin.Action.eventReason').asSequence()\nvar res=null\nvar arr=[]  // string array of events\nfor(var i=0; i<v1.size(); i++) {\n  if(v1.valueAt(i).any('SKIP').not().value() ||\n     v2.valueAt(i).isNull().value()) continue\n  var key=v2.valueAt(i).value().slice(14)\n  if(-1==arr.indexOf(key))\n    arr.push(key)\n}\nif(undefined!==arr && 0<arr.length) {\n  res=newValue(arr.pop(),'text')  \n}\nres"
+            "value": "var action=$group('Admin.Action.stage','TUG','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','TUG','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  var j=action.indexOf('SKIP')\n  return j==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -1332,6 +1394,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_missing_tug", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -1348,6 +1411,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_tug", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1364,6 +1428,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_technician_chair_rise", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1380,6 +1445,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_contraindicated_chair_rise", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -1388,7 +1454,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var v1=$group('Admin.Action.stage','ChairRise','Admin.Action.actionType').asSequence()\nvar v2=$group('Admin.Action.stage','ChairRise','Admin.Action.eventReason').asSequence()\nvar res=null\nvar arr=[]  // string array of events\nfor(var i=0; i<v1.size(); i++) {\n  if(v1.valueAt(i).any('SKIP').not().value() ||\n     v2.valueAt(i).isNull().value()) continue\n  var key=v2.valueAt(i).value().slice(14)\n  if(-1==arr.indexOf(key))\n    arr.push(key)\n}\nif(undefined!==arr && 0<arr.length) {\n  res=newValue(arr.pop(),'text')  \n}\nres"
+            "value": "var action=$group('Admin.Action.stage','ChairRise','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','ChairRise','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  var j=action.indexOf('SKIP')\n  return j==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -1412,6 +1478,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_missing_chair_rise", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -1428,6 +1495,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_chair_rise", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1444,6 +1512,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_technician_hips_waist", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1460,6 +1529,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_contraindicated_hips_waist", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -1468,7 +1538,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var v1=$group('Admin.Action.stage','HipsWaist','Admin.Action.actionType').asSequence()\nvar v2=$group('Admin.Action.stage','HipsWaist','Admin.Action.eventReason').asSequence()\nvar res=null\nvar arr=[]  // string array of events\nfor(var i=0; i<v1.size(); i++) {\n  if(v1.valueAt(i).any('SKIP').not().value() ||\n     v2.valueAt(i).isNull().value()) continue\n  var key=v2.valueAt(i).value().slice(14)\n  if(-1==arr.indexOf(key))\n    arr.push(key)\n}\nif(undefined!==arr && 0<arr.length) {\n  res=newValue(arr.pop(),'text')  \n}\nres"
+            "value": "var action=$group('Admin.Action.stage','HipsWaist','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','HipsWaist','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  var j=action.indexOf('SKIP')\n  return j==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -1492,6 +1562,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_missing_hips_waist", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -1508,6 +1579,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_hips_waist", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1524,6 +1596,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_technician_neuropsychological_battery", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1540,6 +1613,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_contraindicated_neuropsychological_battery", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -1548,7 +1622,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var v1=$group('Admin.Action.stage','NeuropsychologicalBattery','Admin.Action.actionType').asSequence()\nvar v2=$group('Admin.Action.stage','NeuropsychologicalBattery','Admin.Action.eventReason').asSequence()\nvar res=null\nvar arr=[]  // string array of events\nfor(var i=0; i<v1.size(); i++) {\n  if(v1.valueAt(i).any('SKIP').not().value() ||\n     v2.valueAt(i).isNull().value()) continue\n  var key=v2.valueAt(i).value().slice(14)\n  if(-1==arr.indexOf(key))\n    arr.push(key)\n}\nif(undefined!==arr && 0<arr.length) {\n  res=newValue(arr.pop(),'text')  \n}\nres"
+            "value": "// if a dcs by phone visit, then the skip will be \"ModifiedVisit\"\nvar res=null\nif($('clsa-dcs.Participants:DCS_PHONE').isNull().not().value()){\n  res=newValue('ModifiedVisit','text')\n} else {\n  var v1=$group('Admin.Action.stage','NeuropsychologicalBattery','Admin.Action.actionType').asSequence()\n  var v2=$group('Admin.Action.stage','NeuropsychologicalBattery','Admin.Action.eventReason').asSequence()\n\n  var arr=[]  // string array of events\n  for(var i=0; i<v1.size(); i++) {\n    if(v1.valueAt(i).any('SKIP').not().value() ||\n       v2.valueAt(i).isNull().value()) continue\n    var key=v2.valueAt(i).value().slice(14)\n    if(-1==arr.indexOf(key))\n      arr.push(key)\n  }\n  if(undefined!==arr && 0<arr.length) {\n    res=newValue(arr.pop(),'text')  \n  }\n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -1572,6 +1646,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_missing_neuropsychological_battery", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -1588,6 +1663,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_neuropsychological_battery", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1604,6 +1680,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_technician_standing_balance", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1620,6 +1697,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_contraindicated_standing_balance", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -1628,7 +1706,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var v1=$group('Admin.Action.stage','StandingBalance','Admin.Action.actionType').asSequence()\nvar v2=$group('Admin.Action.stage','StandingBalance','Admin.Action.eventReason').asSequence()\nvar res=null\nvar arr=[]  // string array of events\nfor(var i=0; i<v1.size(); i++) {\n  if(v1.valueAt(i).any('SKIP').not().value() ||\n     v2.valueAt(i).isNull().value()) continue\n  var key=v2.valueAt(i).value().slice(14)\n  if(-1==arr.indexOf(key))\n    arr.push(key)\n}\nif(undefined!==arr && 0<arr.length) {\n  res=newValue(arr.pop(),'text')  \n}\nif(null===res) {\n  var l1=$('clsa-dcs.StandingBalance:STAND_COMPLETION_LEFT')  \n  var r1=$('clsa-dcs.StandingBalance:STAND_COMPLETION_RIGHT')  \n  if(l1.any('NO').value()) {\n    var l2=$('clsa-dcs.StandingBalance:STAND_UNCOMPLETE_LEFT').map({\n      'TECHNICAL':'TechnicalProblem',\n      'PARTICIPANT-DECISION':'ParticipantDecision',\n      'INTERVIEWER-DECISION':'InterviewerDecision',\n      'OTHER-SPEFICY':'SeeComment'},null)\n    if(l2.isNull().not().value()) {\n      res=l2\n    }  \n  } \n  if (null===res && r1.any('NO').value()) {\n    var r2=$('clsa-dcs.StandingBalance:STAND_UNCOMPLETE_RIGHT').map({\n      'TECHNICAL':'TechnicalProblem',\n      'PARTICIPANT-DECISION':'ParticipantDecision',\n      'INTERVIEWER-DECISION':'InterviewerDecision',\n      'OTHER-SPEFICY':'SeeComment'},null)\n    if(r2.isNull().not().value()) {\n      res=r2\n    }\n  }\n}\nres"
+            "value": "var action=$group('Admin.Action.stage','StandingBalance','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','StandingBalance','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  var j=action.indexOf('SKIP')\n  return j==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n} else {\n  var l1=$('clsa-dcs.StandingBalance:STAND_COMPLETION_LEFT')  \n  var r1=$('clsa-dcs.StandingBalance:STAND_COMPLETION_RIGHT')  \n  if(l1.any('NO').value()) {\n    var l2=$('clsa-dcs.StandingBalance:STAND_UNCOMPLETE_LEFT').map({\n      'TECHNICAL':'TechnicalProblem',\n      'PARTICIPANT-DECISION':'ParticipantDecision',\n      'INTERVIEWER-DECISION':'InterviewerDecision',\n      'OTHER-SPEFICY':'SeeComment'},null)\n    if(l2.isNull().not().value()) {\n      res=l2\n    }  \n  } \n  if (null===res && r1.any('NO').value()) {\n    var r2=$('clsa-dcs.StandingBalance:STAND_UNCOMPLETE_RIGHT').map({\n      'TECHNICAL':'TechnicalProblem',\n      'PARTICIPANT-DECISION':'ParticipantDecision',\n      'INTERVIEWER-DECISION':'InterviewerDecision',\n      'OTHER-SPEFICY':'SeeComment'},null)\n    if(r2.isNull().not().value()) {\n      res=r2\n    }\n  }\n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -1652,6 +1730,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_missing_standing_balance", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -1668,6 +1747,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_standing_balance", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1684,6 +1764,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_technician_four_metre_walk", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1700,6 +1781,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_contraindicated_four_metre_walk", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -1708,7 +1790,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var v1=$group('Admin.Action.stage','4mWalk','Admin.Action.actionType').asSequence()\nvar v2=$group('Admin.Action.stage','4mWalk','Admin.Action.eventReason').asSequence()\nvar res=null\nvar arr=[]  // string array of events\nfor(var i=0; i<v1.size(); i++) {\n  if(v1.valueAt(i).any('SKIP').not().value() ||\n     v2.valueAt(i).isNull().value()) continue\n  var key=v2.valueAt(i).value().slice(14)\n  if(-1==arr.indexOf(key))\n    arr.push(key)\n}\nif(undefined!==arr && 0<arr.length) {\n  res=newValue(arr.pop(),'text')  \n}\nres"
+            "value": "var action=$group('Admin.Action.stage','4mWalk','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','4mWalk','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  var j=action.indexOf('SKIP')\n  return j==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -1732,6 +1814,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_missing_four_metre_walk", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -1748,6 +1831,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_four_metre_walk", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1764,6 +1848,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_technician_sitting_height", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1780,6 +1865,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_contraindicated_sitting_height", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -1788,7 +1874,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var v1=$group('Admin.Action.stage','SittingHeight','Admin.Action.actionType').asSequence()\nvar v2=$group('Admin.Action.stage','SittingHeight','Admin.Action.eventReason').asSequence()\nvar res=null\nvar arr=[]  // string array of events\nfor(var i=0; i<v1.size(); i++) {\n  if(v1.valueAt(i).any('SKIP').not().value() ||\n     v2.valueAt(i).isNull().value()) continue\n  var key=v2.valueAt(i).value().slice(14)\n  if(-1==arr.indexOf(key))\n    arr.push(key)\n}\nif(undefined!==arr && 0<arr.length) {\n  res=newValue(arr.pop(),'text')  \n}\nres"
+            "value": "var action=$group('Admin.Action.stage','SittingHeight','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','SittingHeight','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  var j=action.indexOf('SKIP')\n  return j==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')\n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -1796,6 +1882,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_skip_sitting_height", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1812,6 +1899,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_missing_sitting_height", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -1828,6 +1916,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_sitting_height", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1844,6 +1933,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_technician_vision_acuity", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1860,6 +1950,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_contraindicated_vision_acuity", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -1868,7 +1959,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var v1=$group('Admin.Action.stage','VisionAcuity','Admin.Action.actionType').asSequence()\nvar v2=$group('Admin.Action.stage','VisionAcuity','Admin.Action.eventReason').asSequence()\nvar res=null\nvar arr=[]  // string array of events\nfor(var i=0; i<v1.size(); i++) {\n  if(v1.valueAt(i).any('SKIP').not().value() ||\n     v2.valueAt(i).isNull().value()) continue\n  var key=v2.valueAt(i).value().slice(14)\n  if(-1==arr.indexOf(key))\n    arr.push(key)\n}\nif(undefined!==arr && 0<arr.length) {\n  res=newValue(arr.pop(),'text')  \n}\nres\n\nvar v1=$group('Admin.Action.stage','VisionAcuity','Admin.Action.actionType').asSequence()\nvar v2=$group('Admin.Action.stage','VisionAcuity','Admin.Action.eventReason').asSequence()\nvar res=null\nvar arr=[]  // string array of events\nfor(var i=0; i<v1.size(); i++) {\n  if(v1.valueAt(i).any('SKIP').not().value() ||\n     v2.valueAt(i).isNull().value()) continue\n  var key=v2.valueAt(i).value().slice(14)\n  if(-1==arr.indexOf(key))\n    arr.push(key)\n}\nif(undefined!==arr && 0<arr.length) {\n  res=newValue(arr.pop(),'text')  \n}\nif(null===res) {\n  var tests=['DONE_VA','DONE_BOTH_VA','DONE_LEFT_VA','DONE_RIGHT_VA','DONE_LEFT_PO_VA','DONE_RIGHT_PO_VA']\n  var reasons=['DONE_RSN_VA','DONE_RSN_BOTH_VA','DONE_RSN_LEFT_VA','DONE_RSN_RIGHT_VA','DONE_RSN_LEFT_PO_VA','DONE_RSN_RIGHT_PO_VA']\n  for(var i=0;i<tests.length;i++) {\n    var t=$('clsa-dcs.VisionAcuity:'+tests[i])\n    if(t.any('NO').value()) {\n      var r=$('clsa-dcs.VisionAcuity:'+reasons[i]).map({\n      'TECHNICAL-PROBLEM':'TechnicalProblem',\n      'PARTICIPANT-DECISION':'ParticipantDecision',\n      'INTERVIEWER-DECISION':'InterviewerDecision',\n      'OTHER':'SeeComment'},null)\n      if(r.isNull().not().value()) {\n        res=r\n        break\n      }\n    }\n  }  \n}\nres"
+            "value": "var action=$group('Admin.Action.stage','VisionAcuity','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','VisionAcuity','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  var j=action.indexOf('SKIP')\n  return j==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n} else {\n  var tests=['DONE_VA','DONE_BOTH_VA','DONE_LEFT_VA','DONE_RIGHT_VA','DONE_LEFT_PO_VA','DONE_RIGHT_PO_VA']\n  var reasons=['DONE_RSN_VA','DONE_RSN_BOTH_VA','DONE_RSN_LEFT_VA','DONE_RSN_RIGHT_VA','DONE_RSN_LEFT_PO_VA','DONE_RSN_RIGHT_PO_VA']\n  for(var i=0;i<tests.length;i++) {\n    var t=$('clsa-dcs.VisionAcuity:'+tests[i])\n    if(t.any('NO').value()) {\n      var r=$('clsa-dcs.VisionAcuity:'+reasons[i]).map({\n      'TECHNICAL-PROBLEM':'TechnicalProblem',\n      'PARTICIPANT-DECISION':'ParticipantDecision',\n      'INTERVIEWER-DECISION':'InterviewerDecision',\n      'OTHER':'SeeComment'},null)\n      if(r.isNull().not().value()) {\n        res=r\n        break\n      }\n    }\n  }  \n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -1892,6 +1983,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_missing_vision_acuity", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -1908,9 +2000,863 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_vision_acuity", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$group('clsa-dcs.Participants:Admin.StageInstance.stage','Consent',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable').value() \n? 1 : 0"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_contraindicated_consent", 
+        "occurrenceGroup": "", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "integer"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$this('data_qac_consent').isNull().and(\n  $this('stage_contraindicated_consent').eq(0),\n  $this('stage_skip_consent').isNull()\n).value() ? 1 : 0"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "data_missing_consent", 
+        "occurrenceGroup": "", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "integer"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "var m=$('clsa-dcs.Consent:mode')\nvar a=$('clsa-dcs.Consent:accepted')\nvar res=null\nif(m.isNull().and(a.isNull()).not().value()) {\n  res=newValue(\n    '{mode:'+m.lowerCase().value()+\n    ',accepted:'+(a.value()?1:0)+\n    '}','text')\n}\nres"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "data_qac_consent", 
+        "occurrenceGroup": "", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$group('Admin.Action.stage','Consent','Admin.Action.user').asSequence().last().lowerCase()"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_technician_consent", 
+        "occurrenceGroup": "", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "var action=$group('Admin.Action.stage','Consent','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','Consent','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  var j=action.indexOf('SKIP')\n  return j==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_skip_consent", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$('clsa-dcs.ContraIndications:QuestionnaireRun.user').whenNull(\n  $group('Admin.Action.stage','ContraIndications','Admin.Action.user').asSequence().last()).lowerCase()"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_technician_contraindications", 
+        "occurrenceGroup": "", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "var action=$group('Admin.Action.stage','ContraIndications','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','ContraIndications','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  var j=action.indexOf('SKIP')\n  return j==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_skip_contraindications", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$group('clsa-dcs.Participants:Admin.StageInstance.stage','ContraIndications',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable').value() \n? 1 : 0"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_contraindicated_contraindications", 
+        "occurrenceGroup": "", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "integer"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "var p=$('clsa-dcs.ContraIndications:QuestionnaireMetric.missingCount').asSequence()\nvar q=$('clsa-dcs.ContraIndications:QuestionnaireMetric.questionCount').asSequence()\nvar res=null\nif(q.size().gt(0).and(q.size().gt(0)).value()){\n  res=newValue(\n    '{missing:'+\n    Math.round(100.0 * p.sum() / q.sum())\n    +'}','text')\n}\nres"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "data_qac_contraindications", 
+        "occurrenceGroup": "", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$this('data_qac_contraindications').isNull().and(\n  $this('stage_contraindicated_contraindications').eq(0),\n  $this('stage_skip_contraindications').isNull()\n).value() ? 1 : 0"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "data_missing_contraindications", 
+        "occurrenceGroup": "", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "integer"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$('clsa-dcs.EventPMT:QuestionnaireRun.user').whenNull(\n  $group('Admin.Action.stage','EventPMT','Admin.Action.user').asSequence().last()).lowerCase()"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_technician_event_pmt", 
+        "occurrenceGroup": "", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "var action=$group('Admin.Action.stage','EventPMT','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','EventPMT','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  var j=action.indexOf('SKIP')\n  return j==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_skip_event_pmt", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$group('clsa-dcs.Participants:Admin.StageInstance.stage','EventPMT',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable').value() \n? 1 : 0"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_contraindicated_event_pmt", 
+        "occurrenceGroup": "", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "integer"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "var p=$('clsa-dcs.EventPMT:QuestionnaireMetric.missingCount').asSequence()\nvar q=$('clsa-dcs.EventPMT:QuestionnaireMetric.questionCount').asSequence()\nvar res=null\nif(q.size().gt(0).and(q.size().gt(0)).value()){\n  res=newValue(\n    '{missing:'+\n    Math.round(100.0 * p.sum() / q.sum())\n    +'}','text')\n}\nres"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "data_qac_event_pmt", 
+        "occurrenceGroup": "", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$this('data_qac_event_pmt').isNull().and(\n  $this('stage_contraindicated_event_pmt').eq(0),\n  $this('stage_skip_event_pmt').isNull()\n).value() ? 1 : 0"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "data_missing_event_pmt", 
+        "occurrenceGroup": "", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "integer"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$('clsa-dcs.DiseaseSymptoms:QuestionnaireRun.user').whenNull(\n  $group('Admin.Action.stage','DiseaseSymptoms','Admin.Action.user').asSequence().last()).lowerCase()"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_technician_disease_symptoms", 
+        "occurrenceGroup": "", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "var action=$group('Admin.Action.stage','DiseaseSymptoms','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','DiseaseSymptoms','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  var j=action.indexOf('SKIP')\n  return j==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_skip_disease_symptoms", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$group('clsa-dcs.Participants:Admin.StageInstance.stage','DiseaseSymptoms',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable').value() \n? 1 : 0"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_contraindicated_disease_symptoms", 
+        "occurrenceGroup": "", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "integer"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "var p=$('clsa-dcs.DiseaseSymptoms:QuestionnaireMetric.missingCount').asSequence()\nvar q=$('clsa-dcs.DiseaseSymptoms:QuestionnaireMetric.questionCount').asSequence()\nvar res=null\nif(q.size().gt(0).and(q.size().gt(0)).value()){\n  res=newValue(\n    '{missing:'+\n    Math.round(100.0 * p.sum() / q.sum())\n    +'}','text')\n}\nres"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "data_qac_disease_symptoms", 
+        "occurrenceGroup": "", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$this('data_qac_disease_symptoms').isNull().and(\n  $this('stage_contraindicated_disease_symptoms').eq(0),\n  $this('stage_skip_disease_symptoms').isNull()\n).value() ? 1 : 0"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "data_missing_disease_symptoms", 
+        "occurrenceGroup": "", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "integer"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$('clsa-dcs.ConclusionQuestionnaire:QuestionnaireRun.user').whenNull(\n  $group('Admin.Action.stage','ConclusionQuestionnaire','Admin.Action.user').asSequence().last()).lowerCase()"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_technician_conclusion_questionnaire", 
+        "occurrenceGroup": "", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "var action=$group('Admin.Action.stage','ConclusionQuestionnaire','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','ConclusionQuestionnaire','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  var j=action.indexOf('SKIP')\n  return j==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_skip_conclusion_questionnaire", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$group('clsa-dcs.Participants:Admin.StageInstance.stage','ConclusionQuestionnaire',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable').value() \n? 1 : 0"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_contraindicated_conclusion_questionnaire", 
+        "occurrenceGroup": "", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "integer"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "var q=$('clsa-dcs.ConclusionQuestionnaire:PARTICIPANT_OFFERED_DOCUMENT').lowerCase()\nvar res=null\nif(q.isNull().not().value()){\n  var a=q.any('consent_form').value()\n  var b=q.any('physical_measures_report').value()\n  var n=0 \n  if(a) n++\n  if(b) n++\n  res=newValue('{documents:'+n+'}','text')\n}\nres"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "data_qac_conclusion_questionnaire", 
+        "occurrenceGroup": "", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$this('data_qac_conclusion_questionnaire').isNull().and(\n  $this('stage_contraindicated_conclusion_questionnaire').eq(0),\n  $this('stage_skip_conclusion_questionnaire').isNull()\n).value() ? 1 : 0"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "data_missing_conclusion_questionnaire", 
+        "occurrenceGroup": "", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "integer"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$('clsa-dcs.QuestionnaireBoneDensity:QuestionnaireRun.user').whenNull(\n  $group('Admin.Action.stage','QuestionnaireBoneDensity','Admin.Action.user').asSequence().last()).lowerCase()"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_technician_bone_density_questionnaire", 
+        "occurrenceGroup": "", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "var action=$group('Admin.Action.stage','QuestionnaireBoneDensity','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','QuestionnaireBoneDensity','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  var j=action.indexOf('SKIP')\n  return j==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_skip_bone_density_questionnaire", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$group('clsa-dcs.Participants:Admin.StageInstance.stage','QuestionnaireBoneDensity',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable').value() \n? 1 : 0"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_contraindicated_bone_density_questionnaire", 
+        "occurrenceGroup": "", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "integer"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "var p=$('clsa-dcs.QuestionnaireBoneDensity:QuestionnaireMetric.missingCount').asSequence()\nvar q=$('clsa-dcs.QuestionnaireBoneDensity:QuestionnaireMetric.questionCount').asSequence()\nvar res=null\nif(q.size().gt(0).and(q.size().gt(0)).value()){\n  res=newValue(\n    '{missing:'+\n    Math.round(100.0 * p.sum() / q.sum())\n    +'}','text')\n}\nres"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "data_qac_bone_density_questionnaire", 
+        "occurrenceGroup": "", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$this('data_qac_bone_density_questionnaire').isNull().and(\n  $this('stage_contraindicated_bone_density_questionnaire').eq(0),\n  $this('stage_skip_bone_density_questionnaire').isNull()\n).value() ? 1 : 0"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "data_missing_bone_density_questionnaire", 
+        "occurrenceGroup": "", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "integer"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$('clsa-dcs.HearingQuestionnaire:QuestionnaireRun.user').whenNull(\n  $group('Admin.Action.stage','HearingQuestionnaire','Admin.Action.user').asSequence().last()).lowerCase()"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_technician_hearing_questionnaire", 
+        "occurrenceGroup": "", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "var action=$group('Admin.Action.stage','HearingQuestionnaire','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','HearingQuestionnaire','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  var j=action.indexOf('SKIP')\n  return j==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_skip_hearing_questionnaire", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$group('clsa-dcs.Participants:Admin.StageInstance.stage','HearingQuestionnaire',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable').value() \n? 1 : 0"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_contraindicated_hearing_questionnaire", 
+        "occurrenceGroup": "", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "integer"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "var l=$('clsa-dcs.HearingQuestionnaire:STATUS_EAR.LEFT_EAR_2').lowerCase()\nvar r=$('clsa-dcs.HearingQuestionnaire:STATUS_EAR.RIGHT_EAR_2').lowerCase()\nvar res=null\nif(l.isNull().and(r.isNull()).not().value()){\n  res=newValue(\n    '{status_left:'+\n     (l.isNull().value()?'missing':l.value()) +\n    ',status_right:'+\n     (r.isNull().value()?'missing':r.value()) +\n    '}','text')\n}\nres"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "data_qac_hearing_questionnaire", 
+        "occurrenceGroup": "", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$this('data_qac_hearing_questionnaire').isNull().and(\n  $this('stage_contraindicated_hearing_questionnaire').eq(0),\n  $this('stage_skip_hearing_questionnaire').isNull()\n).value() ? 1 : 0"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "data_missing_hearing_questionnaire", 
+        "occurrenceGroup": "", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "integer"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$('clsa-dcs.FunctionalStatus:QuestionnaireRun.user').whenNull(\n  $group('Admin.Action.stage','FunctionalStatus','Admin.Action.user').asSequence().last()).lowerCase()"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_technician_functional_status", 
+        "occurrenceGroup": "", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "var v1=$group('Admin.Action.stage','FunctionalStatus','Admin.Action.actionType').asSequence()\nvar v2=$group('Admin.Action.stage','FunctionalStatus','Admin.Action.eventReason').asSequence()\nvar res=null\nvar arr=[]  // string array of events\nfor(var i=0; i<v1.size(); i++) {\n  if(v1.valueAt(i).any('SKIP').not().value() ||\n     v2.valueAt(i).isNull().value()) continue\n  var key=v2.valueAt(i).value().slice(14)\n  if(-1==arr.indexOf(key))\n    arr.push(key)\n}\nif(undefined!==arr && 0<arr.length) {\n  res=newValue(arr.pop(),'text')  \n}\nres"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_skip_functional_status", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$group('clsa-dcs.Participants:Admin.StageInstance.stage','FunctionalStatus',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable').value() \n? 1 : 0"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_contraindicated_functional_status", 
+        "occurrenceGroup": "", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "integer"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "var p=$('clsa-dcs.FunctionalStatus:QuestionnaireMetric.missingCount').asSequence()\nvar q=$('clsa-dcs.FunctionalStatus:QuestionnaireMetric.questionCount').asSequence()\nvar res=null\nif(q.size().gt(0).and(q.size().gt(0)).value()){\n  res=newValue(\n    '{missing:'+\n    Math.round(100.0 * p.sum() / q.sum())\n    +'}','text')\n}\nres"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "data_qac_functional_status", 
+        "occurrenceGroup": "", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$this('data_qac_functional_status').isNull().and(\n  $this('stage_contraindicated_functional_status').eq(0),\n  $this('stage_skip_functional_status').isNull()\n).value() ? 1 : 0"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "data_missing_functional_status", 
+        "occurrenceGroup": "", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "integer"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$('clsa-dcs.TimeBasedProspectiveMemoryTask:QuestionnaireRun.user').whenNull(\n  $group('Admin.Action.stage','TimeBasedProspectiveMemoryTask','Admin.Action.user').asSequence().last()).lowerCase()"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_technician_time_based_pmt", 
+        "occurrenceGroup": "", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "var action=$group('Admin.Action.stage','TimeBasedProspectiveMemoryTask','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','TimeBasedProspectiveMemoryTask','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  var j=action.indexOf('SKIP')\n  return j==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_skip_time_based_pmt", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$group('clsa-dcs.Participants:Admin.StageInstance.stage','TimeBasedProspectiveMemoryTask',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable').value() \n? 1 : 0"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_contraindicated_time_based_pmt", 
+        "occurrenceGroup": "", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "integer"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "var p=$('clsa-dcs.TimeBasedProspectiveMemoryTask:QuestionnaireMetric.missingCount')\nvar q=$('clsa-dcs.TimeBasedProspectiveMemoryTask:QuestionnaireMetric.questionCount')\nvar res=null\nif(q.size().gt(0).and(q.size().gt(0)).value()){\n  res=newValue(\n    '{missing:'+\n    Math.round(100.0 * p.sum() / q.sum())\n    +'}','text')\n}\nres"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "data_qac_time_based_pmt", 
+        "occurrenceGroup": "", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$this('data_qac_time_based_pmt').isNull().and(\n  $this('stage_contraindicated_time_based_pmt').eq(0),\n  $this('stage_skip_time_based_pmt').isNull()\n).value() ? 1 : 0"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "data_missing_time_based_pmt", 
+        "occurrenceGroup": "", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "integer"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "var s=$('clsa-dcs.Participants:Admin.StageInstance.stage').asSequence()\ns.filter(function(v,i){\n return s.indexOf(v)==i  \n}).join(',')"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "test_stage", 
+        "occurrenceGroup": "", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$('clsa-dcs.Urine:QuestionnaireRun.user').whenNull(\n  $group('Admin.Action.stage','Urine','Admin.Action.user').asSequence().last()).lowerCase()"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_technician_urine", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "var action=$group('Admin.Action.stage','Urine','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','Urine','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  var j=action.indexOf('SKIP')\n  return j==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_skip_urine", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$group('clsa-dcs.Participants:Admin.StageInstance.stage','Urine',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable').value() \n? 1 : 0"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_contraindicated_urine", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "integer"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "var p=$('clsa-dcs.Urine:QuestionnaireMetric.missingCount').asSequence()\nvar q=$('clsa-dcs.Urine:QuestionnaireMetric.questionCount').asSequence()\nvar res=null\nif(q.size().gt(0).and(q.sum().gt(0)).value()){\n  res=newValue(\n    '{missing:'+\n    Math.round(100.0 * p.sum() / q.sum())\n    +'}','text')\n}\nres"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "data_qac_urine", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$this('data_qac_urine').isNull().and(\n  $this('stage_contraindicated_urine').eq(0),\n  $this('stage_skip_urine').isNull()\n).value() ? 1 : 0"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "data_missing_urine", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "integer"
       }
     ]
   }, 
@@ -1939,7 +2885,17 @@
     "clsa-dcs.StandingBalance", 
     "clsa-dcs.4mWalk", 
     "clsa-dcs.SittingHeight", 
-    "clsa-dcs.VisionAcuity"
+    "clsa-dcs.VisionAcuity", 
+    "clsa-dcs.Consent", 
+    "clsa-dcs.ContraIndications", 
+    "clsa-dcs.EventPMT", 
+    "clsa-dcs.DiseaseSymptoms", 
+    "clsa-dcs.ConclusionQuestionnaire", 
+    "clsa-dcs.TimeBasedProspectiveMemoryTask", 
+    "clsa-dcs.HearingQuestionnaire", 
+    "clsa-dcs.FunctionalStatus", 
+    "clsa-dcs.QuestionnaireBoneDensity", 
+    "clsa-dcs.Urine"
   ], 
   "name": "QC_BL"
 }

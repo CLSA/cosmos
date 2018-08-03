@@ -80,12 +80,51 @@
       <table inner="false" class="org.obiba.magma.support.ValueTableReference">
         <reference>clsa-dcs-f2.VisionAcuity</reference>
       </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs-f2.Consent</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs-f2.ContraIndications</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs-f2.EventPMT</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs-f2.HearingQuestionnaire</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs-f2.ConclusionQuestionnaire</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs-f2.TimeBasedProspectiveMemoryTask</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs-f2.DiseaseSymptoms</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs-f2.Frax</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs-f2.SocialNetwork</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs-f2.GenHealth</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs-f2.OSIPV</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs-f2.Urine</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs-f2.QuestionnaireBoneDensity</reference>
+      </table>
     </list>
   </from>
   <select class="org.obiba.magma.views.support.NoneClause"/>
   <where class="org.obiba.magma.js.views.JavascriptClause">
     <scriptName>customScript</scriptName>
-    <script>$lastupdate().before(newValue(&apos;2018-06-27&apos;,&apos;date&apos;)).and($lastupdate().after(newValue(&apos;2018-04-01&apos;,&apos;date&apos;)))</script>
+    <script>$lastupdate().before(newValue(&apos;2018-07-30&apos;,&apos;date&apos;)).and($lastupdate().after(newValue(&apos;2018-04-01&apos;,&apos;date&apos;)))</script>
   </where>
   <variables class="org.obiba.magma.js.views.VariablesClause">
     <variables class="linked-hash-set">
@@ -130,34 +169,21 @@
       </variable>
       <variable name="stage_skip_spirometry" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">// if a dcs by phone visit, then the skip will be &quot;ModifiedVisit&quot;
-var res=null
-if($(&apos;clsa-dcs-f2.Participants:DCS_PHONE&apos;).isNull().not().value()){
-  res=newValue(&apos;ModifiedVisit&apos;,&apos;text&apos;)
-} else {
-  var v1=$group(&apos;Admin.Action.stage&apos;,&apos;Spirometry&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
-  var v2=$group(&apos;Admin.Action.stage&apos;,&apos;Spirometry&apos;,&apos;Admin.Action.eventReason&apos;).asSequence()
-
-  var arr=[]  // string array of events
-  for(var i=0; i&lt;v1.size(); i++) {
-    if(v1.valueAt(i).any(&apos;SKIP&apos;).not().value() ||
-       v2.valueAt(i).isNull().value()) continue
-    var key=v2.valueAt(i).value().slice(14)
-    if(-1==arr.indexOf(key))
-      arr.push(key)
-  }
-  if(undefined!==arr &amp;&amp; 0&lt;arr.length) {
-    res=newValue(arr.pop(),&apos;text&apos;)  
-  }
+          <attribute name="script" valueType="text">var action=$group(&apos;Admin.Action.stage&apos;,&apos;Spirometry&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
+var res=$group(&apos;Admin.Action.stage&apos;,&apos;Spirometry&apos;,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
+  var j=action.indexOf(&apos;SKIP&apos;)
+  return j==i
+  }).last()
+if(res.isNull().not().value()) {
+  res=newValue(res.value().slice(14),&apos;text&apos;)  
 }
 res</attribute>
         </attributes>
       </variable>
       <variable name="stage_contraindicated_spirometry" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">$(&apos;clsa-dcs-f2.Participants:DCS_PHONE&apos;).isNull().and(
-  $group(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,&apos;Spirometry&apos;,
-&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;)).value() 
+          <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,&apos;Spirometry&apos;,
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
 ? 1 : 0</attribute>
         </attributes>
       </variable>
@@ -176,12 +202,6 @@ res</attribute>
       </variable>
       <variable name="data_qac_spirometry" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="stage" valueType="text">Spirometry</attribute>
-          <attribute name="validation" valueType="text">[IntegrityCheck-ERROR]</attribute>
-          <attribute name="captureMethod" valueType="text">AUTOMATIC</attribute>
-          <attribute name="isManualCaptureAllowed" valueType="text">true</attribute>
-          <attribute name="vendorName" valueType="text">QUALITY_GRADE</attribute>
-          <attribute name="derivedFrom" namespace="opal" valueType="text">/datasource/clsa-dcs/table/Spirometry/variable/OUTPUT_QUALITY_GRADE</attribute>
           <attribute name="script" valueType="text">var res=$(&apos;clsa-dcs-f2.Spirometry:OUTPUT_QUALITY_GRADE&apos;)
 if(!res.isNull().value()) {
   res=newValue(&apos;{grade:&apos;+res.value()+&apos;}&apos;,&apos;text&apos;)
@@ -197,33 +217,20 @@ res</attribute>
       </variable>
       <variable name="stage_contraindicated_grip_strength" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">$(&apos;clsa-dcs-f2.Participants:DCS_PHONE&apos;).isNull().and(
-  $group(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,&apos;GripStrength&apos;,
-&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;)).value() 
+          <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,&apos;GripStrength&apos;,
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
 ? 1 : 0</attribute>
         </attributes>
       </variable>
       <variable name="stage_skip_grip_strength" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">// if a dcs by phone visit, then the skip will be &quot;ModifiedVisit&quot;
-var res=null
-if($(&apos;clsa-dcs-f2.Participants:DCS_PHONE&apos;).isNull().not().value()){
-  res=newValue(&apos;ModifiedVisit&apos;,&apos;text&apos;)
-} else {
-  var v1=$group(&apos;Admin.Action.stage&apos;,&apos;GripStrength&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
-  var v2=$group(&apos;Admin.Action.stage&apos;,&apos;GripStrength&apos;,&apos;Admin.Action.eventReason&apos;).asSequence()
-
-  var arr=[]  // string array of events
-  for(var i=0; i&lt;v1.size(); i++) {
-    if(v1.valueAt(i).any(&apos;SKIP&apos;).not().value() ||
-       v2.valueAt(i).isNull().value()) continue
-    var key=v2.valueAt(i).value().slice(14)
-    if(-1==arr.indexOf(key))
-      arr.push(key)
-  }
-  if(undefined!==arr &amp;&amp; 0&lt;arr.length) {
-    res=newValue(arr.pop(),&apos;text&apos;)  
-  }
+          <attribute name="script" valueType="text">var action=$group(&apos;Admin.Action.stage&apos;,&apos;GripStrength&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
+var res=$group(&apos;Admin.Action.stage&apos;,&apos;GripStrength&apos;,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
+  var j=action.indexOf(&apos;SKIP&apos;)
+  return j==i
+  }).last()
+if(res.isNull().not().value()) {
+  res=newValue(res.value().slice(14),&apos;text&apos;)  
 }
 res</attribute>
         </attributes>
@@ -253,33 +260,20 @@ res</attribute>
       </variable>
       <variable name="stage_contraindicated_blood_pressure" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">$(&apos;clsa-dcs-f2.Participants:DCS_PHONE&apos;).isNull().and(
-  $group(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,&apos;BloodPressure&apos;,
-&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;)).value() 
+          <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,&apos;BloodPressure&apos;,
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
 ? 1 : 0</attribute>
         </attributes>
       </variable>
       <variable name="stage_skip_blood_pressure" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">// if a dcs by phone visit, then the skip will be &quot;ModifiedVisit&quot;
-var res=null
-if($(&apos;clsa-dcs-f2.Participants:DCS_PHONE&apos;).isNull().not().value()){
-  res=newValue(&apos;ModifiedVisit&apos;,&apos;text&apos;)
-} else {
-  var v1=$group(&apos;Admin.Action.stage&apos;,&apos;BloodPressure&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
-  var v2=$group(&apos;Admin.Action.stage&apos;,&apos;BloodPressure&apos;,&apos;Admin.Action.eventReason&apos;).asSequence()
-
-  var arr=[]  // string array of events
-  for(var i=0; i&lt;v1.size(); i++) {
-    if(v1.valueAt(i).any(&apos;SKIP&apos;).not().value() ||
-       v2.valueAt(i).isNull().value()) continue
-    var key=v2.valueAt(i).value().slice(14)
-    if(-1==arr.indexOf(key))
-      arr.push(key)
-  }
-  if(undefined!==arr &amp;&amp; 0&lt;arr.length) {
-    res=newValue(arr.pop(),&apos;text&apos;)  
-  }
+          <attribute name="script" valueType="text">var action=$group(&apos;Admin.Action.stage&apos;,&apos;BloodPressure&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
+var res=$group(&apos;Admin.Action.stage&apos;,&apos;BloodPressure&apos;,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
+  var j=action.indexOf(&apos;SKIP&apos;)
+  return j==i
+  }).last()
+if(res.isNull().not().value()) {
+  res=newValue(res.value().slice(14),&apos;text&apos;)  
 }
 res</attribute>
         </attributes>
@@ -309,35 +303,20 @@ res</attribute>
       </variable>
       <variable name="stage_contraindicated_ecg" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">$(&apos;clsa-dcs-f2.Participants:DCSatHOME&apos;).isNull().and(
-  $(&apos;clsa-dcs-f2.Participants:DCS_PHONE&apos;).isNull(),
-  $group(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,&apos;ECG&apos;,
-&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;)).value() 
+          <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,&apos;ECG&apos;,
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
 ? 1 : 0</attribute>
         </attributes>
       </variable>
       <variable name="stage_skip_ecg" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">// if a dcs by phone visit, then the skip will be &quot;ModifiedVisit&quot;
-var res=null
-if($(&apos;clsa-dcs-f2.Participants:DCS_PHONE&apos;).isNull().and(
-   $(&apos;clsa-dcs-f2.Participants:DCSatHOME&apos;).isNull()).not().value()){
-  res=newValue(&apos;ModifiedVisit&apos;,&apos;text&apos;)
-} else {
-  var v1=$group(&apos;Admin.Action.stage&apos;,&apos;ECG&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
-  var v2=$group(&apos;Admin.Action.stage&apos;,&apos;ECG&apos;,&apos;Admin.Action.eventReason&apos;).asSequence()
-
-  var arr=[]  // string array of events
-  for(var i=0; i&lt;v1.size(); i++) {
-    if(v1.valueAt(i).any(&apos;SKIP&apos;).not().value() ||
-       v2.valueAt(i).isNull().value()) continue
-    var key=v2.valueAt(i).value().slice(14)
-    if(-1==arr.indexOf(key))
-      arr.push(key)
-  }
-  if(undefined!==arr &amp;&amp; 0&lt;arr.length) {
-    res=newValue(arr.pop(),&apos;text&apos;)  
-  }
+          <attribute name="script" valueType="text">var action=$group(&apos;Admin.Action.stage&apos;,&apos;ECG&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
+var res=$group(&apos;Admin.Action.stage&apos;,&apos;ECG&apos;,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
+  var j=action.indexOf(&apos;SKIP&apos;)
+  return j==i
+  }).last()
+if(res.isNull().not().value()) {
+  res=newValue(res.value().slice(14),&apos;text&apos;)  
 }
 res</attribute>
         </attributes>
@@ -382,26 +361,13 @@ res</attribute>
       </variable>
       <variable name="stage_skip_cognitive_test" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">// if a dcs by phone visit, then the skip will be &quot;ModifiedVisit&quot;
-var res=null
-if($(&apos;clsa-dcs-f2.Participants:DCS_PHONE&apos;).isNull().and(
-   $(&apos;clsa-dcs-f2.Participants:DCSatHOME&apos;).isNull()).not().value()){
-  res=newValue(&apos;ModifiedVisit&apos;,&apos;text&apos;)
-} else {
-  var v1=$group(&apos;Admin.Action.stage&apos;,&apos;CognitiveTest&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
-  var v2=$group(&apos;Admin.Action.stage&apos;,&apos;CognitiveTest&apos;,&apos;Admin.Action.eventReason&apos;).asSequence()
-
-  var arr=[]  // string array of events
-  for(var i=0; i&lt;v1.size(); i++) {
-    if(v1.valueAt(i).any(&apos;SKIP&apos;).not().value() ||
-       v2.valueAt(i).isNull().value()) continue
-    var key=v2.valueAt(i).value().slice(14)
-    if(-1==arr.indexOf(key))
-      arr.push(key)
-  }
-  if(undefined!==arr &amp;&amp; 0&lt;arr.length) {
-    res=newValue(arr.pop(),&apos;text&apos;)  
-  }
+          <attribute name="script" valueType="text">var action=$group(&apos;Admin.Action.stage&apos;,&apos;CognitiveTest&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
+var res=$group(&apos;Admin.Action.stage&apos;,&apos;CognitiveTest&apos;,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
+  var j=action.indexOf(&apos;SKIP&apos;)
+  return j==i
+  }).last()
+if(res.isNull().not().value()) {
+  res=newValue(res.value().slice(14),&apos;text&apos;)  
 }
 res</attribute>
         </attributes>
@@ -431,35 +397,20 @@ res</attribute>
       </variable>
       <variable name="stage_contraindicated_hearing" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">$(&apos;clsa-dcs-f2.Participants:DCSatHOME&apos;).isNull().and(
-  $(&apos;clsa-dcs-f2.Participants:DCS_PHONE&apos;).isNull(),
-  $group(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,&apos;Hearing&apos;,
-&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;)).value() 
+          <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,&apos;Hearing&apos;,
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
 ? 1 : 0</attribute>
         </attributes>
       </variable>
       <variable name="stage_skip_hearing" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">// if a dcs by phone visit, then the skip will be &quot;ModifiedVisit&quot;
-var res=null
-if($(&apos;clsa-dcs-f2.Participants:DCS_PHONE&apos;).isNull().and(
-   $(&apos;clsa-dcs-f2.Participants:DCSatHOME&apos;).isNull()).not().value()){
-  res=newValue(&apos;ModifiedVisit&apos;,&apos;text&apos;)
-} else {
-  var v1=$group(&apos;Admin.Action.stage&apos;,&apos;Hearing&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
-  var v2=$group(&apos;Admin.Action.stage&apos;,&apos;Hearing&apos;,&apos;Admin.Action.eventReason&apos;).asSequence()
-
-  var arr=[]  // string array of events
-  for(var i=0; i&lt;v1.size(); i++) {
-    if(v1.valueAt(i).any(&apos;SKIP&apos;).not().value() ||
-       v2.valueAt(i).isNull().value()) continue
-    var key=v2.valueAt(i).value().slice(14)
-    if(-1==arr.indexOf(key))
-      arr.push(key)
-  }
-  if(undefined!==arr &amp;&amp; 0&lt;arr.length) {
-    res=newValue(arr.pop(),&apos;text&apos;)  
-  }
+          <attribute name="script" valueType="text">var action=$group(&apos;Admin.Action.stage&apos;,&apos;Hearing&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
+var res=$group(&apos;Admin.Action.stage&apos;,&apos;Hearing&apos;,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
+  var j=action.indexOf(&apos;SKIP&apos;)
+  return j==i
+  }).last()
+if(res.isNull().not().value()) {
+  res=newValue(res.value().slice(14),&apos;text&apos;)  
 }
 res</attribute>
         </attributes>
@@ -508,35 +459,20 @@ res = (0 == count.RIGHT &amp;&amp; 0 == count.LEFT &amp;&amp;
       </variable>
       <variable name="stage_contraindicated_tonometer" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">$(&apos;clsa-dcs-f2.Participants:DCSatHOME&apos;).isNull().and(
-  $(&apos;clsa-dcs-f2.Participants:DCS_PHONE&apos;).isNull(),
-  $group(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,&apos;Tonometer&apos;,
-&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;)).value() 
+          <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,&apos;Tonometer&apos;,
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
 ? 1 : 0</attribute>
         </attributes>
       </variable>
       <variable name="stage_skip_tonometer" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">// if a dcs by phone visit, then the skip will be &quot;ModifiedVisit&quot;
-var res=null
-if($(&apos;clsa-dcs-f2.Participants:DCS_PHONE&apos;).isNull().and(
-   $(&apos;clsa-dcs-f2.Participants:DCSatHOME&apos;).isNull()).not().value()){
-  res=newValue(&apos;ModifiedVisit&apos;,&apos;text&apos;)
-} else {
-  var v1=$group(&apos;Admin.Action.stage&apos;,&apos;Tonometer&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
-  var v2=$group(&apos;Admin.Action.stage&apos;,&apos;Tonometer&apos;,&apos;Admin.Action.eventReason&apos;).asSequence()
-
-  var arr=[]  // string array of events
-  for(var i=0; i&lt;v1.size(); i++) {
-    if(v1.valueAt(i).any(&apos;SKIP&apos;).not().value() ||
-       v2.valueAt(i).isNull().value()) continue
-    var key=v2.valueAt(i).value().slice(14)
-    if(-1==arr.indexOf(key))
-      arr.push(key)
-  }
-  if(undefined!==arr &amp;&amp; 0&lt;arr.length) {
-    res=newValue(arr.pop(),&apos;text&apos;)  
-  }
+          <attribute name="script" valueType="text">var action=$group(&apos;Admin.Action.stage&apos;,&apos;Tonometer&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
+var res=$group(&apos;Admin.Action.stage&apos;,&apos;Tonometer&apos;,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
+  var j=action.indexOf(&apos;SKIP&apos;)
+  return j==i
+  }).last()
+if(res.isNull().not().value()) {
+  res=newValue(res.value().slice(14),&apos;text&apos;)  
 }
 res</attribute>
         </attributes>
@@ -650,27 +586,13 @@ res</attribute>
       </variable>
       <variable name="stage_skip_weight" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">// if a dcs by phone visit, then the skip will be &quot;ModifiedVisit&quot;
-var res=null
-if($(&apos;clsa-dcs-f2.Participants:DCS_PHONE&apos;).isNull().and(
-   $(&apos;clsa-dcs-f2.Participants:DCSatHOME&apos;).isNull()).not().value()){
-  res=newValue(&apos;ModifiedVisit&apos;,&apos;text&apos;)
-} else {
-  var v1=$group(&apos;Admin.Action.stage&apos;,&apos;Weight&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
-  var v2=$group(&apos;Admin.Action.stage&apos;,&apos;Weight&apos;,&apos;Admin.Action.eventReason&apos;).asSequence()
-
-  var arr=[]  // string array of events
-  for(var i=0; i&lt;v1.size(); i++) {
-    if(v1.valueAt(i).any(&apos;SKIP&apos;).not().value() ||
-       v2.valueAt(i).isNull().value()) continue
-    var key=v2.valueAt(i).value().slice(14)
-    if(-1==arr.indexOf(key))
-      arr.push(key)
-  }
-  if(undefined!==arr &amp;&amp; 0&lt;arr.length) {
-    res=newValue(arr.pop(),&apos;text&apos;)
-    res=$this(&apos;interview_site&apos;)
-  }
+          <attribute name="script" valueType="text">var action=$group(&apos;Admin.Action.stage&apos;,&apos;Weight&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
+var res=$group(&apos;Admin.Action.stage&apos;,&apos;Weight&apos;,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
+  var j=action.indexOf(&apos;SKIP&apos;)
+  return j==i
+  }).last()
+if(res.isNull().not().value()) {
+  res=newValue(res.value().slice(14),&apos;text&apos;)  
 }
 res</attribute>
         </attributes>
@@ -706,7 +628,7 @@ res</attribute>
           <attribute name="script" valueType="text">$(&apos;clsa-dcs-f2.Participants:DCSatHOME&apos;).isNull().and(
   $(&apos;clsa-dcs-f2.Participants:DCS_PHONE&apos;).isNull(),
   $group(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,&apos;RetinalScanLeft&apos;,
-&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;)).value() 
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;)).value()
 ? 1 : 0</attribute>
         </attributes>
       </variable>
@@ -718,19 +640,13 @@ if($(&apos;clsa-dcs-f2.Participants:DCS_PHONE&apos;).isNull().and(
    $(&apos;clsa-dcs-f2.Participants:DCSatHOME&apos;).isNull()).not().value()){
   res=newValue(&apos;ModifiedVisit&apos;,&apos;text&apos;)
 } else {
-  var v1=$group(&apos;Admin.Action.stage&apos;,&apos;RetinalScanLeft&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
-  var v2=$group(&apos;Admin.Action.stage&apos;,&apos;RetinalScanLeft&apos;,&apos;Admin.Action.eventReason&apos;).asSequence()
-
-  var arr=[]  // string array of events
-  for(var i=0; i&lt;v1.size(); i++) {
-    if(v1.valueAt(i).any(&apos;SKIP&apos;).not().value() ||
-       v2.valueAt(i).isNull().value()) continue
-    var key=v2.valueAt(i).value().slice(14)
-    if(-1==arr.indexOf(key))
-      arr.push(key)
-  }
-  if(undefined!==arr &amp;&amp; 0&lt;arr.length) {
-    res=newValue(arr.pop(),&apos;text&apos;)  
+  var action=$group(&apos;Admin.Action.stage&apos;,&apos;RetinalScanLeft&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
+  var res=$group(&apos;Admin.Action.stage&apos;,&apos;RetinalScanLeft&apos;,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
+    var j=action.indexOf(&apos;SKIP&apos;)
+    return j==i
+    }).last()
+  if(res.isNull().not().value()) {
+    res=newValue(res.value().slice(14),&apos;text&apos;)
   }
 }
 res</attribute>
@@ -765,7 +681,7 @@ res</attribute>
           <attribute name="script" valueType="text">$(&apos;clsa-dcs-f2.Participants:DCSatHOME&apos;).isNull().and(
   $(&apos;clsa-dcs-f2.Participants:DCS_PHONE&apos;).isNull(),
   $group(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,&apos;RetinalScanRight&apos;,
-&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;)).value() 
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;)).value()
 ? 1 : 0</attribute>
         </attributes>
       </variable>
@@ -777,19 +693,13 @@ if($(&apos;clsa-dcs-f2.Participants:DCS_PHONE&apos;).isNull().and(
    $(&apos;clsa-dcs-f2.Participants:DCSatHOME&apos;).isNull()).not().value()){
   res=newValue(&apos;ModifiedVisit&apos;,&apos;text&apos;)
 } else {
-  var v1=$group(&apos;Admin.Action.stage&apos;,&apos;RetinalScanRight&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
-  var v2=$group(&apos;Admin.Action.stage&apos;,&apos;RetinalScanRight&apos;,&apos;Admin.Action.eventReason&apos;).asSequence()
-
-  var arr=[]  // string array of events
-  for(var i=0; i&lt;v1.size(); i++) {
-    if(v1.valueAt(i).any(&apos;SKIP&apos;).not().value() ||
-       v2.valueAt(i).isNull().value()) continue
-    var key=v2.valueAt(i).value().slice(14)
-    if(-1==arr.indexOf(key))
-      arr.push(key)
-  }
-  if(undefined!==arr &amp;&amp; 0&lt;arr.length) {
-    res=newValue(arr.pop(),&apos;text&apos;)  
+  var action=$group(&apos;Admin.Action.stage&apos;,&apos;RetinalScanRight&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
+  var res=$group(&apos;Admin.Action.stage&apos;,&apos;RetinalScanRight&apos;,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
+    var j=action.indexOf(&apos;SKIP&apos;)
+    return j==i
+    }).last()
+  if(res.isNull().not().value()) {
+    res=newValue(res.value().slice(14),&apos;text&apos;)
   }
 }
 res</attribute>
@@ -821,35 +731,20 @@ res</attribute>
       </variable>
       <variable name="stage_contraindicated_lateral_bone_density" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">$(&apos;clsa-dcs-f2.Participants:DCSatHOME&apos;).isNull().and(
-  $(&apos;clsa-dcs-f2.Participants:DCS_PHONE&apos;).isNull(),
-  $group(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,&apos;LateralBoneDensity&apos;,
-&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;)).value() 
+          <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,&apos;LateralBoneDensity&apos;,
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
 ? 1 : 0</attribute>
         </attributes>
       </variable>
       <variable name="stage_skip_lateral_bone_density" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">// if a dcs by phone visit, then the skip will be &quot;ModifiedVisit&quot;
-var res=null
-if($(&apos;clsa-dcs-f2.Participants:DCS_PHONE&apos;).isNull().and(
-   $(&apos;clsa-dcs-f2.Participants:DCSatHOME&apos;).isNull()).not().value()){
-  res=newValue(&apos;ModifiedVisit&apos;,&apos;text&apos;)
-} else {
-  var v1=$group(&apos;Admin.Action.stage&apos;,&apos;LateralBoneDensity&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
-  var v2=$group(&apos;Admin.Action.stage&apos;,&apos;LateralBoneDensity&apos;,&apos;Admin.Action.eventReason&apos;).asSequence()
-
-  var arr=[]  // string array of events
-  for(var i=0; i&lt;v1.size(); i++) {
-    if(v1.valueAt(i).any(&apos;SKIP&apos;).not().value() ||
-       v2.valueAt(i).isNull().value()) continue
-    var key=v2.valueAt(i).value().slice(14)
-    if(-1==arr.indexOf(key))
-      arr.push(key)
-  }
-  if(undefined!==arr &amp;&amp; 0&lt;arr.length) {
-    res=newValue(arr.pop(),&apos;text&apos;)  
-  }
+          <attribute name="script" valueType="text">var action=$group(&apos;Admin.Action.stage&apos;,&apos;LateralBoneDensity&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
+var res=$group(&apos;Admin.Action.stage&apos;,&apos;LateralBoneDensity&apos;,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
+  var j=action.indexOf(&apos;SKIP&apos;)
+  return j==i
+  }).last()
+if(res.isNull().not().value()) {
+  res=newValue(res.value().slice(14),&apos;text&apos;)
 }
 res</attribute>
         </attributes>
@@ -879,33 +774,20 @@ res</attribute>
       </variable>
       <variable name="stage_contraindicated_standing_height" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">$(&apos;clsa-dcs-f2.Participants:DCS_PHONE&apos;).isNull().and(
-  $group(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,&apos;StandingHeight&apos;,
-&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;)).value() 
-? 1 : null</attribute>
+          <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,&apos;StandingHeight&apos;,
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
+? 1 : 0</attribute>
         </attributes>
       </variable>
       <variable name="stage_skip_standing_height" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">// if a dcs by phone visit, then the skip will be &quot;ModifiedVisit&quot;
-var res=null
-if($(&apos;clsa-dcs-f2.Participants:DCS_PHONE&apos;).isNull().not().value()){
-  res=newValue(&apos;ModifiedVisit&apos;,&apos;text&apos;)
-} else {
-  var v1=$group(&apos;Admin.Action.stage&apos;,&apos;StandingHeight&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
-  var v2=$group(&apos;Admin.Action.stage&apos;,&apos;StandingHeight&apos;,&apos;Admin.Action.eventReason&apos;).asSequence()
-
-  var arr=[]  // string array of events
-  for(var i=0; i&lt;v1.size(); i++) {
-    if(v1.valueAt(i).any(&apos;SKIP&apos;).not().value() ||
-       v2.valueAt(i).isNull().value()) continue
-    var key=v2.valueAt(i).value().slice(14)
-    if(-1==arr.indexOf(key))
-      arr.push(key)
-  }
-  if(undefined!==arr &amp;&amp; 0&lt;arr.length) {
-    res=newValue(arr.pop(),&apos;text&apos;)  
-  }
+          <attribute name="script" valueType="text">var action=$group(&apos;Admin.Action.stage&apos;,&apos;StandingHeight&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
+var res=$group(&apos;Admin.Action.stage&apos;,&apos;StandingHeight&apos;,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
+  var j=action.indexOf(&apos;SKIP&apos;)
+  return j==i
+  }).last()
+if(res.isNull().not().value()) {
+  res=newValue(res.value().slice(14),&apos;text&apos;)
 }
 res</attribute>
         </attributes>
@@ -941,32 +823,19 @@ res</attribute>
           <attribute name="script" valueType="text">$(&apos;clsa-dcs-f2.Participants:DCSatHOME&apos;).isNull().and(
   $(&apos;clsa-dcs-f2.Participants:DCS_PHONE&apos;).isNull(),
   $group(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,&apos;SpineBoneDensity&apos;,
-&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;)).value() 
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;)).value()
 ? 1 : 0</attribute>
         </attributes>
       </variable>
       <variable name="stage_skip_spine_bone_density" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">// if a dcs by phone visit, then the skip will be &quot;ModifiedVisit&quot;
-var res=null
-if($(&apos;clsa-dcs-f2.Participants:DCS_PHONE&apos;).isNull().and(
-   $(&apos;clsa-dcs-f2.Participants:DCSatHOME&apos;).isNull()).not().value()){
-  res=newValue(&apos;ModifiedVisit&apos;,&apos;text&apos;)
-} else {
-  var v1=$group(&apos;Admin.Action.stage&apos;,&apos;SpineBoneDensity&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
-  var v2=$group(&apos;Admin.Action.stage&apos;,&apos;SpineBoneDensity&apos;,&apos;Admin.Action.eventReason&apos;).asSequence()
-
-  var arr=[]  // string array of events
-  for(var i=0; i&lt;v1.size(); i++) {
-    if(v1.valueAt(i).any(&apos;SKIP&apos;).not().value() ||
-       v2.valueAt(i).isNull().value()) continue
-    var key=v2.valueAt(i).value().slice(14)
-    if(-1==arr.indexOf(key))
-      arr.push(key)
-  }
-  if(undefined!==arr &amp;&amp; 0&lt;arr.length) {
-    res=newValue(arr.pop(),&apos;text&apos;)  
-  }
+          <attribute name="script" valueType="text">var action=$group(&apos;Admin.Action.stage&apos;,&apos;SpineBoneDensity&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
+var res=$group(&apos;Admin.Action.stage&apos;,&apos;SpineBoneDensity&apos;,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
+  var j=action.indexOf(&apos;SKIP&apos;)
+  return j==i
+  }).last()
+if(res.isNull().not().value()) {
+  res=newValue(res.value().slice(14),&apos;text&apos;)  
 }
 res</attribute>
         </attributes>
@@ -984,7 +853,7 @@ res</attribute>
           <attribute name="script" valueType="text">var res=$(&apos;clsa-dcs-images-f2.SpineBoneDensity:RES_SP_DICOM&apos;)
 if(res.isNull().not().value()) {
   res = newValue(&apos;{filesize:&apos;+res.length()+&apos;}&apos;,&apos;text&apos;)
-}  
+}
 res</attribute>
         </attributes>
       </variable>
@@ -996,35 +865,20 @@ res</attribute>
       </variable>
       <variable name="stage_contraindicated_forearm_bone_density" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">$(&apos;clsa-dcs-f2.Participants:DCSatHOME&apos;).isNull().and(
-  $(&apos;clsa-dcs-f2.Participants:DCS_PHONE&apos;).isNull(),
-  $group(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,&apos;ForearmBoneDensity&apos;,
-&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;)).value() 
+          <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,&apos;ForearmBoneDensity&apos;,
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
 ? 1 : 0</attribute>
         </attributes>
       </variable>
       <variable name="stage_skip_forearm_bone_density" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">// if a dcs by phone visit, then the skip will be &quot;ModifiedVisit&quot;
-var res=null
-if($(&apos;clsa-dcs-f2.Participants:DCS_PHONE&apos;).isNull().and(
-   $(&apos;clsa-dcs-f2.Participants:DCSatHOME&apos;).isNull()).not().value()){
-  res=newValue(&apos;ModifiedVisit&apos;,&apos;text&apos;)
-} else {
-  var v1=$group(&apos;Admin.Action.stage&apos;,&apos;ForearmBoneDensity&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
-  var v2=$group(&apos;Admin.Action.stage&apos;,&apos;ForearmBoneDensity&apos;,&apos;Admin.Action.eventReason&apos;).asSequence()
-
-  var arr=[]  // string array of events
-  for(var i=0; i&lt;v1.size(); i++) {
-    if(v1.valueAt(i).any(&apos;SKIP&apos;).not().value() ||
-       v2.valueAt(i).isNull().value()) continue
-    var key=v2.valueAt(i).value().slice(14)
-    if(-1==arr.indexOf(key))
-      arr.push(key)
-  }
-  if(undefined!==arr &amp;&amp; 0&lt;arr.length) {
-    res=newValue(arr.pop(),&apos;text&apos;)  
-  }
+          <attribute name="script" valueType="text">var action=$group(&apos;Admin.Action.stage&apos;,&apos;ForearmBoneDensity&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
+var res=$group(&apos;Admin.Action.stage&apos;,&apos;ForearmBoneDensity&apos;,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
+  var j=action.indexOf(&apos;SKIP&apos;)
+  return j==i
+  }).last()
+if(res.isNull().not().value()) {
+  res=newValue(res.value().slice(14),&apos;text&apos;)  
 }
 res</attribute>
         </attributes>
@@ -1058,35 +912,20 @@ res</attribute>
       </variable>
       <variable name="stage_contraindicated_whole_body_bone_density" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">$(&apos;clsa-dcs-f2.Participants:DCSatHOME&apos;).isNull().and(
-  $(&apos;clsa-dcs-f2.Participants:DCS_PHONE&apos;).isNull(),
-  $group(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,&apos;WholeBodyBoneDensity&apos;,
-&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;)).value() 
+          <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,&apos;WholeBodyBoneDensity&apos;,
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
 ? 1 : 0</attribute>
         </attributes>
       </variable>
       <variable name="stage_skip_whole_body_bone_density" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">// if a dcs by phone visit, then the skip will be &quot;ModifiedVisit&quot;
-var res=null
-if($(&apos;clsa-dcs-f2.Participants:DCS_PHONE&apos;).isNull().and(
-   $(&apos;clsa-dcs-f2.Participants:DCSatHOME&apos;).isNull()).not().value()){
-  res=newValue(&apos;ModifiedVisit&apos;,&apos;text&apos;)
-} else {
-  var v1=$group(&apos;Admin.Action.stage&apos;,&apos;WholeBodyBoneDensity&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
-  var v2=$group(&apos;Admin.Action.stage&apos;,&apos;WholeBodyBoneDensity&apos;,&apos;Admin.Action.eventReason&apos;).asSequence()
-
-  var arr=[]  // string array of events
-  for(var i=0; i&lt;v1.size(); i++) {
-    if(v1.valueAt(i).any(&apos;SKIP&apos;).not().value() ||
-       v2.valueAt(i).isNull().value()) continue
-    var key=v2.valueAt(i).value().slice(14)
-    if(-1==arr.indexOf(key))
-      arr.push(key)
-  }
-  if(undefined!==arr &amp;&amp; 0&lt;arr.length) {
-    res=newValue(arr.pop(),&apos;text&apos;)  
-  }
+          <attribute name="script" valueType="text">var action=$group(&apos;Admin.Action.stage&apos;,&apos;WholeBodyBoneDensity&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
+var res=$group(&apos;Admin.Action.stage&apos;,&apos;WholeBodyBoneDensity&apos;,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
+  var j=action.indexOf(&apos;SKIP&apos;)
+  return j==i
+  }).last()
+if(res.isNull().not().value()) {
+  res=newValue(res.value().slice(14),&apos;text&apos;)  
 }
 res</attribute>
         </attributes>
@@ -1116,35 +955,20 @@ res</attribute>
       </variable>
       <variable name="stage_contraindicated_dual_hip_bone_density" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">$(&apos;clsa-dcs-f2.Participants:DCSatHOME&apos;).isNull().and(
-  $(&apos;clsa-dcs-f2.Participants:DCS_PHONE&apos;).isNull(),
-  $group(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,&apos;DualHipBoneDensity&apos;,
-&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;)).value() 
+          <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,&apos;DualHipBoneDensity&apos;,
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
 ? 1 : 0</attribute>
         </attributes>
       </variable>
       <variable name="stage_skip_dual_hip_bone_density" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">// if a dcs by phone visit, then the skip will be &quot;ModifiedVisit&quot;
-var res=null
-if($(&apos;clsa-dcs-f2.Participants:DCS_PHONE&apos;).isNull().and(
-   $(&apos;clsa-dcs-f2.Participants:DCSatHOME&apos;).isNull()).not().value()){
-  res=newValue(&apos;ModifiedVisit&apos;,&apos;text&apos;)
-} else {
-  var v1=$group(&apos;Admin.Action.stage&apos;,&apos;DualHipBoneDensity&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
-  var v2=$group(&apos;Admin.Action.stage&apos;,&apos;DualHipBoneDensity&apos;,&apos;Admin.Action.eventReason&apos;).asSequence()
-
-  var arr=[]  // string array of events
-  for(var i=0; i&lt;v1.size(); i++) {
-    if(v1.valueAt(i).any(&apos;SKIP&apos;).not().value() ||
-       v2.valueAt(i).isNull().value()) continue
-    var key=v2.valueAt(i).value().slice(14)
-    if(-1==arr.indexOf(key))
-      arr.push(key)
-  }
-  if(undefined!==arr &amp;&amp; 0&lt;arr.length) {
-    res=newValue(arr.pop(),&apos;text&apos;)  
-  }
+          <attribute name="script" valueType="text">var action=$group(&apos;Admin.Action.stage&apos;,&apos;DualHipBoneDensity&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
+var res=$group(&apos;Admin.Action.stage&apos;,&apos;DualHipBoneDensity&apos;,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
+  var j=action.indexOf(&apos;SKIP&apos;)
+  return j==i
+  }).last()
+if(res.isNull().not().value()) {
+  res=newValue(res.value().slice(14),&apos;text&apos;)  
 }
 res</attribute>
         </attributes>
@@ -1181,35 +1005,20 @@ res</attribute>
       </variable>
       <variable name="stage_contraindicated_carotid_intima" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">$(&apos;clsa-dcs-f2.Participants:DCSatHOME&apos;).isNull().and(
-  $(&apos;clsa-dcs-f2.Participants:DCS_PHONE&apos;).isNull(),
-  $group(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,&apos;CarotidIntima&apos;,
-&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;)).value() 
+          <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,&apos;CarotidIntima&apos;,
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
 ? 1 : 0</attribute>
         </attributes>
       </variable>
       <variable name="stage_skip_carotid_intima" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">// if a dcs by phone visit, then the skip will be &quot;ModifiedVisit&quot;
-var res=null
-if($(&apos;clsa-dcs-f2.Participants:DCS_PHONE&apos;).isNull().and(
-   $(&apos;clsa-dcs-f2.Participants:DCSatHOME&apos;).isNull()).not().value()){
-  res=newValue(&apos;ModifiedVisit&apos;,&apos;text&apos;)
-} else {
-  var v1=$group(&apos;Admin.Action.stage&apos;,&apos;CarotidIntima&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
-  var v2=$group(&apos;Admin.Action.stage&apos;,&apos;CarotidIntima&apos;,&apos;Admin.Action.eventReason&apos;).asSequence()
-
-  var arr=[]  // string array of events
-  for(var i=0; i&lt;v1.size(); i++) {
-    if(v1.valueAt(i).any(&apos;SKIP&apos;).not().value() ||
-       v2.valueAt(i).isNull().value()) continue
-    var key=v2.valueAt(i).value().slice(14)
-    if(-1==arr.indexOf(key))
-      arr.push(key)
-  }
-  if(undefined!==arr &amp;&amp; 0&lt;arr.length) {
-    res=newValue(arr.pop(),&apos;text&apos;)  
-  }
+          <attribute name="script" valueType="text">var action=$group(&apos;Admin.Action.stage&apos;,&apos;CarotidIntima&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
+var res=$group(&apos;Admin.Action.stage&apos;,&apos;CarotidIntima&apos;,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
+  var j=action.indexOf(&apos;SKIP&apos;)
+  return j==i
+  }).last()
+if(res.isNull().not().value()) {
+  res=newValue(res.value().slice(14),&apos;text&apos;)  
 }
 res</attribute>
         </attributes>
@@ -1260,35 +1069,20 @@ res</attribute>
       </variable>
       <variable name="stage_contraindicated_tug" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">$(&apos;clsa-dcs-f2.Participants:DCSatHOME&apos;).isNull().and(
-  $(&apos;clsa-dcs-f2.Participants:DCS_PHONE&apos;).isNull(),
-  $group(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,&apos;TUG&apos;,
-&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;)).value() 
+          <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,&apos;TUG&apos;,
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
 ? 1 : 0</attribute>
         </attributes>
       </variable>
       <variable name="stage_skip_tug" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">// if a dcs by phone visit, then the skip will be &quot;ModifiedVisit&quot;
-var res=null
-if($(&apos;clsa-dcs-f2.Participants:DCS_PHONE&apos;).isNull().and(
-   $(&apos;clsa-dcs-f2.Participants:DCSatHOME&apos;).isNull()).not().value()){
-  res=newValue(&apos;ModifiedVisit&apos;,&apos;text&apos;)
-} else {
-  var v1=$group(&apos;Admin.Action.stage&apos;,&apos;TUG&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
-  var v2=$group(&apos;Admin.Action.stage&apos;,&apos;TUG&apos;,&apos;Admin.Action.eventReason&apos;).asSequence()
-
-  var arr=[]  // string array of events
-  for(var i=0; i&lt;v1.size(); i++) {
-    if(v1.valueAt(i).any(&apos;SKIP&apos;).not().value() ||
-       v2.valueAt(i).isNull().value()) continue
-    var key=v2.valueAt(i).value().slice(14)
-    if(-1==arr.indexOf(key))
-      arr.push(key)
-  }
-  if(undefined!==arr &amp;&amp; 0&lt;arr.length) {
-    res=newValue(arr.pop(),&apos;text&apos;)  
-  }
+          <attribute name="script" valueType="text">var action=$group(&apos;Admin.Action.stage&apos;,&apos;TUG&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
+var res=$group(&apos;Admin.Action.stage&apos;,&apos;TUG&apos;,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
+  var j=action.indexOf(&apos;SKIP&apos;)
+  return j==i
+  }).last()
+if(res.isNull().not().value()) {
+  res=newValue(res.value().slice(14),&apos;text&apos;)  
 }
 res</attribute>
         </attributes>
@@ -1307,12 +1101,12 @@ res</attribute>
 var res=null
 if(tt.isNull().not().value()) {
   var wt=$(&apos;clsa-dcs-f2.4mWalk:WLK_TIME&apos;).whenNull($(&apos;clsa-dcs-f2.4mWalk:WLK_TIME_2&apos;))  
-  var ct=$(&apos;clsa-dcs-f2.ChairRise:CR_TIME&apos;).whenNull($(&apos;clsa-dcs-f2.ChairRise:CR_TIME_2&apos;))
+  var ct=$(&apos;clsa-dcs-f2.ChairRise:CR_TIME&apos;).whenNull($(&apos;clsa-dcs-f2.ChairRise:CR_TIME_2&apos;))  
   var str = &apos;0&apos;
   if(tt.isNull().not().and(ct.isNull().not()).value()) {
     var cv=ct.div($(&apos;clsa-dcs-f2.ChairRise:CR_NB&apos;).whenNull(1))
     str=Math.round(tt.minus(wt.multiply(1.5).plus(cv)).abs().value(),0)
-  } 
+  }  
   res=newValue(
     &apos;{time:&apos;+tt.round(3).value()+
     &apos;,congruency:&apos;+str+
@@ -1329,35 +1123,20 @@ res</attribute>
       </variable>
       <variable name="stage_contraindicated_chair_rise" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">$(&apos;clsa-dcs-f2.Participants:DCSatHOME&apos;).isNull().and(
-  $(&apos;clsa-dcs-f2.Participants:DCS_PHONE&apos;).isNull(),
-  $group(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,&apos;ChairRise&apos;,
-&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;)).value() 
+          <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,&apos;ChairRise&apos;,
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
 ? 1 : 0</attribute>
         </attributes>
       </variable>
       <variable name="stage_skip_chair_rise" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">// if a dcs by phone visit, then the skip will be &quot;ModifiedVisit&quot;
-var res=null
-if($(&apos;clsa-dcs-f2.Participants:DCS_PHONE&apos;).isNull().and(
-   $(&apos;clsa-dcs-f2.Participants:DCSatHOME&apos;).isNull()).not().value()){
-  res=newValue(&apos;ModifiedVisit&apos;,&apos;text&apos;)
-} else {
-  var v1=$group(&apos;Admin.Action.stage&apos;,&apos;ChairRise&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
-  var v2=$group(&apos;Admin.Action.stage&apos;,&apos;ChairRise&apos;,&apos;Admin.Action.eventReason&apos;).asSequence()
-
-  var arr=[]  // string array of events
-  for(var i=0; i&lt;v1.size(); i++) {
-    if(v1.valueAt(i).any(&apos;SKIP&apos;).not().value() ||
-       v2.valueAt(i).isNull().value()) continue
-    var key=v2.valueAt(i).value().slice(14)
-    if(-1==arr.indexOf(key))
-      arr.push(key)
-  }
-  if(undefined!==arr &amp;&amp; 0&lt;arr.length) {
-    res=newValue(arr.pop(),&apos;text&apos;)  
-  }
+          <attribute name="script" valueType="text">var action=$group(&apos;Admin.Action.stage&apos;,&apos;ChairRise&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
+var res=$group(&apos;Admin.Action.stage&apos;,&apos;ChairRise&apos;,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
+  var j=action.indexOf(&apos;SKIP&apos;)
+  return j==i
+  }).last()
+if(res.isNull().not().value()) {
+  res=newValue(res.value().slice(14),&apos;text&apos;)  
 }
 res</attribute>
         </attributes>
@@ -1376,7 +1155,7 @@ res</attribute>
 var res=null
 if(ct.isNull().not().value()) {
   var wt=$(&apos;clsa-dcs-f2.4mWalk:WLK_TIME&apos;).whenNull($(&apos;clsa-dcs-f2.4mWalk:WLK_TIME_2&apos;))  
-  var tt=$(&apos;clsa-dcs-f2.TUG:TUG_TIME&apos;).whenNull($(&apos;clsa-dcs-f2.TUG:TUG_TIME_2&apos;))
+  var tt=$(&apos;clsa-dcs-f2.TUG:TUG_TIME&apos;).whenNull($(&apos;clsa-dcs-f2.TUG:TUG_TIME_2&apos;))  
   var str = &apos;0&apos;
   if(tt.isNull().not().and(ct.isNull().not()).value()) {
     var cv=ct.div($(&apos;clsa-dcs-f2.ChairRise:CR_NB&apos;).whenNull(1))
@@ -1398,33 +1177,20 @@ res</attribute>
       </variable>
       <variable name="stage_contraindicated_hips_waist" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">$(&apos;clsa-dcs-f2.Participants:DCS_PHONE&apos;).isNull().and(
-  $group(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,&apos;HipsWaist&apos;,
-&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;)).value() 
+          <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,&apos;HipsWaist&apos;,
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
 ? 1 : 0</attribute>
         </attributes>
       </variable>
       <variable name="stage_skip_hips_waist" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">// if a dcs by phone visit, then the skip will be &quot;ModifiedVisit&quot;
-var res=null
-if($(&apos;clsa-dcs-f2.Participants:DCS_PHONE&apos;).isNull().not().value()){
-  res=newValue(&apos;ModifiedVisit&apos;,&apos;text&apos;)
-} else {
-  var v1=$group(&apos;Admin.Action.stage&apos;,&apos;HipsWaist&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
-  var v2=$group(&apos;Admin.Action.stage&apos;,&apos;HipsWaist&apos;,&apos;Admin.Action.eventReason&apos;).asSequence()
-
-  var arr=[]  // string array of events
-  for(var i=0; i&lt;v1.size(); i++) {
-    if(v1.valueAt(i).any(&apos;SKIP&apos;).not().value() ||
-       v2.valueAt(i).isNull().value()) continue
-    var key=v2.valueAt(i).value().slice(14)
-    if(-1==arr.indexOf(key))
-      arr.push(key)
-  }
-  if(undefined!==arr &amp;&amp; 0&lt;arr.length) {
-    res=newValue(arr.pop(),&apos;text&apos;)  
-  }
+          <attribute name="script" valueType="text">var action=$group(&apos;Admin.Action.stage&apos;,&apos;HipsWaist&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
+var res=$group(&apos;Admin.Action.stage&apos;,&apos;HipsWaist&apos;,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
+  var j=action.indexOf(&apos;SKIP&apos;)
+  return j==i
+  }).last()
+if(res.isNull().not().value()) {
+  res=newValue(res.value().slice(14),&apos;text&apos;)  
 }
 res</attribute>
         </attributes>
@@ -1462,59 +1228,44 @@ res</attribute>
       </variable>
       <variable name="stage_contraindicated_standing_balance" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">$(&apos;clsa-dcs-f2.Participants:DCSatHOME&apos;).isNull().and(
-  $(&apos;clsa-dcs-f2.Participants:DCS_PHONE&apos;).isNull(),
-  $group(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,&apos;StandingBalance&apos;,
-&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;)).value() 
+          <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,&apos;StandingBalance&apos;,
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
 ? 1 : 0</attribute>
         </attributes>
       </variable>
       <variable name="stage_skip_standing_balance" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">// if a dcs by phone visit, then the skip will be &quot;ModifiedVisit&quot;
-var res=null
-if($(&apos;clsa-dcs-f2.Participants:DCS_PHONE&apos;).isNull().and(
-   $(&apos;clsa-dcs-f2.Participants:DCSatHOME&apos;).isNull()).not().value()){
-  res=newValue(&apos;ModifiedVisit&apos;,&apos;text&apos;)
+          <attribute name="script" valueType="text">var action=$group(&apos;Admin.Action.stage&apos;,&apos;StandingBalance&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
+var res=$group(&apos;Admin.Action.stage&apos;,&apos;StandingBalance&apos;,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
+  var j=action.indexOf(&apos;SKIP&apos;)
+  return j==i
+  }).last()
+if(res.isNull().not().value()) {
+  res=newValue(res.value().slice(14),&apos;text&apos;)  
 } else {
-  var v1=$group(&apos;Admin.Action.stage&apos;,&apos;StandingBalance&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
-  var v2=$group(&apos;Admin.Action.stage&apos;,&apos;StandingBalance&apos;,&apos;Admin.Action.eventReason&apos;).asSequence()
-  var arr=[]  // string array of events
-  for(var i=0; i&lt;v1.size(); i++) {
-    if(v1.valueAt(i).any(&apos;SKIP&apos;).not().value() ||
-       v2.valueAt(i).isNull().value()) continue
-    var key=v2.valueAt(i).value().slice(14)
-    if(-1==arr.indexOf(key))
-      arr.push(key)
-  }
-  if(undefined!==arr &amp;&amp; 0&lt;arr.length) {
-    res=newValue(arr.pop(),&apos;text&apos;)  
-  }
-  if(null===res) {
-    var l1=$(&apos;clsa-dcs-f2.StandingBalance:STAND_COMPLETION_LEFT&apos;)  
-    var r1=$(&apos;clsa-dcs-f2.StandingBalance:STAND_COMPLETION_RIGHT&apos;)  
-    if(l1.any(&apos;NO&apos;).value()) {
-      var l2=$(&apos;clsa-dcs-f2.StandingBalance:STAND_UNCOMPLETE_LEFT&apos;).map({
-        &apos;TECHNICAL&apos;:&apos;TechnicalProblem&apos;,
-        &apos;PARTICIPANT-DECISION&apos;:&apos;ParticipantDecision&apos;,
-        &apos;INTERVIEWER-DECISION&apos;:&apos;InterviewerDecision&apos;,
-        &apos;OTHER-SPEFICY&apos;:&apos;SeeComment&apos;},null)
-      if(l2.isNull().not().value()) {
-        res=l2
-      }  
-    } 
-    if (null===res &amp;&amp; r1.any(&apos;NO&apos;).value()) {
-      var r2=$(&apos;clsa-dcs-f2.StandingBalance:STAND_UNCOMPLETE_RIGHT&apos;).map({
-        &apos;TECHNICAL&apos;:&apos;TechnicalProblem&apos;,
-        &apos;PARTICIPANT-DECISION&apos;:&apos;ParticipantDecision&apos;,
-        &apos;INTERVIEWER-DECISION&apos;:&apos;InterviewerDecision&apos;,
-        &apos;OTHER-SPEFICY&apos;:&apos;SeeComment&apos;},null)
-      if(r2.isNull().not().value()) {
-        res=r2
-      }
+  var l1=$(&apos;clsa-dcs-f2.StandingBalance:STAND_COMPLETION_LEFT&apos;)  
+  var r1=$(&apos;clsa-dcs-f2.StandingBalance:STAND_COMPLETION_RIGHT&apos;)  
+  if(l1.any(&apos;NO&apos;).value()) {
+    var l2=$(&apos;clsa-dcs-f2.StandingBalance:STAND_UNCOMPLETE_LEFT&apos;).map({
+      &apos;TECHNICAL&apos;:&apos;TechnicalProblem&apos;,
+      &apos;PARTICIPANT-DECISION&apos;:&apos;ParticipantDecision&apos;,
+      &apos;INTERVIEWER-DECISION&apos;:&apos;InterviewerDecision&apos;,
+      &apos;OTHER-SPEFICY&apos;:&apos;SeeComment&apos;},null)
+    if(l2.isNull().not().value()) {
+      res=l2
+    }  
+  } 
+  if (null===res &amp;&amp; r1.any(&apos;NO&apos;).value()) {
+    var r2=$(&apos;clsa-dcs-f2.StandingBalance:STAND_UNCOMPLETE_RIGHT&apos;).map({
+      &apos;TECHNICAL&apos;:&apos;TechnicalProblem&apos;,
+      &apos;PARTICIPANT-DECISION&apos;:&apos;ParticipantDecision&apos;,
+      &apos;INTERVIEWER-DECISION&apos;:&apos;InterviewerDecision&apos;,
+      &apos;OTHER-SPEFICY&apos;:&apos;SeeComment&apos;},null)
+    if(r2.isNull().not().value()) {
+      res=r2
     }
   }
-}  
+}
 res</attribute>
         </attributes>
       </variable>
@@ -1567,35 +1318,20 @@ res</attribute>
       </variable>
       <variable name="stage_contraindicated_four_metre_walk" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">$(&apos;clsa-dcs-f2.Participants:DCSatHOME&apos;).isNull().and(
-  $(&apos;clsa-dcs-f2.Participants:DCS_PHONE&apos;).isNull(),
-  $group(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,&apos;4mWalk&apos;,
-&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;)).value() 
+          <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,&apos;4mWalk&apos;,
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
 ? 1 : 0</attribute>
         </attributes>
       </variable>
       <variable name="stage_skip_four_metre_walk" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">// if a dcs by phone visit, then the skip will be &quot;ModifiedVisit&quot;
-var res=null
-if($(&apos;clsa-dcs-f2.Participants:DCS_PHONE&apos;).isNull().and(
-   $(&apos;clsa-dcs-f2.Participants:DCSatHOME&apos;).isNull()).not().value()){
-  res=newValue(&apos;ModifiedVisit&apos;,&apos;text&apos;)
-} else {
-  var v1=$group(&apos;Admin.Action.stage&apos;,&apos;4mWalk&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
-  var v2=$group(&apos;Admin.Action.stage&apos;,&apos;4mWalk&apos;,&apos;Admin.Action.eventReason&apos;).asSequence()
-
-  var arr=[]  // string array of events
-  for(var i=0; i&lt;v1.size(); i++) {
-    if(v1.valueAt(i).any(&apos;SKIP&apos;).not().value() ||
-       v2.valueAt(i).isNull().value()) continue
-    var key=v2.valueAt(i).value().slice(14)
-    if(-1==arr.indexOf(key))
-      arr.push(key)
-  }
-  if(undefined!==arr &amp;&amp; 0&lt;arr.length) {
-    res=newValue(arr.pop(),&apos;text&apos;)  
-  }
+          <attribute name="script" valueType="text">var action=$group(&apos;Admin.Action.stage&apos;,&apos;4mWalk&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
+var res=$group(&apos;Admin.Action.stage&apos;,&apos;4mWalk&apos;,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
+  var j=action.indexOf(&apos;SKIP&apos;)
+  return j==i
+  }).last()
+if(res.isNull().not().value()) {
+  res=newValue(res.value().slice(14),&apos;text&apos;)  
 }
 res</attribute>
         </attributes>
@@ -1614,12 +1350,12 @@ res</attribute>
 var res=null
 if(wt.isNull().not().value()) {
   var tt=$(&apos;clsa-dcs-f2.TUG:TUG_TIME&apos;).whenNull($(&apos;clsa-dcs-f2.TUG:TUG_TIME_2&apos;))
-  var ct=$(&apos;clsa-dcs-f2.ChairRise:CR_TIME&apos;).whenNull($(&apos;clsa-dcs-f2.ChairRise:CR_TIME_2&apos;))
+  var ct=$(&apos;clsa-dcs-f2.ChairRise:CR_TIME&apos;).whenNull($(&apos;clsa-dcs-f2.ChairRise:CR_TIME_2&apos;))  
   var str = &apos;0&apos;
   if(tt.isNull().not().and(ct.isNull().not()).value()) {
     var cv=ct.div($(&apos;clsa-dcs-f2.ChairRise:CR_NB&apos;).whenNull(1))
     str=Math.round(tt.minus(wt.multiply(1.5).plus(cv)).abs().value(),0)
-  }
+  }  
   res=newValue(
     &apos;{time:&apos;+wt.round(3).value()+
     &apos;,congruency:&apos;+str+
@@ -1643,26 +1379,14 @@ res</attribute>
       </variable>
       <variable name="stage_skip_sitting_height" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">// if a dcs by phone visit, then the skip will be &quot;ModifiedVisit&quot;
-var res=null
-if($(&apos;clsa-dcs-f2.Participants:DCS_PHONE&apos;).isNull().and(
-   $(&apos;clsa-dcs-f2.Participants:DCSatHOME&apos;).isNull()).not().value()){
-  res=newValue(&apos;ModifiedVisit&apos;,&apos;text&apos;)
-} else {
-  var v1=$group(&apos;Admin.Action.stage&apos;,&apos;SittingHeight&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
-  var v2=$group(&apos;Admin.Action.stage&apos;,&apos;SittingHeight&apos;,&apos;Admin.Action.eventReason&apos;).asSequence()
-  var arr=[]  // string array of events
-  for(var i=0; i&lt;v1.size(); i++) {
-    if(v1.valueAt(i).any(&apos;SKIP&apos;).not().value() ||
-       v2.valueAt(i).isNull().value()) continue
-    var key=v2.valueAt(i).value().slice(14)
-    if(-1==arr.indexOf(key))
-      arr.push(key)
-  }
-  if(undefined!==arr &amp;&amp; 0&lt;arr.length) {
-    res=newValue(arr.pop(),&apos;text&apos;)  
-  }
-}  
+          <attribute name="script" valueType="text">var action=$group(&apos;Admin.Action.stage&apos;,&apos;SittingHeight&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
+var res=$group(&apos;Admin.Action.stage&apos;,&apos;SittingHeight&apos;,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
+  var j=action.indexOf(&apos;SKIP&apos;)
+  return j==i
+  }).last()
+if(res.isNull().not().value()) {
+  res=newValue(res.value().slice(14),&apos;text&apos;)  
+}
 res</attribute>
         </attributes>
       </variable>
@@ -1694,53 +1418,38 @@ res</attribute>
       </variable>
       <variable name="stage_contraindicated_vision_acuity" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">$(&apos;clsa-dcs-f2.Participants:DCSatHOME&apos;).isNull().and(
-  $(&apos;clsa-dcs-f2.Participants:DCS_PHONE&apos;).isNull(),
-  $group(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,&apos;VisionAcuity&apos;,
-&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;)).value() 
+          <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,&apos;VisionAcuity&apos;,
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
 ? 1 : 0</attribute>
         </attributes>
       </variable>
       <variable name="stage_skip_vision_acuity" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">// if a dcs by phone visit, then the skip will be &quot;ModifiedVisit&quot;
-var res=null
-if($(&apos;clsa-dcs-f2.Participants:DCS_PHONE&apos;).isNull().and(
-   $(&apos;clsa-dcs-f2.Participants:DCSatHOME&apos;).isNull()).not().value()){
-  res=newValue(&apos;ModifiedVisit&apos;,&apos;text&apos;)
+          <attribute name="script" valueType="text">var action=$group(&apos;Admin.Action.stage&apos;,&apos;VisionAcuity&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
+var res=$group(&apos;Admin.Action.stage&apos;,&apos;VisionAcuity&apos;,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
+  var j=action.indexOf(&apos;SKIP&apos;)
+  return j==i
+  }).last()
+if(res.isNull().not().value()) {
+  res=newValue(res.value().slice(14),&apos;text&apos;)  
 } else {
-  var v1=$group(&apos;Admin.Action.stage&apos;,&apos;VisionAcuity&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
-  var v2=$group(&apos;Admin.Action.stage&apos;,&apos;VisionAcuity&apos;,&apos;Admin.Action.eventReason&apos;).asSequence()
-  var arr=[]  // string array of events
-  for(var i=0; i&lt;v1.size(); i++) {
-    if(v1.valueAt(i).any(&apos;SKIP&apos;).not().value() ||
-       v2.valueAt(i).isNull().value()) continue
-    var key=v2.valueAt(i).value().slice(14)
-    if(-1==arr.indexOf(key))
-      arr.push(key)
-  }
-  if(undefined!==arr &amp;&amp; 0&lt;arr.length) {
-    res=newValue(arr.pop(),&apos;text&apos;)  
-  }
-  if(null===res) {
-    var tests=[&apos;DONE_VA&apos;,&apos;DONE_BOTH_VA&apos;,&apos;DONE_LEFT_VA&apos;,&apos;DONE_RIGHT_VA&apos;,&apos;DONE_LEFT_PO_VA&apos;,&apos;DONE_RIGHT_PO_VA&apos;]
-    var reasons=[&apos;DONE_RSN_VA&apos;,&apos;DONE_RSN_BOTH_VA&apos;,&apos;DONE_RSN_LEFT_VA&apos;,&apos;DONE_RSN_RIGHT_VA&apos;,&apos;DONE_RSN_LEFT_PO_VA&apos;,&apos;DONE_RSN_RIGHT_PO_VA&apos;]
-    for(var i=0;i&lt;tests.length;i++) {
-      var t=$(&apos;clsa-dcs-f2.VisionAcuity:&apos;+tests[i])
-      if(t.any(&apos;NO&apos;).value()) {
-        var r=$(&apos;clsa-dcs-f2.VisionAcuity:&apos;+reasons[i]).map({
-        &apos;TECHNICAL-PROBLEM&apos;:&apos;TechnicalProblem&apos;,
-        &apos;PARTICIPANT-DECISION&apos;:&apos;ParticipantDecision&apos;,
-        &apos;INTERVIEWER-DECISION&apos;:&apos;InterviewerDecision&apos;,
-        &apos;OTHER&apos;:&apos;SeeComment&apos;},null)
-        if(r.isNull().not().value()) {
-          res=r
-          break
-        }
+  var tests=[&apos;DONE_VA&apos;,&apos;DONE_BOTH_VA&apos;,&apos;DONE_LEFT_VA&apos;,&apos;DONE_RIGHT_VA&apos;,&apos;DONE_LEFT_PO_VA&apos;,&apos;DONE_RIGHT_PO_VA&apos;]
+  var reasons=[&apos;DONE_RSN_VA&apos;,&apos;DONE_RSN_BOTH_VA&apos;,&apos;DONE_RSN_LEFT_VA&apos;,&apos;DONE_RSN_RIGHT_VA&apos;,&apos;DONE_RSN_LEFT_PO_VA&apos;,&apos;DONE_RSN_RIGHT_PO_VA&apos;]
+  for(var i=0;i&lt;tests.length;i++) {
+    var t=$(&apos;clsa-dcs-f2.VisionAcuity:&apos;+tests[i])
+    if(t.any(&apos;NO&apos;).value()) {
+      var r=$(&apos;clsa-dcs-f2.VisionAcuity:&apos;+reasons[i]).map({
+      &apos;TECHNICAL-PROBLEM&apos;:&apos;TechnicalProblem&apos;,
+      &apos;PARTICIPANT-DECISION&apos;:&apos;ParticipantDecision&apos;,
+      &apos;INTERVIEWER-DECISION&apos;:&apos;InterviewerDecision&apos;,
+      &apos;OTHER&apos;:&apos;SeeComment&apos;},null)
+      if(r.isNull().not().value()) {
+        res=r
+        break
       }
     }
-  }
-}  
+  }  
+}
 res</attribute>
         </attributes>
       </variable>
@@ -1790,7 +1499,7 @@ res</attribute>
         <attributes>
           <attribute name="script" valueType="text">$(&apos;clsa-dcs-f2.Participants:DCS_PHONE&apos;).isNull().and(
   $group(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,&apos;StroopFAS&apos;,
-&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;)).value() 
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;)).value()
 ? 1 : null</attribute>
         </attributes>
       </variable>
@@ -1801,19 +1510,13 @@ var res=null
 if($(&apos;clsa-dcs-f2.Participants:DCS_PHONE&apos;).isNull().not().value()){
   res=newValue(&apos;ModifiedVisit&apos;,&apos;text&apos;)
 } else {
-  var v1=$group(&apos;Admin.Action.stage&apos;,&apos;StroopFAS&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
-  var v2=$group(&apos;Admin.Action.stage&apos;,&apos;StroopFAS&apos;,&apos;Admin.Action.eventReason&apos;).asSequence()
-
-  var arr=[]  // string array of events
-  for(var i=0; i&lt;v1.size(); i++) {
-    if(v1.valueAt(i).any(&apos;SKIP&apos;).not().value() ||
-       v2.valueAt(i).isNull().value()) continue
-    var key=v2.valueAt(i).value().slice(14)
-    if(-1==arr.indexOf(key))
-      arr.push(key)
-  }
-  if(undefined!==arr &amp;&amp; 0&lt;arr.length) {
-    res=newValue(arr.pop(),&apos;text&apos;)  
+  var action=$group(&apos;Admin.Action.stage&apos;,&apos;StroopFAS&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
+  var res=$group(&apos;Admin.Action.stage&apos;,&apos;StroopFAS&apos;,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
+    var j=action.indexOf(&apos;SKIP&apos;)
+    return j==i
+    }).last()
+  if(res.isNull().not().value()) {
+    res=newValue(res.value().slice(14),&apos;text&apos;)
   }
 }
 res</attribute>
@@ -1848,8 +1551,639 @@ if(!d.isNull().and(w.isNull(),c.isNull(),f.isNull(),a.isNull(),s.isNull()).value
 res</attribute>
         </attributes>
       </variable>
+      <variable name="stage_contraindicated_consent" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,&apos;Consent&apos;,
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
+? 1 : 0</attribute>
+        </attributes>
+      </variable>
+      <variable name="data_missing_consent" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$this(&apos;data_qac_consent&apos;).isNull().and(
+  $this(&apos;stage_contraindicated_consent&apos;).eq(0),
+  $this(&apos;stage_skip_consent&apos;).isNull()
+).value() ? 1 : 0</attribute>
+        </attributes>
+      </variable>
+      <variable name="data_qac_consent" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var m=$(&apos;clsa-dcs-f2.Consent:mode&apos;)
+var a=$(&apos;clsa-dcs-f2.Consent:accepted&apos;)
+var res=null
+if(m.isNull().and(a.isNull()).not().value()) {
+  res=newValue(
+    &apos;{mode:&apos;+m.lowerCase().value()+
+    &apos;,accepted:&apos;+(a.value()?1:0)+
+    &apos;}&apos;,&apos;text&apos;)
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_technician_consent" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$group(&apos;Admin.Action.stage&apos;,&apos;Consent&apos;,&apos;Admin.Action.user&apos;).asSequence().last().lowerCase()</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_skip_consent" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var action=$group(&apos;Admin.Action.stage&apos;,&apos;Consent&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
+var res=$group(&apos;Admin.Action.stage&apos;,&apos;Consent&apos;,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
+  var j=action.indexOf(&apos;SKIP&apos;)
+  return j==i
+  }).last()
+if(res.isNull().not().value()) {
+  res=newValue(res.value().slice(14),&apos;text&apos;)  
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_technician_contraindications" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;clsa-dcs-f2.ContraIndications:QuestionnaireRun.user&apos;).whenNull(
+  $group(&apos;Admin.Action.stage&apos;,&apos;ContraIndications&apos;,&apos;Admin.Action.user&apos;).asSequence().last()).lowerCase()</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_skip_contraindications" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var action=$group(&apos;Admin.Action.stage&apos;,&apos;ContraIndications&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
+var res=$group(&apos;Admin.Action.stage&apos;,&apos;ContraIndications&apos;,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
+  var j=action.indexOf(&apos;SKIP&apos;)
+  return j==i
+  }).last()
+if(res.isNull().not().value()) {
+  res=newValue(res.value().slice(14),&apos;text&apos;)  
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_contraindicated_contraindications" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,&apos;ContraIndications&apos;,
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
+? 1 : 0</attribute>
+        </attributes>
+      </variable>
+      <variable name="data_qac_contraindications" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var p=$(&apos;clsa-dcs-f2.ContraIndications:QuestionnaireMetric.missingCount&apos;).asSequence()
+var q=$(&apos;clsa-dcs-f2.ContraIndications:QuestionnaireMetric.questionCount&apos;).asSequence()
+var res=null
+if(q.size().gt(0).and(q.sum().gt(0)).value()){
+  res=newValue(
+    &apos;{missing:&apos;+
+    Math.round(100.0 * p.sum() / q.sum())
+    +&apos;}&apos;,&apos;text&apos;)
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="data_missing_contraindications" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$this(&apos;data_qac_contraindications&apos;).isNull().and(
+  $this(&apos;stage_contraindicated_contraindications&apos;).eq(0),
+  $this(&apos;stage_skip_contraindications&apos;).isNull()
+).value() ? 1 : 0</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_technician_event_pmt" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;clsa-dcs-f2.EventPMT:QuestionnaireRun.user&apos;).whenNull(
+  $group(&apos;Admin.Action.stage&apos;,&apos;EventPMT&apos;,&apos;Admin.Action.user&apos;).asSequence().last()).lowerCase()</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_skip_event_pmt" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var action=$group(&apos;Admin.Action.stage&apos;,&apos;EventPMT&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
+var res=$group(&apos;Admin.Action.stage&apos;,&apos;EventPMT&apos;,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
+  var j=action.indexOf(&apos;SKIP&apos;)
+  return j==i
+  }).last()
+if(res.isNull().not().value()) {
+  res=newValue(res.value().slice(14),&apos;text&apos;)  
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_contraindicated_event_pmt" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,&apos;EventPMT&apos;,
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
+? 1 : 0</attribute>
+        </attributes>
+      </variable>
+      <variable name="data_qac_event_pmt" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var p=$(&apos;clsa-dcs-f2.EventPMT:QuestionnaireMetric.missingCount&apos;).asSequence()
+var q=$(&apos;clsa-dcs-f2.EventPMT:QuestionnaireMetric.questionCount&apos;).asSequence()
+var res=null
+if(q.size().gt(0).and(q.sum().gt(0)).value()){
+  res=newValue(
+    &apos;{missing:&apos;+
+    Math.round(100.0 * p.sum() / q.sum())
+    +&apos;}&apos;,&apos;text&apos;)
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="data_missing_event_pmt" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$this(&apos;data_qac_event_pmt&apos;).isNull().and(
+  $this(&apos;stage_contraindicated_event_pmt&apos;).eq(0),
+  $this(&apos;stage_skip_event_pmt&apos;).isNull()
+).value() ? 1 : 0</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_technician_disease_symptoms" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;clsa-dcs-f2.DiseaseSymptoms:QuestionnaireRun.user&apos;).whenNull(
+  $group(&apos;Admin.Action.stage&apos;,&apos;DiseaseSymptoms&apos;,&apos;Admin.Action.user&apos;).asSequence().last()).lowerCase()</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_skip_disease_symptoms" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var action=$group(&apos;Admin.Action.stage&apos;,&apos;DiseaseSymptoms&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
+var res=$group(&apos;Admin.Action.stage&apos;,&apos;DiseaseSymptoms&apos;,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
+  var j=action.indexOf(&apos;SKIP&apos;)
+  return j==i
+  }).last()
+if(res.isNull().not().value()) {
+  res=newValue(res.value().slice(14),&apos;text&apos;)  
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_contraindicated_disease_symptoms" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,&apos;DiseaseSymptoms&apos;,
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
+? 1 : 0</attribute>
+        </attributes>
+      </variable>
+      <variable name="data_qac_disease_symptoms" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var p=$(&apos;clsa-dcs-f2.DiseaseSymptoms:QuestionnaireMetric.missingCount&apos;).asSequence()
+var q=$(&apos;clsa-dcs-f2.DiseaseSymptoms:QuestionnaireMetric.questionCount&apos;).asSequence()
+var res=null
+if(q.size().gt(0).and(q.sum().gt(0)).value()){
+  res=newValue(
+    &apos;{missing:&apos;+
+    Math.round(100.0 * p.sum() / q.sum())
+    +&apos;}&apos;,&apos;text&apos;)
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="data_missing_disease_symptoms" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$this(&apos;data_qac_disease_symptoms&apos;).isNull().and(
+  $this(&apos;stage_contraindicated_disease_symptoms&apos;).eq(0),
+  $this(&apos;stage_skip_disease_symptoms&apos;).isNull()
+).value() ? 1 : 0</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_technician_conclusion_questionnaire" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;clsa-dcs-f2.ConclusionQuestionnaire:QuestionnaireRun.user&apos;).whenNull(
+  $group(&apos;Admin.Action.stage&apos;,&apos;ConclusionQuestionnaire&apos;,&apos;Admin.Action.user&apos;).asSequence().last()).lowerCase()</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_skip_conclusion_questionnaire" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var action=$group(&apos;Admin.Action.stage&apos;,&apos;ConclusionQuestionnaire&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
+var res=$group(&apos;Admin.Action.stage&apos;,&apos;ConclusionQuestionnaire&apos;,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
+  var j=action.indexOf(&apos;SKIP&apos;)
+  return j==i
+  }).last()
+if(res.isNull().not().value()) {
+  res=newValue(res.value().slice(14),&apos;text&apos;)  
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_contraindicated_conclusion_questionnaire" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,&apos;ConclusionQuestionnaire&apos;,
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
+? 1 : 0</attribute>
+        </attributes>
+      </variable>
+      <variable name="data_qac_conclusion_questionnaire" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var q=$(&apos;clsa-dcs-f2.ConclusionQuestionnaire:PARTICIPANT_OFFERED_DOCUMENT&apos;).lowerCase()
+var res=null
+if(q.isNull().not().value()){
+  var a=q.any(&apos;consent_form&apos;).value()
+  var b=q.any(&apos;physical_measures_report&apos;).value()
+  var n=0 
+  if(a) n++
+  if(b) n++
+  res=newValue(&apos;{documents:&apos;+n+&apos;}&apos;,&apos;text&apos;)
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="data_missing_conclusion_questionnaire" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$this(&apos;data_qac_conclusion_questionnaire&apos;).isNull().and(
+  $this(&apos;stage_contraindicated_conclusion_questionnaire&apos;).eq(0),
+  $this(&apos;stage_skip_conclusion_questionnaire&apos;).isNull()
+).value() ? 1 : 0</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_technician_bone_density_questionnaire" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;clsa-dcs-f2.QuestionnaireBoneDensity:QuestionnaireRun.user&apos;).whenNull(
+  $group(&apos;Admin.Action.stage&apos;,&apos;QuestionnaireBoneDensity&apos;,&apos;Admin.Action.user&apos;).asSequence().last()).lowerCase()</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_skip_bone_density_questionnaire" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var action=$group(&apos;Admin.Action.stage&apos;,&apos;QuestionnaireBoneDensity&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
+var res=$group(&apos;Admin.Action.stage&apos;,&apos;QuestionnaireBoneDensity&apos;,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
+  var j=action.indexOf(&apos;SKIP&apos;)
+  return j==i
+  }).last()
+if(res.isNull().not().value()) {
+  res=newValue(res.value().slice(14),&apos;text&apos;)  
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_contraindicated_bone_density_questionnaire" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,&apos;QuestionnaireBoneDensity&apos;,
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
+? 1 : 0</attribute>
+        </attributes>
+      </variable>
+      <variable name="data_qac_bone_density_questionnaire" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var p=$(&apos;clsa-dcs-f2.QuestionnaireBoneDensity:QuestionnaireMetric.missingCount&apos;).asSequence()
+var q=$(&apos;clsa-dcs-f2.QuestionnaireBoneDensity:QuestionnaireMetric.questionCount&apos;).asSequence()
+var res=null
+if(q.size().gt(0).and(q.sum().gt(0)).value()){
+  res=newValue(
+    &apos;{missing:&apos;+
+    Math.round(100.0 * p.sum() / q.sum())
+    +&apos;}&apos;,&apos;text&apos;)
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="data_missing_bone_density_questionnaire" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$this(&apos;data_qac_bone_density_questionnaire&apos;).isNull().and(
+  $this(&apos;stage_contraindicated_bone_density_questionnaire&apos;).eq(0),
+  $this(&apos;stage_skip_bone_density_questionnaire&apos;).isNull()
+).value() ? 1 : 0</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_technician_hearing_questionnaire" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;clsa-dcs-f2.HearingQuestionnaire:QuestionnaireRun.user&apos;).whenNull(
+  $group(&apos;Admin.Action.stage&apos;,&apos;HearingQuestionnaire&apos;,&apos;Admin.Action.user&apos;).asSequence().last()).lowerCase()</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_skip_hearing_questionnaire" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var action=$group(&apos;Admin.Action.stage&apos;,&apos;HearingQuestionnaire&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
+var res=$group(&apos;Admin.Action.stage&apos;,&apos;HearingQuestionnaire&apos;,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
+  var j=action.indexOf(&apos;SKIP&apos;)
+  return j==i
+  }).last()
+if(res.isNull().not().value()) {
+  res=newValue(res.value().slice(14),&apos;text&apos;)  
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_contraindicated_hearing_questionnaire" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,&apos;HearingQuestionnaire&apos;,
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
+? 1 : 0</attribute>
+        </attributes>
+      </variable>
+      <variable name="data_qac_hearing_questionnaire" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var l=$(&apos;clsa-dcs-f2.HearingQuestionnaire:STATUS_EAR.LEFT_EAR_2&apos;).lowerCase()
+var r=$(&apos;clsa-dcs-f2.HearingQuestionnaire:STATUS_EAR.RIGHT_EAR_2&apos;).lowerCase()
+var res=null
+if(l.isNull().and(r.isNull()).not().value()){
+  res=newValue(
+    &apos;{status_left:&apos;+
+     (l.isNull().value()?&apos;missing&apos;:l.value()) +
+    &apos;,status_right:&apos;+
+     (r.isNull().value()?&apos;missing&apos;:r.value()) +
+    &apos;}&apos;,&apos;text&apos;)
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="data_missing_hearing_questionnaire" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$this(&apos;data_qac_hearing_questionnaire&apos;).isNull().and(
+  $this(&apos;stage_contraindicated_hearing_questionnaire&apos;).eq(0),
+  $this(&apos;stage_skip_hearing_questionnaire&apos;).isNull()
+).value() ? 1 : 0</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_technician_time_based_pmt" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;clsa-dcs-f2.TimeBasedProspectiveMemoryTask:QuestionnaireRun.user&apos;).whenNull(
+  $group(&apos;Admin.Action.stage&apos;,&apos;TimeBasedProspectiveMemoryTask&apos;,&apos;Admin.Action.user&apos;).asSequence().last()).lowerCase()</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_skip_time_based_pmt" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var action=$group(&apos;Admin.Action.stage&apos;,&apos;TimeBasedProspectiveMemoryTask&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
+var res=$group(&apos;Admin.Action.stage&apos;,&apos;TimeBasedProspectiveMemoryTask&apos;,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
+  var j=action.indexOf(&apos;SKIP&apos;)
+  return j==i
+  }).last()
+if(res.isNull().not().value()) {
+  res=newValue(res.value().slice(14),&apos;text&apos;)  
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_contraindicated_time_based_pmt" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,&apos;TimeBasedProspectiveMemoryTask&apos;,
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
+? 1 : 0</attribute>
+        </attributes>
+      </variable>
+      <variable name="data_qac_time_based_pmt" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var p=$(&apos;clsa-dcs-f2.TimeBasedProspectiveMemoryTask:QuestionnaireMetric.missingCount&apos;).asSequence()
+var q=$(&apos;clsa-dcs-f2.TimeBasedProspectiveMemoryTask:QuestionnaireMetric.questionCount&apos;).asSequence()
+var res=null
+if(q.size().gt(0).and(q.sum().gt(0)).value()){
+  res=newValue(
+    &apos;{missing:&apos;+
+    Math.round(100.0 * p.sum() / q.sum())
+    +&apos;}&apos;,&apos;text&apos;)
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="data_missing_time_based_pmt" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$this(&apos;data_qac_time_based_pmt&apos;).isNull().and(
+  $this(&apos;stage_contraindicated_time_based_pmt&apos;).eq(0),
+  $this(&apos;stage_skip_time_based_pmt&apos;).isNull()
+).value() ? 1 : 0</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_technician_frax" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;clsa-dcs-f2.Frax:InstrumentRun.user&apos;).whenNull(
+  $group(&apos;Admin.Action.stage&apos;,&apos;Frax&apos;,&apos;Admin.Action.user&apos;).asSequence().last()).lowerCase()</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_contraindicated_frax" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,&apos;Frax&apos;,
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
+? 1 : 0</attribute>
+        </attributes>
+      </variable>
+      <variable name="data_qac_frax" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var res=null
+var f=$(&apos;clsa-dcs-f2.Frax:RES_RESULT_FILE&apos;)
+var list=[&apos;clsa-dcs-f2.Frax:FRAX_OSTFX_COF2&apos;,&apos;clsa-dcs-f2.Frax:FRAX_HIPFX_COF2&apos;,
+&apos;clsa-dcs-f2.Frax:FRAX_OSTFX_BMD_COF2&apos;,&apos;clsa-dcs-f2.Frax:FRAX_HIPFX_BMD_COF2&apos;]
+var n=0
+for(var i=0;i&lt;4;i++) {
+  if($(list[i]).isNull().not().value()) n++
+}
+if(f.isNull().not().value() || n&gt;0) {
+  res=newValue(
+    &apos;{file_size:&apos;+ (f.isNull().value()?&apos;0&apos;:f.length()) + &apos;,&apos; +
+      &apos;missing:&apos; + (4-n) +
+    &apos;}&apos;,&apos;text&apos;)
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="data_missing_frax" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$this(&apos;data_qac_frax&apos;).isNull().and(
+  $this(&apos;stage_contraindicated_frax&apos;).eq(0),
+  $this(&apos;stage_skip_frax&apos;).isNull()
+).value() ? 1 : 0</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_skip_frax" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var action=$group(&apos;Admin.Action.stage&apos;,&apos;Frax&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
+var res=$group(&apos;Admin.Action.stage&apos;,&apos;Frax&apos;,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
+  var j=action.indexOf(&apos;SKIP&apos;)
+  return j==i
+  }).last()
+if(res.isNull().not().value()) {
+  res=newValue(res.value().slice(14),&apos;text&apos;)  
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_technician_social_network" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;clsa-dcs-f2.SocialNetwork:QuestionnaireRun.user&apos;).whenNull(
+  $group(&apos;Admin.Action.stage&apos;,&apos;SocialNetwork&apos;,&apos;Admin.Action.user&apos;).asSequence().last()).lowerCase()</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_skip_social_network" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var action=$group(&apos;Admin.Action.stage&apos;,&apos;SocialNetwork&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
+var res=$group(&apos;Admin.Action.stage&apos;,&apos;SocialNetwork&apos;,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
+  var j=action.indexOf(&apos;SKIP&apos;)
+  return j==i
+  }).last()
+if(res.isNull().not().value()) {
+  res=newValue(res.value().slice(14),&apos;text&apos;)  
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_contraindicated_social_network" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,&apos;SocialNetwork&apos;,
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
+? 1 : 0</attribute>
+        </attributes>
+      </variable>
+      <variable name="data_qac_social_network" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var p=$(&apos;clsa-dcs-f2.SocialNetwork:QuestionnaireMetric.missingCount&apos;).asSequence()
+var q=$(&apos;clsa-dcs-f2.SocialNetwork:QuestionnaireMetric.questionCount&apos;).asSequence()
+var res=null
+if(q.size().gt(0).and(q.sum().gt(0)).value()){
+  res=newValue(
+    &apos;{missing:&apos;+
+    Math.round(100.0 * p.sum() / q.sum())
+    +&apos;}&apos;,&apos;text&apos;)
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="data_missing_social_network" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$this(&apos;data_qac_social_network&apos;).isNull().and(
+  $this(&apos;stage_contraindicated_social_network&apos;).eq(0),
+  $this(&apos;stage_skip_social_network&apos;).isNull()
+).value() ? 1 : 0</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_technician_general_health" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;clsa-dcs-f2.GenHealth:QuestionnaireRun.user&apos;).whenNull(
+  $group(&apos;Admin.Action.stage&apos;,&apos;GenHealth&apos;,&apos;Admin.Action.user&apos;).asSequence().last()).lowerCase()</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_skip_general_health" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var action=$group(&apos;Admin.Action.stage&apos;,&apos;GenHealth&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
+var res=$group(&apos;Admin.Action.stage&apos;,&apos;GenHealth&apos;,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
+  var j=action.indexOf(&apos;SKIP&apos;)
+  return j==i
+  }).last()
+if(res.isNull().not().value()) {
+  res=newValue(res.value().slice(14),&apos;text&apos;)  
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_contraindicated_general_health" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,&apos;GenHealth&apos;,
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
+? 1 : 0</attribute>
+        </attributes>
+      </variable>
+      <variable name="data_qac_general_health" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var p=$(&apos;clsa-dcs-f2.GenHealth:QuestionnaireMetric.missingCount&apos;).asSequence()
+var q=$(&apos;clsa-dcs-f2.GenHealth:QuestionnaireMetric.questionCount&apos;).asSequence()
+var res=null
+if(q.size().gt(0).and(q.sum().gt(0)).value()){
+  res=newValue(
+    &apos;{missing:&apos;+
+    Math.round(100.0 * p.sum() / q.sum())
+    +&apos;}&apos;,&apos;text&apos;)
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="data_missing_general_health" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$this(&apos;data_qac_general_health&apos;).isNull().and(
+  $this(&apos;stage_contraindicated_general_health&apos;).eq(0),
+  $this(&apos;stage_skip_general_health&apos;).isNull()
+).value() ? 1 : 0</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_technician_osipv" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;clsa-dcs-f2.OSIPV:QuestionnaireRun.user&apos;).whenNull(
+  $group(&apos;Admin.Action.stage&apos;,&apos;OSIPV&apos;,&apos;Admin.Action.user&apos;).asSequence().last()).lowerCase()</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_skip_osipv" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var action=$group(&apos;Admin.Action.stage&apos;,&apos;OSIPV&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
+var res=$group(&apos;Admin.Action.stage&apos;,&apos;OSIPV&apos;,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
+  var j=action.indexOf(&apos;SKIP&apos;)
+  return j==i
+  }).last()
+if(res.isNull().not().value()) {
+  res=newValue(res.value().slice(14),&apos;text&apos;)  
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_contraindicated_osipv" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,&apos;OSIPV&apos;,
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
+? 1 : 0</attribute>
+        </attributes>
+      </variable>
+      <variable name="data_qac_osipv" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var p=$(&apos;clsa-dcs-f2.OSIPV:QuestionnaireMetric.missingCount&apos;).asSequence()
+var q=$(&apos;clsa-dcs-f2.OSIPV:QuestionnaireMetric.questionCount&apos;).asSequence()
+var res=null
+if(q.size().gt(0).and(q.sum().gt(0)).value()){
+  res=newValue(
+    &apos;{missing:&apos;+
+    Math.round(100.0 * p.sum() / q.sum())
+    +&apos;}&apos;,&apos;text&apos;)
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="data_missing_osipv" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$this(&apos;data_qac_osipv&apos;).isNull().and(
+  $this(&apos;stage_contraindicated_osipv&apos;).eq(0),
+  $this(&apos;stage_skip_osipv&apos;).isNull()
+).value() ? 1 : 0</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_technician_urine" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;clsa-dcs-f2.Urine:QuestionnaireRun.user&apos;).whenNull(
+  $group(&apos;Admin.Action.stage&apos;,&apos;Urine&apos;,&apos;Admin.Action.user&apos;).asSequence().last()).lowerCase()</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_skip_urine" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var action=$group(&apos;Admin.Action.stage&apos;,&apos;Urine&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
+var res=$group(&apos;Admin.Action.stage&apos;,&apos;Urine&apos;,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
+  var j=action.indexOf(&apos;SKIP&apos;)
+  return j==i
+  }).last()
+if(res.isNull().not().value()) {
+  res=newValue(res.value().slice(14),&apos;text&apos;)  
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_contraindicated_urine" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,&apos;Urine&apos;,
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
+? 1 : 0</attribute>
+        </attributes>
+      </variable>
+      <variable name="data_qac_urine" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var p=$(&apos;clsa-dcs-f2.Urine:QuestionnaireMetric.missingCount&apos;).asSequence()
+var q=$(&apos;clsa-dcs-f2.Urine:QuestionnaireMetric.questionCount&apos;).asSequence()
+var res=null
+if(q.size().gt(0).and(q.sum().gt(0)).value()){
+  res=newValue(
+    &apos;{missing:&apos;+
+    Math.round(100.0 * p.sum() / q.sum())
+    +&apos;}&apos;,&apos;text&apos;)
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="data_missing_urine" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$this(&apos;data_qac_urine&apos;).isNull().and(
+  $this(&apos;stage_contraindicated_urine&apos;).eq(0),
+  $this(&apos;stage_skip_urine&apos;).isNull()
+).value() ? 1 : 0</attribute>
+        </attributes>
+      </variable>
     </variables>
   </variables>
   <created valueType="datetime">2018-05-15T13:40:50.956-04</created>
-  <updated valueType="datetime">2018-06-26T13:08:32.918-04</updated>
+  <updated valueType="datetime">2018-08-03T16:07:46.447-04</updated>
 </org.obiba.magma.views.View>

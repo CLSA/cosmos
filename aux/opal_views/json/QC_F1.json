@@ -62,7 +62,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "// if a dcs by phone visit, then the skip will be \"ModifiedVisit\"\nvar res=null\nif($('clsa-dcs-f1.Participants:DCS_PHONE').isNull().not().value()){\n  res=newValue('ModifiedVisit','text')\n} else {\n  var v1=$group('Admin.Action.stage','Spirometry','Admin.Action.actionType').asSequence()\n  var v2=$group('Admin.Action.stage','Spirometry','Admin.Action.eventReason').asSequence()\n\n  var arr=[]  // string array of events\n  for(var i=0; i<v1.size(); i++) {\n    if(v1.valueAt(i).any('SKIP').not().value() ||\n       v2.valueAt(i).isNull().value()) continue\n    var key=v2.valueAt(i).value().slice(14)\n    if(-1==arr.indexOf(key))\n      arr.push(key)\n  }\n  if(undefined!==arr && 0<arr.length) {\n    res=newValue(arr.pop(),'text')  \n  }\n}\nres"
+            "value": "var action=$group('Admin.Action.stage','Spirometry','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','Spirometry','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  var j=action.indexOf('SKIP')\n  return j==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -78,7 +78,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "$('clsa-dcs-f1.Participants:DCS_PHONE').isNull().and(\n  $group('clsa-dcs-f1.Participants:Admin.StageInstance.stage','Spirometry',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable')).value() \n? 1 : 0"
+            "value": "$group('clsa-dcs-f1.Participants:Admin.StageInstance.stage','Spirometry',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable').value() \n? 1 : 0"
           }
         ], 
         "entityType": "Participant", 
@@ -139,31 +139,6 @@
       {
         "attributes": [
           {
-            "name": "stage", 
-            "value": "Spirometry"
-          }, 
-          {
-            "name": "validation", 
-            "value": "[IntegrityCheck-ERROR]"
-          }, 
-          {
-            "name": "captureMethod", 
-            "value": "AUTOMATIC"
-          }, 
-          {
-            "name": "isManualCaptureAllowed", 
-            "value": "true"
-          }, 
-          {
-            "name": "vendorName", 
-            "value": "QUALITY_GRADE"
-          }, 
-          {
-            "name": "derivedFrom", 
-            "namespace": "opal", 
-            "value": "/datasource/clsa-dcs/table/Spirometry/variable/OUTPUT_QUALITY_GRADE"
-          }, 
-          {
             "name": "script", 
             "value": "var res=$('clsa-dcs-f1.Spirometry:OUTPUT_QUALITY_GRADE')\nif(!res.isNull().value()) {\n  res=newValue('{grade:'+res.value()+'}','text')\n}\nres"
           }
@@ -197,7 +172,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "$('clsa-dcs-f1.Participants:DCS_PHONE').isNull().and(\n  $group('clsa-dcs-f1.Participants:Admin.StageInstance.stage','GripStrength',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable')).value() \n? 1 : 0"
+            "value": "$group('clsa-dcs-f1.Participants:Admin.StageInstance.stage','GripStrength',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable').value() \n? 1 : 0"
           }
         ], 
         "entityType": "Participant", 
@@ -213,7 +188,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "// if a dcs by phone visit, then the skip will be \"ModifiedVisit\"\nvar res=null\nif($('clsa-dcs-f1.Participants:DCS_PHONE').isNull().not().value()){\n  res=newValue('ModifiedVisit','text')\n} else {\n  var v1=$group('Admin.Action.stage','GripStrength','Admin.Action.actionType').asSequence()\n  var v2=$group('Admin.Action.stage','GripStrength','Admin.Action.eventReason').asSequence()\n\n  var arr=[]  // string array of events\n  for(var i=0; i<v1.size(); i++) {\n    if(v1.valueAt(i).any('SKIP').not().value() ||\n       v2.valueAt(i).isNull().value()) continue\n    var key=v2.valueAt(i).value().slice(14)\n    if(-1==arr.indexOf(key))\n      arr.push(key)\n  }\n  if(undefined!==arr && 0<arr.length) {\n    res=newValue(arr.pop(),'text')  \n  }\n}\nres"
+            "value": "var action=$group('Admin.Action.stage','GripStrength','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','GripStrength','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  var j=action.indexOf('SKIP')\n  return j==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -277,7 +252,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "$('clsa-dcs-f1.Participants:DCS_PHONE').isNull().and(\n  $group('clsa-dcs-f1.Participants:Admin.StageInstance.stage','BloodPressure',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable')).value() \n? 1 : 0"
+            "value": "$group('clsa-dcs-f1.Participants:Admin.StageInstance.stage','BloodPressure',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable').value() \n? 1 : 0"
           }
         ], 
         "entityType": "Participant", 
@@ -293,7 +268,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "// if a dcs by phone visit, then the skip will be \"ModifiedVisit\"\nvar res=null\nif($('clsa-dcs-f1.Participants:DCS_PHONE').isNull().not().value()){\n  res=newValue('ModifiedVisit','text')\n} else {\n  var v1=$group('Admin.Action.stage','BloodPressure','Admin.Action.actionType').asSequence()\n  var v2=$group('Admin.Action.stage','BloodPressure','Admin.Action.eventReason').asSequence()\n\n  var arr=[]  // string array of events\n  for(var i=0; i<v1.size(); i++) {\n    if(v1.valueAt(i).any('SKIP').not().value() ||\n       v2.valueAt(i).isNull().value()) continue\n    var key=v2.valueAt(i).value().slice(14)\n    if(-1==arr.indexOf(key))\n      arr.push(key)\n  }\n  if(undefined!==arr && 0<arr.length) {\n    res=newValue(arr.pop(),'text')  \n  }\n}\nres"
+            "value": "var action=$group('Admin.Action.stage','BloodPressure','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','BloodPressure','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  var j=action.indexOf('SKIP')\n  return j==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -357,7 +332,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "$('clsa-dcs-f1.Participants:DCSatHOME').isNull().and(\n  $('clsa-dcs-f1.Participants:DCS_PHONE').isNull(),\n  $group('clsa-dcs-f1.Participants:Admin.StageInstance.stage','ECG',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable')).value() \n? 1 : 0"
+            "value": "$group('clsa-dcs-f1.Participants:Admin.StageInstance.stage','ECG',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable').value() \n? 1 : 0"
           }
         ], 
         "entityType": "Participant", 
@@ -373,7 +348,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "// if a dcs by phone visit, then the skip will be \"ModifiedVisit\"\nvar res=null\nif($('clsa-dcs-f1.Participants:DCS_PHONE').isNull().and(\n   $('clsa-dcs-f1.Participants:DCSatHOME').isNull()).not().value()){\n  res=newValue('ModifiedVisit','text')\n} else {\n  var v1=$group('Admin.Action.stage','ECG','Admin.Action.actionType').asSequence()\n  var v2=$group('Admin.Action.stage','ECG','Admin.Action.eventReason').asSequence()\n\n  var arr=[]  // string array of events\n  for(var i=0; i<v1.size(); i++) {\n    if(v1.valueAt(i).any('SKIP').not().value() ||\n       v2.valueAt(i).isNull().value()) continue\n    var key=v2.valueAt(i).value().slice(14)\n    if(-1==arr.indexOf(key))\n      arr.push(key)\n  }\n  if(undefined!==arr && 0<arr.length) {\n    res=newValue(arr.pop(),'text')  \n  }\n}\nres"
+            "value": "var action=$group('Admin.Action.stage','ECG','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','ECG','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  var j=action.indexOf('SKIP')\n  return j==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -453,7 +428,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "// if a dcs by phone visit, then the skip will be \"ModifiedVisit\"\nvar res=null\nif($('clsa-dcs-f1.Participants:DCS_PHONE').isNull().and(\n   $('clsa-dcs-f1.Participants:DCSatHOME').isNull()).not().value()){\n  res=newValue('ModifiedVisit','text')\n} else {\n  var v1=$group('Admin.Action.stage','CognitiveTest','Admin.Action.actionType').asSequence()\n  var v2=$group('Admin.Action.stage','CognitiveTest','Admin.Action.eventReason').asSequence()\n\n  var arr=[]  // string array of events\n  for(var i=0; i<v1.size(); i++) {\n    if(v1.valueAt(i).any('SKIP').not().value() ||\n       v2.valueAt(i).isNull().value()) continue\n    var key=v2.valueAt(i).value().slice(14)\n    if(-1==arr.indexOf(key))\n      arr.push(key)\n  }\n  if(undefined!==arr && 0<arr.length) {\n    res=newValue(arr.pop(),'text')  \n  }\n}\nres"
+            "value": "var action=$group('Admin.Action.stage','CognitiveTest','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','CognitiveTest','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  var j=action.indexOf('SKIP')\n  return j==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -517,7 +492,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "$('clsa-dcs-f1.Participants:DCSatHOME').isNull().and(\n  $('clsa-dcs-f1.Participants:DCS_PHONE').isNull(),\n  $group('clsa-dcs-f1.Participants:Admin.StageInstance.stage','Hearing',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable')).value() \n? 1 : 0"
+            "value": "$group('clsa-dcs-f1.Participants:Admin.StageInstance.stage','Hearing',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable').value() \n? 1 : 0"
           }
         ], 
         "entityType": "Participant", 
@@ -533,7 +508,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "// if a dcs by phone visit, then the skip will be \"ModifiedVisit\"\nvar res=null\nif($('clsa-dcs-f1.Participants:DCS_PHONE').isNull().and(\n   $('clsa-dcs-f1.Participants:DCSatHOME').isNull()).not().value()){\n  res=newValue('ModifiedVisit','text')\n} else {\n  var v1=$group('Admin.Action.stage','Hearing','Admin.Action.actionType').asSequence()\n  var v2=$group('Admin.Action.stage','Hearing','Admin.Action.eventReason').asSequence()\n\n  var arr=[]  // string array of events\n  for(var i=0; i<v1.size(); i++) {\n    if(v1.valueAt(i).any('SKIP').not().value() ||\n       v2.valueAt(i).isNull().value()) continue\n    var key=v2.valueAt(i).value().slice(14)\n    if(-1==arr.indexOf(key))\n      arr.push(key)\n  }\n  if(undefined!==arr && 0<arr.length) {\n    res=newValue(arr.pop(),'text')  \n  }\n}\nres"
+            "value": "var action=$group('Admin.Action.stage','Hearing','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','Hearing','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  var j=action.indexOf('SKIP')\n  return j==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -597,7 +572,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "$('clsa-dcs-f1.Participants:DCSatHOME').isNull().and(\n  $('clsa-dcs-f1.Participants:DCS_PHONE').isNull(),\n  $group('clsa-dcs-f1.Participants:Admin.StageInstance.stage','Tonometer',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable')).value() \n? 1 : 0"
+            "value": "$group('clsa-dcs-f1.Participants:Admin.StageInstance.stage','Tonometer',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable').value() \n? 1 : 0"
           }
         ], 
         "entityType": "Participant", 
@@ -613,7 +588,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "// if a dcs by phone visit, then the skip will be \"ModifiedVisit\"\nvar res=null\nif($('clsa-dcs-f1.Participants:DCS_PHONE').isNull().and(\n   $('clsa-dcs-f1.Participants:DCSatHOME').isNull()).not().value()){\n  res=newValue('ModifiedVisit','text')\n} else {\n  var v1=$group('Admin.Action.stage','Tonometer','Admin.Action.actionType').asSequence()\n  var v2=$group('Admin.Action.stage','Tonometer','Admin.Action.eventReason').asSequence()\n\n  var arr=[]  // string array of events\n  for(var i=0; i<v1.size(); i++) {\n    if(v1.valueAt(i).any('SKIP').not().value() ||\n       v2.valueAt(i).isNull().value()) continue\n    var key=v2.valueAt(i).value().slice(14)\n    if(-1==arr.indexOf(key))\n      arr.push(key)\n  }\n  if(undefined!==arr && 0<arr.length) {\n    res=newValue(arr.pop(),'text')  \n  }\n}\nres"
+            "value": "var action=$group('Admin.Action.stage','Tonometer','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','Tonometer','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  var j=action.indexOf('SKIP')\n  return j==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -693,7 +668,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "// if a dcs by phone visit, then the skip will be \"ModifiedVisit\"\nvar res=null\nif($('clsa-dcs-f1.Participants:DCS_PHONE').isNull().and(\n   $('clsa-dcs-f1.Participants:DCSatHOME').isNull()).not().value()){\n  res=newValue('ModifiedVisit','text')\n} else {\n  var v1=$group('Admin.Action.stage','Weight','Admin.Action.actionType').asSequence()\n  var v2=$group('Admin.Action.stage','Weight','Admin.Action.eventReason').asSequence()\n\n  var arr=[]  // string array of events\n  for(var i=0; i<v1.size(); i++) {\n    if(v1.valueAt(i).any('SKIP').not().value() ||\n       v2.valueAt(i).isNull().value()) continue\n    var key=v2.valueAt(i).value().slice(14)\n    if(-1==arr.indexOf(key))\n      arr.push(key)\n  }\n  if(undefined!==arr && 0<arr.length) {\n    res=newValue(arr.pop(),'text')\n    res=$this('interview_site')\n  }\n}\nres"
+            "value": "var action=$group('Admin.Action.stage','Weight','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','Weight','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  var j=action.indexOf('SKIP')\n  return j==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -757,7 +732,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "$('clsa-dcs-f1.Participants:DCSatHOME').isNull().and(\n  $('clsa-dcs-f1.Participants:DCS_PHONE').isNull(),\n  $group('clsa-dcs-f1.Participants:Admin.StageInstance.stage','RetinalScanLeft',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable')).value() \n? 1 : 0"
+            "value": "$('clsa-dcs-f1.Participants:DCSatHOME').isNull().and(\n  $('clsa-dcs-f1.Participants:DCS_PHONE').isNull(),\n  $group('clsa-dcs-f1.Participants:Admin.StageInstance.stage','RetinalScanLeft',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable')).value()\n? 1 : 0"
           }
         ], 
         "entityType": "Participant", 
@@ -773,7 +748,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "// if a dcs by phone visit, then the skip will be \"ModifiedVisit\"\nvar res=null\nif($('clsa-dcs-f1.Participants:DCS_PHONE').isNull().and(\n   $('clsa-dcs-f1.Participants:DCSatHOME').isNull()).not().value()){\n  res=newValue('ModifiedVisit','text')\n} else {\n  var v1=$group('Admin.Action.stage','RetinalScanLeft','Admin.Action.actionType').asSequence()\n  var v2=$group('Admin.Action.stage','RetinalScanLeft','Admin.Action.eventReason').asSequence()\n\n  var arr=[]  // string array of events\n  for(var i=0; i<v1.size(); i++) {\n    if(v1.valueAt(i).any('SKIP').not().value() ||\n       v2.valueAt(i).isNull().value()) continue\n    var key=v2.valueAt(i).value().slice(14)\n    if(-1==arr.indexOf(key))\n      arr.push(key)\n  }\n  if(undefined!==arr && 0<arr.length) {\n    res=newValue(arr.pop(),'text')  \n  }\n}\nres"
+            "value": "// if a dcs by phone visit, then the skip will be \"ModifiedVisit\"\nvar res=null\nif($('clsa-dcs-f1.Participants:DCS_PHONE').isNull().and(\n   $('clsa-dcs-f1.Participants:DCSatHOME').isNull()).not().value()){\n  res=newValue('ModifiedVisit','text')\n} else {\n  var action=$group('Admin.Action.stage','RetinalScanLeft','Admin.Action.actionType').asSequence()\n  var res=$group('Admin.Action.stage','RetinalScanLeft','Admin.Action.eventReason').asSequence().filter(function(v,i){\n    var j=action.indexOf('SKIP')\n    return j==i\n    }).last()\n  if(res.isNull().not().value()) {\n    res=newValue(res.value().slice(14),'text')\n  }\n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -837,7 +812,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "$('clsa-dcs-f1.Participants:DCSatHOME').isNull().and(\n  $('clsa-dcs-f1.Participants:DCS_PHONE').isNull(),\n  $group('clsa-dcs-f1.Participants:Admin.StageInstance.stage','RetinalScanRight',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable')).value() \n? 1 : 0"
+            "value": "$('clsa-dcs-f1.Participants:DCSatHOME').isNull().and(\n  $('clsa-dcs-f1.Participants:DCS_PHONE').isNull(),\n  $group('clsa-dcs-f1.Participants:Admin.StageInstance.stage','RetinalScanRight',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable')).value()\n? 1 : 0"
           }
         ], 
         "entityType": "Participant", 
@@ -853,7 +828,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "// if a dcs by phone visit, then the skip will be \"ModifiedVisit\"\nvar res=null\nif($('clsa-dcs-f1.Participants:DCS_PHONE').isNull().and(\n   $('clsa-dcs-f1.Participants:DCSatHOME').isNull()).not().value()){\n  res=newValue('ModifiedVisit','text')\n} else {\n  var v1=$group('Admin.Action.stage','RetinalScanRight','Admin.Action.actionType').asSequence()\n  var v2=$group('Admin.Action.stage','RetinalScanRight','Admin.Action.eventReason').asSequence()\n\n  var arr=[]  // string array of events\n  for(var i=0; i<v1.size(); i++) {\n    if(v1.valueAt(i).any('SKIP').not().value() ||\n       v2.valueAt(i).isNull().value()) continue\n    var key=v2.valueAt(i).value().slice(14)\n    if(-1==arr.indexOf(key))\n      arr.push(key)\n  }\n  if(undefined!==arr && 0<arr.length) {\n    res=newValue(arr.pop(),'text')  \n  }\n}\nres"
+            "value": "// if a dcs by phone visit, then the skip will be \"ModifiedVisit\"\nvar res=null\nif($('clsa-dcs-f1.Participants:DCS_PHONE').isNull().and(\n   $('clsa-dcs-f1.Participants:DCSatHOME').isNull()).not().value()){\n  res=newValue('ModifiedVisit','text')\n} else {\n  var action=$group('Admin.Action.stage','RetinalScanRight','Admin.Action.actionType').asSequence()\n  var res=$group('Admin.Action.stage','RetinalScanRight','Admin.Action.eventReason').asSequence().filter(function(v,i){\n    var j=action.indexOf('SKIP')\n    return j==i\n    }).last()\n  if(res.isNull().not().value()) {\n    res=newValue(res.value().slice(14),'text')\n  }\n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -917,7 +892,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "$('clsa-dcs-f1.Participants:DCSatHOME').isNull().and(\n  $('clsa-dcs-f1.Participants:DCS_PHONE').isNull(),\n  $group('clsa-dcs-f1.Participants:Admin.StageInstance.stage','LateralBoneDensity',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable')).value() \n? 1 : 0"
+            "value": "$group('clsa-dcs-f1.Participants:Admin.StageInstance.stage','LateralBoneDensity',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable').value() \n? 1 : 0"
           }
         ], 
         "entityType": "Participant", 
@@ -933,7 +908,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "// if a dcs by phone visit, then the skip will be \"ModifiedVisit\"\nvar res=null\nif($('clsa-dcs-f1.Participants:DCS_PHONE').isNull().and(\n   $('clsa-dcs-f1.Participants:DCSatHOME').isNull()).not().value()){\n  res=newValue('ModifiedVisit','text')\n} else {\n  var v1=$group('Admin.Action.stage','LateralBoneDensity','Admin.Action.actionType').asSequence()\n  var v2=$group('Admin.Action.stage','LateralBoneDensity','Admin.Action.eventReason').asSequence()\n\n  var arr=[]  // string array of events\n  for(var i=0; i<v1.size(); i++) {\n    if(v1.valueAt(i).any('SKIP').not().value() ||\n       v2.valueAt(i).isNull().value()) continue\n    var key=v2.valueAt(i).value().slice(14)\n    if(-1==arr.indexOf(key))\n      arr.push(key)\n  }\n  if(undefined!==arr && 0<arr.length) {\n    res=newValue(arr.pop(),'text')  \n  }\n}\nres"
+            "value": "var action=$group('Admin.Action.stage','LateralBoneDensity','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','LateralBoneDensity','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  var j=action.indexOf('SKIP')\n  return j==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')\n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -997,7 +972,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "$('clsa-dcs-f1.Participants:DCS_PHONE').isNull().and(\n  $group('clsa-dcs-f1.Participants:Admin.StageInstance.stage','StandingHeight',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable')).value() \n? 1 : null"
+            "value": "$group('clsa-dcs-f1.Participants:Admin.StageInstance.stage','StandingHeight',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable').value() \n? 1 : 0"
           }
         ], 
         "entityType": "Participant", 
@@ -1013,7 +988,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "// if a dcs by phone visit, then the skip will be \"ModifiedVisit\"\nvar res=null\nif($('clsa-dcs-f1.Participants:DCS_PHONE').isNull().not().value()){\n  res=newValue('ModifiedVisit','text')\n} else {\n  var v1=$group('Admin.Action.stage','StandingHeight','Admin.Action.actionType').asSequence()\n  var v2=$group('Admin.Action.stage','StandingHeight','Admin.Action.eventReason').asSequence()\n\n  var arr=[]  // string array of events\n  for(var i=0; i<v1.size(); i++) {\n    if(v1.valueAt(i).any('SKIP').not().value() ||\n       v2.valueAt(i).isNull().value()) continue\n    var key=v2.valueAt(i).value().slice(14)\n    if(-1==arr.indexOf(key))\n      arr.push(key)\n  }\n  if(undefined!==arr && 0<arr.length) {\n    res=newValue(arr.pop(),'text')  \n  }\n}\nres"
+            "value": "var action=$group('Admin.Action.stage','StandingHeight','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','StandingHeight','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  var j=action.indexOf('SKIP')\n  return j==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')\n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -1077,7 +1052,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "$('clsa-dcs-f1.Participants:DCSatHOME').isNull().and(\n  $('clsa-dcs-f1.Participants:DCS_PHONE').isNull(),\n  $group('clsa-dcs-f1.Participants:Admin.StageInstance.stage','SpineBoneDensity',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable')).value() \n? 1 : 0"
+            "value": "$('clsa-dcs-f1.Participants:DCSatHOME').isNull().and(\n  $('clsa-dcs-f1.Participants:DCS_PHONE').isNull(),\n  $group('clsa-dcs-f1.Participants:Admin.StageInstance.stage','SpineBoneDensity',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable')).value()\n? 1 : 0"
           }
         ], 
         "entityType": "Participant", 
@@ -1093,7 +1068,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "// if a dcs by phone visit, then the skip will be \"ModifiedVisit\"\nvar res=null\nif($('clsa-dcs-f1.Participants:DCS_PHONE').isNull().and(\n   $('clsa-dcs-f1.Participants:DCSatHOME').isNull()).not().value()){\n  res=newValue('ModifiedVisit','text')\n} else {\n  var v1=$group('Admin.Action.stage','SpineBoneDensity','Admin.Action.actionType').asSequence()\n  var v2=$group('Admin.Action.stage','SpineBoneDensity','Admin.Action.eventReason').asSequence()\n\n  var arr=[]  // string array of events\n  for(var i=0; i<v1.size(); i++) {\n    if(v1.valueAt(i).any('SKIP').not().value() ||\n       v2.valueAt(i).isNull().value()) continue\n    var key=v2.valueAt(i).value().slice(14)\n    if(-1==arr.indexOf(key))\n      arr.push(key)\n  }\n  if(undefined!==arr && 0<arr.length) {\n    res=newValue(arr.pop(),'text')\n  }\n}\nres"
+            "value": "var action=$group('Admin.Action.stage','SpineBoneDensity','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','SpineBoneDensity','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  var j=action.indexOf('SKIP')\n  return j==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -1125,7 +1100,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var res=$('clsa-dcs-images-f1.SpineBoneDensity:RES_SP_DICOM')\nif(res.isNull().not().value()) {\n  res = newValue('{filesize:'+res.length()+'}','text')\n}  \nres"
+            "value": "var res=$('clsa-dcs-images-f1.SpineBoneDensity:RES_SP_DICOM')\nif(res.isNull().not().value()) {\n  res = newValue('{filesize:'+res.length()+'}','text')\n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -1157,7 +1132,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "$('clsa-dcs-f1.Participants:DCSatHOME').isNull().and(\n  $('clsa-dcs-f1.Participants:DCS_PHONE').isNull(),\n  $group('clsa-dcs-f1.Participants:Admin.StageInstance.stage','ForearmBoneDensity',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable')).value() \n? 1 : 0"
+            "value": "$group('clsa-dcs-f1.Participants:Admin.StageInstance.stage','ForearmBoneDensity',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable').value() \n? 1 : 0"
           }
         ], 
         "entityType": "Participant", 
@@ -1173,7 +1148,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "// if a dcs by phone visit, then the skip will be \"ModifiedVisit\"\nvar res=null\nif($('clsa-dcs-f1.Participants:DCS_PHONE').isNull().and(\n   $('clsa-dcs-f1.Participants:DCSatHOME').isNull()).not().value()){\n  res=newValue('ModifiedVisit','text')\n} else {\n  var v1=$group('Admin.Action.stage','ForearmBoneDensity','Admin.Action.actionType').asSequence()\n  var v2=$group('Admin.Action.stage','ForearmBoneDensity','Admin.Action.eventReason').asSequence()\n\n  var arr=[]  // string array of events\n  for(var i=0; i<v1.size(); i++) {\n    if(v1.valueAt(i).any('SKIP').not().value() ||\n       v2.valueAt(i).isNull().value()) continue\n    var key=v2.valueAt(i).value().slice(14)\n    if(-1==arr.indexOf(key))\n      arr.push(key)\n  }\n  if(undefined!==arr && 0<arr.length) {\n    res=newValue(arr.pop(),'text')  \n  }\n}\nres"
+            "value": "var action=$group('Admin.Action.stage','ForearmBoneDensity','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','ForearmBoneDensity','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  var j=action.indexOf('SKIP')\n  return j==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -1237,7 +1212,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "$('clsa-dcs-f1.Participants:DCSatHOME').isNull().and(\n  $('clsa-dcs-f1.Participants:DCS_PHONE').isNull(),\n  $group('clsa-dcs-f1.Participants:Admin.StageInstance.stage','WholeBodyBoneDensity',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable')).value() \n? 1 : 0"
+            "value": "$group('clsa-dcs-f1.Participants:Admin.StageInstance.stage','WholeBodyBoneDensity',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable').value() \n? 1 : 0"
           }
         ], 
         "entityType": "Participant", 
@@ -1253,7 +1228,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "// if a dcs by phone visit, then the skip will be \"ModifiedVisit\"\nvar res=null\nif($('clsa-dcs-f1.Participants:DCS_PHONE').isNull().and(\n   $('clsa-dcs-f1.Participants:DCSatHOME').isNull()).not().value()){\n  res=newValue('ModifiedVisit','text')\n} else {\n  var v1=$group('Admin.Action.stage','WholeBodyBoneDensity','Admin.Action.actionType').asSequence()\n  var v2=$group('Admin.Action.stage','WholeBodyBoneDensity','Admin.Action.eventReason').asSequence()\n\n  var arr=[]  // string array of events\n  for(var i=0; i<v1.size(); i++) {\n    if(v1.valueAt(i).any('SKIP').not().value() ||\n       v2.valueAt(i).isNull().value()) continue\n    var key=v2.valueAt(i).value().slice(14)\n    if(-1==arr.indexOf(key))\n      arr.push(key)\n  }\n  if(undefined!==arr && 0<arr.length) {\n    res=newValue(arr.pop(),'text')  \n  }\n}\nres"
+            "value": "var action=$group('Admin.Action.stage','WholeBodyBoneDensity','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','WholeBodyBoneDensity','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  var j=action.indexOf('SKIP')\n  return j==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -1317,7 +1292,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "$('clsa-dcs-f1.Participants:DCSatHOME').isNull().and(\n  $('clsa-dcs-f1.Participants:DCS_PHONE').isNull(),\n  $group('clsa-dcs-f1.Participants:Admin.StageInstance.stage','DualHipBoneDensity',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable')).value() \n? 1 : 0"
+            "value": "$group('clsa-dcs-f1.Participants:Admin.StageInstance.stage','DualHipBoneDensity',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable').value() \n? 1 : 0"
           }
         ], 
         "entityType": "Participant", 
@@ -1333,7 +1308,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "// if a dcs by phone visit, then the skip will be \"ModifiedVisit\"\nvar res=null\nif($('clsa-dcs-f1.Participants:DCS_PHONE').isNull().and(\n   $('clsa-dcs-f1.Participants:DCSatHOME').isNull()).not().value()){\n  res=newValue('ModifiedVisit','text')\n} else {\n  var v1=$group('Admin.Action.stage','DualHipBoneDensity','Admin.Action.actionType').asSequence()\n  var v2=$group('Admin.Action.stage','DualHipBoneDensity','Admin.Action.eventReason').asSequence()\n\n  var arr=[]  // string array of events\n  for(var i=0; i<v1.size(); i++) {\n    if(v1.valueAt(i).any('SKIP').not().value() ||\n       v2.valueAt(i).isNull().value()) continue\n    var key=v2.valueAt(i).value().slice(14)\n    if(-1==arr.indexOf(key))\n      arr.push(key)\n  }\n  if(undefined!==arr && 0<arr.length) {\n    res=newValue(arr.pop(),'text')  \n  }\n}\nres"
+            "value": "var action=$group('Admin.Action.stage','DualHipBoneDensity','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','DualHipBoneDensity','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  var j=action.indexOf('SKIP')\n  return j==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -1397,7 +1372,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "$('clsa-dcs-f1.Participants:DCSatHOME').isNull().and(\n  $('clsa-dcs-f1.Participants:DCS_PHONE').isNull(),\n  $group('clsa-dcs-f1.Participants:Admin.StageInstance.stage','CarotidIntima',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable')).value() \n? 1 : 0"
+            "value": "$group('clsa-dcs-f1.Participants:Admin.StageInstance.stage','CarotidIntima',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable').value() \n? 1 : 0"
           }
         ], 
         "entityType": "Participant", 
@@ -1413,7 +1388,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "// if a dcs by phone visit, then the skip will be \"ModifiedVisit\"\nvar res=null\nif($('clsa-dcs-f1.Participants:DCS_PHONE').isNull().and(\n   $('clsa-dcs-f1.Participants:DCSatHOME').isNull()).not().value()){\n  res=newValue('ModifiedVisit','text')\n} else {\n  var v1=$group('Admin.Action.stage','CarotidIntima','Admin.Action.actionType').asSequence()\n  var v2=$group('Admin.Action.stage','CarotidIntima','Admin.Action.eventReason').asSequence()\n\n  var arr=[]  // string array of events\n  for(var i=0; i<v1.size(); i++) {\n    if(v1.valueAt(i).any('SKIP').not().value() ||\n       v2.valueAt(i).isNull().value()) continue\n    var key=v2.valueAt(i).value().slice(14)\n    if(-1==arr.indexOf(key))\n      arr.push(key)\n  }\n  if(undefined!==arr && 0<arr.length) {\n    res=newValue(arr.pop(),'text')  \n  }\n}\nres"
+            "value": "var action=$group('Admin.Action.stage','CarotidIntima','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','CarotidIntima','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  var j=action.indexOf('SKIP')\n  return j==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -1477,7 +1452,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "$('clsa-dcs-f1.Participants:DCSatHOME').isNull().and(\n  $('clsa-dcs-f1.Participants:DCS_PHONE').isNull(),\n  $group('clsa-dcs-f1.Participants:Admin.StageInstance.stage','TUG',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable')).value() \n? 1 : 0"
+            "value": "$group('clsa-dcs-f1.Participants:Admin.StageInstance.stage','TUG',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable').value() \n? 1 : 0"
           }
         ], 
         "entityType": "Participant", 
@@ -1493,7 +1468,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "// if a dcs by phone visit, then the skip will be \"ModifiedVisit\"\nvar res=null\nif($('clsa-dcs-f1.Participants:DCS_PHONE').isNull().and(\n   $('clsa-dcs-f1.Participants:DCSatHOME').isNull()).not().value()){\n  res=newValue('ModifiedVisit','text')\n} else {\n  var v1=$group('Admin.Action.stage','TUG','Admin.Action.actionType').asSequence()\n  var v2=$group('Admin.Action.stage','TUG','Admin.Action.eventReason').asSequence()\n\n  var arr=[]  // string array of events\n  for(var i=0; i<v1.size(); i++) {\n    if(v1.valueAt(i).any('SKIP').not().value() ||\n       v2.valueAt(i).isNull().value()) continue\n    var key=v2.valueAt(i).value().slice(14)\n    if(-1==arr.indexOf(key))\n      arr.push(key)\n  }\n  if(undefined!==arr && 0<arr.length) {\n    res=newValue(arr.pop(),'text')  \n  }\n}\nres"
+            "value": "var action=$group('Admin.Action.stage','TUG','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','TUG','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  var j=action.indexOf('SKIP')\n  return j==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -1525,7 +1500,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var tt=$('clsa-dcs-f1.TUG:TUG_TIME').whenNull($('clsa-dcs-f1.TUG:TUG_TIME_2'))\nvar res=null\nif(tt.isNull().not().value()) {\n  var wt=$('clsa-dcs-f1.4mWalk:WLK_TIME').whenNull($('clsa-dcs-f1.4mWalk:WLK_TIME_2'))  \n  var ct=$('clsa-dcs-f1.ChairRise:CR_TIME').whenNull($('clsa-dcs-f1.ChairRise:CR_TIME_2'))\n  var str = '0'\n  if(tt.isNull().not().and(ct.isNull().not()).value()) {\n    var cv=ct.div($('clsa-dcs-f1.ChairRise:CR_NB').whenNull(1))\n    str=Math.round(tt.minus(wt.multiply(1.5).plus(cv)).abs().value(),0)\n  } \n  res=newValue(\n    '{time:'+tt.round(3).value()+\n    ',congruency:'+str+\n    '}','text')\n}\nres"
+            "value": "var tt=$('clsa-dcs-f1.TUG:TUG_TIME').whenNull($('clsa-dcs-f1.TUG:TUG_TIME_2'))\nvar res=null\nif(tt.isNull().not().value()) {\n  var wt=$('clsa-dcs-f1.4mWalk:WLK_TIME').whenNull($('clsa-dcs-f1.4mWalk:WLK_TIME_2'))  \n  var ct=$('clsa-dcs-f1.ChairRise:CR_TIME').whenNull($('clsa-dcs-f1.ChairRise:CR_TIME_2'))  \n  var str = '0'\n  if(tt.isNull().not().and(ct.isNull().not()).value()) {\n    var cv=ct.div($('clsa-dcs-f1.ChairRise:CR_NB').whenNull(1))\n    str=Math.round(tt.minus(wt.multiply(1.5).plus(cv)).abs().value(),0)\n  }  \n  res=newValue(\n    '{time:'+tt.round(3).value()+\n    ',congruency:'+str+\n    '}','text')\n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -1557,7 +1532,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "$('clsa-dcs-f1.Participants:DCSatHOME').isNull().and(\n  $('clsa-dcs-f1.Participants:DCS_PHONE').isNull(),\n  $group('clsa-dcs-f1.Participants:Admin.StageInstance.stage','ChairRise',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable')).value() \n? 1 : 0"
+            "value": "$group('clsa-dcs-f1.Participants:Admin.StageInstance.stage','ChairRise',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable').value() \n? 1 : 0"
           }
         ], 
         "entityType": "Participant", 
@@ -1573,7 +1548,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "// if a dcs by phone visit, then the skip will be \"ModifiedVisit\"\nvar res=null\nif($('clsa-dcs-f1.Participants:DCS_PHONE').isNull().and(\n   $('clsa-dcs-f1.Participants:DCSatHOME').isNull()).not().value()){\n  res=newValue('ModifiedVisit','text')\n} else {\n  var v1=$group('Admin.Action.stage','ChairRise','Admin.Action.actionType').asSequence()\n  var v2=$group('Admin.Action.stage','ChairRise','Admin.Action.eventReason').asSequence()\n\n  var arr=[]  // string array of events\n  for(var i=0; i<v1.size(); i++) {\n    if(v1.valueAt(i).any('SKIP').not().value() ||\n       v2.valueAt(i).isNull().value()) continue\n    var key=v2.valueAt(i).value().slice(14)\n    if(-1==arr.indexOf(key))\n      arr.push(key)\n  }\n  if(undefined!==arr && 0<arr.length) {\n    res=newValue(arr.pop(),'text')  \n  }\n}\nres"
+            "value": "var action=$group('Admin.Action.stage','ChairRise','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','ChairRise','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  var j=action.indexOf('SKIP')\n  return j==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -1605,7 +1580,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var ct=$('clsa-dcs-f1.ChairRise:CR_TIME').whenNull($('clsa-dcs-f1.ChairRise:CR_TIME_2'))  \nvar res=null\nif(ct.isNull().not().value()) {\n  var wt=$('clsa-dcs-f1.4mWalk:WLK_TIME').whenNull($('clsa-dcs-f1.4mWalk:WLK_TIME_2'))  \n  var tt=$('clsa-dcs-f1.TUG:TUG_TIME').whenNull($('clsa-dcs-f1.TUG:TUG_TIME_2'))\n  var str = '0'\n  if(tt.isNull().not().and(ct.isNull().not()).value()) {\n    var cv=ct.div($('clsa-dcs-f1.ChairRise:CR_NB').whenNull(1))\n    str=Math.round(tt.minus(wt.multiply(1.5).plus(cv)).abs().value(),0)\n  }  \n  res=newValue(\n    '{time:'+ct.round(3).value()+\n    ',congruency:'+str+\n    '}','text')\n}\nres"
+            "value": "var ct=$('clsa-dcs-f1.ChairRise:CR_TIME').whenNull($('clsa-dcs-f1.ChairRise:CR_TIME_2'))  \nvar res=null\nif(ct.isNull().not().value()) {\n  var wt=$('clsa-dcs-f1.4mWalk:WLK_TIME').whenNull($('clsa-dcs-f1.4mWalk:WLK_TIME_2'))  \n  var tt=$('clsa-dcs-f1.TUG:TUG_TIME').whenNull($('clsa-dcs-f1.TUG:TUG_TIME_2'))  \n  var str = '0'\n  if(tt.isNull().not().and(ct.isNull().not()).value()) {\n    var cv=ct.div($('clsa-dcs-f1.ChairRise:CR_NB').whenNull(1))\n    str=Math.round(tt.minus(wt.multiply(1.5).plus(cv)).abs().value(),0)\n  }  \n  res=newValue(\n    '{time:'+ct.round(3).value()+\n    ',congruency:'+str+\n    '}','text')\n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -1637,7 +1612,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "$('clsa-dcs-f1.Participants:DCS_PHONE').isNull().and(\n  $group('clsa-dcs-f1.Participants:Admin.StageInstance.stage','HipsWaist',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable')).value() \n? 1 : 0"
+            "value": "$group('clsa-dcs-f1.Participants:Admin.StageInstance.stage','HipsWaist',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable').value() \n? 1 : 0"
           }
         ], 
         "entityType": "Participant", 
@@ -1653,7 +1628,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "// if a dcs by phone visit, then the skip will be \"ModifiedVisit\"\nvar res=null\nif($('clsa-dcs-f1.Participants:DCS_PHONE').isNull().not().value()){\n  res=newValue('ModifiedVisit','text')\n} else {\n  var v1=$group('Admin.Action.stage','HipsWaist','Admin.Action.actionType').asSequence()\n  var v2=$group('Admin.Action.stage','HipsWaist','Admin.Action.eventReason').asSequence()\n\n  var arr=[]  // string array of events\n  for(var i=0; i<v1.size(); i++) {\n    if(v1.valueAt(i).any('SKIP').not().value() ||\n       v2.valueAt(i).isNull().value()) continue\n    var key=v2.valueAt(i).value().slice(14)\n    if(-1==arr.indexOf(key))\n      arr.push(key)\n  }\n  if(undefined!==arr && 0<arr.length) {\n    res=newValue(arr.pop(),'text')  \n  }\n}\nres"
+            "value": "var action=$group('Admin.Action.stage','HipsWaist','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','HipsWaist','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  var j=action.indexOf('SKIP')\n  return j==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -1797,7 +1772,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "$('clsa-dcs-f1.Participants:DCSatHOME').isNull().and(\n  $('clsa-dcs-f1.Participants:DCS_PHONE').isNull(),\n  $group('clsa-dcs-f1.Participants:Admin.StageInstance.stage','StandingBalance',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable')).value() \n? 1 : 0"
+            "value": "$group('clsa-dcs-f1.Participants:Admin.StageInstance.stage','StandingBalance',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable').value() \n? 1 : 0"
           }
         ], 
         "entityType": "Participant", 
@@ -1813,7 +1788,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "// if a dcs by phone visit, then the skip will be \"ModifiedVisit\"\nvar res=null\nif($('clsa-dcs-f1.Participants:DCS_PHONE').isNull().and(\n   $('clsa-dcs-f1.Participants:DCSatHOME').isNull()).not().value()){\n  res=newValue('ModifiedVisit','text')\n} else {\n  var v1=$group('Admin.Action.stage','StandingBalance','Admin.Action.actionType').asSequence()\n  var v2=$group('Admin.Action.stage','StandingBalance','Admin.Action.eventReason').asSequence()\n  var arr=[]  // string array of events\n  for(var i=0; i<v1.size(); i++) {\n    if(v1.valueAt(i).any('SKIP').not().value() ||\n       v2.valueAt(i).isNull().value()) continue\n    var key=v2.valueAt(i).value().slice(14)\n    if(-1==arr.indexOf(key))\n      arr.push(key)\n  }\n  if(undefined!==arr && 0<arr.length) {\n    res=newValue(arr.pop(),'text')  \n  }\n  if(null===res) {\n    var l1=$('clsa-dcs-f1.StandingBalance:STAND_COMPLETION_LEFT')  \n    var r1=$('clsa-dcs-f1.StandingBalance:STAND_COMPLETION_RIGHT')  \n    if(l1.any('NO').value()) {\n      var l2=$('clsa-dcs-f1.StandingBalance:STAND_UNCOMPLETE_LEFT').map({\n        'TECHNICAL':'TechnicalProblem',\n        'PARTICIPANT-DECISION':'ParticipantDecision',\n        'INTERVIEWER-DECISION':'InterviewerDecision',\n        'OTHER-SPEFICY':'SeeComment'},null)\n      if(l2.isNull().not().value()) {\n        res=l2\n      }  \n    } \n    if (null===res && r1.any('NO').value()) {\n      var r2=$('clsa-dcs-f1.StandingBalance:STAND_UNCOMPLETE_RIGHT').map({\n        'TECHNICAL':'TechnicalProblem',\n        'PARTICIPANT-DECISION':'ParticipantDecision',\n        'INTERVIEWER-DECISION':'InterviewerDecision',\n        'OTHER-SPEFICY':'SeeComment'},null)\n      if(r2.isNull().not().value()) {\n        res=r2\n      }\n    }\n  }\n}  \nres"
+            "value": "var action=$group('Admin.Action.stage','StandingBalance','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','StandingBalance','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  var j=action.indexOf('SKIP')\n  return j==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n} else {\n  var l1=$('clsa-dcs-f1.StandingBalance:STAND_COMPLETION_LEFT')  \n  var r1=$('clsa-dcs-f1.StandingBalance:STAND_COMPLETION_RIGHT')  \n  if(l1.any('NO').value()) {\n    var l2=$('clsa-dcs-f1.StandingBalance:STAND_UNCOMPLETE_LEFT').map({\n      'TECHNICAL':'TechnicalProblem',\n      'PARTICIPANT-DECISION':'ParticipantDecision',\n      'INTERVIEWER-DECISION':'InterviewerDecision',\n      'OTHER-SPEFICY':'SeeComment'},null)\n    if(l2.isNull().not().value()) {\n      res=l2\n    }  \n  } \n  if (null===res && r1.any('NO').value()) {\n    var r2=$('clsa-dcs-f1.StandingBalance:STAND_UNCOMPLETE_RIGHT').map({\n      'TECHNICAL':'TechnicalProblem',\n      'PARTICIPANT-DECISION':'ParticipantDecision',\n      'INTERVIEWER-DECISION':'InterviewerDecision',\n      'OTHER-SPEFICY':'SeeComment'},null)\n    if(r2.isNull().not().value()) {\n      res=r2\n    }\n  }\n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -1877,7 +1852,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "$('clsa-dcs-f1.Participants:DCSatHOME').isNull().and(\n  $('clsa-dcs-f1.Participants:DCS_PHONE').isNull(),\n  $group('clsa-dcs-f1.Participants:Admin.StageInstance.stage','4mWalk',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable')).value() \n? 1 : 0"
+            "value": "$group('clsa-dcs-f1.Participants:Admin.StageInstance.stage','4mWalk',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable').value() \n? 1 : 0"
           }
         ], 
         "entityType": "Participant", 
@@ -1893,7 +1868,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "// if a dcs by phone visit, then the skip will be \"ModifiedVisit\"\nvar res=null\nif($('clsa-dcs-f1.Participants:DCS_PHONE').isNull().and(\n   $('clsa-dcs-f1.Participants:DCSatHOME').isNull()).not().value()){\n  res=newValue('ModifiedVisit','text')\n} else {\n  var v1=$group('Admin.Action.stage','4mWalk','Admin.Action.actionType').asSequence()\n  var v2=$group('Admin.Action.stage','4mWalk','Admin.Action.eventReason').asSequence()\n\n  var arr=[]  // string array of events\n  for(var i=0; i<v1.size(); i++) {\n    if(v1.valueAt(i).any('SKIP').not().value() ||\n       v2.valueAt(i).isNull().value()) continue\n    var key=v2.valueAt(i).value().slice(14)\n    if(-1==arr.indexOf(key))\n      arr.push(key)\n  }\n  if(undefined!==arr && 0<arr.length) {\n    res=newValue(arr.pop(),'text')  \n  }\n}\nres"
+            "value": "var action=$group('Admin.Action.stage','4mWalk','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','4mWalk','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  var j=action.indexOf('SKIP')\n  return j==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -1925,7 +1900,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var wt=$('clsa-dcs-f1.4mWalk:WLK_TIME').whenNull($('clsa-dcs-f1.4mWalk:WLK_TIME_2'))\nvar res=null\nif(wt.isNull().not().value()) {\n  var tt=$('clsa-dcs-f1.TUG:TUG_TIME').whenNull($('clsa-dcs-f1.TUG:TUG_TIME_2'))\n  var ct=$('clsa-dcs-f1.ChairRise:CR_TIME').whenNull($('clsa-dcs-f1.ChairRise:CR_TIME_2'))\n  var str = '0'\n  if(tt.isNull().not().and(ct.isNull().not()).value()) {\n    var cv=ct.div($('clsa-dcs-f1.ChairRise:CR_NB').whenNull(1))\n    str=Math.round(tt.minus(wt.multiply(1.5).plus(cv)).abs().value(),0)\n  }\n  res=newValue(\n    '{time:'+wt.round(3).value()+\n    ',congruency:'+str+\n    '}','text')\n}\nres"
+            "value": "var wt=$('clsa-dcs-f1.4mWalk:WLK_TIME').whenNull($('clsa-dcs-f1.4mWalk:WLK_TIME_2'))\nvar res=null\nif(wt.isNull().not().value()) {\n  var tt=$('clsa-dcs-f1.TUG:TUG_TIME').whenNull($('clsa-dcs-f1.TUG:TUG_TIME_2'))\n  var ct=$('clsa-dcs-f1.ChairRise:CR_TIME').whenNull($('clsa-dcs-f1.ChairRise:CR_TIME_2'))  \n  var str = '0'\n  if(tt.isNull().not().and(ct.isNull().not()).value()) {\n    var cv=ct.div($('clsa-dcs-f1.ChairRise:CR_NB').whenNull(1))\n    str=Math.round(tt.minus(wt.multiply(1.5).plus(cv)).abs().value(),0)\n  }  \n  res=newValue(\n    '{time:'+wt.round(3).value()+\n    ',congruency:'+str+\n    '}','text')\n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -1957,7 +1932,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "$('clsa-dcs-f1.Participants:DCSatHOME').isNull().and(\n  $('clsa-dcs-f1.Participants:DCS_PHONE').isNull(),\n  $group('clsa-dcs-f1.Participants:Admin.StageInstance.stage','VisionAcuity',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable')).value() \n? 1 : 0"
+            "value": "$group('clsa-dcs-f1.Participants:Admin.StageInstance.stage','VisionAcuity',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable').value() \n? 1 : 0"
           }
         ], 
         "entityType": "Participant", 
@@ -1973,7 +1948,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "// if a dcs by phone visit, then the skip will be \"ModifiedVisit\"\nvar res=null\nif($('clsa-dcs-f1.Participants:DCS_PHONE').isNull().and(\n   $('clsa-dcs-f1.Participants:DCSatHOME').isNull()).not().value()){\n  res=newValue('ModifiedVisit','text')\n} else {\n  var v1=$group('Admin.Action.stage','VisionAcuity','Admin.Action.actionType').asSequence()\n  var v2=$group('Admin.Action.stage','VisionAcuity','Admin.Action.eventReason').asSequence()\n  var arr=[]  // string array of events\n  for(var i=0; i<v1.size(); i++) {\n    if(v1.valueAt(i).any('SKIP').not().value() ||\n       v2.valueAt(i).isNull().value()) continue\n    var key=v2.valueAt(i).value().slice(14)\n    if(-1==arr.indexOf(key))\n      arr.push(key)\n  }\n  if(undefined!==arr && 0<arr.length) {\n    res=newValue(arr.pop(),'text')  \n  }\n  if(null===res) {\n    var tests=['DONE_VA','DONE_BOTH_VA','DONE_LEFT_VA','DONE_RIGHT_VA','DONE_LEFT_PO_VA','DONE_RIGHT_PO_VA']\n    var reasons=['DONE_RSN_VA','DONE_RSN_BOTH_VA','DONE_RSN_LEFT_VA','DONE_RSN_RIGHT_VA','DONE_RSN_LEFT_PO_VA','DONE_RSN_RIGHT_PO_VA']\n    for(var i=0;i<tests.length;i++) {\n      var t=$('clsa-dcs-f1.VisionAcuity:'+tests[i])\n      if(t.any('NO').value()) {\n        var r=$('clsa-dcs-f1.VisionAcuity:'+reasons[i]).map({\n        'TECHNICAL-PROBLEM':'TechnicalProblem',\n        'PARTICIPANT-DECISION':'ParticipantDecision',\n        'INTERVIEWER-DECISION':'InterviewerDecision',\n        'OTHER':'SeeComment'},null)\n        if(r.isNull().not().value()) {\n          res=r\n          break\n        }\n      }\n    }\n  }\n}  \nres"
+            "value": "var action=$group('Admin.Action.stage','VisionAcuity','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','VisionAcuity','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  var j=action.indexOf('SKIP')\n  return j==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n} else {\n  var tests=['DONE_VA','DONE_BOTH_VA','DONE_LEFT_VA','DONE_RIGHT_VA','DONE_LEFT_PO_VA','DONE_RIGHT_PO_VA']\n  var reasons=['DONE_RSN_VA','DONE_RSN_BOTH_VA','DONE_RSN_LEFT_VA','DONE_RSN_RIGHT_VA','DONE_RSN_LEFT_PO_VA','DONE_RSN_RIGHT_PO_VA']\n  for(var i=0;i<tests.length;i++) {\n    var t=$('clsa-dcs-f1.VisionAcuity:'+tests[i])\n    if(t.any('NO').value()) {\n      var r=$('clsa-dcs-f1.VisionAcuity:'+reasons[i]).map({\n      'TECHNICAL-PROBLEM':'TechnicalProblem',\n      'PARTICIPANT-DECISION':'ParticipantDecision',\n      'INTERVIEWER-DECISION':'InterviewerDecision',\n      'OTHER':'SeeComment'},null)\n      if(r.isNull().not().value()) {\n        res=r\n        break\n      }\n    }\n  }  \n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -2016,6 +1991,1046 @@
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$('clsa-dcs-f1.EventPMT:QuestionnaireRun.user').whenNull(\n  $group('Admin.Action.stage','EventPMT','Admin.Action.user').asSequence().last()).lowerCase()"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_technician_event_pmt", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "var action=$group('Admin.Action.stage','EventPMT','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','EventPMT','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  var j=action.indexOf('SKIP')\n  return j==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_skip_event_pmt", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$group('clsa-dcs-f1.Participants:Admin.StageInstance.stage','EventPMT',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable').value() \n? 1 : 0"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_contraindicated_event_pmt", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "integer"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "var p=$('clsa-dcs-f1.EventPMT:QuestionnaireMetric.missingCount').asSequence()\nvar q=$('clsa-dcs-f1.EventPMT:QuestionnaireMetric.questionCount').asSequence()\nvar res=null\nif(q.size().gt(0).and(q.sum().gt(0)).value()){\n  res=newValue(\n    '{missing:'+\n    Math.round(100.0 * p.sum() / q.sum())\n    +'}','text')\n}\nres"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "data_qac_event_pmt", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$this('data_qac_event_pmt').isNull().and(\n  $this('stage_contraindicated_event_pmt').eq(0),\n  $this('stage_skip_event_pmt').isNull()\n).value() ? 1 : 0"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "data_missing_event_pmt", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "integer"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$('clsa-dcs-f1.DiseaseSymptoms:QuestionnaireRun.user').whenNull(\n  $group('Admin.Action.stage','DiseaseSymptoms','Admin.Action.user').asSequence().last()).lowerCase()"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_technician_disease_symptoms", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "var action=$group('Admin.Action.stage','DiseaseSymptoms','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','DiseaseSymptoms','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  var j=action.indexOf('SKIP')\n  return j==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_skip_disease_symptoms", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$group('clsa-dcs-f1.Participants:Admin.StageInstance.stage','DiseaseSymptoms',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable').value() \n? 1 : 0"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_contraindicated_disease_symptoms", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "integer"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "var p=$('clsa-dcs-f1.DiseaseSymptoms:QuestionnaireMetric.missingCount').asSequence()\nvar q=$('clsa-dcs-f1.DiseaseSymptoms:QuestionnaireMetric.questionCount').asSequence()\nvar res=null\nif(q.size().gt(0).and(q.sum().gt(0)).value()){\n  res=newValue(\n    '{missing:'+\n    Math.round(100.0 * p.sum() / q.sum())\n    +'}','text')\n}\nres"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "data_qac_disease_symptoms", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$this('data_qac_disease_symptoms').isNull().and(\n  $this('stage_contraindicated_disease_symptoms').eq(0),\n  $this('stage_skip_disease_symptoms').isNull()\n).value() ? 1 : 0"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "data_missing_disease_symptoms", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "integer"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$('clsa-dcs-f1.ConclusionQuestionnaire:QuestionnaireRun.user').whenNull(\n  $group('Admin.Action.stage','ConclusionQuestionnaire','Admin.Action.user').asSequence().last()).lowerCase()"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_technician_conclusion_questionnaire", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "var action=$group('Admin.Action.stage','ConclusionQuestionnaire','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','ConclusionQuestionnaire','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  var j=action.indexOf('SKIP')\n  return j==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_skip_conclusion_questionnaire", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$group('clsa-dcs-f1.Participants:Admin.StageInstance.stage','ConclusionQuestionnaire',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable').value() \n? 1 : 0"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_contraindicated_conclusion_questionnaire", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "integer"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "var q=$('clsa-dcs-f1.ConclusionQuestionnaire:PARTICIPANT_OFFERED_DOCUMENT').lowerCase()\nvar res=null\nif(q.isNull().not().value()){\n  var a=q.any('consent_form').value()\n  var b=q.any('physical_measures_report').value()\n  var n=0 \n  if(a) n++\n  if(b) n++\n  res=newValue('{documents:'+n+'}','text')\n}\nres"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "data_qac_conclusion_questionnaire", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$this('data_qac_conclusion_questionnaire').isNull().and(\n  $this('stage_contraindicated_conclusion_questionnaire').eq(0),\n  $this('stage_skip_conclusion_questionnaire').isNull()\n).value() ? 1 : 0"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "data_missing_conclusion_questionnaire", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "integer"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$('clsa-dcs-f1.QuestionnaireBoneDensity:QuestionnaireRun.user').whenNull(\n  $group('Admin.Action.stage','QuestionnaireBoneDensity','Admin.Action.user').asSequence().last()).lowerCase()"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_technician_bone_density_questionnaire", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "var action=$group('Admin.Action.stage','QuestionnaireBoneDensity','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','QuestionnaireBoneDensity','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  var j=action.indexOf('SKIP')\n  return j==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_skip_bone_density_questionnaire", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$group('clsa-dcs-f1.Participants:Admin.StageInstance.stage','QuestionnaireBoneDensity',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable').value() \n? 1 : 0"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_contraindicated_bone_density_questionnaire", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "integer"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "var p=$('clsa-dcs-f1.QuestionnaireBoneDensity:QuestionnaireMetric.missingCount').asSequence()\nvar q=$('clsa-dcs-f1.QuestionnaireBoneDensity:QuestionnaireMetric.questionCount').asSequence()\nvar res=null\nif(q.size().gt(0).and(q.sum().gt(0)).value()){\n  res=newValue(\n    '{missing:'+\n    Math.round(100.0 * p.sum() / q.sum())\n    +'}','text')\n}\nres"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "data_qac_bone_density_questionnaire", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$this('data_qac_bone_density_questionnaire').isNull().and(\n  $this('stage_contraindicated_bone_density_questionnaire').eq(0),\n  $this('stage_skip_bone_density_questionnaire').isNull()\n).value() ? 1 : 0"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "data_missing_bone_density_questionnaire", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "integer"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$('clsa-dcs-f1.HearingQuestionnaire:QuestionnaireRun.user').whenNull(\n  $group('Admin.Action.stage','HearingQuestionnaire','Admin.Action.user').asSequence().last()).lowerCase()"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_technician_hearing_questionnaire", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "var action=$group('Admin.Action.stage','HearingQuestionnaire','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','HearingQuestionnaire','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  var j=action.indexOf('SKIP')\n  return j==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_skip_hearing_questionnaire", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$group('clsa-dcs-f1.Participants:Admin.StageInstance.stage','HearingQuestionnaire',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable').value() \n? 1 : 0"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_contraindicated_hearing_questionnaire", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "integer"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "var l=$('clsa-dcs-f1.HearingQuestionnaire:STATUS_EAR.LEFT_EAR_2').lowerCase()\nvar r=$('clsa-dcs-f1.HearingQuestionnaire:STATUS_EAR.RIGHT_EAR_2').lowerCase()\nvar res=null\nif(l.isNull().and(r.isNull()).not().value()){\n  res=newValue(\n    '{status_left:'+\n     (l.isNull().value()?'missing':l.value()) +\n    ',status_right:'+\n     (r.isNull().value()?'missing':r.value()) +\n    '}','text')\n}\nres"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "data_qac_hearing_questionnaire", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$this('data_qac_hearing_questionnaire').isNull().and(\n  $this('stage_contraindicated_hearing_questionnaire').eq(0),\n  $this('stage_skip_hearing_questionnaire').isNull()\n).value() ? 1 : 0"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "data_missing_hearing_questionnaire", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "integer"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$('clsa-dcs-f1.FunctionalStatus:QuestionnaireRun.user').whenNull(\n  $group('Admin.Action.stage','FunctionalStatus','Admin.Action.user').asSequence().last()).lowerCase()"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_technician_functional_status", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "var v1=$group('Admin.Action.stage','FunctionalStatus','Admin.Action.actionType').asSequence()\nvar v2=$group('Admin.Action.stage','FunctionalStatus','Admin.Action.eventReason').asSequence()\nvar res=null\nvar arr=[]  // string array of events\nfor(var i=0; i<v1.size(); i++) {\n  if(v1.valueAt(i).any('SKIP').not().value() ||\n     v2.valueAt(i).isNull().value()) continue\n  var key=v2.valueAt(i).value().slice(14)\n  if(-1==arr.indexOf(key))\n    arr.push(key)\n}\nif(undefined!==arr && 0<arr.length) {\n  res=newValue(arr.pop(),'text')  \n}\nres"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_skip_functional_status", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$group('clsa-dcs-f1.Participants:Admin.StageInstance.stage','FunctionalStatus',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable').value() \n? 1 : 0"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_contraindicated_functional_status", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "integer"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "var p=$('clsa-dcs-f1.FunctionalStatus:QuestionnaireMetric.missingCount').asSequence()\nvar q=$('clsa-dcs-f1.FunctionalStatus:QuestionnaireMetric.questionCount').asSequence()\nvar res=null\nif(q.size().gt(0).and(q.size().gt(0)).value()){\n  res=newValue(\n    '{missing:'+\n    Math.round(100.0 * p.sum() / q.sum())\n    +'}','text')\n}\nres"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "data_qac_functional_status", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$this('data_qac_functional_status').isNull().and(\n  $this('stage_contraindicated_functional_status').eq(0),\n  $this('stage_skip_functional_status').isNull()\n).value() ? 1 : 0"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "data_missing_functional_status", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "integer"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$('clsa-dcs-f1.TimeBasedProspectiveMemoryTask:QuestionnaireRun.user').whenNull(\n  $group('Admin.Action.stage','TimeBasedProspectiveMemoryTask','Admin.Action.user').asSequence().last()).lowerCase()"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_technician_time_based_pmt", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "var action=$group('Admin.Action.stage','TimeBasedProspectiveMemoryTask','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','TimeBasedProspectiveMemoryTask','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  var j=action.indexOf('SKIP')\n  return j==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_skip_time_based_pmt", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$group('clsa-dcs-f1.Participants:Admin.StageInstance.stage','TimeBasedProspectiveMemoryTask',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable').value() \n? 1 : 0"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_contraindicated_time_based_pmt", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "integer"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "var p=$('clsa-dcs-f1.TimeBasedProspectiveMemoryTask:QuestionnaireMetric.missingCount').asSequence()\nvar q=$('clsa-dcs-f1.TimeBasedProspectiveMemoryTask:QuestionnaireMetric.questionCount').asSequence()\nvar res=null\nif(q.size().gt(0).and(q.sum().gt(0)).value()){\n  res=newValue(\n    '{missing:'+\n    Math.round(100.0 * p.sum() / q.sum())\n    +'}','text')\n}\nres"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "data_qac_time_based_pmt", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$this('data_qac_time_based_pmt').isNull().and(\n  $this('stage_contraindicated_time_based_pmt').eq(0),\n  $this('stage_skip_time_based_pmt').isNull()\n).value() ? 1 : 0"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "data_missing_time_based_pmt", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "integer"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$group('clsa-dcs-f1.Participants:Admin.StageInstance.stage','Consent',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable').value() \n? 1 : 0"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_contraindicated_consent", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "integer"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$this('data_qac_consent').isNull().and(\n  $this('stage_contraindicated_consent').eq(0),\n  $this('stage_skip_consent').isNull()\n).value() ? 1 : 0"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "data_missing_consent", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "integer"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "var m=$('clsa-dcs-f1.Consent:mode')\nvar a=$('clsa-dcs-f1.Consent:accepted')\nvar res=null\nif(m.isNull().and(a.isNull()).not().value()) {\n  res=newValue(\n    '{mode:'+m.lowerCase().value()+\n    ',accepted:'+(a.value()?1:0)+\n    '}','text')\n}\nres"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "data_qac_consent", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$group('Admin.Action.stage','Consent','Admin.Action.user').asSequence().last().lowerCase()"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_technician_consent", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "var action=$group('Admin.Action.stage','Consent','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','Consent','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  var j=action.indexOf('SKIP')\n  return j==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_skip_consent", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$('clsa-dcs-f1.ContraIndications:QuestionnaireRun.user').whenNull(\n  $group('Admin.Action.stage','ContraIndications','Admin.Action.user').asSequence().last()).lowerCase()"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_technician_contraindications", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "var action=$group('Admin.Action.stage','ContraIndications','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','ContraIndications','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  var j=action.indexOf('SKIP')\n  return j==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_skip_contraindications", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$group('clsa-dcs-f1.Participants:Admin.StageInstance.stage','ContraIndications',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable').value() \n? 1 : 0"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_contraindicated_contraindications", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "integer"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "var p=$('clsa-dcs-f1.ContraIndications:QuestionnaireMetric.missingCount').asSequence()\nvar q=$('clsa-dcs-f1.ContraIndications:QuestionnaireMetric.questionCount').asSequence()\nvar res=null\nif(q.size().gt(0).and(q.sum().gt(0)).value()){\n  res=newValue(\n    '{missing:'+\n    Math.round(100.0 * p.sum() / q.sum())\n    +'}','text')\n}\nres"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "data_qac_contraindications", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$this('data_qac_contraindications').isNull().and(\n  $this('stage_contraindicated_contraindications').eq(0),\n  $this('stage_skip_contraindications').isNull()\n).value() ? 1 : 0"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "data_missing_contraindications", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "integer"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$('clsa-dcs-f1.StroopFAS:QuestionnaireRun.user').whenNull(\n  $group('Admin.Action.stage','StroopFAS','Admin.Action.user').asSequence().last()).lowerCase()"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_technician_stroop_fas", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$('clsa-dcs-f1.Participants:DCS_PHONE').isNull().and(\n  $group('clsa-dcs-f1.Participants:Admin.StageInstance.stage','StroopFAS',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable')).value()\n? 1 : null"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_contraindicated_stroop_fas", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "integer"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "// if a dcs by phone visit, then the skip will be \"ModifiedVisit\"\nvar res=null\nif($('clsa-dcs-f1.Participants:DCS_PHONE').isNull().not().value()){\n  res=newValue('ModifiedVisit','text')\n} else {\n  var action=$group('Admin.Action.stage','StroopFAS','Admin.Action.actionType').asSequence()\n  var res=$group('Admin.Action.stage','StroopFAS','Admin.Action.eventReason').asSequence().filter(function(v,i){\n    var j=action.indexOf('SKIP')\n    return j==i\n    }).last()\n  if(res.isNull().not().value()) {\n    res=newValue(res.value().slice(14),'text')\n  }\n}\nres"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_skip_stroop_fas", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$this('data_qac_stroop_fas').isNull().and(\n  $this('stage_contraindicated_stroop_fas').eq(0),\n  $this('stage_skip_stroop_fas').isNull()\n).value() ? 1 : 0"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "data_missing_stroop_fas", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "integer"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "var d=$('clsa-dcs-f1.StroopFAS:STP_DOTREC_COF1')\nvar w=$('clsa-dcs-f1.StroopFAS:STP_WORREC_COF1')\nvar c=$('clsa-dcs-f1.StroopFAS:STP_COLREC_COF1')\nvar f=$('clsa-dcs-f1.StroopFAS:FAS_FREC_COF1')\nvar a=$('clsa-dcs-f1.StroopFAS:FAS_AREC_COF1')\nvar s=$('clsa-dcs-f1.StroopFAS:FAS_SREC_COF1')\nvar res=null\nif(!d.isNull().and(w.isNull(),c.isNull(),f.isNull(),a.isNull(),s.isNull()).value()) {\n  var str='{filesize_dot:'+(d.isNull().value()?'0':d.length().value())+','\n  str+='filesize_wor:'+(w.isNull().value()?'0':w.length().value())+','\n  str+='filesize_col:'+(c.isNull().value()?'0':c.length().value())+','\n  str+='filesize_f:'+(f.isNull().value()?'0':f.length().value())+','\n  str+='filesize_a:'+(a.isNull().value()?'0':a.length().value())+','\n  str+='filesize_s:'+(s.isNull().value()?'0':s.length().value())+'}'\n  res=newValue(str,'text')\n}\nres"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "data_qac_stroop_fas", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$('clsa-dcs-f1.Frax:InstrumentRun.user').whenNull(\n  $group('Admin.Action.stage','Frax','Admin.Action.user').asSequence().last()).lowerCase()"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_technician_frax", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$group('clsa-dcs-f1.Participants:Admin.StageInstance.stage','Frax',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable').value() \n? 1 : 0"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_contraindicated_frax", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "integer"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "var res=null\nvar f=$('clsa-dcs-f1.Frax:RES_RESULT_FILE')\nvar list=['clsa-dcs-f1.Frax:FRAX_OSTFX_COF1','clsa-dcs-f1.Frax:FRAX_HIPFX_COF1',\n'clsa-dcs-f1.Frax:FRAX_OSTFX_BMD_COF1','clsa-dcs-f1.Frax:FRAX_HIPFX_BMD_COF1']\nvar n=0\nfor(var i=0;i<4;i++) {\n  if($(list[i]).isNull().not().value()) n++\n}\nif(f.isNull().not().value() || n>0) {\n  res=newValue(\n    '{file_size:'+ (f.isNull().value()?'0':f.length()) + ',' +\n      'missing:' + (4-n) +\n    '}','text')\n}\nres"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "data_qac_frax", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$this('data_qac_frax').isNull().and(\n  $this('stage_contraindicated_frax').eq(0),\n  $this('stage_skip_frax').isNull()\n).value() ? 1 : 0"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "data_missing_frax", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "integer"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "var action=$group('Admin.Action.stage','Frax','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','Frax','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  var j=action.indexOf('SKIP')\n  return j==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_skip_frax", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$('clsa-dcs-f1.GenHealth:QuestionnaireRun.user').whenNull(\n  $group('Admin.Action.stage','GenHealth','Admin.Action.user').asSequence().last()).lowerCase()"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_technician_general_health", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "var action=$group('Admin.Action.stage','GenHealth','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','GenHealth','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  var j=action.indexOf('SKIP')\n  return j==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_skip_general_health", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$group('clsa-dcs-f1.Participants:Admin.StageInstance.stage','GenHealth',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable').value() \n? 1 : 0"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_contraindicated_general_health", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "integer"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "var p=$('clsa-dcs-f1.GenHealth:QuestionnaireMetric.missingCount').asSequence()\nvar q=$('clsa-dcs-f1.GenHealth:QuestionnaireMetric.questionCount').asSequence()\nvar res=null\nif(q.size().gt(0).and(q.sum().gt(0)).value()){\n  res=newValue(\n    '{missing:'+\n    Math.round(100.0 * p.sum() / q.sum())\n    +'}','text')\n}\nres"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "data_qac_general_health", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$this('data_qac_general_health').isNull().and(\n  $this('stage_contraindicated_general_health').eq(0),\n  $this('stage_skip_general_health').isNull()\n).value() ? 1 : 0"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "data_missing_general_health", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "integer"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$('clsa-dcs-f1.Urine:QuestionnaireRun.user').whenNull(\n  $group('Admin.Action.stage','Urine','Admin.Action.user').asSequence().last()).lowerCase()"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_technician_urine", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "var action=$group('Admin.Action.stage','Urine','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','Urine','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  var j=action.indexOf('SKIP')\n  return j==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_skip_urine", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$group('clsa-dcs-f1.Participants:Admin.StageInstance.stage','Urine',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable').value() \n? 1 : 0"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_contraindicated_urine", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "integer"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "var p=$('clsa-dcs-f1.Urine:QuestionnaireMetric.missingCount').asSequence()\nvar q=$('clsa-dcs-f1.Urine:QuestionnaireMetric.questionCount').asSequence()\nvar res=null\nif(q.size().gt(0).and(q.sum().gt(0)).value()){\n  res=newValue(\n    '{missing:'+\n    Math.round(100.0 * p.sum() / q.sum())\n    +'}','text')\n}\nres"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "data_qac_urine", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$this('data_qac_urine').isNull().and(\n  $this('stage_contraindicated_urine').eq(0),\n  $this('stage_skip_urine').isNull()\n).value() ? 1 : 0"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "data_missing_urine", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "integer"
       }
     ]
   }, 
@@ -2045,7 +3060,15 @@
     "clsa-dcs-f1.StandingBalance", 
     "clsa-dcs-f1.NeuropsychologicalBattery", 
     "clsa-dcs-f1.VisionAcuity", 
-    "clsa-dcs-f1.4mWalk"
+    "clsa-dcs-f1.4mWalk", 
+    "clsa-dcs-f1.HearingQuestionnaire", 
+    "clsa-dcs-f1.FunctionalStatus", 
+    "clsa-dcs-f1.DiseaseSymptoms", 
+    "clsa-dcs-f1.Consent", 
+    "clsa-dcs-f1.ContraIndications", 
+    "clsa-dcs-f1.GenHealth", 
+    "clsa-dcs-f1.Urine", 
+    "clsa-dcs-f1.QuestionnaireBoneDensity"
   ], 
   "name": "QC_F1"
 }
