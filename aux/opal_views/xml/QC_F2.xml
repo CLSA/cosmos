@@ -625,29 +625,20 @@ res</attribute>
       </variable>
       <variable name="stage_contraindicated_retinal_scan_left" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">$(&apos;clsa-dcs-f2.Participants:DCSatHOME&apos;).isNull().and(
-  $(&apos;clsa-dcs-f2.Participants:DCS_PHONE&apos;).isNull(),
-  $group(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,&apos;RetinalScanLeft&apos;,
-&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;)).value()
+          <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,&apos;RetinalScanLeft&apos;,
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value()
 ? 1 : 0</attribute>
         </attributes>
       </variable>
       <variable name="stage_skip_retinal_scan_left" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">// if a dcs by phone visit, then the skip will be &quot;ModifiedVisit&quot;
-var res=null
-if($(&apos;clsa-dcs-f2.Participants:DCS_PHONE&apos;).isNull().and(
-   $(&apos;clsa-dcs-f2.Participants:DCSatHOME&apos;).isNull()).not().value()){
-  res=newValue(&apos;ModifiedVisit&apos;,&apos;text&apos;)
-} else {
-  var action=$group(&apos;Admin.Action.stage&apos;,&apos;RetinalScanLeft&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
-  var res=$group(&apos;Admin.Action.stage&apos;,&apos;RetinalScanLeft&apos;,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
-    var j=action.indexOf(&apos;SKIP&apos;)
-    return j==i
-    }).last()
-  if(res.isNull().not().value()) {
-    res=newValue(res.value().slice(14),&apos;text&apos;)
-  }
+          <attribute name="script" valueType="text">var action=$group(&apos;Admin.Action.stage&apos;,&apos;RetinalScanLeft&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
+var res=$group(&apos;Admin.Action.stage&apos;,&apos;RetinalScanLeft&apos;,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
+  var j=action.indexOf(&apos;SKIP&apos;)
+  return j==i
+  }).last()
+if(res.isNull().not().value()) {
+  res=newValue(res.value().slice(14),&apos;text&apos;)
 }
 res</attribute>
         </attributes>
@@ -678,29 +669,20 @@ res</attribute>
       </variable>
       <variable name="stage_contraindicated_retinal_scan_right" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">$(&apos;clsa-dcs-f2.Participants:DCSatHOME&apos;).isNull().and(
-  $(&apos;clsa-dcs-f2.Participants:DCS_PHONE&apos;).isNull(),
-  $group(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,&apos;RetinalScanRight&apos;,
-&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;)).value()
+          <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,&apos;RetinalScanRight&apos;,
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value()
 ? 1 : 0</attribute>
         </attributes>
       </variable>
       <variable name="stage_skip_retinal_scan_right" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">// if a dcs by phone visit, then the skip will be &quot;ModifiedVisit&quot;
-var res=null
-if($(&apos;clsa-dcs-f2.Participants:DCS_PHONE&apos;).isNull().and(
-   $(&apos;clsa-dcs-f2.Participants:DCSatHOME&apos;).isNull()).not().value()){
-  res=newValue(&apos;ModifiedVisit&apos;,&apos;text&apos;)
-} else {
-  var action=$group(&apos;Admin.Action.stage&apos;,&apos;RetinalScanRight&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
-  var res=$group(&apos;Admin.Action.stage&apos;,&apos;RetinalScanRight&apos;,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
-    var j=action.indexOf(&apos;SKIP&apos;)
-    return j==i
-    }).last()
-  if(res.isNull().not().value()) {
-    res=newValue(res.value().slice(14),&apos;text&apos;)
-  }
+          <attribute name="script" valueType="text">var action=$group(&apos;Admin.Action.stage&apos;,&apos;RetinalScanRight&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
+var res=$group(&apos;Admin.Action.stage&apos;,&apos;RetinalScanRight&apos;,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
+  var j=action.indexOf(&apos;SKIP&apos;)
+  return j==i
+  }).last()
+if(res.isNull().not().value()) {
+  res=newValue(res.value().slice(14),&apos;text&apos;)
 }
 res</attribute>
         </attributes>
@@ -820,10 +802,8 @@ res</attribute>
       </variable>
       <variable name="stage_contraindicated_spine_bone_density" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">$(&apos;clsa-dcs-f2.Participants:DCSatHOME&apos;).isNull().and(
-  $(&apos;clsa-dcs-f2.Participants:DCS_PHONE&apos;).isNull(),
-  $group(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,&apos;SpineBoneDensity&apos;,
-&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;)).value()
+          <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,&apos;SpineBoneDensity&apos;,
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value()
 ? 1 : 0</attribute>
         </attributes>
       </variable>
@@ -2185,5 +2165,5 @@ res</attribute>
     </variables>
   </variables>
   <created valueType="datetime">2018-05-15T13:40:50.956-04</created>
-  <updated valueType="datetime">2018-08-03T16:07:46.447-04</updated>
+  <updated valueType="datetime">2018-08-07T09:52:00.019-04</updated>
 </org.obiba.magma.views.View>

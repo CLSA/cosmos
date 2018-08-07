@@ -1118,25 +1118,13 @@ res</attribute>
       </variable>
       <variable name="stage_skip_neuropsychological_battery" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">// if a dcs by phone visit, then the skip will be &quot;ModifiedVisit&quot;
-var res=null
-if($(&apos;clsa-dcs.Participants:DCS_PHONE&apos;).isNull().not().value()){
-  res=newValue(&apos;ModifiedVisit&apos;,&apos;text&apos;)
-} else {
-  var v1=$group(&apos;Admin.Action.stage&apos;,&apos;NeuropsychologicalBattery&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
-  var v2=$group(&apos;Admin.Action.stage&apos;,&apos;NeuropsychologicalBattery&apos;,&apos;Admin.Action.eventReason&apos;).asSequence()
-
-  var arr=[]  // string array of events
-  for(var i=0; i&lt;v1.size(); i++) {
-    if(v1.valueAt(i).any(&apos;SKIP&apos;).not().value() ||
-       v2.valueAt(i).isNull().value()) continue
-    var key=v2.valueAt(i).value().slice(14)
-    if(-1==arr.indexOf(key))
-      arr.push(key)
-  }
-  if(undefined!==arr &amp;&amp; 0&lt;arr.length) {
-    res=newValue(arr.pop(),&apos;text&apos;)  
-  }
+          <attribute name="script" valueType="text">var action=$group(&apos;Admin.Action.stage&apos;,&apos;NeuropsychologicalBattery&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
+var res=$group(&apos;Admin.Action.stage&apos;,&apos;NeuropsychologicalBattery&apos;,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
+  var j=action.indexOf(&apos;SKIP&apos;)
+  return j==i
+  }).last()
+if(res.isNull().not().value()) {
+  res=newValue(res.value().slice(14),&apos;text&apos;)
 }
 res</attribute>
         </attributes>
@@ -1785,19 +1773,13 @@ res</attribute>
       </variable>
       <variable name="stage_skip_functional_status" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">var v1=$group(&apos;Admin.Action.stage&apos;,&apos;FunctionalStatus&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
-var v2=$group(&apos;Admin.Action.stage&apos;,&apos;FunctionalStatus&apos;,&apos;Admin.Action.eventReason&apos;).asSequence()
-var res=null
-var arr=[]  // string array of events
-for(var i=0; i&lt;v1.size(); i++) {
-  if(v1.valueAt(i).any(&apos;SKIP&apos;).not().value() ||
-     v2.valueAt(i).isNull().value()) continue
-  var key=v2.valueAt(i).value().slice(14)
-  if(-1==arr.indexOf(key))
-    arr.push(key)
-}
-if(undefined!==arr &amp;&amp; 0&lt;arr.length) {
-  res=newValue(arr.pop(),&apos;text&apos;)  
+          <attribute name="script" valueType="text">var action=$group(&apos;Admin.Action.stage&apos;,&apos;FunctionalStatus&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
+var res=$group(&apos;Admin.Action.stage&apos;,&apos;FunctionalStatus&apos;,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
+  var j=action.indexOf(&apos;SKIP&apos;)
+  return j==i
+  }).last()
+if(res.isNull().not().value()) {
+  res=newValue(res.value().slice(14),&apos;text&apos;)
 }
 res</attribute>
         </attributes>
@@ -1938,5 +1920,5 @@ res</attribute>
     </variables>
   </variables>
   <created valueType="datetime">2018-05-15T17:37:52.240-04</created>
-  <updated valueType="datetime">2018-08-03T15:48:31.737-04</updated>
+  <updated valueType="datetime">2018-08-07T09:15:27.488-04</updated>
 </org.obiba.magma.views.View>
