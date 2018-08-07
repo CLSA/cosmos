@@ -1898,68 +1898,6 @@ res</attribute>
 ).value() ? 1 : 0</attribute>
         </attributes>
       </variable>
-      <variable name="stage_technician_stroop_fas" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
-        <attributes>
-          <attribute name="script" valueType="text">$(&apos;clsa-dcs-f1.StroopFAS:QuestionnaireRun.user&apos;).whenNull(
-  $group(&apos;Admin.Action.stage&apos;,&apos;StroopFAS&apos;,&apos;Admin.Action.user&apos;).asSequence().last()).lowerCase()</attribute>
-        </attributes>
-      </variable>
-      <variable name="stage_contraindicated_stroop_fas" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
-        <attributes>
-          <attribute name="script" valueType="text">$(&apos;clsa-dcs-f1.Participants:DCS_PHONE&apos;).isNull().and(
-  $group(&apos;clsa-dcs-f1.Participants:Admin.StageInstance.stage&apos;,&apos;StroopFAS&apos;,
-&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;)).value()
-? 1 : null</attribute>
-        </attributes>
-      </variable>
-      <variable name="stage_skip_stroop_fas" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
-        <attributes>
-          <attribute name="script" valueType="text">// if a dcs by phone visit, then the skip will be &quot;ModifiedVisit&quot;
-var res=null
-if($(&apos;clsa-dcs-f1.Participants:DCS_PHONE&apos;).isNull().not().value()){
-  res=newValue(&apos;ModifiedVisit&apos;,&apos;text&apos;)
-} else {
-  var action=$group(&apos;Admin.Action.stage&apos;,&apos;StroopFAS&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
-  var res=$group(&apos;Admin.Action.stage&apos;,&apos;StroopFAS&apos;,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
-    var j=action.indexOf(&apos;SKIP&apos;)
-    return j==i
-    }).last()
-  if(res.isNull().not().value()) {
-    res=newValue(res.value().slice(14),&apos;text&apos;)
-  }
-}
-res</attribute>
-        </attributes>
-      </variable>
-      <variable name="data_missing_stroop_fas" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
-        <attributes>
-          <attribute name="script" valueType="text">$this(&apos;data_qac_stroop_fas&apos;).isNull().and(
-  $this(&apos;stage_contraindicated_stroop_fas&apos;).eq(0),
-  $this(&apos;stage_skip_stroop_fas&apos;).isNull()
-).value() ? 1 : 0</attribute>
-        </attributes>
-      </variable>
-      <variable name="data_qac_stroop_fas" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
-        <attributes>
-          <attribute name="script" valueType="text">var d=$(&apos;clsa-dcs-f1.StroopFAS:STP_DOTREC_COF1&apos;)
-var w=$(&apos;clsa-dcs-f1.StroopFAS:STP_WORREC_COF1&apos;)
-var c=$(&apos;clsa-dcs-f1.StroopFAS:STP_COLREC_COF1&apos;)
-var f=$(&apos;clsa-dcs-f1.StroopFAS:FAS_FREC_COF1&apos;)
-var a=$(&apos;clsa-dcs-f1.StroopFAS:FAS_AREC_COF1&apos;)
-var s=$(&apos;clsa-dcs-f1.StroopFAS:FAS_SREC_COF1&apos;)
-var res=null
-if(!d.isNull().and(w.isNull(),c.isNull(),f.isNull(),a.isNull(),s.isNull()).value()) {
-  var str=&apos;{filesize_dot:&apos;+(d.isNull().value()?&apos;0&apos;:d.length().value())+&apos;,&apos;
-  str+=&apos;filesize_wor:&apos;+(w.isNull().value()?&apos;0&apos;:w.length().value())+&apos;,&apos;
-  str+=&apos;filesize_col:&apos;+(c.isNull().value()?&apos;0&apos;:c.length().value())+&apos;,&apos;
-  str+=&apos;filesize_f:&apos;+(f.isNull().value()?&apos;0&apos;:f.length().value())+&apos;,&apos;
-  str+=&apos;filesize_a:&apos;+(a.isNull().value()?&apos;0&apos;:a.length().value())+&apos;,&apos;
-  str+=&apos;filesize_s:&apos;+(s.isNull().value()?&apos;0&apos;:s.length().value())+&apos;}&apos;
-  res=newValue(str,&apos;text&apos;)
-}
-res</attribute>
-        </attributes>
-      </variable>
       <variable name="stage_technician_frax" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">$(&apos;clsa-dcs-f1.Frax:InstrumentRun.user&apos;).whenNull(
@@ -2112,5 +2050,5 @@ res</attribute>
     </variables>
   </variables>
   <created valueType="datetime">2018-05-03T13:40:11.946-04</created>
-  <updated valueType="datetime">2018-08-07T09:47:51.359-04</updated>
+  <updated valueType="datetime">2018-08-07T10:42:02.796-04</updated>
 </org.obiba.magma.views.View>
