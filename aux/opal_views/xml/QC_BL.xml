@@ -1505,7 +1505,7 @@ res</attribute>
           <attribute name="script" valueType="text">var p=$(&apos;clsa-dcs.ContraIndications:QuestionnaireMetric.missingCount&apos;).asSequence()
 var q=$(&apos;clsa-dcs.ContraIndications:QuestionnaireMetric.questionCount&apos;).asSequence()
 var res=null
-if(q.size().gt(0).and(q.size().gt(0)).value()){
+if(p.isNull().not().and(q.isNull().not(),p.size().gt(0),q.size().gt(0)).value()){
   res=newValue(
     &apos;{missing:&apos;+
     Math.round(100.0 * p.sum() / q.sum())
@@ -1553,7 +1553,7 @@ res</attribute>
           <attribute name="script" valueType="text">var p=$(&apos;clsa-dcs.EventPMT:QuestionnaireMetric.missingCount&apos;).asSequence()
 var q=$(&apos;clsa-dcs.EventPMT:QuestionnaireMetric.questionCount&apos;).asSequence()
 var res=null
-if(q.size().gt(0).and(q.size().gt(0)).value()){
+if(p.isNull().not().and(q.isNull().not(),p.size().gt(0),q.size().gt(0)).value()){
   res=newValue(
     &apos;{missing:&apos;+
     Math.round(100.0 * p.sum() / q.sum())
@@ -1601,7 +1601,7 @@ res</attribute>
           <attribute name="script" valueType="text">var p=$(&apos;clsa-dcs.DiseaseSymptoms:QuestionnaireMetric.missingCount&apos;).asSequence()
 var q=$(&apos;clsa-dcs.DiseaseSymptoms:QuestionnaireMetric.questionCount&apos;).asSequence()
 var res=null
-if(q.size().gt(0).and(q.size().gt(0)).value()){
+if(p.isNull().not().and(q.isNull().not(),p.size().gt(0),q.size().gt(0)).value()){
   res=newValue(
     &apos;{missing:&apos;+
     Math.round(100.0 * p.sum() / q.sum())
@@ -1698,7 +1698,7 @@ res</attribute>
           <attribute name="script" valueType="text">var p=$(&apos;clsa-dcs.QuestionnaireBoneDensity:QuestionnaireMetric.missingCount&apos;).asSequence()
 var q=$(&apos;clsa-dcs.QuestionnaireBoneDensity:QuestionnaireMetric.questionCount&apos;).asSequence()
 var res=null
-if(q.size().gt(0).and(q.size().gt(0)).value()){
+if(p.isNull().not().and(q.isNull().not(),p.size().gt(0),q.size().gt(0)).value()){
   res=newValue(
     &apos;{missing:&apos;+
     Math.round(100.0 * p.sum() / q.sum())
@@ -1796,7 +1796,7 @@ res</attribute>
           <attribute name="script" valueType="text">var p=$(&apos;clsa-dcs.FunctionalStatus:QuestionnaireMetric.missingCount&apos;).asSequence()
 var q=$(&apos;clsa-dcs.FunctionalStatus:QuestionnaireMetric.questionCount&apos;).asSequence()
 var res=null
-if(q.size().gt(0).and(q.size().gt(0)).value()){
+if(p.isNull().not().and(q.isNull().not(),p.size().gt(0),q.size().gt(0)).value()){
   res=newValue(
     &apos;{missing:&apos;+
     Math.round(100.0 * p.sum() / q.sum())
@@ -1844,7 +1844,7 @@ res</attribute>
           <attribute name="script" valueType="text">var p=$(&apos;clsa-dcs.TimeBasedProspectiveMemoryTask:QuestionnaireMetric.missingCount&apos;)
 var q=$(&apos;clsa-dcs.TimeBasedProspectiveMemoryTask:QuestionnaireMetric.questionCount&apos;)
 var res=null
-if(q.size().gt(0).and(q.size().gt(0)).value()){
+if(p.isNull().not().and(q.isNull().not(),p.size().gt(0),q.size().gt(0)).value()){
   res=newValue(
     &apos;{missing:&apos;+
     Math.round(100.0 * p.sum() / q.sum())
@@ -1900,7 +1900,7 @@ res</attribute>
           <attribute name="script" valueType="text">var p=$(&apos;clsa-dcs.Urine:QuestionnaireMetric.missingCount&apos;).asSequence()
 var q=$(&apos;clsa-dcs.Urine:QuestionnaireMetric.questionCount&apos;).asSequence()
 var res=null
-if(q.size().gt(0).and(q.sum().gt(0)).value()){
+if(p.isNull().not().and(q.isNull().not(),p.size().gt(0),q.size().gt(0)).value()){
   res=newValue(
     &apos;{missing:&apos;+
     Math.round(100.0 * p.sum() / q.sum())
@@ -1920,5 +1920,5 @@ res</attribute>
     </variables>
   </variables>
   <created valueType="datetime">2018-05-15T17:37:52.240-04</created>
-  <updated valueType="datetime">2018-08-07T09:15:27.488-04</updated>
+  <updated valueType="datetime">2018-08-07T14:11:15.153-04</updated>
 </org.obiba.magma.views.View>

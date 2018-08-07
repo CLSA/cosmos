@@ -2050,7 +2050,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var p=$('clsa-dcs-f1.EventPMT:QuestionnaireMetric.missingCount').asSequence()\nvar q=$('clsa-dcs-f1.EventPMT:QuestionnaireMetric.questionCount').asSequence()\nvar res=null\nif(q.size().gt(0).and(q.sum().gt(0)).value()){\n  res=newValue(\n    '{missing:'+\n    Math.round(100.0 * p.sum() / q.sum())\n    +'}','text')\n}\nres"
+            "value": "var p=$('clsa-dcs-f1.EventPMT:QuestionnaireMetric.missingCount').asSequence()\nvar q=$('clsa-dcs-f1.EventPMT:QuestionnaireMetric.questionCount').asSequence()\nvar res=null\nif(p.isNull().not().and(q.isNull().not(),p.size().gt(0),q.size().gt(0)).value()){\n  res=newValue(\n    '{missing:'+\n    Math.round(100.0 * p.sum() / q.sum())\n    +'}','text')\n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -2058,6 +2058,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_event_pmt", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -2130,7 +2131,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var p=$('clsa-dcs-f1.DiseaseSymptoms:QuestionnaireMetric.missingCount').asSequence()\nvar q=$('clsa-dcs-f1.DiseaseSymptoms:QuestionnaireMetric.questionCount').asSequence()\nvar res=null\nif(q.size().gt(0).and(q.sum().gt(0)).value()){\n  res=newValue(\n    '{missing:'+\n    Math.round(100.0 * p.sum() / q.sum())\n    +'}','text')\n}\nres"
+            "value": "var p=$('clsa-dcs-f1.DiseaseSymptoms:QuestionnaireMetric.missingCount').asSequence()\nvar q=$('clsa-dcs-f1.DiseaseSymptoms:QuestionnaireMetric.questionCount').asSequence()\nvar res=null\nif(p.isNull().not().and(q.isNull().not(),p.size().gt(0),q.size().gt(0)).value()){\n  res=newValue(\n    '{missing:'+\n    Math.round(100.0 * p.sum() / q.sum())\n    +'}','text')\n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -2138,6 +2139,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_disease_symptoms", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -2290,7 +2292,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var p=$('clsa-dcs-f1.QuestionnaireBoneDensity:QuestionnaireMetric.missingCount').asSequence()\nvar q=$('clsa-dcs-f1.QuestionnaireBoneDensity:QuestionnaireMetric.questionCount').asSequence()\nvar res=null\nif(q.size().gt(0).and(q.sum().gt(0)).value()){\n  res=newValue(\n    '{missing:'+\n    Math.round(100.0 * p.sum() / q.sum())\n    +'}','text')\n}\nres"
+            "value": "var p=$('clsa-dcs-f1.QuestionnaireBoneDensity:QuestionnaireMetric.missingCount').asSequence()\nvar q=$('clsa-dcs-f1.QuestionnaireBoneDensity:QuestionnaireMetric.questionCount').asSequence()\nvar res=null\nif(p.isNull().not().and(q.isNull().not(),p.size().gt(0),q.size().gt(0)).value()){\n  res=newValue(\n    '{missing:'+\n    Math.round(100.0 * p.sum() / q.sum())\n    +'}','text')\n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -2298,6 +2300,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_bone_density_questionnaire", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -2451,7 +2454,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var p=$('clsa-dcs-f1.FunctionalStatus:QuestionnaireMetric.missingCount').asSequence()\nvar q=$('clsa-dcs-f1.FunctionalStatus:QuestionnaireMetric.questionCount').asSequence()\nvar res=null\nif(q.size().gt(0).and(q.size().gt(0)).value()){\n  res=newValue(\n    '{missing:'+\n    Math.round(100.0 * p.sum() / q.sum())\n    +'}','text')\n}\nres"
+            "value": "var p=$('clsa-dcs-f1.FunctionalStatus:QuestionnaireMetric.missingCount').asSequence()\nvar q=$('clsa-dcs-f1.FunctionalStatus:QuestionnaireMetric.questionCount').asSequence()\nvar res=null\nif(p.isNull().not().and(q.isNull().not(),p.size().gt(0),q.size().gt(0)).value()){\n  res=newValue(\n    '{missing:'+\n    Math.round(100.0 * p.sum() / q.sum())\n    +'}','text')\n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -2459,6 +2462,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_functional_status", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -2531,7 +2535,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var p=$('clsa-dcs-f1.TimeBasedProspectiveMemoryTask:QuestionnaireMetric.missingCount').asSequence()\nvar q=$('clsa-dcs-f1.TimeBasedProspectiveMemoryTask:QuestionnaireMetric.questionCount').asSequence()\nvar res=null\nif(q.size().gt(0).and(q.sum().gt(0)).value()){\n  res=newValue(\n    '{missing:'+\n    Math.round(100.0 * p.sum() / q.sum())\n    +'}','text')\n}\nres"
+            "value": "var p=$('clsa-dcs-f1.TimeBasedProspectiveMemoryTask:QuestionnaireMetric.missingCount').asSequence()\nvar q=$('clsa-dcs-f1.TimeBasedProspectiveMemoryTask:QuestionnaireMetric.questionCount').asSequence()\nvar res=null\nif(p.isNull().not().and(q.isNull().not(),p.size().gt(0),q.size().gt(0)).value()){\n  res=newValue(\n    '{missing:'+\n    Math.round(100.0 * p.sum() / q.sum())\n    +'}','text')\n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -2539,6 +2543,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_time_based_pmt", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -2691,7 +2696,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var p=$('clsa-dcs-f1.ContraIndications:QuestionnaireMetric.missingCount').asSequence()\nvar q=$('clsa-dcs-f1.ContraIndications:QuestionnaireMetric.questionCount').asSequence()\nvar res=null\nif(q.size().gt(0).and(q.sum().gt(0)).value()){\n  res=newValue(\n    '{missing:'+\n    Math.round(100.0 * p.sum() / q.sum())\n    +'}','text')\n}\nres"
+            "value": "var p=$('clsa-dcs-f1.ContraIndications:QuestionnaireMetric.missingCount').asSequence()\nvar q=$('clsa-dcs-f1.ContraIndications:QuestionnaireMetric.questionCount').asSequence()\nvar res=null\nif(p.isNull().not().and(q.isNull().not(),p.size().gt(0),q.size().gt(0)).value()){\n  res=newValue(\n    '{missing:'+\n    Math.round(100.0 * p.sum() / q.sum())\n    +'}','text')\n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -2699,6 +2704,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_contraindications", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -2851,7 +2857,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var p=$('clsa-dcs-f1.GenHealth:QuestionnaireMetric.missingCount').asSequence()\nvar q=$('clsa-dcs-f1.GenHealth:QuestionnaireMetric.questionCount').asSequence()\nvar res=null\nif(q.size().gt(0).and(q.sum().gt(0)).value()){\n  res=newValue(\n    '{missing:'+\n    Math.round(100.0 * p.sum() / q.sum())\n    +'}','text')\n}\nres"
+            "value": "var p=$('clsa-dcs-f1.GenHealth:QuestionnaireMetric.missingCount').asSequence()\nvar q=$('clsa-dcs-f1.GenHealth:QuestionnaireMetric.questionCount').asSequence()\nvar res=null\nif(p.isNull().not().and(q.isNull().not(),p.size().gt(0),q.size().gt(0)).value()){\n  res=newValue(\n    '{missing:'+\n    Math.round(100.0 * p.sum() / q.sum())\n    +'}','text')\n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -2859,6 +2865,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_general_health", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -2931,7 +2938,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var p=$('clsa-dcs-f1.Urine:QuestionnaireMetric.missingCount').asSequence()\nvar q=$('clsa-dcs-f1.Urine:QuestionnaireMetric.questionCount').asSequence()\nvar res=null\nif(q.size().gt(0).and(q.sum().gt(0)).value()){\n  res=newValue(\n    '{missing:'+\n    Math.round(100.0 * p.sum() / q.sum())\n    +'}','text')\n}\nres"
+            "value": "var p=$('clsa-dcs-f1.Urine:QuestionnaireMetric.missingCount').asSequence()\nvar q=$('clsa-dcs-f1.Urine:QuestionnaireMetric.questionCount').asSequence()\nvar res=null\nif(p.isNull().not().and(q.isNull().not(),p.size().gt(0),q.size().gt(0)).value()){\n  res=newValue(\n    '{missing:'+\n    Math.round(100.0 * p.sum() / q.sum())\n    +'}','text')\n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -2939,6 +2946,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_urine", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
