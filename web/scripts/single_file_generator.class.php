@@ -38,8 +38,8 @@ class single_file_generator extends table_generator
         'select fsz, count(fsz) as freq '.
         'from ( '.
         '  select '.
-        '    trim("}" from '.
-        '      substring_index(qcdata, ":", -1))/%s as fsz '.
+        '    cast(trim("}" from '.
+        '      substring_index(qcdata, ":", -1)) as decimal)/%s as fsz '.
         '  from interview i '.
         '  join stage s on i.id=s.interview_id '.
         '  where rank=%d '.
@@ -57,7 +57,7 @@ class single_file_generator extends table_generator
         'select min(fsz) as minsz, max(fsz) as maxsz '.
         'from ( '.
         '  select '.
-        '    trim("}" from substring_index(qcdata, ":", -1))/%s as fsz '.
+        '    cast( trim("}" from substring_index(qcdata, ":", -1)) as decimal)/%s as fsz '.
         '  from interview i '.
         '  join stage s on i.id=s.interview_id '.
         '  where rank=%d '.
@@ -79,7 +79,7 @@ class single_file_generator extends table_generator
       $sql = sprintf(
         'select avg(fsz) as favg '.
         'from ( '.
-        '  select trim("}" from substring_index(qcdata, ":", -1))/%s as fsz '.
+        '  select cast(trim("}" from substring_index(qcdata, ":", -1)) as decimal)/%s as fsz '.
         '  from interview i '.
         '  join stage s on i.id=s.interview_id '.
         '  where rank=%d '.
@@ -94,7 +94,7 @@ class single_file_generator extends table_generator
       $sql = sprintf(
         'select stddev(fsz) as fstd '.
         'from ( '.
-        '  select trim("}" from substring_index(qcdata, ":", -1))/%s as fsz '.
+        '  select cast(trim("}" from substring_index(qcdata, ":", -1)) as decimal)/%s as fsz '.
         '  from interview i '.
         '  join stage s on i.id=s.interview_id '.
         '  where rank=%d '.
@@ -117,15 +117,15 @@ class single_file_generator extends table_generator
 
     $sql .= sprintf(
       'sum(if(qcdata is null, 0, '.
-      'if(trim("}" from substring_index(qcdata,":",-1))<%d,1,0))) as total_filesize_sub, ',$filesize_min);
+      'if(cast(trim("}" from substring_index(qcdata,":",-1)) as signed)<%d,1,0))) as total_filesize_sub, ',$filesize_min);
 
     $sql .= sprintf(
       'sum(if(qcdata is null, 0, '.
-      'if(trim("}" from substring_index(qcdata,":",-1)) between %d and %d,1,0))) as total_filesize_par, ',$filesize_min,$filesize_max);
+      'if(cast(trim("}" from substring_index(qcdata,":",-1)) as signed) between %d and %d,1,0))) as total_filesize_par, ',$filesize_min,$filesize_max);
 
     $sql .= sprintf(
       'sum(if(qcdata is null, 0, '.
-      'if(trim("}" from substring_index(qcdata,":",-1))>%d,1,0))) as total_filesize_sup, ',$filesize_max);
+      'if(cast(trim("}" from substring_index(qcdata,":",-1)) as signed)>%d,1,0))) as total_filesize_sup, ',$filesize_max);
 
     $sql .= $this->get_main_query();
 
@@ -152,7 +152,7 @@ class single_file_generator extends table_generator
       $this->page_explanation[]=sprintf('filesize sup: size > %d (mean + %s x SD)', $filesize_max, $this->standard_deviation_scale);
     }
   }
-  
+
   public function set_file_scale( $_scale )
   {
     if( 0 < $_scale )

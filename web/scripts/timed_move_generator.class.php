@@ -34,9 +34,9 @@ class timed_move_generator extends table_generator
     $sql = sprintf(
       'select avg( '.
       '  if( qcdata is null, null, '.
-      '      substring_index( '.
+      '      cast(substring_index( '.
       '        substring_index( '.
-      '          qcdata,",",1), ":", -1 ) ) ) as t_avg '.
+      '          qcdata,",",1), ":", -1 ) as decimal ) ) ) as t_avg '.
       'from interview i '.
       'join stage s on i.id=s.interview_id '.
       'where rank=%d '.
@@ -53,9 +53,9 @@ class timed_move_generator extends table_generator
     $sql = sprintf(
       'select stddev( '.
       '  if( qcdata is null, null, '.
-      '      substring_index( '.
+      '      cast(substring_index( '.
       '        substring_index( '.
-      '          qcdata, ",",1),":", -1 ) ) ) as t_std '.
+      '          qcdata, ",",1),":", -1 ) as decimal ) ) ) as t_std '.
       'from interview i '.
       'join stage s on i.id=s.interview_id '.
       'where rank=%d '.
@@ -79,19 +79,19 @@ class timed_move_generator extends table_generator
 
     $sql .= sprintf(
       'sum(if(qcdata is null, 0, '.
-      'if(substring_index(substring_index(qcdata,",", 1),":",-1)<%d,1,0))) as total_test_time_sub, ',$test_time_min);
+      'if(cast(substring_index(substring_index(qcdata,",", 1),":",-1) as decimal)<%d,1,0))) as total_test_time_sub, ',$test_time_min);
 
     $sql .= sprintf(
       'sum(if(qcdata is null, 0, '.
-      'if(substring_index(substring_index(qcdata,",",1),":",-1) between %d and %d,1,0))) as total_test_time_par, ',$test_time_min,$test_time_max);
+      'if(cast(substring_index(substring_index(qcdata,",",1),":",-1) as decimal) between %d and %d,1,0))) as total_test_time_par, ',$test_time_min,$test_time_max);
 
     $sql .= sprintf(
       'sum(if(qcdata is null, 0, '.
-      'if(substring_index(substring_index(qcdata,",", 1),":",-1)>%d,1,0))) as total_test_time_sup, ',$test_time_max);
+      'if(cast(substring_index(substring_index(qcdata,",", 1),":",-1) as decimal)>%d,1,0))) as total_test_time_sup, ',$test_time_max);
 
     $sql .= sprintf(
       'sum(if(qcdata is null, 0, '.
-        'if(trim("}" from substring_index(qcdata,":",-1))>%d,1,0))) as total_incongruency, ', $this->congruency_threshold);
+        'if(cast(trim("}" from substring_index(qcdata,":",-1)) as decimal)>%s,1,0))) as total_incongruency, ', $this->congruency_threshold);
 
     $sql .= $this->get_main_query();
 

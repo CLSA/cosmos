@@ -82,10 +82,10 @@ class carotid_intima_generator extends table_generator
           '  ( '.
           '    select '.
           '      round( '.
-          '        trim("}" from '.
+          '        cast( trim("}" from '.
           '          substring_index( '.
           '            substring_index( '.
-          '              qcdata, ",", %d ), ":", -1))/%s,0) as fsz '.
+          '              qcdata, ",", %d ), ":", -1)) as unsigned)/%s,0) as fsz '.
           '    from interview i'.
           '    join stage s on i.id=s.interview_id'.
           '    where rank=%d'.
@@ -149,7 +149,7 @@ class carotid_intima_generator extends table_generator
     {
       $sum_sql[] = sprintf(
         'sum(if(qcdata is null, 0, '.
-        'if(trim("}" from substring_index(substring_index(qcdata,",",%d),":",-1))<%d,1,0))) ', $item, $filesize_min);
+        'if(cast(trim("}" from substring_index(substring_index(qcdata,",",%d),":",-1)) as unsigned)<%d,1,0))) ', $item, $filesize_min);
     }
     $sql .= implode( '+', $sum_sql ) . ' as total_filesize_sub, ';
 
@@ -158,7 +158,7 @@ class carotid_intima_generator extends table_generator
     {
       $sum_sql[] = sprintf(
         'sum(if(qcdata is null, 0, '.
-        'if(trim("}" from substring_index(substring_index(qcdata,",",%d),":",-1)) between %d and %d,1,0)))',
+        'if(cast(trim("}" from substring_index(substring_index(qcdata,",",%d),":",-1)) as unsigned) between %d and %d,1,0)))',
          $item, $filesize_min, $filesize_max);
     }
     $sql .= implode( ' + ', $sum_sql ) . ' as total_filesize_par, ';
@@ -168,7 +168,7 @@ class carotid_intima_generator extends table_generator
     {
       $sum_sql[] = sprintf(
         'sum(if(qcdata is null, 0, '.
-        'if(trim("}" from substring_index(substring_index(qcdata,",",%d),":",-1))>%d,1,0)))', $item, $filesize_max);
+        'if(cast(trim("}" from substring_index(substring_index(qcdata,",",%d),":",-1)) as unsigned)>%d,1,0)))', $item, $filesize_max);
     }
     $sql .= implode( ' + ', $sum_sql ) . ' as total_filesize_sup, ';
 
@@ -178,11 +178,11 @@ class carotid_intima_generator extends table_generator
     $and_sql = array();
     foreach($file_left as $index)
     {
-      $and_sql[] = sprintf('trim("}" from substring_index(substring_index(qcdata,",",%d),":",-1))>0', $index);
+      $and_sql[] = sprintf('cast(trim("}" from substring_index(substring_index(qcdata,",",%d),":",-1)) as signed)>0', $index);
     }
     foreach($file_right as $index)
     {
-      $and_sql[] = sprintf('trim("}" from substring_index(substring_index(qcdata,",",%d),":",-1))=0', $index);
+      $and_sql[] = sprintf('cast(trim("}" from substring_index(substring_index(qcdata,",",%d),":",-1)) as signed)=0', $index);
     }
     $sql .= 'sum(if(qcdata is null, 0, if( ' .
              implode( ' and ', $and_sql ) . ',1,0))) as total_left_' . $this->file_type . '_only, ';
@@ -190,11 +190,11 @@ class carotid_intima_generator extends table_generator
     $and_sql = array();
     foreach($file_right as $index)
     {
-      $and_sql[] = sprintf('trim("}" from substring_index(substring_index(qcdata,",",%d),":",-1))>0', $index);
+      $and_sql[] = sprintf('cast(trim("}" from substring_index(substring_index(qcdata,",",%d),":",-1)) as signed)>0', $index);
     }
     foreach($file_left as $index)
     {
-      $and_sql[] = sprintf('trim("}" from substring_index(substring_index(qcdata,",",%d),":",-1))=0', $index);
+      $and_sql[] = sprintf('cast(trim("}" from substring_index(substring_index(qcdata,",",%d),":",-1)) as signed)=0', $index);
     }
     $sql .= 'sum(if(qcdata is null, 0, if( ' .
              implode( ' and ', $and_sql ) . ',1,0))) as total_right_' . $this->file_type . '_only, ';
@@ -202,11 +202,11 @@ class carotid_intima_generator extends table_generator
     $and_sql = array();
     foreach($file_right as $index)
     {
-      $and_sql[] = sprintf('trim("}" from substring_index(substring_index(qcdata,",",%d),":",-1))>0', $index);
+      $and_sql[] = sprintf('cast(trim("}" from substring_index(substring_index(qcdata,",",%d),":",-1)) as signed)>0', $index);
     }
     foreach($file_left as $index)
     {
-      $and_sql[] = sprintf('trim("}" from substring_index(substring_index(qcdata,",",%d),":",-1))>0', $index);
+      $and_sql[] = sprintf('cast(trim("}" from substring_index(substring_index(qcdata,",",%d),":",-1)) as signed)>0', $index);
     }
     $sql .= 'sum(if(qcdata is null, 0, if( ' .
              implode( ' and ', $and_sql ) . ',1,0))) as total_both_' . $this->file_type . ', ';

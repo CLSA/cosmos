@@ -1609,10 +1609,10 @@ res</attribute>
           <attribute name="script" valueType="text">var p=$(&apos;clsa-dcs-f2.ContraIndications:QuestionnaireMetric.missingCount&apos;).asSequence()
 var q=$(&apos;clsa-dcs-f2.ContraIndications:QuestionnaireMetric.questionCount&apos;).asSequence()
 var res=null
-if(p.isNull().not().and(q.isNull().not(),p.size().gt(0),q.size().gt(0)).value()){
+if($id().isNull().or(p.isNull(),q.isNull(),p.empty(),q.empty()).not().value() &amp;&amp; q.sum()!=0){
   res=newValue(
-    &apos;{missing:&apos;+
-    Math.round(100.0 * p.sum() / q.sum())
+    &apos;{complete:&apos;+
+    Math.round(100.0*(q.sum()-p.sum())/q.sum())
     +&apos;}&apos;,&apos;text&apos;)
 }
 res</attribute>
@@ -1657,12 +1657,12 @@ res</attribute>
           <attribute name="script" valueType="text">var p=$(&apos;clsa-dcs-f2.EventPMT:QuestionnaireMetric.missingCount&apos;).asSequence()
 var q=$(&apos;clsa-dcs-f2.EventPMT:QuestionnaireMetric.questionCount&apos;).asSequence()
 var res=null
-if(p.isNull().not().and(q.isNull().not(),p.size().gt(0),q.size().gt(0)).value()){
+if($id().isNull().or(p.isNull(),q.isNull(),p.empty(),q.empty()).not().value() &amp;&amp; q.sum()!=0){
   res=newValue(
-    &apos;{missing:&apos;+
-    Math.round(100.0 * p.sum() / q.sum())
+    &apos;{complete:&apos;+
+    Math.round(100.0*(q.sum()-p.sum())/q.sum())
     +&apos;}&apos;,&apos;text&apos;)
-}
+}   
 res</attribute>
         </attributes>
       </variable>
@@ -1705,10 +1705,10 @@ res</attribute>
           <attribute name="script" valueType="text">var p=$(&apos;clsa-dcs-f2.DiseaseSymptoms:QuestionnaireMetric.missingCount&apos;).asSequence()
 var q=$(&apos;clsa-dcs-f2.DiseaseSymptoms:QuestionnaireMetric.questionCount&apos;).asSequence()
 var res=null
-if(p.isNull().not().and(q.isNull().not(),p.size().gt(0),q.size().gt(0)).value()){
+if($id().isNull().or(p.isNull(),q.isNull(),p.empty(),q.empty()).not().value() &amp;&amp; q.sum()!=0){
   res=newValue(
-    &apos;{missing:&apos;+
-    Math.round(100.0 * p.sum() / q.sum())
+    &apos;{complete:&apos;+
+    Math.round(100.0*(q.sum()-p.sum())/q.sum())
     +&apos;}&apos;,&apos;text&apos;)
 }
 res</attribute>
@@ -1802,10 +1802,10 @@ res</attribute>
           <attribute name="script" valueType="text">var p=$(&apos;clsa-dcs-f2.QuestionnaireBoneDensity:QuestionnaireMetric.missingCount&apos;).asSequence()
 var q=$(&apos;clsa-dcs-f2.QuestionnaireBoneDensity:QuestionnaireMetric.questionCount&apos;).asSequence()
 var res=null
-if(p.isNull().not().and(q.isNull().not(),p.size().gt(0),q.size().gt(0)).value()){
+if($id().isNull().or(p.isNull(),q.isNull(),p.empty(),q.empty()).not().value() &amp;&amp; q.sum()!=0){
   res=newValue(
-    &apos;{missing:&apos;+
-    Math.round(100.0 * p.sum() / q.sum())
+    &apos;{complete:&apos;+
+    Math.round(100.0*(q.sum()-p.sum())/q.sum())
     +&apos;}&apos;,&apos;text&apos;)
 }
 res</attribute>
@@ -1900,10 +1900,10 @@ res</attribute>
           <attribute name="script" valueType="text">var p=$(&apos;clsa-dcs-f2.TimeBasedProspectiveMemoryTask:QuestionnaireMetric.missingCount&apos;).asSequence()
 var q=$(&apos;clsa-dcs-f2.TimeBasedProspectiveMemoryTask:QuestionnaireMetric.questionCount&apos;).asSequence()
 var res=null
-if(p.isNull().not().and(q.isNull().not(),p.size().gt(0),q.size().gt(0)).value()){
+if($id().isNull().or(p.isNull(),q.isNull(),p.empty(),q.empty()).not().value() &amp;&amp; q.sum()!=0){
   res=newValue(
-    &apos;{missing:&apos;+
-    Math.round(100.0 * p.sum() / q.sum())
+    &apos;{complete:&apos;+
+    Math.round(100.0*(q.sum()-p.sum())/q.sum())
     +&apos;}&apos;,&apos;text&apos;)
 }
 res</attribute>
@@ -2001,10 +2001,10 @@ res</attribute>
           <attribute name="script" valueType="text">var p=$(&apos;clsa-dcs-f2.SocialNetwork:QuestionnaireMetric.missingCount&apos;).asSequence()
 var q=$(&apos;clsa-dcs-f2.SocialNetwork:QuestionnaireMetric.questionCount&apos;).asSequence()
 var res=null
-if(p.isNull().not().and(q.isNull().not(),p.size().gt(0),q.size().gt(0)).value()){
+if($id().isNull().or(p.isNull(),q.isNull(),p.empty(),q.empty()).not().value() &amp;&amp; q.sum()!=0){
   res=newValue(
-    &apos;{missing:&apos;+
-    Math.round(100.0 * p.sum() / q.sum())
+    &apos;{complete:&apos;+
+    Math.round(100.0*(q.sum()-p.sum())/q.sum())
     +&apos;}&apos;,&apos;text&apos;)
 }
 res</attribute>
@@ -2049,10 +2049,10 @@ res</attribute>
           <attribute name="script" valueType="text">var p=$(&apos;clsa-dcs-f2.GenHealth:QuestionnaireMetric.missingCount&apos;).asSequence()
 var q=$(&apos;clsa-dcs-f2.GenHealth:QuestionnaireMetric.questionCount&apos;).asSequence()
 var res=null
-if(p.isNull().not().and(q.isNull().not(),p.size().gt(0),q.size().gt(0)).value()){
+if($id().isNull().or(p.isNull(),q.isNull(),p.empty(),q.empty()).not().value() &amp;&amp; q.sum()!=0){
   res=newValue(
-    &apos;{missing:&apos;+
-    Math.round(100.0 * p.sum() / q.sum())
+    &apos;{complete:&apos;+
+    Math.round(100.0*(q.sum()-p.sum())/q.sum())
     +&apos;}&apos;,&apos;text&apos;)
 }
 res</attribute>
@@ -2097,10 +2097,10 @@ res</attribute>
           <attribute name="script" valueType="text">var p=$(&apos;clsa-dcs-f2.OSIPV:QuestionnaireMetric.missingCount&apos;).asSequence()
 var q=$(&apos;clsa-dcs-f2.OSIPV:QuestionnaireMetric.questionCount&apos;).asSequence()
 var res=null
-if(p.isNull().not().and(q.isNull().not(),p.size().gt(0),q.size().gt(0)).value()){
+if($id().isNull().or(p.isNull(),q.isNull(),p.empty(),q.empty()).not().value() &amp;&amp; q.sum()!=0){
   res=newValue(
-    &apos;{missing:&apos;+
-    Math.round(100.0 * p.sum() / q.sum())
+    &apos;{complete:&apos;+
+    Math.round(100.0*(q.sum()-p.sum())/q.sum())
     +&apos;}&apos;,&apos;text&apos;)
 }
 res</attribute>
@@ -2145,10 +2145,10 @@ res</attribute>
           <attribute name="script" valueType="text">var p=$(&apos;clsa-dcs-f2.Urine:QuestionnaireMetric.missingCount&apos;).asSequence()
 var q=$(&apos;clsa-dcs-f2.Urine:QuestionnaireMetric.questionCount&apos;).asSequence()
 var res=null
-if(p.isNull().not().and(q.isNull().not(),p.size().gt(0),q.size().gt(0)).value()){
+if($id().isNull().or(p.isNull(),q.isNull(),p.empty(),q.empty()).not().value() &amp;&amp; q.sum()!=0){
   res=newValue(
-    &apos;{missing:&apos;+
-    Math.round(100.0 * p.sum() / q.sum())
+    &apos;{complete:&apos;+
+    Math.round(100.0*(q.sum()-p.sum())/q.sum())
     +&apos;}&apos;,&apos;text&apos;)
 }
 res</attribute>
@@ -2165,5 +2165,5 @@ res</attribute>
     </variables>
   </variables>
   <created valueType="datetime">2018-05-15T13:40:50.956-04</created>
-  <updated valueType="datetime">2018-08-07T14:21:05.255-04</updated>
+  <updated valueType="datetime">2018-08-08T09:34:26.904-04</updated>
 </org.obiba.magma.views.View>

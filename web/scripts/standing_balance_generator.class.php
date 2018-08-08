@@ -30,9 +30,9 @@ class standing_balance_generator extends table_generator
       '('.
       '  ( '.
       '    select '.
+      '      cast( substring_index( '.
       '        substring_index( '.
-      '          substring_index( '.
-      '            qcdata, ",", 2 ), ":", -1) as s_time '.
+      '          qcdata, ",", 2 ), ":", -1) as decimal) as s_time '.
       '    from interview i '.
       '    join stage s on i.id=s.interview_id '.
       '    where rank=%d '.
@@ -42,10 +42,10 @@ class standing_balance_generator extends table_generator
       '  union all '.
       '  ( '.
       '    select '.
-      '      trim( "}" from '.
+      '      cast( trim( "}" from '.
       '        substring_index( '.
       '          substring_index( '.
-      '            qcdata, ",", -1 ), ":", -1 ) ) as s_time '.
+      '            qcdata, ",", -1 ), ":", -1 ) ) as decimal) as s_time '.
       '    from interview i '.
       '    join stage s on i.id=s.interview_id '.
       '    where rank=%d '.
@@ -70,9 +70,9 @@ class standing_balance_generator extends table_generator
       '('.
       '  ( '.
       '    select '.
+      '      cast( substring_index( '.
       '        substring_index( '.
-      '          substring_index( '.
-      '            qcdata, ",", 2 ), ":", -1) as s_time '.
+      '          qcdata, ",", 2 ), ":", -1) as decimal) as s_time '.
       '    from interview i '.
       '    join stage s on i.id=s.interview_id '.
       '    where rank=%d '.
@@ -82,10 +82,10 @@ class standing_balance_generator extends table_generator
       '  union all '.
       '  ( '.
       '    select '.
-      '      trim( "}" from '.
+      '      cast( trim( "}" from '.
       '        substring_index( '.
       '          substring_index( '.
-      '            qcdata, ",", -1 ), ":", -1 ) ) as s_time '.
+      '            qcdata, ",", -1 ), ":", -1 ) ) as decimal) as s_time '.
       '    from interview i '.
       '    join stage s on i.id=s.interview_id '.
       '    where rank=%d '.
@@ -113,15 +113,15 @@ class standing_balance_generator extends table_generator
 
     $sql .= sprintf(
       'sum(if(qcdata is null, 0, '.
-      'if(substring_index(substring_index(qcdata,",",1),":",-1)<%s,1,0))) as total_best_time_sub, ',$time_min);
+      'if(cast(substring_index(substring_index(qcdata,",",1),":",-1) as decimal)<%s,1,0))) as total_best_time_sub, ',$time_min);
 
     $sql .= sprintf(
       'sum(if(qcdata is null, 0, '.
-      'if(substring_index(substring_index(qcdata,",",1),":",-1) between %s and %s,1,0))) as total_best_time_par, ',$time_min,$time_max);
+      'if(cast(substring_index(substring_index(qcdata,",",1),":",-1) as decimal) between %s and %s,1,0))) as total_best_time_par, ',$time_min,$time_max);
 
     $sql .= sprintf(
       'sum(if(qcdata is null, 0, '.
-      'if(substring_index(substring_index(qcdata,",",1),":",-1)>%s,1,0))) as total_best_time_sup, ',$time_max);
+      'if(cast(substring_index(substring_index(qcdata,",",1),":",-1) as decimal)>%s,1,0))) as total_best_time_sup, ',$time_max);
 
     $sql .= $this->get_main_query();
 

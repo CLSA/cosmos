@@ -40,9 +40,9 @@ class dual_file_generator extends table_generator
         '  ( '.
         '    select '.
         '      round( '.
-        '        substring_index( '.
+        '        cast(substring_index( '.
         '          substring_index( '.
-        '            qcdata, ",", 1 ), ":", -1)/%s,0) as fsz '.
+        '            qcdata, ",", 1 ), ":", -1) as decimal)/%s,0) as fsz '.
         '    from interview i'.
         '    join stage s on i.id=s.interview_id'.
         '    where rank=%d'.
@@ -52,10 +52,11 @@ class dual_file_generator extends table_generator
         '  union all '.
         '  ( '.
         '    select '.
-        '      round(trim( "}" from '.
-        '        substring_index( '.
+        '      round( '.
+        '        cast(trim( "}" from '.
         '          substring_index( '.
-        '            qcdata, ",", -1 ), ":", -1 ) )/%s,0) as fsz '.
+        '            substring_index( '.
+        '              qcdata, ",", -1 ), ":", -1 ) ) as decimal)/%s,0) as fsz '.
         '    from interview i '.
         '    join stage s on i.id=s.interview_id '.
         '    where rank=%d '.
@@ -77,9 +78,9 @@ class dual_file_generator extends table_generator
         '  ( '.
         '    select '.
         '      round( '.
-        '        substring_index( '.
+        '        cast(substring_index( '.
         '          substring_index( '.
-        '            qcdata, ",", 1 ), ":", -1)/%s,0) as fsz '.
+        '            qcdata, ",", 1 ), ":", -1) as decimal)/%s,0) as fsz '.
         '    from interview i '.
         '    join stage s on i.id=s.interview_id '.
         '    where rank=%d '.
@@ -89,10 +90,11 @@ class dual_file_generator extends table_generator
         '  union all '.
         '  ( '.
         '    select '.
-        '      round(trim( "}" from '.
-        '        substring_index( '.
+        '      round( '.
+        '        cast(trim( "}" from '.
         '          substring_index( '.
-        '            qcdata, ",", -1 ), ":", -1 ) )/%s,0) as fsz '.
+        '            substring_index( '.
+        '              qcdata, ",", -1 ), ":", -1 ) ) as decimal)/%s,0) as fsz '.
         '    from interview i '.
         '    join stage s on i.id=s.interview_id '.
         '    where rank=%d '.
@@ -119,9 +121,9 @@ class dual_file_generator extends table_generator
         '  ( '.
         '    select '.
         '      round( '.
-        '        substring_index( '.
+        '        cast(substring_index( '.
         '          substring_index( '.
-        '            qcdata, ",", 1 ), ":", -1)/%s,0) as fsz '.
+        '            qcdata, ",", 1 ), ":", -1) as decimal)/%s,0) as fsz '.
         '    from interview i'.
         '    join stage s on i.id=s.interview_id'.
         '    where rank=%d'.
@@ -131,10 +133,11 @@ class dual_file_generator extends table_generator
         '  union all '.
         '  ( '.
         '    select '.
-        '      round(trim( "}" from '.
-        '        substring_index( '.
+        '      round( '.
+        '        cast(trim( "}" from '.
         '          substring_index( '.
-        '            qcdata, ",", -1 ), ":", -1 ) )/%s,0) as fsz '.
+        '            substring_index( '.
+        '              qcdata, ",", -1 ), ":", -1 ) ) as decimal)/%s,0) as fsz '.
         '    from interview i '.
         '    join stage s on i.id=s.interview_id '.
         '    where rank=%d '.
@@ -155,9 +158,9 @@ class dual_file_generator extends table_generator
         '  ( '.
         '    select '.
         '      round( '.
-        '        substring_index( '.
+        '        cast(substring_index( '.
         '          substring_index( '.
-        '            qcdata, ",", 1 ), ":", -1)/%s,0) as fsz '.
+        '            qcdata, ",", 1 ), ":", -1) as decimal)/%s,0) as fsz '.
         '    from interview i '.
         '    join stage s on i.id=s.interview_id '.
         '    where rank=%d '.
@@ -167,10 +170,11 @@ class dual_file_generator extends table_generator
         '  union all '.
         '  ( '.
         '    select '.
-        '      round(trim( "}" from '.
-        '        substring_index( '.
+        '      round( '.
+        '        cast(trim( "}" from '.
         '          substring_index( '.
-        '            qcdata, ",", -1 ), ":", -1 ) )/%s,0) as fsz '.
+        '            substring_index( '.
+        '              qcdata, ",", -1 ), ":", -1 ) ) as decimal)/%s,0) as fsz '.
         '    from interview i '.
         '    join stage s on i.id=s.interview_id '.
         '    where rank=%d '.
@@ -196,46 +200,46 @@ class dual_file_generator extends table_generator
 
     $sql .= sprintf(
       'sum(if(qcdata is null, 0, '.
-      'if(substring_index(substring_index(qcdata,",",1),":",-1)<%d,1,0))) + ',$filesize_min);
+      'if(cast(substring_index(substring_index(qcdata,",",1),":",-1) as signed)<%d,1,0))) + ',$filesize_min);
 
     $sql .= sprintf(
       'sum(if(qcdata is null, 0, '.
-      'if(trim("}" from substring_index(substring_index(qcdata,",",-1),":",-1))<%d,1,0))) as total_filesize_sub, ',$filesize_min);
+      'if(cast(trim("}" from substring_index(substring_index(qcdata,",",-1),":",-1)) as signed)<%d,1,0))) as total_filesize_sub, ',$filesize_min);
 
     $sql .= sprintf(
       'sum(if(qcdata is null, 0, '.
-      'if(substring_index(substring_index(qcdata,",",1),":",-1) between %d and %d,1,0))) + ',
+      'if(cast(substring_index(substring_index(qcdata,",",1),":",-1) as signed) between %d and %d,1,0))) + ',
        $filesize_min,$filesize_max);
 
     $sql .= sprintf(
       'sum(if(qcdata is null, 0, '.
-      'if(trim("}" from substring_index(substring_index(qcdata,",",-1),":",-1)) between %d and %d,1,0))) as total_filesize_par, ',
+      'if(cast(trim("}" from substring_index(substring_index(qcdata,",",-1),":",-1)) as signed) between %d and %d,1,0))) as total_filesize_par, ',
        $filesize_min,$filesize_max);
 
     $sql .= sprintf(
       'sum(if(qcdata is null, 0, '.
-      'if(substring_index(substring_index(qcdata,",",1),":",-1)>%d,1,0))) + ',$filesize_max);
+      'if(cast(substring_index(substring_index(qcdata,",",1),":",-1) as signed)>%d,1,0))) + ',$filesize_max);
 
     $sql .= sprintf(
       'sum(if(qcdata is null, 0, '.
-      'if(trim("}" from substring_index(substring_index(qcdata,",",-1),":",-1))>%d,1,0))) as total_filesize_sup, ',$filesize_max);
+      'if(cast(trim("}" from substring_index(substring_index(qcdata,",",-1),":",-1)) as signed)>%d,1,0))) as total_filesize_sup, ',$filesize_max);
 
     $sql .=
       'sum(if(qcdata is null, 0, '.
-      'if(substring_index(substring_index(qcdata,",",1),":",-1)>0 and
-         trim("}" from substring_index(substring_index(qcdata,",",-1),":",-1))=0
+      'if(cast(substring_index(substring_index(qcdata,",",1),":",-1) as signed)>0 and
+         cast(trim("}" from substring_index(substring_index(qcdata,",",-1),":",-1)) as signed)=0
       ,1,0))) as total_left_file, ';
 
     $sql .=
       'sum(if(qcdata is null, 0, '.
-      'if(substring_index(substring_index(qcdata,",",1),":",-1)=0 and
-         trim("}" from substring_index(substring_index(qcdata,",",-1),":",-1))>0
+      'if(cast(substring_index(substring_index(qcdata,",",1),":",-1) as signed)=0 and
+         cast(trim("}" from substring_index(substring_index(qcdata,",",-1),":",-1)) as signed)>0
       ,1,0))) as total_right_file, ';
 
     $sql .=
       'sum(if(qcdata is null, 0, '.
-      'if(substring_index(substring_index(qcdata,",",1),":",-1)>0 and
-         trim("}" from substring_index(substring_index(qcdata,",",-1),":",-1))>0
+      'if(cast(substring_index(substring_index(qcdata,",",1),":",-1) as signed)>0 and
+         cast(trim("}" from substring_index(substring_index(qcdata,",",-1),":",-1)) as signed)>0
       ,1,0))) as total_both_file, ';
 
     $sql .= $this->get_main_query();

@@ -27,9 +27,9 @@ class trial_generator extends table_generator
       'ifnull(t.name,"NA") as tech, '.
       'site.name as site, ';
 
-    $sql .= sprintf('sum(if(qcdata is null, 0, if(trim("}" from substring_index(qcdata,":",-1))<%s,1,0))) as total_trial_sub, ', $this->trial_target);
-    $sql .= sprintf('sum(if(qcdata is null, 0, if(trim("}" from substring_index(qcdata,":",-1))=%s,1,0))) as total_trial_par, ', $this->trial_target);
-    $sql .= sprintf('sum(if(qcdata is null, 0, if(trim("}" from substring_index(qcdata,":",-1))>%s,1,0))) as total_trial_sup, ', $this->trial_target);
+    $sql .= sprintf('sum(if(qcdata is null, 0, if(cast(trim("}" from substring_index(qcdata,":",-1)) as signed)<%s,1,0))) as total_trial_sub, ', $this->trial_target);
+    $sql .= sprintf('sum(if(qcdata is null, 0, if(cast(trim("}" from substring_index(qcdata,":",-1)) as signed)=%s,1,0))) as total_trial_par, ', $this->trial_target);
+    $sql .= sprintf('sum(if(qcdata is null, 0, if(cast(trim("}" from substring_index(qcdata,":",-1)) as signed)>%s,1,0))) as total_trial_sup, ', $this->trial_target);
 
     $sql .= $this->get_main_query();
 

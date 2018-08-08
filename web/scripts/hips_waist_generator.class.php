@@ -27,10 +27,10 @@ class hips_waist_generator extends table_generator
     $sql = sprintf(
       'select avg( '.
       '  if( qcdata is null, null, '.
-      '      trim("}" from '.
+      '    cast( trim("}" from '.
+      '      substring_index( '.
       '        substring_index( '.
-      '          substring_index( '.
-      '            qcdata, ",", 4), ":", -1 ) ) ) ) as r_avg '.
+      '          qcdata, ",", 4), ":", -1 ) ) as decimal ) ) ) as r_avg '.
       'from interview i '.
       'join stage s on i.id=s.interview_id '.
       'where rank=%d '.
@@ -47,10 +47,10 @@ class hips_waist_generator extends table_generator
     $sql = sprintf(
       'select stddev( '.
       '  if( qcdata is null, null, '.
-      '      trim("}" from '.
+      '    cast( trim("}" from '.
+      '      substring_index( '.
       '        substring_index( '.
-      '          substring_index( '.
-      '            qcdata, ",", 4), ":", -1 ) ) ) ) as r_avg '.
+      '          qcdata, ",", 4), ":", -1 ) ) as decimal ) ) ) as r_std '.
       'from interview i '.
       'join stage s on i.id=s.interview_id '.
       'where rank=%d '.
@@ -86,15 +86,15 @@ class hips_waist_generator extends table_generator
 
     $sql .= sprintf(
       'sum(if(qcdata is null, 0, '.
-      'if(trim("}" from substring_index(substring_index(qcdata,",",4),":",-1))<%s,1,0))) as total_ratio_sub, ',$ratio_min);
+      'if(cast(trim("}" from substring_index(substring_index(qcdata,",",4),":",-1)) as decimal)<%s,1,0))) as total_ratio_sub, ',$ratio_min);
 
     $sql .= sprintf(
       'sum(if(qcdata is null, 0, '.
-      'if(trim("}" from substring_index(substring_index(qcdata,",",4),":",-1)) between %s and %s,1,0))) as total_ratio_par, ',$ratio_min,$ratio_max);
+      'if(cast(trim("}" from substring_index(substring_index(qcdata,",",4),":",-1)) as decimal) between %s and %s,1,0))) as total_ratio_par, ',$ratio_min,$ratio_max);
 
     $sql .= sprintf(
       'sum(if(qcdata is null, 0, '.
-      'if(trim("}" from substring_index(qcdata,":",-1))>%s,1,0))) as total_ratio_sup, ',$ratio_max);
+      'if(cast(trim("}" from substring_index(qcdata,":",-1)) as decimal)>%s,1,0))) as total_ratio_sup, ',$ratio_max);
 
     $sql .= $this->get_main_query();
 

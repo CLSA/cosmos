@@ -23,10 +23,10 @@ class vision_acuity_generator extends table_generator
       'ifnull(t.name,"NA") as tech, '.
       'site.name as site, ';
 
-    $sql .= 'sum(if(qcdata is null, 0, if(substring_index(substring_index(qcdata,",",1),":",-1) between 0 and 1,1,0))) as total_left_sub, ';
-    $sql .= 'sum(if(qcdata is null, 0, if(substring_index(substring_index(qcdata,",",1),":",-1)=2,1,0))) as total_left_par, ';
-    $sql .= 'sum(if(qcdata is null, 0, if(substring_index(substring_index(qcdata,",",-1),":",-1) between 0 and 1,1,0))) as total_right_sub, ';
-    $sql .= 'sum(if(qcdata is null, 0, if(substring_index(substring_index(qcdata,",",-1),":",-1)=2,1,0))) as total_right_par, ';
+    $sql .= 'sum(if(qcdata is null, 0, if(cast(substring_index(substring_index(qcdata,",",1),":",-1) as unsigned) between 0 and 1,1,0))) as total_left_sub, ';
+    $sql .= 'sum(if(qcdata is null, 0, if(cast(substring_index(substring_index(qcdata,",",1),":",-1) as unsigned)=2,1,0))) as total_left_par, ';
+    $sql .= 'sum(if(qcdata is null, 0, if(cast(substring_index(substring_index(qcdata,",",-1),":",-1) as unsigned) between 0 and 1,1,0))) as total_right_sub, ';
+    $sql .= 'sum(if(qcdata is null, 0, if(cast(substring_index(substring_index(qcdata,",",-1),":",-1) as unsigned)=2,1,0))) as total_right_par, ';
 
     $sql .= $this->get_main_query();
 

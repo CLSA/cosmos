@@ -28,37 +28,37 @@ class tonometer_generator extends table_generator
 
     $sql .=
       'sum(if(qcdata is null, 0, '.
-      'if(substring_index(substring_index(qcdata,",",2),":",-1)<2.5,1,0))) as total_quality_low_left, ';
+      'if(cast(substring_index(substring_index(qcdata,",",2),":",-1) as decimal)<2.5,1,0))) as total_quality_low_left, ';
 
     $sql .=
       'sum(if(qcdata is null, 0, '.
-      'if(substring_index(substring_index(qcdata,",",2),":",-1) between 2.5 and 7.5,1,0))) as total_quality_medium_left, ';
+      'if(cast(substring_index(substring_index(qcdata,",",2),":",-1) as decimal) between 2.5 and 7.5,1,0))) as total_quality_medium_left, ';
 
     $sql .=
       'sum(if(qcdata is null, 0, '.
-      'if(substring_index(substring_index(qcdata,",",2),":",-1)>7.5,1,0))) as total_quality_high_left, ';
+      'if(cast(substring_index(substring_index(qcdata,",",2),":",-1) as decimal)>7.5,1,0))) as total_quality_high_left, ';
 
     $sql .=
       'sum(if(qcdata is null, 0, '.
-      'if(substring_index(substring_index(qcdata,",",6),":",-1)<2.5,1,0))) as total_quality_low_right, ';
+      'if(cast(substring_index(substring_index(qcdata,",",6),":",-1) as decimal)<2.5,1,0))) as total_quality_low_right, ';
 
     $sql .=
       'sum(if(qcdata is null, 0, '.
-      'if(substring_index(substring_index(qcdata,",",6),":",-1) between 2.5 and 7.5,1,0))) as total_quality_medium_right, ';
+      'if(cast(substring_index(substring_index(qcdata,",",6),":",-1) as decimal) between 2.5 and 7.5,1,0))) as total_quality_medium_right, ';
 
     $sql .=
       'sum(if(qcdata is null, 0, '.
-      'if(substring_index(substring_index(qcdata,",",6),":",-1)>7.5,1,0))) as total_quality_high_right, ';
+      'if(cast(substring_index(substring_index(qcdata,",",6),":",-1) as decimal)>7.5,1,0))) as total_quality_high_right, ';
 
     $sql .=
       'sum(if(qcdata is null, 0, '.
-      'if(substring_index(substring_index(qcdata,",",3),":",-1)=400 AND '.
-      '   substring_index(substring_index(qcdata,",",4),":",-1)=400,1,0))) as total_curve_left, ';
+      'if(cast(substring_index(substring_index(qcdata,",",3),":",-1) as signed)=400 AND '.
+      '   cast(substring_index(substring_index(qcdata,",",4),":",-1) as signed)=400,1,0))) as total_curve_left, ';
 
     $sql .=
       'sum(if(qcdata is null, 0, '.
-      'if(substring_index(substring_index(qcdata,",",7),":",-1)=400 AND '.
-      '   trim("}" from substring_index(substring_index(qcdata,",",8),":",-1))=400,1,0))) as total_curve_right, ';
+      'if(cast(substring_index(substring_index(qcdata,",",7),":",-1) as signed)=400 AND '.
+      '   cast(trim("}" from substring_index(substring_index(qcdata,",",8),":",-1)) as signed)=400,1,0))) as total_curve_right, ';
 
     $sql .= $this->get_main_query();
 

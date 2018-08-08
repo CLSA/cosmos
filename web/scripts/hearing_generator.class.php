@@ -23,12 +23,12 @@ class hearing_generator extends table_generator
       'ifnull(t.name,"NA") as tech, '.
       'site.name as site, ';
 
-    $sql .= 'sum(if(qcdata is null, 0, if(substring_index(substring_index(qcdata,",",3),":",-1)=0,0,1))) as total_left_error_only, ';
-    $sql .= 'sum(if(qcdata is null, 0, if(substring_index(substring_index(qcdata,",",1),":",-1) between 1 and 7,1,0))) as total_left_sub, ';
-    $sql .= 'sum(if(qcdata is null, 0, if(substring_index(substring_index(qcdata,",",1),":",-1)=8,1,0))) as total_left_par, ';
-    $sql .= 'sum(if(qcdata is null, 0, if(trim("}" from substring_index(substring_index(qcdata,",",4),":",-1))=0,0,1))) as total_right_error_only, ';
-    $sql .= 'sum(if(qcdata is null, 0, if(substring_index(substring_index(qcdata,",",2),":",-1) between 1 and 7,1,0))) as total_right_sub, ';
-    $sql .= 'sum(if(qcdata is null, 0, if(substring_index(substring_index(qcdata,",",2),":",-1)=8,1,0))) as total_right_par, ';
+    $sql .= 'sum(if(qcdata is null, 0, if(cast(substring_index(substring_index(qcdata,",",3),":",-1) as unsigned)=0,0,1))) as total_left_error_only, ';
+    $sql .= 'sum(if(qcdata is null, 0, if(cast(substring_index(substring_index(qcdata,",",1),":",-1) as unsigned) between 1 and 7,1,0))) as total_left_sub, ';
+    $sql .= 'sum(if(qcdata is null, 0, if(cast(substring_index(substring_index(qcdata,",",1),":",-1) as unsigned)=8,1,0))) as total_left_par, ';
+    $sql .= 'sum(if(qcdata is null, 0, if(cast(trim("}" from substring_index(substring_index(qcdata,",",4),":",-1)) as unsigned)=0,0,1))) as total_right_error_only, ';
+    $sql .= 'sum(if(qcdata is null, 0, if(cast(substring_index(substring_index(qcdata,",",2),":",-1) as unsigned) between 1 and 7,1,0))) as total_right_sub, ';
+    $sql .= 'sum(if(qcdata is null, 0, if(cast(substring_index(substring_index(qcdata,",",2),":",-1) as unsigned)=8,1,0))) as total_right_par, ';
 
     $sql .= $this->get_main_query();
 

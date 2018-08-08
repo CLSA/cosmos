@@ -40,8 +40,8 @@ class ecg_generator extends table_generator
         'select fsz, count(fsz) as freq '.
         'from ( '.
         '  select round( '.
-        '    substring_index( '.
-        '      substring_index(qcdata, ",", 1 ), ":", -1)/%s,0) as fsz '.
+        '    cast(substring_index( '.
+        '      substring_index(qcdata, ",", 1 ), ":", -1) as decimal)/%s,0) as fsz '.
         '  from interview i '.
         '  join stage s on i.id=s.interview_id '.
         '  where rank=%d '.
@@ -59,8 +59,8 @@ class ecg_generator extends table_generator
         'select min(fsz) as minsz, max(fsz) as maxsz '.
         'from ( '.
         '  select round('.
-        '    substring_index( '.
-        '      substring_index(qcdata, ",", 1), ":", -1)/%s) as fsz '.
+        '    cast(substring_index( '.
+        '      substring_index(qcdata, ",", 1), ":", -1) as decimal)/%s) as fsz '.
         '  from interview i '.
         '  join stage s on i.id=s.interview_id '.
         '  where rank=%d '.
@@ -83,8 +83,8 @@ class ecg_generator extends table_generator
         'select avg(fsz) as favg '.
         'from ( '.
         '  select round( '.
-        '    substring_index( '.
-        '      substring_index(qcdata, ",", 1 ), ":", -1)/%s,0) as fsz '.
+        '    cast(substring_index( '.
+        '      substring_index(qcdata, ",", 1 ), ":", -1) as decimal)/%s,0) as fsz '.
         '  from interview i '.
         '  join stage s on i.id=s.interview_id '.
         '  where rank=%d '.
@@ -100,8 +100,8 @@ class ecg_generator extends table_generator
         'select stddev(fsz) as fstd '.
         'from ( '.
         '  select round('.
-        '    substring_index( '.
-        '      substring_index(qcdata, ",", 1), ":", -1)/%s) as fsz '.
+        '    cast(substring_index( '.
+        '      substring_index(qcdata, ",", 1), ":", -1) as decimal)/%s) as fsz '.
         '  from interview i '.
         '  join stage s on i.id=s.interview_id '.
         '  where rank=%d '.
@@ -124,17 +124,17 @@ class ecg_generator extends table_generator
 
     $sql .= sprintf(
       'sum(if(qcdata is null, 0, '.
-      'if(substring_index(substring_index(qcdata,",",1),":",-1)<%d,1,0))) as total_filesize_sub, ',$filesize_min);
+      'if(cast(substring_index(substring_index(qcdata,",",1),":",-1) as signed)<%d,1,0))) as total_filesize_sub, ',$filesize_min);
 
     $sql .= sprintf(
       'sum(if(qcdata is null, 0, '.
-      'if(substring_index(substring_index(qcdata,",",1),":",-1) between %d and %d,1,0))) as total_filesize_par, ',$filesize_min,$filesize_max);
+      'if(cast(substring_index(substring_index(qcdata,",",1),":",-1) as signed) between %d and %d,1,0))) as total_filesize_par, ',$filesize_min,$filesize_max);
 
     $sql .= sprintf(
       'sum(if(qcdata is null, 0, '.
-      'if(substring_index(substring_index(qcdata,",",1),":",-1)>%d,1,0))) as total_filesize_sup, ',$filesize_max);
+      'if(cast(substring_index(substring_index(qcdata,",",1),":",-1) as signed)>%d,1,0))) as total_filesize_sup, ',$filesize_max);
 
-    $sql .= 'sum(if(qcdata is null, 0, 1-trim("}" from substring_index(qcdata,":",-1)))) as total_poor_quality, ';
+    $sql .= 'sum(if(qcdata is null, 0, 1-cast(trim("}" from substring_index(qcdata,":",-1)) as signed))) as total_poor_quality, ';
 
     $sql .= $this->get_main_query();
 

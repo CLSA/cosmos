@@ -54,22 +54,22 @@ class repeated_measure_generator extends table_generator
 
     $sql .= sprintf(
       'sum(if(qcdata is null, 0, '.
-      'if(substring_index(substring_index(qcdata,",",1),":",-1)<%s,1,0))) as total_deviation_par, ',
+      'if(cast(substring_index(substring_index(qcdata,",",1),":",-1) as decimal)<%s,1,0))) as total_deviation_par, ',
       $this->deviation_minimum);
 
     $sql .= sprintf(
       'sum(if(qcdata is null, 0, '.
-      'if(substring_index(substring_index(qcdata,",",1),":",-1) between %s and %s,1,0))) as total_deviation_sub, ',
+      'if(cast(substring_index(substring_index(qcdata,",",1),":",-1) as decimal) between %s and %s,1,0))) as total_deviation_sub, ',
       $this->deviation_minimum, $this->deviation_maximum);
 
     $sql .= sprintf(
       'sum(if(qcdata is null, 0, '.
-      'if(substring_index(substring_index(qcdata,",",1),":",-1)>%s,1,0))) as total_deviation_sup, ',
+      'if(cast(substring_index(substring_index(qcdata,",",1),":",-1) as decimal)>%s,1,0))) as total_deviation_sup, ',
       $this->deviation_maximum);
 
     $sql .=
       'sum(if(qcdata is null, 0, '.
-      'if(trim("{" from substring_index(substring_index(qcdata,",",2),":",-1))!=2,1,0))) as total_trial_deviation, ';
+      'if(cast(trim("{" from substring_index(substring_index(qcdata,",",2),":",-1)) as signed)!=2,1,0))) as total_trial_deviation, ';
 
     $sql .= $this->get_main_query();
 
