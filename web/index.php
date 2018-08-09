@@ -112,7 +112,8 @@ $date_ranges = json_encode($db->get_all( $sql ));
             $('#stage option[value="scripts/sitting_heightTable.php"]').show();
             $('#stage option[value="scripts/osipvTable.php"]').hide();
           }
-
+          $('#from').val(date_ranges[num].min_date);
+          $('#to').val(date_ranges[num].max_date);
           console.log('date range: ' + date_ranges[num].min_date + ' -> ' + date_ranges[num].max_date);
         });
       });
