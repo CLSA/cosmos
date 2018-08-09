@@ -119,12 +119,18 @@
       <table inner="false" class="org.obiba.magma.support.ValueTableReference">
         <reference>clsa-dcs-f2.QuestionnaireBoneDensity</reference>
       </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs-f2.Blood</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs-f2.Blood2</reference>
+      </table>
     </list>
   </from>
   <select class="org.obiba.magma.views.support.NoneClause"/>
   <where class="org.obiba.magma.js.views.JavascriptClause">
     <scriptName>customScript</scriptName>
-    <script>$lastupdate().before(newValue(&apos;2018-08-07&apos;,&apos;date&apos;)).and($lastupdate().after(newValue(&apos;2018-04-01&apos;,&apos;date&apos;)))</script>
+    <script>$lastupdate().before(newValue(&apos;2018-08-08&apos;,&apos;date&apos;)).and($lastupdate().after(newValue(&apos;2018-04-01&apos;,&apos;date&apos;)))</script>
   </where>
   <variables class="org.obiba.magma.js.views.VariablesClause">
     <variables class="linked-hash-set">
@@ -2162,8 +2168,98 @@ res</attribute>
 ).value() ? 1 : 0</attribute>
         </attributes>
       </variable>
+      <variable name="stage_technician_blood" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var stage=$this(&apos;group_blood&apos;)
+var res=null
+if(stage.isNull().not().value()) {
+  stage=stage.value()
+  res=$(&apos;clsa-dcs-f2.&apos;+stage+&apos;:QuestionnaireRun.user&apos;).whenNull(
+    $group(&apos;Admin.Action.stage&apos;,stage,&apos;Admin.Action.user&apos;).asSequence().last()).lowerCase()
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_skip_blood" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var stage=$this(&apos;group_blood&apos;)
+var res=null
+if(stage.isNull().not().value()) {
+  stage=stage.value()
+  var action=$group(&apos;Admin.Action.stage&apos;,stage,&apos;Admin.Action.actionType&apos;).asSequence()
+  var res=$group(&apos;Admin.Action.stage&apos;,stage,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
+    var j=action.indexOf(&apos;SKIP&apos;)
+    return j==i
+    }).last()
+  if(res.isNull().not().value()) {
+    res=newValue(res.value().slice(14),&apos;text&apos;)
+  }
+}  
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="data_qac_blood" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var stage=$this(&apos;group_blood&apos;)
+var res=null
+if(stage.isNull().not().value()) {
+  stage=stage.value()
+  var p=$(&apos;clsa-dcs-f2.&apos;+stage+&apos;:QuestionnaireMetric.missingCount&apos;).asSequence()
+  var q=$(&apos;clsa-dcs-f2.&apos;+stage+&apos;:QuestionnaireMetric.questionCount&apos;).asSequence()
+  if($id().isNull().or(p.isNull(),q.isNull(),p.empty(),q.empty()).not().value() &amp;&amp; q.sum()!=0){
+    res=newValue(
+      &apos;{complete:&apos;+
+      Math.round(100.0*(q.sum()-p.sum())/q.sum())
+      +&apos;}&apos;,&apos;text&apos;)
+  }
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="data_missing_blood" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$this(&apos;data_qac_blood&apos;).isNull().and(
+  $this(&apos;stage_contraindicated_blood&apos;).eq(0),
+  $this(&apos;stage_skip_blood&apos;).isNull()
+).value() ? 1 : 0</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_contraindicated_blood" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var stage=$this(&apos;group_blood&apos;)
+var res=null
+if(stage.isNull().not().value()) {
+  stage=stage.value()
+  res=$group(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,stage,&apos;Admin.StageInstance.lastState&apos;).whenNull(
+      $group(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,stage,&apos;Admin.StageInstance.lastState&apos;)).any(
+        &apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() ? 1 : 0
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="group_blood" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var res=null
+var u=$group(&apos;Admin.StageInstance.stage&apos;,&apos;Blood&apos;,&apos;Admin.StageInstance.lastState&apos;).asSequence().last()
+var v=$group(&apos;Admin.StageInstance.stage&apos;,&apos;Blood2&apos;,&apos;Admin.StageInstance.lastState&apos;).asSequence().last()
+var p=$(&apos;Admin.StageInstance.stage&apos;).any(&apos;Blood&apos;).and(u.isNull().not()).value()
+var q=$(&apos;Admin.StageInstance.stage&apos;).any(&apos;Blood2&apos;).and(v.isNull().not()).value()
+if(p &amp;&amp; !q) {
+  res=newValue( &apos;Blood&apos;, &apos;text&apos;) 
+} else if(q &amp;&amp; !p) {
+  res=newValue( &apos;Blood2&apos;, &apos;text&apos;) 
+} else if(p &amp;&amp; q) {
+  if(v.any(&apos;NotApplicable&apos;).or(u.any(&apos;Completed&apos;)).value()) {
+    res=newValue(&apos;Blood&apos;, &apos;text&apos;)
+  } else { 
+    res=newValue(&apos;Blood2&apos;, &apos;text&apos;)
+  }
+}
+res</attribute>
+        </attributes>
+      </variable>
     </variables>
   </variables>
   <created valueType="datetime">2018-05-15T13:40:50.956-04</created>
-  <updated valueType="datetime">2018-08-08T09:34:26.904-04</updated>
+  <updated valueType="datetime">2018-08-09T13:36:12.560-04</updated>
 </org.obiba.magma.views.View>

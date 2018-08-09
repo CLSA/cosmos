@@ -25,6 +25,7 @@ $date_ranges = json_encode($db->get_all( $sql ));
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script>
       var stat_stages =[
+        'scripts/bloodTable.php',
         'scripts/osipvTable.php',
         'scripts/social_networkTable.php',
         'scripts/contraindicationsTable.php',
@@ -148,6 +149,7 @@ $date_ranges = json_encode($db->get_all( $sql ));
         <div>
           <label for="stage">Stage:</label>
           <select name="stage" id="stage">
+            <option value="scripts/bloodTable.php">Blood Qnaire</option>
             <option value="scripts/blood_pressureTable.php">Blood Pressure</option>
             <option value="scripts/chair_riseTable.php">Chair Rise</option>
             <option value="scripts/cognitive_testTable.php">Cognitive Test</option>

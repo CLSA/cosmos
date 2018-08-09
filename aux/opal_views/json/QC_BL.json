@@ -2052,7 +2052,6 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_contraindications", 
-        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -2133,7 +2132,6 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_event_pmt", 
-        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -2214,7 +2212,6 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_disease_symptoms", 
-        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -2375,7 +2372,6 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_bone_density_questionnaire", 
-        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -2536,7 +2532,6 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_functional_status", 
-        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -2617,7 +2612,6 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_time_based_pmt", 
-        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -2714,7 +2708,6 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_urine", 
-        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -2734,6 +2727,102 @@
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "var stage=$this('group_blood')\nvar res=null\nif(stage.isNull().not().value()) {\n  stage=stage.value()\n  res=$('clsa-dcs.'+stage+':QuestionnaireRun.user').whenNull(\n    $group('Admin.Action.stage',stage,'Admin.Action.user').asSequence().last()).lowerCase()\n}\nres"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_technician_blood", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "var stage=$this('group_blood')\nvar res=null\nif(stage.isNull().not().value()) {\n  stage=stage.value()\n  var action=$group('Admin.Action.stage',stage,'Admin.Action.actionType').asSequence()\n  var res=$group('Admin.Action.stage',stage,'Admin.Action.eventReason').asSequence().filter(function(v,i){\n    var j=action.indexOf('SKIP')\n    return j==i\n    }).last()\n  if(res.isNull().not().value()) {\n    res=newValue(res.value().slice(14),'text')\n  }\n}  \nres"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_skip_blood", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "var stage=$this('group_blood')\nvar res=null\nif(stage.isNull().not().value()) {\n  stage=stage.value()\n  var p=$('clsa-dcs.'+stage+':QuestionnaireMetric.missingCount').asSequence()\n  var q=$('clsa-dcs.'+stage+':QuestionnaireMetric.questionCount').asSequence()\n  if($id().isNull().or(p.isNull(),q.isNull(),p.empty(),q.empty()).not().value() && q.sum()!=0){\n    res=newValue(\n      '{complete:'+\n      Math.round(100.0*(q.sum()-p.sum())/q.sum())\n      +'}','text')\n  }\n}\nres"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "data_qac_blood", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$this('data_qac_blood').isNull().and(\n  $this('stage_contraindicated_blood').eq(0),\n  $this('stage_skip_blood').isNull()\n).value() ? 1 : 0"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "data_missing_blood", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "integer"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "var stage=$this('group_blood')\nvar res=null\nif(stage.isNull().not().value()) {\n  stage=stage.value()\n  res=$group('clsa-dcs.Participants:Admin.StageInstance.stage',stage,'Admin.StageInstance.lastState').whenNull(\n      $group('clsa-dcs.Participants:Admin.StageInstance.stage',stage,'Admin.StageInstance.lastState')).any(\n        'Contraindicated','NotApplicable').value() ? 1 : 0\n}\nres"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_contraindicated_blood", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "integer"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "var res=null\nvar u=$group('Admin.StageInstance.stage','Blood','Admin.StageInstance.lastState').asSequence().last()\nvar v=$group('Admin.StageInstance.stage','Blood2','Admin.StageInstance.lastState').asSequence().last()\nvar p=$('Admin.StageInstance.stage').any('Blood').and(u.isNull().not()).value()\nvar q=$('Admin.StageInstance.stage').any('Blood2').and(v.isNull().not()).value()\nif(p && !q) {\n  res=newValue( 'Blood', 'text') \n} else if(q && !p) {\n  res=newValue( 'Blood2', 'text') \n} else if(p && q) {\n  if(v.any('NotApplicable').or(u.any('Completed')).value()) {\n    res=newValue('Blood', 'text')\n  } else { \n    res=newValue('Blood2', 'text')\n  }\n}\nres"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "group_blood", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
       }
     ]
   }, 
@@ -2772,7 +2861,9 @@
     "clsa-dcs.HearingQuestionnaire", 
     "clsa-dcs.FunctionalStatus", 
     "clsa-dcs.QuestionnaireBoneDensity", 
-    "clsa-dcs.Urine"
+    "clsa-dcs.Urine", 
+    "clsa-dcs.Blood", 
+    "clsa-dcs.Blood2"
   ], 
   "name": "QC_BL"
 }
