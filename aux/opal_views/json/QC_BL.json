@@ -8,11 +8,6 @@
             "value": "Spirometry"
           }, 
           {
-            "name": "derivedFrom", 
-            "namespace": "opal", 
-            "value": "/datasource/clsa-dcs/table/Spirometry/variable/InstrumentRun.user"
-          }, 
-          {
             "name": "script", 
             "value": "$('clsa-dcs.Spirometry:InstrumentRun.user').whenNull(\n  $group('Admin.Action.stage','Spirometry','Admin.Action.user').asSequence().last()).lowerCase()"
           }
@@ -380,7 +375,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var f=$('clsa-dcs.ECG:RES_XML_FILE')\nvar q=$('clsa-dcs.ECG:RES_DIAGNOSIS')\nvar res=null\nif(f.isNull().not().value()) {\n  var str='{file_size:'+f.length()+',quality:'\n  if(q.lowerCase().matches(/poor data quality/).value()) {\n    str += '0}'\n  } else {\n    str += '1}'  \n  }\n  res = newValue(str,'text')\n}\nres"
+            "value": "var f=$('clsa-dcs.ECG:RES_XML_FILE')\nvar q=$('clsa-dcs.ECG:RES_DIAGNOSIS')\nvar res=null\nif(f.isNull().not().value()) {\n  var str='{filesize:'+f.length()+',quality:'\n  if(q.lowerCase().matches(/poor data quality/).value()) {\n    str += '0}'\n  } else {\n    str += '1}'  \n  }\n  res = newValue(str,'text')\n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -1580,7 +1575,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var d=$('clsa-dcs.NeuropsychologicalBattery:STP_DOTREC_DCS')\nvar w=$('clsa-dcs.NeuropsychologicalBattery:STP_WORREC_DCS')\nvar c=$('clsa-dcs.NeuropsychologicalBattery:STP_COLREC_DCS')\nvar f=$('clsa-dcs.NeuropsychologicalBattery:FAS_FREC_DCS')\nvar a=$('clsa-dcs.NeuropsychologicalBattery:FAS_AREC_DCS')\nvar s=$('clsa-dcs.NeuropsychologicalBattery:FAS_SREC_DCS')\nvar res=null\nif(!d.isNull().and(w.isNull(),c.isNull(),f.isNull(),a.isNull(),s.isNull()).value()) {\n  var str='{filesize_dot:'+(d.isNull().value()?'0':d.length().value())+','\n  str+='filesize_wor:'+(w.isNull().value()?'0':w.length().value())+','\n  str+='filesize_col:'+(c.isNull().value()?'0':c.length().value())+','\n  str+='filesize_f:'+(f.isNull().value()?'0':f.length().value())+','\n  str+='filesize_a:'+(a.isNull().value()?'0':a.length().value())+','\n  str+='filesize_s:'+(s.isNull().value()?'0':s.length().value())+'}'\n  res=newValue(str,'text')\n}\nres"
+            "value": "var d=$('clsa-dcs.NeuropsychologicalBattery:STP_DOTREC_DCS')\nvar w=$('clsa-dcs.NeuropsychologicalBattery:STP_WORREC_DCS')\nvar c=$('clsa-dcs.NeuropsychologicalBattery:STP_COLREC_DCS')\nvar f=$('clsa-dcs.NeuropsychologicalBattery:FAS_FREC_DCS')\nvar a=$('clsa-dcs.NeuropsychologicalBattery:FAS_AREC_DCS')\nvar s=$('clsa-dcs.NeuropsychologicalBattery:FAS_SREC_DCS')\nvar res=null\nvar str=[]\nif(!d.isNull().and(w.isNull(),c.isNull(),f.isNull(),a.isNull(),s.isNull()).value()) {\n  str.push('filesize_dot:'+(d.isNull().value()?'0':d.length().value()))\n  str.push('filesize_wor:'+(w.isNull().value()?'0':w.length().value()))\n  str.push('filesize_col:'+(c.isNull().value()?'0':c.length().value()))\n  str.push('filesize_f:'+(f.isNull().value()?'0':f.length().value()))\n  str.push('filesize_a:'+(a.isNull().value()?'0':a.length().value()))\n  str.push('filesize_s:'+(s.isNull().value()?'0':s.length().value()))  \n}\nvar p=$('clsa-dcs.NeuropsychologicalBattery:QuestionnaireMetric.missingCount').asSequence()\nvar q=$('clsa-dcs.NeuropsychologicalBattery:QuestionnaireMetric.questionCount').asSequence()\nif(p.isNull().and(q.isNull()).not().value() && 0!=q.sum()){\n  str.push('complete:'+Math.round(100.0*(q.sum()-p.sum())/q.sum()))\n}\nif(0<str.length) {\n  res=newValue('{'+str.join(',')+'}','text')\n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -2044,7 +2039,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var p=$('clsa-dcs.ContraIndications:QuestionnaireMetric.missingCount').asSequence()\nvar q=$('clsa-dcs.ContraIndications:QuestionnaireMetric.questionCount').asSequence()\nvar res=null\nif($id().isNull().or(p.isNull(),q.isNull(),p.empty(),q.empty()).not().value() && q.sum()!=0){\n  res=newValue(\n    '{complete:'+\n    Math.round(100.0*(q.sum()-p.sum())/q.sum())\n    +'}','text')\n}\nres"
+            "value": "var p=$('clsa-dcs.ContraIndications:QuestionnaireMetric.missingCount').asSequence()\nvar q=$('clsa-dcs.ContraIndications:QuestionnaireMetric.questionCount').asSequence()\nvar res=null\nif(p.isNull().and(q.isNull()).not().value() && 0!=q.sum()){\n  res=newValue(\n    '{complete:'+\n    Math.round(100.0*(q.sum()-p.sum())/q.sum())\n    +'}','text')\n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -2124,7 +2119,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var p=$('clsa-dcs.EventPMT:QuestionnaireMetric.missingCount').asSequence()\nvar q=$('clsa-dcs.EventPMT:QuestionnaireMetric.questionCount').asSequence()\nvar res=null\nif($id().isNull().or(p.isNull(),q.isNull(),p.empty(),q.empty()).not().value() && q.sum()!=0){\n  res=newValue(\n    '{complete:'+\n    Math.round(100.0*(q.sum()-p.sum())/q.sum())\n    +'}','text')\n}\nres"
+            "value": "var p=$('clsa-dcs.EventPMT:QuestionnaireMetric.missingCount').asSequence()\nvar q=$('clsa-dcs.EventPMT:QuestionnaireMetric.questionCount').asSequence()\nvar res=null\nif(p.isNull().and(q.isNull()).not().value() && 0!=q.sum()){\n  res=newValue(\n    '{complete:'+\n    Math.round(100.0*(q.sum()-p.sum())/q.sum())\n    +'}','text')\n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -2204,7 +2199,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var p=$('clsa-dcs.DiseaseSymptoms:QuestionnaireMetric.missingCount').asSequence()\nvar q=$('clsa-dcs.DiseaseSymptoms:QuestionnaireMetric.questionCount').asSequence()\nvar res=null\nif($id().isNull().or(p.isNull(),q.isNull(),p.empty(),q.empty()).not().value() && q.sum()!=0){\n  res=newValue(\n    '{complete:'+\n    Math.round(100.0*(q.sum()-p.sum())/q.sum())\n    +'}','text')\n}\nres"
+            "value": "var p=$('clsa-dcs.DiseaseSymptoms:QuestionnaireMetric.missingCount').asSequence()\nvar q=$('clsa-dcs.DiseaseSymptoms:QuestionnaireMetric.questionCount').asSequence()\nvar res=null\nif(p.isNull().and(q.isNull()).not().value() && 0!=q.sum()){\n  res=newValue(\n    '{complete:'+\n    Math.round(100.0*(q.sum()-p.sum())/q.sum())\n    +'}','text')\n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -2364,7 +2359,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var p=$('clsa-dcs.QuestionnaireBoneDensity:QuestionnaireMetric.missingCount').asSequence()\nvar q=$('clsa-dcs.QuestionnaireBoneDensity:QuestionnaireMetric.questionCount').asSequence()\nvar res=null\nif($id().isNull().or(p.isNull(),q.isNull(),p.empty(),q.empty()).not().value() && q.sum()!=0){\n  res=newValue(\n    '{complete:'+\n    Math.round(100.0*(q.sum()-p.sum())/q.sum())\n    +'}','text')\n}\nres"
+            "value": "var p=$('clsa-dcs.QuestionnaireBoneDensity:QuestionnaireMetric.missingCount').asSequence()\nvar q=$('clsa-dcs.QuestionnaireBoneDensity:QuestionnaireMetric.questionCount').asSequence()\nvar res=null\nif(p.isNull().and(q.isNull()).not().value() && 0!=q.sum()){\n  res=newValue(\n    '{complete:'+\n    Math.round(100.0*(q.sum()-p.sum())/q.sum())\n    +'}','text')\n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -2524,7 +2519,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var p=$('clsa-dcs.FunctionalStatus:QuestionnaireMetric.missingCount').asSequence()\nvar q=$('clsa-dcs.FunctionalStatus:QuestionnaireMetric.questionCount').asSequence()\nvar res=null\nif($id().isNull().or(p.isNull(),q.isNull(),p.empty(),q.empty()).not().value() && q.sum()!=0){\n  res=newValue(\n    '{complete:'+\n    Math.round(100.0*(q.sum()-p.sum())/q.sum())\n    +'}','text')\n}\nres"
+            "value": "var p=$('clsa-dcs.FunctionalStatus:QuestionnaireMetric.missingCount').asSequence()\nvar q=$('clsa-dcs.FunctionalStatus:QuestionnaireMetric.questionCount').asSequence()\nvar res=null\nif(p.isNull().and(q.isNull()).not().value() && 0!=q.sum()){\n  res=newValue(\n    '{complete:'+\n    Math.round(100.0*(q.sum()-p.sum())/q.sum())\n    +'}','text')\n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -2604,7 +2599,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var p=$('clsa-dcs.TimeBasedProspectiveMemoryTask:QuestionnaireMetric.missingCount')\nvar q=$('clsa-dcs.TimeBasedProspectiveMemoryTask:QuestionnaireMetric.questionCount')\nvar res=null\nif($id().isNull().or(p.isNull(),q.isNull(),p.empty(),q.empty()).not().value() && q.sum()!=0){\n  res=newValue(\n    '{complete:'+\n    Math.round(100.0*(q.sum()-p.sum())/q.sum())\n    +'}','text')\n}\nres"
+            "value": "var p=$('clsa-dcs.TimeBasedProspectiveMemoryTask:QuestionnaireMetric.missingCount')\nvar q=$('clsa-dcs.TimeBasedProspectiveMemoryTask:QuestionnaireMetric.questionCount')\nvar res=null\nif(p.isNull().and(q.isNull()).not().value() && 0!=q.sum()){\n  res=newValue(\n    '{complete:'+\n    Math.round(100.0*(q.sum()-p.sum())/q.sum())\n    +'}','text')\n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -2700,7 +2695,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var p=$('clsa-dcs.Urine:QuestionnaireMetric.missingCount').asSequence()\nvar q=$('clsa-dcs.Urine:QuestionnaireMetric.questionCount').asSequence()\nvar res=null\nif($id().isNull().or(p.isNull(),q.isNull(),p.empty(),q.empty()).not().value() && q.sum()!=0){\n  res=newValue(\n    '{complete:'+\n    Math.round(100.0*(q.sum()-p.sum())/q.sum())\n    +'}','text')\n}\nres"
+            "value": "var p=$('clsa-dcs.Urine:QuestionnaireMetric.missingCount').asSequence()\nvar q=$('clsa-dcs.Urine:QuestionnaireMetric.questionCount').asSequence()\nvar res=null\nif(p.isNull().and(q.isNull()).not().value() && 0!=q.sum()){\n  res=newValue(\n    '{complete:'+\n    Math.round(100.0*(q.sum()-p.sum())/q.sum())\n    +'}','text')\n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -2764,7 +2759,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var stage=$this('group_blood')\nvar res=null\nif(stage.isNull().not().value()) {\n  stage=stage.value()\n  var p=$('clsa-dcs.'+stage+':QuestionnaireMetric.missingCount').asSequence()\n  var q=$('clsa-dcs.'+stage+':QuestionnaireMetric.questionCount').asSequence()\n  if($id().isNull().or(p.isNull(),q.isNull(),p.empty(),q.empty()).not().value() && q.sum()!=0){\n    res=newValue(\n      '{complete:'+\n      Math.round(100.0*(q.sum()-p.sum())/q.sum())\n      +'}','text')\n  }\n}\nres"
+            "value": "var stage=$this('group_blood')\nvar res=null\nif(stage.isNull().not().value()) {\n  stage=stage.value()\n  var p=$('clsa-dcs.'+stage+':QuestionnaireMetric.missingCount').asSequence()\n  var q=$('clsa-dcs.'+stage+':QuestionnaireMetric.questionCount').asSequence()\n  if(p.isNull().and(q.isNull()).not().value() && 0!=q.sum()){\n    res=newValue(\n      '{complete:'+\n      Math.round(100.0*(q.sum()-p.sum())/q.sum())\n      +'}','text')\n  }\n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -2812,7 +2807,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var res=null\nvar u=$group('Admin.StageInstance.stage','Blood','Admin.StageInstance.lastState').asSequence().last()\nvar v=$group('Admin.StageInstance.stage','Blood2','Admin.StageInstance.lastState').asSequence().last()\nvar p=$('Admin.StageInstance.stage').any('Blood').and(u.isNull().not()).value()\nvar q=$('Admin.StageInstance.stage').any('Blood2').and(v.isNull().not()).value()\nif(p && !q) {\n  res=newValue( 'Blood', 'text') \n} else if(q && !p) {\n  res=newValue( 'Blood2', 'text') \n} else if(p && q) {\n  if(v.any('NotApplicable').or(u.any('Completed')).value()) {\n    res=newValue('Blood', 'text')\n  } else { \n    res=newValue('Blood2', 'text')\n  }\n}\nres"
+            "value": "var res=null\nvar u=$group('Admin.StageInstance.stage','Phlebotomy','Admin.StageInstance.lastState').asSequence().last()\nvar v=$group('Admin.StageInstance.stage','Blood','Admin.StageInstance.lastState').asSequence().last()\nvar w=$group('Admin.StageInstance.stage','Blood2','Admin.StageInstance.lastState').asSequence().last()\nvar p=$('Admin.StageInstance.stage').any('Phlebotomy').and(w.isNull().not()).value()\nvar q=$('Admin.StageInstance.stage').any('Blood').and(u.isNull().not()).value()\nvar r=$('Admin.StageInstance.stage').any('Blood2').and(v.isNull().not()).value()\nif(p && !(q || r)) {\n  res=newValue( 'Phlebotomy', 'text') \n} else if(q && !(p || r)) {\n  res=newValue( 'Blood', 'text') \n} else if(r && !(p || q)) {\n  res=newValue( 'Blood2', 'text') \n} else if(p || q || r) {\n  var s=[]\n  var n=['Phlebotomy','Blood','Blood2']\n  if(p) s.push(u)\n  if(q) s.push(v)\n  if(r) s.push(w)\n  var x=[]\n  var y=[]\n  for(var i=0;i<s.length; i++) {\n    if(s[i].any('Completed').value()) x.push(n[i])\n    if(s[i].any('NotApplicable').value()) y.push(n[i])\n  }\n  if(0<x.length) {\n    res=newValue(x[x.length-1],'text')\n  } else if(0<y.length) {\n    res=newValue(y[y.length-1],'text')\n  }\n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -2823,6 +2818,86 @@
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$('clsa-dcs.NeuropsychologicalBatteryScoring:QuestionnaireRun.user').whenNull(\n  $group('Admin.Action.stage','NeuropsychologicalBatteryScoring','Admin.Action.user').asSequence().last()).lowerCase()"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_technician_neuropsychological_battery_scoring", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "var action=$group('Admin.Action.stage','NeuropsychologicalBatteryScoring','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','NeuropsychologicalBatteryScoring','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  var j=action.indexOf('SKIP')\n  return j==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_skip_neuropsychological_battery_scoring", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$group('clsa-dcs.Participants:Admin.StageInstance.stage','NeuropsychologicalBatteryScoring',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable').value() \n? 1 : 0"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_contraindicated_neuropsychological_battery_scoring", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "integer"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "var p=$('clsa-dcs.NeuropsychologicalBatteryScoring:QuestionnaireMetric.missingCount').asSequence()\nvar q=$('clsa-dcs.NeuropsychologicalBatteryScoring:QuestionnaireMetric.questionCount').asSequence()\nvar res=null\nif(p.isNull().and(q.isNull()).not().value() && 0!=q.sum()){\n  res=newValue(\n    '{complete:'+\n    Math.round(100.0*(q.sum()-p.sum())/q.sum())\n    +'}','text')\n}\nres"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "data_qac_neuropsychological_battery_scoring", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$this('data_qac_neuropsychological_battery_scoring').isNull().and(\n  $this('stage_contraindicated_neuropsychological_battery_scoring').eq(0),\n  $this('stage_skip_neuropsychological_battery_scoring').isNull()\n).value() ? 1 : 0"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "data_missing_neuropsychological_battery_scoring", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "integer"
       }
     ]
   }, 
@@ -2863,7 +2938,8 @@
     "clsa-dcs.QuestionnaireBoneDensity", 
     "clsa-dcs.Urine", 
     "clsa-dcs.Blood", 
-    "clsa-dcs.Blood2"
+    "clsa-dcs.Blood2", 
+    "clsa-dcs.Phlebotomy"
   ], 
   "name": "QC_BL"
 }

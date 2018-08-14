@@ -8,11 +8,6 @@
             "value": "Spirometry"
           }, 
           {
-            "name": "derivedFrom", 
-            "namespace": "opal", 
-            "value": "/datasource/clsa-dcs/table/Spirometry/variable/InstrumentRun.user"
-          }, 
-          {
             "name": "script", 
             "value": "$('clsa-dcs-f2.Spirometry:InstrumentRun.user').whenNull(\n  $group('Admin.Action.stage','Spirometry','Admin.Action.user').asSequence().last()).lowerCase()"
           }
@@ -30,7 +25,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "$('Admin.ApplicationConfiguration.siteName').map({\n  'BritishColumbia':'University of BC DCS',\n  'British Columbia':'University of BC DCS',\n  'Calgary':'Calgary DCS',\n  'Dalhousie':'Dalhousie DCS',\n  'Hamilton':'Hamilton DCS',\n  'Manitoba':'Manitoba DCS',\n  'McGill':'McGill DCS',\n  'McMaster':'Hamilton DCS',\n  'Memorial':'Memorial DCS',\n  'Memorial University':'Memorial DCS',\n  'Ottawa':'Ottawa DCS',\n  'Sherbrooke':'Sherbrooke DCS',\n  'Simon Fraser':'Simon Fraser DCS',\n  'SimonFraser':'Simon Fraser DCS',\n  'UniversityofBC':'University of BC DCS',\n  'University of Manitoba':'Manitoba DCS',\n  'University of Victoria':'Victoria DCS',\n  'Victoria':'Victoria DCS'},null) "
+            "value": "$('Admin.ApplicationConfiguration.siteName').map({\n  'BritishColumbia':'University of BC DCS',\n  'British Columbia':'University of BC DCS',\n  'Calgary':'Calgary DCS',\n  'Dalhousie':'Dalhousie DCS',\n  'Hamilton':'Hamilton DCS',\n  'Manitoba':'Manitoba DCS',\n  'McGill':'McGill DCS',\n  'McMaster':'Hamilton DCS',\n  'Memorial':'Memorial DCS',\n  'Memorial University':'Memorial DCS',\n  'Ottawa':'Ottawa DCS',\n  'Sherbrooke':'Sherbrooke DCS',\n  'Simon Fraser':'Simon Fraser DCS',\n  'SimonFraser':'Simon Fraser DCS',\n  'UniversityofBC':'University of BC DCS',\n  'University of Manitoba':'Manitoba DCS',\n  'University of Victoria':'Victoria DCS',\n  'Victoria':'Victoria DCS'},null)"
           }
         ], 
         "entityType": "Participant", 
@@ -95,7 +90,7 @@
           {
             "name": "derivedFrom", 
             "namespace": "opal", 
-            "value": "/datasource/clsa-dcs/table/Participants/variable/Admin.Interview.startDate"
+            "value": "/datasource/clsa-dcs-f2/table/Participants/variable/Admin.Interview.startDate"
           }, 
           {
             "name": "script", 
@@ -120,7 +115,7 @@
           {
             "name": "derivedFrom", 
             "namespace": "opal", 
-            "value": "/datasource/clsa-dcs/table/Participants/variable/Admin.Participant.barcode"
+            "value": "/datasource/clsa-dcs-f2/table/Participants/variable/Admin.Participant.barcode"
           }, 
           {
             "name": "script", 
@@ -380,7 +375,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var f=$('clsa-dcs-f2.ECG:RES_XML_FILE')\nvar q=$('clsa-dcs-f2.ECG:RES_DIAGNOSIS')\nvar res=null\nif(f.isNull().not().value()) {\n  var str='{file_size:'+f.length()+',quality:'\n  if(q.lowerCase().matches(/poor data quality/).value()) {\n    str += '0}'\n  } else {\n    str += '1}'  \n  }\n  res = newValue(str,'text')\n}\nres"
+            "value": "var f=$('clsa-dcs-f2.ECG:RES_XML_FILE')\nvar q=$('clsa-dcs-f2.ECG:RES_DIAGNOSIS')\nvar res=null\nif(f.isNull().not().value()) {\n  var str='{filesize:'+f.length()+',quality:'\n  if(q.lowerCase().matches(/poor data quality/).value()) {\n    str += '0}'\n  } else {\n    str += '1}'  \n  }\n  res = newValue(str,'text')\n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -2060,7 +2055,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var d=$('clsa-dcs-f2.StroopFAS:STP_DOTREC_COF2')\nvar w=$('clsa-dcs-f2.StroopFAS:STP_WORREC_COF2')\nvar c=$('clsa-dcs-f2.StroopFAS:STP_COLREC_COF2')\nvar f=$('clsa-dcs-f2.StroopFAS:FAS_FREC_COF2')\nvar a=$('clsa-dcs-f2.StroopFAS:FAS_AREC_COF2')\nvar s=$('clsa-dcs-f2.StroopFAS:FAS_SREC_COF2')\nvar res=null\nif(!d.isNull().and(w.isNull(),c.isNull(),f.isNull(),a.isNull(),s.isNull()).value()) {\n  var str='{filesize_dot:'+(d.isNull().value()?'0':d.length().value())+','\n  str+='filesize_wor:'+(w.isNull().value()?'0':w.length().value())+','\n  str+='filesize_col:'+(c.isNull().value()?'0':c.length().value())+','\n  str+='filesize_f:'+(f.isNull().value()?'0':f.length().value())+','\n  str+='filesize_a:'+(a.isNull().value()?'0':a.length().value())+','\n  str+='filesize_s:'+(s.isNull().value()?'0':s.length().value())+'}'\n  res=newValue(str,'text')\n}\nres"
+            "value": "var d=$('clsa-dcs-f2.StroopFAS:STP_DOTREC_COF2')\nvar w=$('clsa-dcs-f2.StroopFAS:STP_WORREC_COF2')\nvar c=$('clsa-dcs-f2.StroopFAS:STP_COLREC_COF2')\nvar f=$('clsa-dcs-f2.StroopFAS:FAS_FREC_COF2')\nvar a=$('clsa-dcs-f2.StroopFAS:FAS_AREC_COF2')\nvar s=$('clsa-dcs-f2.StroopFAS:FAS_SREC_COF2')\nvar res=null\nvar str=[]\nif(!d.isNull().and(w.isNull(),c.isNull(),f.isNull(),a.isNull(),s.isNull()).value()) {\n  str.push('filesize_dot:'+(d.isNull().value()?'0':d.length().value()))\n  str.push('filesize_wor:'+(w.isNull().value()?'0':w.length().value()))\n  str.push('filesize_col:'+(c.isNull().value()?'0':c.length().value()))\n  str.push('filesize_f:'+(f.isNull().value()?'0':f.length().value()))\n  str.push('filesize_a:'+(a.isNull().value()?'0':a.length().value()))\n  str.push('filesize_s:'+(s.isNull().value()?'0':s.length().value()))  \n}\nvar p=$('clsa-dcs-f2.StroopFAS:QuestionnaireMetric.missingCount').asSequence()\nvar q=$('clsa-dcs-f2.StroopFAS:QuestionnaireMetric.questionCount').asSequence()\nif(p.isNull().and(q.isNull()).not().value() && 0!=q.sum()){\n  str.push('complete:'+Math.round(100.0*(q.sum()-p.sum())/q.sum()))\n}\nif(0<str.length) {\n  res=newValue('{'+str.join(',')+'}','text')\n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -2204,7 +2199,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var p=$('clsa-dcs-f2.ContraIndications:QuestionnaireMetric.missingCount').asSequence()\nvar q=$('clsa-dcs-f2.ContraIndications:QuestionnaireMetric.questionCount').asSequence()\nvar res=null\nif($id().isNull().or(p.isNull(),q.isNull(),p.empty(),q.empty()).not().value() && q.sum()!=0){\n  res=newValue(\n    '{complete:'+\n    Math.round(100.0*(q.sum()-p.sum())/q.sum())\n    +'}','text')\n}\nres"
+            "value": "var p=$('clsa-dcs-f2.ContraIndications:QuestionnaireMetric.missingCount').asSequence()\nvar q=$('clsa-dcs-f2.ContraIndications:QuestionnaireMetric.questionCount').asSequence()\nvar res=null\nif(p.isNull().and(q.isNull()).not().value() && 0!=q.sum()){\n  res=newValue(\n    '{complete:'+\n    Math.round(100.0*(q.sum()-p.sum())/q.sum())\n    +'}','text')\n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -2284,7 +2279,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var p=$('clsa-dcs-f2.EventPMT:QuestionnaireMetric.missingCount').asSequence()\nvar q=$('clsa-dcs-f2.EventPMT:QuestionnaireMetric.questionCount').asSequence()\nvar res=null\nif($id().isNull().or(p.isNull(),q.isNull(),p.empty(),q.empty()).not().value() && q.sum()!=0){\n  res=newValue(\n    '{complete:'+\n    Math.round(100.0*(q.sum()-p.sum())/q.sum())\n    +'}','text')\n}   \nres"
+            "value": "var p=$('clsa-dcs-f2.EventPMT:QuestionnaireMetric.missingCount').asSequence()\nvar q=$('clsa-dcs-f2.EventPMT:QuestionnaireMetric.questionCount').asSequence()\nvar res=null\nif(p.isNull().and(q.isNull()).not().value() && 0!=q.sum()){\n  res=newValue(\n    '{complete:'+\n    Math.round(100.0*(q.sum()-p.sum())/q.sum())\n    +'}','text')\n}   \nres"
           }
         ], 
         "entityType": "Participant", 
@@ -2364,7 +2359,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var p=$('clsa-dcs-f2.DiseaseSymptoms:QuestionnaireMetric.missingCount').asSequence()\nvar q=$('clsa-dcs-f2.DiseaseSymptoms:QuestionnaireMetric.questionCount').asSequence()\nvar res=null\nif($id().isNull().or(p.isNull(),q.isNull(),p.empty(),q.empty()).not().value() && q.sum()!=0){\n  res=newValue(\n    '{complete:'+\n    Math.round(100.0*(q.sum()-p.sum())/q.sum())\n    +'}','text')\n}\nres"
+            "value": "var p=$('clsa-dcs-f2.DiseaseSymptoms:QuestionnaireMetric.missingCount').asSequence()\nvar q=$('clsa-dcs-f2.DiseaseSymptoms:QuestionnaireMetric.questionCount').asSequence()\nvar res=null\nif(p.isNull().and(q.isNull()).not().value() && 0!=q.sum()){\n  res=newValue(\n    '{complete:'+\n    Math.round(100.0*(q.sum()-p.sum())/q.sum())\n    +'}','text')\n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -2524,7 +2519,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var p=$('clsa-dcs-f2.QuestionnaireBoneDensity:QuestionnaireMetric.missingCount').asSequence()\nvar q=$('clsa-dcs-f2.QuestionnaireBoneDensity:QuestionnaireMetric.questionCount').asSequence()\nvar res=null\nif($id().isNull().or(p.isNull(),q.isNull(),p.empty(),q.empty()).not().value() && q.sum()!=0){\n  res=newValue(\n    '{complete:'+\n    Math.round(100.0*(q.sum()-p.sum())/q.sum())\n    +'}','text')\n}\nres"
+            "value": "var p=$('clsa-dcs-f2.QuestionnaireBoneDensity:QuestionnaireMetric.missingCount').asSequence()\nvar q=$('clsa-dcs-f2.QuestionnaireBoneDensity:QuestionnaireMetric.questionCount').asSequence()\nvar res=null\nif(p.isNull().and(q.isNull()).not().value() && 0!=q.sum()){\n  res=newValue(\n    '{complete:'+\n    Math.round(100.0*(q.sum()-p.sum())/q.sum())\n    +'}','text')\n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -2684,7 +2679,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var p=$('clsa-dcs-f2.TimeBasedProspectiveMemoryTask:QuestionnaireMetric.missingCount').asSequence()\nvar q=$('clsa-dcs-f2.TimeBasedProspectiveMemoryTask:QuestionnaireMetric.questionCount').asSequence()\nvar res=null\nif($id().isNull().or(p.isNull(),q.isNull(),p.empty(),q.empty()).not().value() && q.sum()!=0){\n  res=newValue(\n    '{complete:'+\n    Math.round(100.0*(q.sum()-p.sum())/q.sum())\n    +'}','text')\n}\nres"
+            "value": "var p=$('clsa-dcs-f2.TimeBasedProspectiveMemoryTask:QuestionnaireMetric.missingCount').asSequence()\nvar q=$('clsa-dcs-f2.TimeBasedProspectiveMemoryTask:QuestionnaireMetric.questionCount').asSequence()\nvar res=null\nif(p.isNull().and(q.isNull()).not().value() && 0!=q.sum()){\n  res=newValue(\n    '{complete:'+\n    Math.round(100.0*(q.sum()-p.sum())/q.sum())\n    +'}','text')\n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -2748,7 +2743,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var res=null\nvar f=$('clsa-dcs-f2.Frax:RES_RESULT_FILE')\nvar list=['clsa-dcs-f2.Frax:FRAX_OSTFX_COF2','clsa-dcs-f2.Frax:FRAX_HIPFX_COF2',\n'clsa-dcs-f2.Frax:FRAX_OSTFX_BMD_COF2','clsa-dcs-f2.Frax:FRAX_HIPFX_BMD_COF2']\nvar n=0\nfor(var i=0;i<4;i++) {\n  if($(list[i]).isNull().not().value()) n++\n}\nif(f.isNull().not().value() || n>0) {\n  res=newValue(\n    '{file_size:'+ (f.isNull().value()?'0':f.length()) + ',' +\n      'missing:' + (4-n) +\n    '}','text')\n}\nres"
+            "value": "var res=null\nif($('clsa-dcs-f2.Frax:InstrumentRun.user').isNull().not().value()) {\n  var f=$('clsa-dcs-f2.Frax:RES_RESULT_FILE')\n  var list=['clsa-dcs-f2.Frax:FRAX_OSTFX_COF2','clsa-dcs-f2.Frax:FRAX_HIPFX_COF2',\n            'clsa-dcs-f2.Frax:FRAX_OSTFX_BMD_COF2','clsa-dcs-f2.Frax:FRAX_HIPFX_BMD_COF2']\n  var n=list.length\n  for(var i=0;i<list.length;i++) {\n    if($(list[i]).isNull().not().value()) n--\n  }\n  res=newValue(\n    '{file_size:'+ (f.isNull().value()?'0':f.length()) + ',' +\n    'missing:' + n +\n    '}','text')\n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -2844,7 +2839,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var p=$('clsa-dcs-f2.SocialNetwork:QuestionnaireMetric.missingCount').asSequence()\nvar q=$('clsa-dcs-f2.SocialNetwork:QuestionnaireMetric.questionCount').asSequence()\nvar res=null\nif($id().isNull().or(p.isNull(),q.isNull(),p.empty(),q.empty()).not().value() && q.sum()!=0){\n  res=newValue(\n    '{complete:'+\n    Math.round(100.0*(q.sum()-p.sum())/q.sum())\n    +'}','text')\n}\nres"
+            "value": "var p=$('clsa-dcs-f2.SocialNetwork:QuestionnaireMetric.missingCount').asSequence()\nvar q=$('clsa-dcs-f2.SocialNetwork:QuestionnaireMetric.questionCount').asSequence()\nvar res=null\nif(p.isNull().and(q.isNull()).not().value() && 0!=q.sum()){\n  res=newValue(\n    '{complete:'+\n    Math.round(100.0*(q.sum()-p.sum())/q.sum())\n    +'}','text')\n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -2924,7 +2919,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var p=$('clsa-dcs-f2.GenHealth:QuestionnaireMetric.missingCount').asSequence()\nvar q=$('clsa-dcs-f2.GenHealth:QuestionnaireMetric.questionCount').asSequence()\nvar res=null\nif($id().isNull().or(p.isNull(),q.isNull(),p.empty(),q.empty()).not().value() && q.sum()!=0){\n  res=newValue(\n    '{complete:'+\n    Math.round(100.0*(q.sum()-p.sum())/q.sum())\n    +'}','text')\n}\nres"
+            "value": "var p=$('clsa-dcs-f2.GenHealth:QuestionnaireMetric.missingCount').asSequence()\nvar q=$('clsa-dcs-f2.GenHealth:QuestionnaireMetric.questionCount').asSequence()\nvar res=null\nif(p.isNull().and(q.isNull()).not().value() && 0!=q.sum()){\n  res=newValue(\n    '{complete:'+\n    Math.round(100.0*(q.sum()-p.sum())/q.sum())\n    +'}','text')\n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -3004,7 +2999,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var p=$('clsa-dcs-f2.OSIPV:QuestionnaireMetric.missingCount').asSequence()\nvar q=$('clsa-dcs-f2.OSIPV:QuestionnaireMetric.questionCount').asSequence()\nvar res=null\nif($id().isNull().or(p.isNull(),q.isNull(),p.empty(),q.empty()).not().value() && q.sum()!=0){\n  res=newValue(\n    '{complete:'+\n    Math.round(100.0*(q.sum()-p.sum())/q.sum())\n    +'}','text')\n}\nres"
+            "value": "var p=$('clsa-dcs-f2.OSIPV:QuestionnaireMetric.missingCount').asSequence()\nvar q=$('clsa-dcs-f2.OSIPV:QuestionnaireMetric.questionCount').asSequence()\nvar res=null\nif(p.isNull().and(q.isNull()).not().value() && 0!=q.sum()){\n  res=newValue(\n    '{complete:'+\n    Math.round(100.0*(q.sum()-p.sum())/q.sum())\n    +'}','text')\n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -3084,7 +3079,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var p=$('clsa-dcs-f2.Urine:QuestionnaireMetric.missingCount').asSequence()\nvar q=$('clsa-dcs-f2.Urine:QuestionnaireMetric.questionCount').asSequence()\nvar res=null\nif($id().isNull().or(p.isNull(),q.isNull(),p.empty(),q.empty()).not().value() && q.sum()!=0){\n  res=newValue(\n    '{complete:'+\n    Math.round(100.0*(q.sum()-p.sum())/q.sum())\n    +'}','text')\n}\nres"
+            "value": "var p=$('clsa-dcs-f2.Urine:QuestionnaireMetric.missingCount').asSequence()\nvar q=$('clsa-dcs-f2.Urine:QuestionnaireMetric.questionCount').asSequence()\nvar res=null\nif(p.isNull().and(q.isNull()).not().value() && 0!=q.sum()){\n  res=newValue(\n    '{complete:'+\n    Math.round(100.0*(q.sum()-p.sum())/q.sum())\n    +'}','text')\n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -3148,7 +3143,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var stage=$this('group_blood')\nvar res=null\nif(stage.isNull().not().value()) {\n  stage=stage.value()\n  var p=$('clsa-dcs-f2.'+stage+':QuestionnaireMetric.missingCount').asSequence()\n  var q=$('clsa-dcs-f2.'+stage+':QuestionnaireMetric.questionCount').asSequence()\n  if($id().isNull().or(p.isNull(),q.isNull(),p.empty(),q.empty()).not().value() && q.sum()!=0){\n    res=newValue(\n      '{complete:'+\n      Math.round(100.0*(q.sum()-p.sum())/q.sum())\n      +'}','text')\n  }\n}\nres"
+            "value": "var stage=$this('group_blood')\nvar res=null\nif(stage.isNull().not().value()) {\n  stage=stage.value()\n  var p=$('clsa-dcs-f2.'+stage+':QuestionnaireMetric.missingCount').asSequence()\n  var q=$('clsa-dcs-f2.'+stage+':QuestionnaireMetric.questionCount').asSequence()\n  if(p.isNull().and(q.isNull()).not().value() && 0!=q.sum()){\n    res=newValue(\n      '{complete:'+\n      Math.round(100.0*(q.sum()-p.sum())/q.sum())\n      +'}','text')\n  }\n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -3207,6 +3202,246 @@
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$('clsa-dcs-f2.Deviation_AE_CRF:QuestionnaireRun.user').whenNull(\n  $group('Admin.Action.stage','Deviation_AE_CRF','Admin.Action.user').asSequence().last()).lowerCase()"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_technician_deviation_aecrf", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "var action=$group('Admin.Action.stage','Deviation_AE_CRF','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','Deviation_AE_CRF','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  var j=action.indexOf('SKIP')\n  return j==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_skip_deviation_aecrf", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$group('clsa-dcs-f2.Participants:Admin.StageInstance.stage','Deviation_AE_CRF',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable').value() \n? 1 : 0"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_contraindicated_deviation_aecrf", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "integer"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "var p=$('clsa-dcs-f2.Deviation_AE_CRF:QuestionnaireMetric.missingCount').asSequence()\nvar q=$('clsa-dcs-f2.Deviation_AE_CRF:QuestionnaireMetric.questionCount').asSequence()\nvar res=null\nif(p.isNull().and(q.isNull()).not().value() && 0!=q.sum()){\n  res=newValue(\n    '{complete:'+\n    Math.round(100.0*(q.sum()-p.sum())/q.sum())\n    +'}','text')\n}\nres"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "data_qac_deviation_aecrf", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$this('data_qac_deviation_aecrf').isNull().and(\n  $this('stage_contraindicated_deviation_aecrf').eq(0),\n  $this('stage_skip_deviation_aecrf').isNull()\n).value() ? 1 : 0"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "data_missing_deviation_aecrf", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "integer"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$('clsa-dcs-f2.Deviation_AE_CRF:QuestionnaireRun.user').whenNull(\n  $group('Admin.Action.stage','Deviation_AE_CRF','Admin.Action.user').asSequence().last()).lowerCase()"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_technician_quality_assurance_inhome", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "var action=$group('Admin.Action.stage','Deviation_AE_CRF','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','Deviation_AE_CRF','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  var j=action.indexOf('SKIP')\n  return j==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_skip_quality_assurance_inhome", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$group('clsa-dcs-f2.Participants:Admin.StageInstance.stage','QualityAssuranceIH',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable').value() \n? 1 : 0"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_contraindicated_quality_assurance_inhome", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "integer"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "var p=$('clsa-dcs-f2.QualityAssuranceIH:QuestionnaireMetric.missingCount').asSequence()\nvar q=$('clsa-dcs-f2.QualityAssuranceIH:QuestionnaireMetric.questionCount').asSequence()\nvar res=null\nif(p.isNull().and(q.isNull()).not().value() && 0!=q.sum()){\n  res=newValue(\n    '{complete:'+\n    Math.round(100.0*(q.sum()-p.sum())/q.sum())\n    +'}','text')\n}\nres"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "data_qac_quality_assurance_inhome", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$this('data_qac_quality_assurance_inhome').isNull().and(\n  $this('stage_contraindicated_quality_assurance_inhome').eq(0),\n  $this('stage_skip_quality_assurance_inhome').isNull()\n).value() ? 1 : 0"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "data_missing_quality_assurance_inhome", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "integer"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$('clsa-dcs-f2.NeuropsychologicalBatteryScoring:QuestionnaireRun.user').whenNull(\n  $group('Admin.Action.stage','NeuropsychologicalBatteryScoring','Admin.Action.user').asSequence().last()).lowerCase()"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_technician_neuropsychological_battery_scoring", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "var action=$group('Admin.Action.stage','NeuropsychologicalBatteryScoring','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','NeuropsychologicalBatteryScoring','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  var j=action.indexOf('SKIP')\n  return j==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_skip_neuropsychological_battery_scoring", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$group('clsa-dcs-f2.Participants:Admin.StageInstance.stage','NeuropsychologicalBatteryScoring',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable').value() \n? 1 : 0"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_contraindicated_neuropsychological_battery_scoring", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "integer"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "var p=$('clsa-dcs-f2.NeuropsychologicalBatteryScoring:QuestionnaireMetric.missingCount').asSequence()\nvar q=$('clsa-dcs-f2.NeuropsychologicalBatteryScoring:QuestionnaireMetric.questionCount').asSequence()\nvar res=null\nif(p.isNull().and(q.isNull()).not().value() && 0!=q.sum()){\n  res=newValue(\n    '{complete:'+\n    Math.round(100.0*(q.sum()-p.sum())/q.sum())\n    +'}','text')\n}\nres"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "data_qac_neuropsychological_battery_scoring", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$this('data_qac_neuropsychological_battery_scoring').isNull().and(\n  $this('stage_contraindicated_neuropsychological_battery_scoring').eq(0),\n  $this('stage_skip_neuropsychological_battery_scoring').isNull()\n).value() ? 1 : 0"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "data_missing_neuropsychological_battery_scoring", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "integer"
       }
     ]
   }, 
@@ -3252,7 +3487,10 @@
     "clsa-dcs-f2.Urine", 
     "clsa-dcs-f2.QuestionnaireBoneDensity", 
     "clsa-dcs-f2.Blood", 
-    "clsa-dcs-f2.Blood2"
+    "clsa-dcs-f2.Blood2", 
+    "clsa-dcs-f2.Deviation_AE_CRF", 
+    "clsa-dcs-f2.NeuropsychologicalBatteryScoring", 
+    "clsa-dcs-f2.QualityAssuranceIH"
   ], 
   "name": "QC_F2", 
   "where": "$lastupdate().before(newValue('BEFORE_DATE','date')).and($lastupdate().after(newValue('AFTER_DATE','date')))"

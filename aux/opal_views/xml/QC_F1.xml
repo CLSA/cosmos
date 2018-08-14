@@ -107,6 +107,27 @@
       <table inner="false" class="org.obiba.magma.support.ValueTableReference">
         <reference>clsa-dcs-f1.Blood2</reference>
       </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs-f1.Deviation_AE_CRF</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs-f1.BodyCompositionWeight</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs-f1.OSEA</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs-f1.OSOnly</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs-f1.QualityAssuranceIH</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs-f1.NeuropsychologicalBatteryScoring</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs-f1.HeightWeight</reference>
+      </table>
     </list>
   </from>
   <select class="org.obiba.magma.views.support.NoneClause"/>
@@ -116,7 +137,6 @@
       <variable name="stage_technician_spirometry" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="stage" valueType="text">Spirometry</attribute>
-          <attribute name="derivedFrom" namespace="opal" valueType="text">/datasource/clsa-dcs/table/Spirometry/variable/InstrumentRun.user</attribute>
           <attribute name="script" valueType="text">$(&apos;clsa-dcs-f1.Spirometry:InstrumentRun.user&apos;).whenNull(
   $group(&apos;Admin.Action.stage&apos;,&apos;Spirometry&apos;,&apos;Admin.Action.user&apos;).asSequence().last()).lowerCase()</attribute>
         </attributes>
@@ -174,14 +194,14 @@ res</attribute>
       </variable>
       <variable name="interview_start_date" valueType="date" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="derivedFrom" namespace="opal" valueType="text">/datasource/clsa-dcs/table/Participants/variable/Admin.Interview.startDate</attribute>
+          <attribute name="derivedFrom" namespace="opal" valueType="text">/datasource/clsa-dcs-f1/table/Participants/variable/Admin.Interview.startDate</attribute>
           <attribute name="script" valueType="text">$(&apos;Admin.Interview.startDate&apos;)</attribute>
         </attributes>
       </variable>
       <variable name="interview_barcode" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="identifier" valueType="text">true</attribute>
-          <attribute name="derivedFrom" namespace="opal" valueType="text">/datasource/clsa-dcs/table/Participants/variable/Admin.Participant.barcode</attribute>
+          <attribute name="derivedFrom" namespace="opal" valueType="text">/datasource/clsa-dcs-f1/table/Participants/variable/Admin.Participant.barcode</attribute>
           <attribute name="script" valueType="text">$(&apos;Admin.Participant.barcode&apos;)</attribute>
         </attributes>
       </variable>
@@ -320,7 +340,7 @@ res</attribute>
 var q=$(&apos;clsa-dcs-f1.ECG:RES_DIAGNOSIS&apos;)
 var res=null
 if(f.isNull().not().value()) {
-  var str=&apos;{file_size:&apos;+f.length()+&apos;,quality:&apos;
+  var str=&apos;{filesize:&apos;+f.length()+&apos;,quality:&apos;
   if(q.lowerCase().matches(/poor data quality/).value()) {
     str += &apos;0}&apos;
   } else {
@@ -1235,14 +1255,22 @@ var f=$(&apos;clsa-dcs-f1.NeuropsychologicalBattery:FAS_FREC_COF1&apos;)
 var a=$(&apos;clsa-dcs-f1.NeuropsychologicalBattery:FAS_AREC_COF1&apos;)
 var s=$(&apos;clsa-dcs-f1.NeuropsychologicalBattery:FAS_SREC_COF1&apos;)
 var res=null
+var str=[]
 if(!d.isNull().and(w.isNull(),c.isNull(),f.isNull(),a.isNull(),s.isNull()).value()) {
-  var str=&apos;{filesize_dot:&apos;+(d.isNull().value()?&apos;0&apos;:d.length().value())+&apos;,&apos;
-  str+=&apos;filesize_wor:&apos;+(w.isNull().value()?&apos;0&apos;:w.length().value())+&apos;,&apos;
-  str+=&apos;filesize_col:&apos;+(c.isNull().value()?&apos;0&apos;:c.length().value())+&apos;,&apos;
-  str+=&apos;filesize_f:&apos;+(f.isNull().value()?&apos;0&apos;:f.length().value())+&apos;,&apos;
-  str+=&apos;filesize_a:&apos;+(a.isNull().value()?&apos;0&apos;:a.length().value())+&apos;,&apos;
-  str+=&apos;filesize_s:&apos;+(s.isNull().value()?&apos;0&apos;:s.length().value())+&apos;}&apos;
-  res=newValue(str,&apos;text&apos;)
+  str.push(&apos;filesize_dot:&apos;+(d.isNull().value()?&apos;0&apos;:d.length().value()))
+  str.push(&apos;filesize_wor:&apos;+(w.isNull().value()?&apos;0&apos;:w.length().value()))
+  str.push(&apos;filesize_col:&apos;+(c.isNull().value()?&apos;0&apos;:c.length().value()))
+  str.push(&apos;filesize_f:&apos;+(f.isNull().value()?&apos;0&apos;:f.length().value()))
+  str.push(&apos;filesize_a:&apos;+(a.isNull().value()?&apos;0&apos;:a.length().value()))
+  str.push(&apos;filesize_s:&apos;+(s.isNull().value()?&apos;0&apos;:s.length().value()))  
+}
+var p=$(&apos;clsa-dcs-f1.NeuropsychologicalBattery:QuestionnaireMetric.missingCount&apos;).asSequence()
+var q=$(&apos;clsa-dcs-f1.NeuropsychologicalBattery:QuestionnaireMetric.questionCount&apos;).asSequence()
+if(p.isNull().and(q.isNull()).not().value() &amp;&amp; 0!=q.sum()){
+  str.push(&apos;complete:&apos;+Math.round(100.0*(q.sum()-p.sum())/q.sum()))
+}
+if(0&lt;str.length) {
+  res=newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)
 }
 res</attribute>
         </attributes>
@@ -1501,7 +1529,7 @@ res</attribute>
           <attribute name="script" valueType="text">var p=$(&apos;clsa-dcs-f1.EventPMT:QuestionnaireMetric.missingCount&apos;).asSequence()
 var q=$(&apos;clsa-dcs-f1.EventPMT:QuestionnaireMetric.questionCount&apos;).asSequence()
 var res=null
-if($id().isNull().or(p.isNull(),q.isNull(),p.empty(),q.empty()).not().value() &amp;&amp; q.sum()!=0){
+if(p.isNull().and(q.isNull()).not().value() &amp;&amp; 0!=q.sum()){
   res=newValue(
     &apos;{complete:&apos;+
     Math.round(100.0*(q.sum()-p.sum())/q.sum())
@@ -1549,7 +1577,7 @@ res</attribute>
           <attribute name="script" valueType="text">var p=$(&apos;clsa-dcs-f1.DiseaseSymptoms:QuestionnaireMetric.missingCount&apos;).asSequence()
 var q=$(&apos;clsa-dcs-f1.DiseaseSymptoms:QuestionnaireMetric.questionCount&apos;).asSequence()
 var res=null
-if($id().isNull().or(p.isNull(),q.isNull(),p.empty(),q.empty()).not().value() &amp;&amp; q.sum()!=0){
+if(p.isNull().and(q.isNull()).not().value() &amp;&amp; 0!=q.sum()){
   res=newValue(
     &apos;{complete:&apos;+
     Math.round(100.0*(q.sum()-p.sum())/q.sum())
@@ -1646,7 +1674,7 @@ res</attribute>
           <attribute name="script" valueType="text">var p=$(&apos;clsa-dcs-f1.QuestionnaireBoneDensity:QuestionnaireMetric.missingCount&apos;).asSequence()
 var q=$(&apos;clsa-dcs-f1.QuestionnaireBoneDensity:QuestionnaireMetric.questionCount&apos;).asSequence()
 var res=null
-if($id().isNull().or(p.isNull(),q.isNull(),p.empty(),q.empty()).not().value() &amp;&amp; q.sum()!=0){
+if(p.isNull().and(q.isNull()).not().value() &amp;&amp; 0!=q.sum()){
   res=newValue(
     &apos;{complete:&apos;+
     Math.round(100.0*(q.sum()-p.sum())/q.sum())
@@ -1744,7 +1772,7 @@ res</attribute>
           <attribute name="script" valueType="text">var p=$(&apos;clsa-dcs-f1.FunctionalStatus:QuestionnaireMetric.missingCount&apos;).asSequence()
 var q=$(&apos;clsa-dcs-f1.FunctionalStatus:QuestionnaireMetric.questionCount&apos;).asSequence()
 var res=null
-if($id().isNull().or(p.isNull(),q.isNull(),p.empty(),q.empty()).not().value() &amp;&amp; q.sum()!=0){
+if(p.isNull().and(q.isNull()).not().value() &amp;&amp; 0!=q.sum()){
   res=newValue(
     &apos;{complete:&apos;+
     Math.round(100.0*(q.sum()-p.sum())/q.sum())
@@ -1792,7 +1820,7 @@ res</attribute>
           <attribute name="script" valueType="text">var p=$(&apos;clsa-dcs-f1.TimeBasedProspectiveMemoryTask:QuestionnaireMetric.missingCount&apos;).asSequence()
 var q=$(&apos;clsa-dcs-f1.TimeBasedProspectiveMemoryTask:QuestionnaireMetric.questionCount&apos;).asSequence()
 var res=null
-if($id().isNull().or(p.isNull(),q.isNull(),p.empty(),q.empty()).not().value() &amp;&amp; q.sum()!=0){
+if(p.isNull().and(q.isNull()).not().value() &amp;&amp; 0!=q.sum()){
   res=newValue(
     &apos;{complete:&apos;+
     Math.round(100.0*(q.sum()-p.sum())/q.sum())
@@ -1887,7 +1915,7 @@ res</attribute>
           <attribute name="script" valueType="text">var p=$(&apos;clsa-dcs-f1.ContraIndications:QuestionnaireMetric.missingCount&apos;).asSequence()
 var q=$(&apos;clsa-dcs-f1.ContraIndications:QuestionnaireMetric.questionCount&apos;).asSequence()
 var res=null
-if($id().isNull().or(p.isNull(),q.isNull(),p.empty(),q.empty()).not().value() &amp;&amp; q.sum()!=0){
+if(p.isNull().and(q.isNull()).not().value() &amp;&amp; 0!=q.sum()){
   res=newValue(
     &apos;{complete:&apos;+
     Math.round(100.0*(q.sum()-p.sum())/q.sum())
@@ -1920,17 +1948,17 @@ res</attribute>
       <variable name="data_qac_frax" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">var res=null
-var f=$(&apos;clsa-dcs-f1.Frax:RES_RESULT_FILE&apos;)
-var list=[&apos;clsa-dcs-f1.Frax:FRAX_OSTFX_COF1&apos;,&apos;clsa-dcs-f1.Frax:FRAX_HIPFX_COF1&apos;,
-&apos;clsa-dcs-f1.Frax:FRAX_OSTFX_BMD_COF1&apos;,&apos;clsa-dcs-f1.Frax:FRAX_HIPFX_BMD_COF1&apos;]
-var n=0
-for(var i=0;i&lt;4;i++) {
-  if($(list[i]).isNull().not().value()) n++
-}
-if(f.isNull().not().value() || n&gt;0) {
+if($(&apos;clsa-dcs-f1.Frax:InstrumentRun.user&apos;).isNull().not().value()) {
+  var f=$(&apos;clsa-dcs-f1.Frax:RES_RESULT_FILE&apos;)
+  var list=[&apos;clsa-dcs-f1.Frax:FRAX_OSTFX_COF1&apos;,&apos;clsa-dcs-f1.Frax:FRAX_HIPFX_COF1&apos;,
+    &apos;clsa-dcs-f1.Frax:FRAX_OSTFX_BMD_COF1&apos;,&apos;clsa-dcs-f1.Frax:FRAX_HIPFX_BMD_COF1&apos;]
+  var n=list.length
+  for(var i=0;i&lt;list.length;i++) {
+    if($(list[i]).isNull().not().value()) n--
+  }
   res=newValue(
     &apos;{file_size:&apos;+ (f.isNull().value()?&apos;0&apos;:f.length()) + &apos;,&apos; +
-      &apos;missing:&apos; + (4-n) +
+    &apos;missing:&apos; + n +
     &apos;}&apos;,&apos;text&apos;)
 }
 res</attribute>
@@ -1988,7 +2016,7 @@ res</attribute>
           <attribute name="script" valueType="text">var p=$(&apos;clsa-dcs-f1.GenHealth:QuestionnaireMetric.missingCount&apos;).asSequence()
 var q=$(&apos;clsa-dcs-f1.GenHealth:QuestionnaireMetric.questionCount&apos;).asSequence()
 var res=null
-if($id().isNull().or(p.isNull(),q.isNull(),p.empty(),q.empty()).not().value() &amp;&amp; q.sum()!=0){
+if(p.isNull().and(q.isNull()).not().value() &amp;&amp; 0!=q.sum()){
   res=newValue(
     &apos;{complete:&apos;+
     Math.round(100.0*(q.sum()-p.sum())/q.sum())
@@ -2036,7 +2064,7 @@ res</attribute>
           <attribute name="script" valueType="text">var p=$(&apos;clsa-dcs-f1.Urine:QuestionnaireMetric.missingCount&apos;).asSequence()
 var q=$(&apos;clsa-dcs-f1.Urine:QuestionnaireMetric.questionCount&apos;).asSequence()
 var res=null
-if($id().isNull().or(p.isNull(),q.isNull(),p.empty(),q.empty()).not().value() &amp;&amp; q.sum()!=0){
+if(p.isNull().and(q.isNull()).not().value() &amp;&amp; 0!=q.sum()){
   res=newValue(
     &apos;{complete:&apos;+
     Math.round(100.0*(q.sum()-p.sum())/q.sum())
@@ -2091,7 +2119,7 @@ if(stage.isNull().not().value()) {
   stage=stage.value()
   var p=$(&apos;clsa-dcs-f1.&apos;+stage+&apos;:QuestionnaireMetric.missingCount&apos;).asSequence()
   var q=$(&apos;clsa-dcs-f1.&apos;+stage+&apos;:QuestionnaireMetric.questionCount&apos;).asSequence()
-  if($id().isNull().or(p.isNull(),q.isNull(),p.empty(),q.empty()).not().value() &amp;&amp; q.sum()!=0){
+  if(p.isNull().and(q.isNull()).not().value() &amp;&amp; 0!=q.sum()){
     res=newValue(
       &apos;{complete:&apos;+
       Math.round(100.0*(q.sum()-p.sum())/q.sum())
@@ -2143,8 +2171,326 @@ if(p &amp;&amp; !q) {
 res</attribute>
         </attributes>
       </variable>
+      <variable name="stage_technician_deviation_aecrf" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;clsa-dcs-f1.Deviation_AE_CRF:QuestionnaireRun.user&apos;).whenNull(
+  $group(&apos;Admin.Action.stage&apos;,&apos;Deviation_AE_CRF&apos;,&apos;Admin.Action.user&apos;).asSequence().last()).lowerCase()</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_skip_deviation_aecrf" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var action=$group(&apos;Admin.Action.stage&apos;,&apos;Deviation_AE_CRF&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
+var res=$group(&apos;Admin.Action.stage&apos;,&apos;Deviation_AE_CRF&apos;,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
+  var j=action.indexOf(&apos;SKIP&apos;)
+  return j==i
+  }).last()
+if(res.isNull().not().value()) {
+  res=newValue(res.value().slice(14),&apos;text&apos;)  
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_contraindicated_deviation_aecrf" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f1.Participants:Admin.StageInstance.stage&apos;,&apos;Deviation_AE_CRF&apos;,
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
+? 1 : 0</attribute>
+        </attributes>
+      </variable>
+      <variable name="data_qac_deviation_aecrf" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var p=$(&apos;clsa-dcs-f1.Deviation_AE_CRF:QuestionnaireMetric.missingCount&apos;).asSequence()
+var q=$(&apos;clsa-dcs-f1.Deviation_AE_CRF:QuestionnaireMetric.questionCount&apos;).asSequence()
+var res=null
+if(p.isNull().and(q.isNull()).not().value() &amp;&amp; 0!=q.sum()){
+  res=newValue(
+    &apos;{complete:&apos;+
+    Math.round(100.0*(q.sum()-p.sum())/q.sum())
+    +&apos;}&apos;,&apos;text&apos;)
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="data_missing_deviation_aecrf" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$this(&apos;data_qac_deviation_aecrf&apos;).isNull().and(
+  $this(&apos;stage_contraindicated_deviation_aecrf&apos;).eq(0),
+  $this(&apos;stage_skip_deviation_aecrf&apos;).isNull()
+).value() ? 1 : 0</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_technician_body_composition_weight" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;clsa-dcs-f1.BodyCompositionWeight:QuestionnaireRun.user&apos;).whenNull(
+  $group(&apos;Admin.Action.stage&apos;,&apos;BodyCompositionWeight&apos;,&apos;Admin.Action.user&apos;).asSequence().last()).lowerCase()</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_skip_body_composition_weight" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var action=$group(&apos;Admin.Action.stage&apos;,&apos;BodyCompositionWeight&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
+var res=$group(&apos;Admin.Action.stage&apos;,&apos;BodyCompositionWeight&apos;,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
+  var j=action.indexOf(&apos;SKIP&apos;)
+  return j==i
+  }).last()
+if(res.isNull().not().value()) {
+  res=newValue(res.value().slice(14),&apos;text&apos;)  
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_contraindicated_body_composition_weight" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f1.Participants:Admin.StageInstance.stage&apos;,&apos;BodyCompositionWeight&apos;,
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
+? 1 : 0</attribute>
+        </attributes>
+      </variable>
+      <variable name="data_qac_body_composition_weight" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var p=$(&apos;clsa-dcs-f1.BodyCompositionWeight:QuestionnaireMetric.missingCount&apos;).asSequence()
+var q=$(&apos;clsa-dcs-f1.BodyCompositionWeight:QuestionnaireMetric.questionCount&apos;).asSequence()
+var res=null
+if(p.isNull().and(q.isNull()).not().value() &amp;&amp; 0!=q.sum()){
+  res=newValue(
+    &apos;{complete:&apos;+
+    Math.round(100.0*(q.sum()-p.sum())/q.sum())
+    +&apos;}&apos;,&apos;text&apos;)
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="data_missing_body_composition_weight" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$this(&apos;data_qac_body_composition_weight&apos;).isNull().and(
+  $this(&apos;stage_contraindicated_body_composition_weight&apos;).eq(0),
+  $this(&apos;stage_skip_body_composition_weight&apos;).isNull(),
+  $(&apos;clsa-dcs-f1.Participants:DCSatHOME&apos;).isNull().not()
+).value() ? 1 : 0</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_technician_quality_assurance_inhome" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;clsa-dcs-f1.Deviation_AE_CRF:QuestionnaireRun.user&apos;).whenNull(
+  $group(&apos;Admin.Action.stage&apos;,&apos;Deviation_AE_CRF&apos;,&apos;Admin.Action.user&apos;).asSequence().last()).lowerCase()</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_skip_quality_assurance_inhome" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var action=$group(&apos;Admin.Action.stage&apos;,&apos;Deviation_AE_CRF&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
+var res=$group(&apos;Admin.Action.stage&apos;,&apos;Deviation_AE_CRF&apos;,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
+  var j=action.indexOf(&apos;SKIP&apos;)
+  return j==i
+  }).last()
+if(res.isNull().not().value()) {
+  res=newValue(res.value().slice(14),&apos;text&apos;)  
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_contraindicated_quality_assurance_inhome" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f1.Participants:Admin.StageInstance.stage&apos;,&apos;QualityAssuranceIH&apos;,
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
+? 1 : 0</attribute>
+        </attributes>
+      </variable>
+      <variable name="data_qac_quality_assurance_inhome" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var p=$(&apos;clsa-dcs-f1.QualityAssuranceIH:QuestionnaireMetric.missingCount&apos;).asSequence()
+var q=$(&apos;clsa-dcs-f1.QualityAssuranceIH:QuestionnaireMetric.questionCount&apos;).asSequence()
+var res=null
+if(p.isNull().and(q.isNull()).not().value() &amp;&amp; 0!=q.sum()){
+  res=newValue(
+    &apos;{complete:&apos;+
+    Math.round(100.0*(q.sum()-p.sum())/q.sum())
+    +&apos;}&apos;,&apos;text&apos;)
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="data_missing_quality_assurance_inhome" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$this(&apos;data_qac_quality_assurance_inhome&apos;).isNull().and(
+  $this(&apos;stage_contraindicated_quality_assurance_inhome&apos;).eq(0),
+  $this(&apos;stage_skip_quality_assurance_inhome&apos;).isNull()
+).value() ? 1 : 0</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_contraindicated_height_weight" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f1.Participants:Admin.StageInstance.stage&apos;,&apos;HeightWeight&apos;,
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
+? 1 : 0</attribute>
+        </attributes>
+      </variable>
+      <variable name="data_qac_height_weight" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var p=$(&apos;clsa-dcs-f1.HeightWeight:QuestionnaireMetric.missingCount&apos;).asSequence()
+var q=$(&apos;clsa-dcs-f1.HeightWeight:QuestionnaireMetric.questionCount&apos;).asSequence()
+var res=null
+if(p.isNull().and(q.isNull()).not().value() &amp;&amp; 0!=q.sum()){
+  res=newValue(
+    &apos;{complete:&apos;+
+    Math.round(100.0*(q.sum()-p.sum())/q.sum())
+    +&apos;}&apos;,&apos;text&apos;)
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="data_missing_height_weight" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$this(&apos;data_qac_height_weight&apos;).isNull().and(
+  $this(&apos;stage_contraindicated_height_weight&apos;).eq(0),
+  $this(&apos;stage_skip_height_weight&apos;).isNull()
+).value() ? 1 : 0</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_technician_neuropsychological_battery_scoring" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;clsa-dcs-f1.NeuropsychologicalBatteryScoring:QuestionnaireRun.user&apos;).whenNull(
+  $group(&apos;Admin.Action.stage&apos;,&apos;NeuropsychologicalBatteryScoring&apos;,&apos;Admin.Action.user&apos;).asSequence().last()).lowerCase()</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_skip_neuropsychological_battery_scoring" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var action=$group(&apos;Admin.Action.stage&apos;,&apos;NeuropsychologicalBatteryScoring&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
+var res=$group(&apos;Admin.Action.stage&apos;,&apos;NeuropsychologicalBatteryScoring&apos;,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
+  var j=action.indexOf(&apos;SKIP&apos;)
+  return j==i
+  }).last()
+if(res.isNull().not().value()) {
+  res=newValue(res.value().slice(14),&apos;text&apos;)  
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_contraindicated_neuropsychological_battery_scoring" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f1.Participants:Admin.StageInstance.stage&apos;,&apos;NeuropsychologicalBatteryScoring&apos;,
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
+? 1 : 0</attribute>
+        </attributes>
+      </variable>
+      <variable name="data_qac_neuropsychological_battery_scoring" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var p=$(&apos;clsa-dcs-f1.NeuropsychologicalBatteryScoring:QuestionnaireMetric.missingCount&apos;).asSequence()
+var q=$(&apos;clsa-dcs-f1.NeuropsychologicalBatteryScoring:QuestionnaireMetric.questionCount&apos;).asSequence()
+var res=null
+if(p.isNull().and(q.isNull()).not().value() &amp;&amp; 0!=q.sum()){
+  res=newValue(
+    &apos;{complete:&apos;+
+    Math.round(100.0*(q.sum()-p.sum())/q.sum())
+    +&apos;}&apos;,&apos;text&apos;)
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="data_missing_neuropsychological_battery_scoring" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$this(&apos;data_qac_neuropsychological_battery_scoring&apos;).isNull().and(
+  $this(&apos;stage_contraindicated_neuropsychological_battery_scoring&apos;).eq(0),
+  $this(&apos;stage_skip_neuropsychological_battery_scoring&apos;).isNull()
+).value() ? 1 : 0</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_technician_osea" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;clsa-dcs-f1.OSEA:QuestionnaireRun.user&apos;).whenNull(
+  $group(&apos;Admin.Action.stage&apos;,&apos;OSEA&apos;,&apos;Admin.Action.user&apos;).asSequence().last()).lowerCase()</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_skip_osea" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var action=$group(&apos;Admin.Action.stage&apos;,&apos;OSEA&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
+var res=$group(&apos;Admin.Action.stage&apos;,&apos;OSEA&apos;,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
+  var j=action.indexOf(&apos;SKIP&apos;)
+  return j==i
+  }).last()
+if(res.isNull().not().value()) {
+  res=newValue(res.value().slice(14),&apos;text&apos;)  
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_contraindicated_osea" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f1.Participants:Admin.StageInstance.stage&apos;,&apos;OSEA&apos;,
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
+? 1 : 0</attribute>
+        </attributes>
+      </variable>
+      <variable name="data_qac_osea" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var p=$(&apos;clsa-dcs-f1.OSEA:QuestionnaireMetric.missingCount&apos;).asSequence()
+var q=$(&apos;clsa-dcs-f1.OSEA:QuestionnaireMetric.questionCount&apos;).asSequence()
+var res=null
+if(p.isNull().and(q.isNull()).not().value() &amp;&amp; 0!=q.sum()){
+  res=newValue(
+    &apos;{complete:&apos;+
+    Math.round(100.0*(q.sum()-p.sum())/q.sum())
+    +&apos;}&apos;,&apos;text&apos;)
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="data_missing_osea" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$this(&apos;data_qac_osea&apos;).isNull().and(
+  $this(&apos;stage_contraindicated_osea&apos;).eq(0),
+  $this(&apos;stage_skip_osea&apos;).isNull()
+).value() ? 1 : 0</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_technician_osonly" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;clsa-dcs-f1.OSOnly:QuestionnaireRun.user&apos;).whenNull(
+  $group(&apos;Admin.Action.stage&apos;,&apos;OSOnly&apos;,&apos;Admin.Action.user&apos;).asSequence().last()).lowerCase()</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_skip_osonly" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var action=$group(&apos;Admin.Action.stage&apos;,&apos;OSOnly&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
+var res=$group(&apos;Admin.Action.stage&apos;,&apos;OSOnly&apos;,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
+  var j=action.indexOf(&apos;SKIP&apos;)
+  return j==i
+  }).last()
+if(res.isNull().not().value()) {
+  res=newValue(res.value().slice(14),&apos;text&apos;)  
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_contraindicated_osonly" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f1.Participants:Admin.StageInstance.stage&apos;,&apos;OSOnly&apos;,
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
+? 1 : 0</attribute>
+        </attributes>
+      </variable>
+      <variable name="data_qac_osonly" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var p=$(&apos;clsa-dcs-f1.OSOnly:QuestionnaireMetric.missingCount&apos;).asSequence()
+var q=$(&apos;clsa-dcs-f1.OSOnly:QuestionnaireMetric.questionCount&apos;).asSequence()
+var res=null
+if(p.isNull().and(q.isNull()).not().value() &amp;&amp; 0!=q.sum()){
+  res=newValue(
+    &apos;{complete:&apos;+
+    Math.round(100.0*(q.sum()-p.sum())/q.sum())
+    +&apos;}&apos;,&apos;text&apos;)
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="data_missing_osonly" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$this(&apos;data_qac_osonly&apos;).isNull().and(
+  $this(&apos;stage_contraindicated_osonly&apos;).eq(0),
+  $this(&apos;stage_skip_osonly&apos;).isNull()
+).value() ? 1 : 0</attribute>
+        </attributes>
+      </variable>
     </variables>
   </variables>
   <created valueType="datetime">2018-05-03T13:40:11.946-04</created>
-  <updated valueType="datetime">2018-08-09T13:29:56.115-04</updated>
+  <updated valueType="datetime">2018-08-14T13:44:29.538-04</updated>
 </org.obiba.magma.views.View>

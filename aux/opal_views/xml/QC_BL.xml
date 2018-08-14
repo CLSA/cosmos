@@ -110,6 +110,9 @@
       <table inner="false" class="org.obiba.magma.support.ValueTableReference">
         <reference>clsa-dcs.Blood2</reference>
       </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs.Phlebotomy</reference>
+      </table>
     </list>
   </from>
   <select class="org.obiba.magma.views.support.NoneClause"/>
@@ -119,7 +122,6 @@
       <variable name="stage_technician_spirometry" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="stage" valueType="text">Spirometry</attribute>
-          <attribute name="derivedFrom" namespace="opal" valueType="text">/datasource/clsa-dcs/table/Spirometry/variable/InstrumentRun.user</attribute>
           <attribute name="script" valueType="text">$(&apos;clsa-dcs.Spirometry:InstrumentRun.user&apos;).whenNull(
   $group(&apos;Admin.Action.stage&apos;,&apos;Spirometry&apos;,&apos;Admin.Action.user&apos;).asSequence().last()).lowerCase()</attribute>
         </attributes>
@@ -323,7 +325,7 @@ res</attribute>
 var q=$(&apos;clsa-dcs.ECG:RES_DIAGNOSIS&apos;)
 var res=null
 if(f.isNull().not().value()) {
-  var str=&apos;{file_size:&apos;+f.length()+&apos;,quality:&apos;
+  var str=&apos;{filesize:&apos;+f.length()+&apos;,quality:&apos;
   if(q.lowerCase().matches(/poor data quality/).value()) {
     str += &apos;0}&apos;
   } else {
@@ -1152,14 +1154,22 @@ var f=$(&apos;clsa-dcs.NeuropsychologicalBattery:FAS_FREC_DCS&apos;)
 var a=$(&apos;clsa-dcs.NeuropsychologicalBattery:FAS_AREC_DCS&apos;)
 var s=$(&apos;clsa-dcs.NeuropsychologicalBattery:FAS_SREC_DCS&apos;)
 var res=null
+var str=[]
 if(!d.isNull().and(w.isNull(),c.isNull(),f.isNull(),a.isNull(),s.isNull()).value()) {
-  var str=&apos;{filesize_dot:&apos;+(d.isNull().value()?&apos;0&apos;:d.length().value())+&apos;,&apos;
-  str+=&apos;filesize_wor:&apos;+(w.isNull().value()?&apos;0&apos;:w.length().value())+&apos;,&apos;
-  str+=&apos;filesize_col:&apos;+(c.isNull().value()?&apos;0&apos;:c.length().value())+&apos;,&apos;
-  str+=&apos;filesize_f:&apos;+(f.isNull().value()?&apos;0&apos;:f.length().value())+&apos;,&apos;
-  str+=&apos;filesize_a:&apos;+(a.isNull().value()?&apos;0&apos;:a.length().value())+&apos;,&apos;
-  str+=&apos;filesize_s:&apos;+(s.isNull().value()?&apos;0&apos;:s.length().value())+&apos;}&apos;
-  res=newValue(str,&apos;text&apos;)
+  str.push(&apos;filesize_dot:&apos;+(d.isNull().value()?&apos;0&apos;:d.length().value()))
+  str.push(&apos;filesize_wor:&apos;+(w.isNull().value()?&apos;0&apos;:w.length().value()))
+  str.push(&apos;filesize_col:&apos;+(c.isNull().value()?&apos;0&apos;:c.length().value()))
+  str.push(&apos;filesize_f:&apos;+(f.isNull().value()?&apos;0&apos;:f.length().value()))
+  str.push(&apos;filesize_a:&apos;+(a.isNull().value()?&apos;0&apos;:a.length().value()))
+  str.push(&apos;filesize_s:&apos;+(s.isNull().value()?&apos;0&apos;:s.length().value()))  
+}
+var p=$(&apos;clsa-dcs.NeuropsychologicalBattery:QuestionnaireMetric.missingCount&apos;).asSequence()
+var q=$(&apos;clsa-dcs.NeuropsychologicalBattery:QuestionnaireMetric.questionCount&apos;).asSequence()
+if(p.isNull().and(q.isNull()).not().value() &amp;&amp; 0!=q.sum()){
+  str.push(&apos;complete:&apos;+Math.round(100.0*(q.sum()-p.sum())/q.sum()))
+}
+if(0&lt;str.length) {
+  res=newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)
 }
 res</attribute>
         </attributes>
@@ -1511,7 +1521,7 @@ res</attribute>
           <attribute name="script" valueType="text">var p=$(&apos;clsa-dcs.ContraIndications:QuestionnaireMetric.missingCount&apos;).asSequence()
 var q=$(&apos;clsa-dcs.ContraIndications:QuestionnaireMetric.questionCount&apos;).asSequence()
 var res=null
-if($id().isNull().or(p.isNull(),q.isNull(),p.empty(),q.empty()).not().value() &amp;&amp; q.sum()!=0){
+if(p.isNull().and(q.isNull()).not().value() &amp;&amp; 0!=q.sum()){
   res=newValue(
     &apos;{complete:&apos;+
     Math.round(100.0*(q.sum()-p.sum())/q.sum())
@@ -1559,7 +1569,7 @@ res</attribute>
           <attribute name="script" valueType="text">var p=$(&apos;clsa-dcs.EventPMT:QuestionnaireMetric.missingCount&apos;).asSequence()
 var q=$(&apos;clsa-dcs.EventPMT:QuestionnaireMetric.questionCount&apos;).asSequence()
 var res=null
-if($id().isNull().or(p.isNull(),q.isNull(),p.empty(),q.empty()).not().value() &amp;&amp; q.sum()!=0){
+if(p.isNull().and(q.isNull()).not().value() &amp;&amp; 0!=q.sum()){
   res=newValue(
     &apos;{complete:&apos;+
     Math.round(100.0*(q.sum()-p.sum())/q.sum())
@@ -1607,7 +1617,7 @@ res</attribute>
           <attribute name="script" valueType="text">var p=$(&apos;clsa-dcs.DiseaseSymptoms:QuestionnaireMetric.missingCount&apos;).asSequence()
 var q=$(&apos;clsa-dcs.DiseaseSymptoms:QuestionnaireMetric.questionCount&apos;).asSequence()
 var res=null
-if($id().isNull().or(p.isNull(),q.isNull(),p.empty(),q.empty()).not().value() &amp;&amp; q.sum()!=0){
+if(p.isNull().and(q.isNull()).not().value() &amp;&amp; 0!=q.sum()){
   res=newValue(
     &apos;{complete:&apos;+
     Math.round(100.0*(q.sum()-p.sum())/q.sum())
@@ -1704,7 +1714,7 @@ res</attribute>
           <attribute name="script" valueType="text">var p=$(&apos;clsa-dcs.QuestionnaireBoneDensity:QuestionnaireMetric.missingCount&apos;).asSequence()
 var q=$(&apos;clsa-dcs.QuestionnaireBoneDensity:QuestionnaireMetric.questionCount&apos;).asSequence()
 var res=null
-if($id().isNull().or(p.isNull(),q.isNull(),p.empty(),q.empty()).not().value() &amp;&amp; q.sum()!=0){
+if(p.isNull().and(q.isNull()).not().value() &amp;&amp; 0!=q.sum()){
   res=newValue(
     &apos;{complete:&apos;+
     Math.round(100.0*(q.sum()-p.sum())/q.sum())
@@ -1802,7 +1812,7 @@ res</attribute>
           <attribute name="script" valueType="text">var p=$(&apos;clsa-dcs.FunctionalStatus:QuestionnaireMetric.missingCount&apos;).asSequence()
 var q=$(&apos;clsa-dcs.FunctionalStatus:QuestionnaireMetric.questionCount&apos;).asSequence()
 var res=null
-if($id().isNull().or(p.isNull(),q.isNull(),p.empty(),q.empty()).not().value() &amp;&amp; q.sum()!=0){
+if(p.isNull().and(q.isNull()).not().value() &amp;&amp; 0!=q.sum()){
   res=newValue(
     &apos;{complete:&apos;+
     Math.round(100.0*(q.sum()-p.sum())/q.sum())
@@ -1850,7 +1860,7 @@ res</attribute>
           <attribute name="script" valueType="text">var p=$(&apos;clsa-dcs.TimeBasedProspectiveMemoryTask:QuestionnaireMetric.missingCount&apos;)
 var q=$(&apos;clsa-dcs.TimeBasedProspectiveMemoryTask:QuestionnaireMetric.questionCount&apos;)
 var res=null
-if($id().isNull().or(p.isNull(),q.isNull(),p.empty(),q.empty()).not().value() &amp;&amp; q.sum()!=0){
+if(p.isNull().and(q.isNull()).not().value() &amp;&amp; 0!=q.sum()){
   res=newValue(
     &apos;{complete:&apos;+
     Math.round(100.0*(q.sum()-p.sum())/q.sum())
@@ -1906,7 +1916,7 @@ res</attribute>
           <attribute name="script" valueType="text">var p=$(&apos;clsa-dcs.Urine:QuestionnaireMetric.missingCount&apos;).asSequence()
 var q=$(&apos;clsa-dcs.Urine:QuestionnaireMetric.questionCount&apos;).asSequence()
 var res=null
-if($id().isNull().or(p.isNull(),q.isNull(),p.empty(),q.empty()).not().value() &amp;&amp; q.sum()!=0){
+if(p.isNull().and(q.isNull()).not().value() &amp;&amp; 0!=q.sum()){
   res=newValue(
     &apos;{complete:&apos;+
     Math.round(100.0*(q.sum()-p.sum())/q.sum())
@@ -1961,7 +1971,7 @@ if(stage.isNull().not().value()) {
   stage=stage.value()
   var p=$(&apos;clsa-dcs.&apos;+stage+&apos;:QuestionnaireMetric.missingCount&apos;).asSequence()
   var q=$(&apos;clsa-dcs.&apos;+stage+&apos;:QuestionnaireMetric.questionCount&apos;).asSequence()
-  if($id().isNull().or(p.isNull(),q.isNull(),p.empty(),q.empty()).not().value() &amp;&amp; q.sum()!=0){
+  if(p.isNull().and(q.isNull()).not().value() &amp;&amp; 0!=q.sum()){
     res=newValue(
       &apos;{complete:&apos;+
       Math.round(100.0*(q.sum()-p.sum())/q.sum())
@@ -1995,26 +2005,89 @@ res</attribute>
       <variable name="group_blood" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">var res=null
-var u=$group(&apos;Admin.StageInstance.stage&apos;,&apos;Blood&apos;,&apos;Admin.StageInstance.lastState&apos;).asSequence().last()
-var v=$group(&apos;Admin.StageInstance.stage&apos;,&apos;Blood2&apos;,&apos;Admin.StageInstance.lastState&apos;).asSequence().last()
-var p=$(&apos;Admin.StageInstance.stage&apos;).any(&apos;Blood&apos;).and(u.isNull().not()).value()
-var q=$(&apos;Admin.StageInstance.stage&apos;).any(&apos;Blood2&apos;).and(v.isNull().not()).value()
-if(p &amp;&amp; !q) {
+var u=$group(&apos;Admin.StageInstance.stage&apos;,&apos;Phlebotomy&apos;,&apos;Admin.StageInstance.lastState&apos;).asSequence().last()
+var v=$group(&apos;Admin.StageInstance.stage&apos;,&apos;Blood&apos;,&apos;Admin.StageInstance.lastState&apos;).asSequence().last()
+var w=$group(&apos;Admin.StageInstance.stage&apos;,&apos;Blood2&apos;,&apos;Admin.StageInstance.lastState&apos;).asSequence().last()
+var p=$(&apos;Admin.StageInstance.stage&apos;).any(&apos;Phlebotomy&apos;).and(w.isNull().not()).value()
+var q=$(&apos;Admin.StageInstance.stage&apos;).any(&apos;Blood&apos;).and(u.isNull().not()).value()
+var r=$(&apos;Admin.StageInstance.stage&apos;).any(&apos;Blood2&apos;).and(v.isNull().not()).value()
+if(p &amp;&amp; !(q || r)) {
+  res=newValue( &apos;Phlebotomy&apos;, &apos;text&apos;) 
+} else if(q &amp;&amp; !(p || r)) {
   res=newValue( &apos;Blood&apos;, &apos;text&apos;) 
-} else if(q &amp;&amp; !p) {
+} else if(r &amp;&amp; !(p || q)) {
   res=newValue( &apos;Blood2&apos;, &apos;text&apos;) 
-} else if(p &amp;&amp; q) {
-  if(v.any(&apos;NotApplicable&apos;).or(u.any(&apos;Completed&apos;)).value()) {
-    res=newValue(&apos;Blood&apos;, &apos;text&apos;)
-  } else { 
-    res=newValue(&apos;Blood2&apos;, &apos;text&apos;)
+} else if(p || q || r) {
+  var s=[]
+  var n=[&apos;Phlebotomy&apos;,&apos;Blood&apos;,&apos;Blood2&apos;]
+  if(p) s.push(u)
+  if(q) s.push(v)
+  if(r) s.push(w)
+  var x=[]
+  var y=[]
+  for(var i=0;i&lt;s.length; i++) {
+    if(s[i].any(&apos;Completed&apos;).value()) x.push(n[i])
+    if(s[i].any(&apos;NotApplicable&apos;).value()) y.push(n[i])
+  }
+  if(0&lt;x.length) {
+    res=newValue(x[x.length-1],&apos;text&apos;)
+  } else if(0&lt;y.length) {
+    res=newValue(y[y.length-1],&apos;text&apos;)
   }
 }
 res</attribute>
         </attributes>
       </variable>
+      <variable name="stage_technician_neuropsychological_battery_scoring" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;clsa-dcs.NeuropsychologicalBatteryScoring:QuestionnaireRun.user&apos;).whenNull(
+  $group(&apos;Admin.Action.stage&apos;,&apos;NeuropsychologicalBatteryScoring&apos;,&apos;Admin.Action.user&apos;).asSequence().last()).lowerCase()</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_skip_neuropsychological_battery_scoring" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var action=$group(&apos;Admin.Action.stage&apos;,&apos;NeuropsychologicalBatteryScoring&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
+var res=$group(&apos;Admin.Action.stage&apos;,&apos;NeuropsychologicalBatteryScoring&apos;,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
+  var j=action.indexOf(&apos;SKIP&apos;)
+  return j==i
+  }).last()
+if(res.isNull().not().value()) {
+  res=newValue(res.value().slice(14),&apos;text&apos;)  
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_contraindicated_neuropsychological_battery_scoring" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$group(&apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,&apos;NeuropsychologicalBatteryScoring&apos;,
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
+? 1 : 0</attribute>
+        </attributes>
+      </variable>
+      <variable name="data_qac_neuropsychological_battery_scoring" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var p=$(&apos;clsa-dcs.NeuropsychologicalBatteryScoring:QuestionnaireMetric.missingCount&apos;).asSequence()
+var q=$(&apos;clsa-dcs.NeuropsychologicalBatteryScoring:QuestionnaireMetric.questionCount&apos;).asSequence()
+var res=null
+if(p.isNull().and(q.isNull()).not().value() &amp;&amp; 0!=q.sum()){
+  res=newValue(
+    &apos;{complete:&apos;+
+    Math.round(100.0*(q.sum()-p.sum())/q.sum())
+    +&apos;}&apos;,&apos;text&apos;)
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="data_missing_neuropsychological_battery_scoring" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$this(&apos;data_qac_neuropsychological_battery_scoring&apos;).isNull().and(
+  $this(&apos;stage_contraindicated_neuropsychological_battery_scoring&apos;).eq(0),
+  $this(&apos;stage_skip_neuropsychological_battery_scoring&apos;).isNull()
+).value() ? 1 : 0</attribute>
+        </attributes>
+      </variable>
     </variables>
   </variables>
   <created valueType="datetime">2018-05-15T17:37:52.240-04</created>
-  <updated valueType="datetime">2018-08-09T13:34:47.919-04</updated>
+  <updated valueType="datetime">2018-08-14T13:44:05.654-04</updated>
 </org.obiba.magma.views.View>
