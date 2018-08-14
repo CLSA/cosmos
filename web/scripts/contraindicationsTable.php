@@ -13,7 +13,6 @@ $contraindications = new qnaire_generator(
   'contraindications', $rank, $begin_date, $end_date);
 
 $contraindications->set_statistic($stat);
-$contraindications->set_standard_deviation_scale(2);
 $contraindications->set_page_stage('CONTRAINDICATIONS');
 $contraindications->build_table_data();
 echo $contraindications->build_table_html();

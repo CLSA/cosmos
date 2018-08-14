@@ -13,7 +13,6 @@ $general_health = new qnaire_generator(
   'general_health', $rank, $begin_date, $end_date);
 
 $general_health->set_statistic($stat);
-$general_health->set_standard_deviation_scale(2);
 $general_health->set_page_stage('GENERAL HEALTH');
 $general_health->build_table_data();
 echo $general_health->build_table_html();

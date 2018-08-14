@@ -13,7 +13,6 @@ $urine = new qnaire_generator(
   'urine', $rank, $begin_date, $end_date);
 
 $urine->set_statistic($stat);
-$urine->set_standard_deviation_scale(2);
 $urine->set_page_stage('URINE');
 $urine->build_table_data();
 echo $urine->build_table_html();

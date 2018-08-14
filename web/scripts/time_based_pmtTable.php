@@ -13,7 +13,6 @@ $time_based_pmt = new qnaire_generator(
   'time_based_pmt', $rank, $begin_date, $end_date);
 
 $time_based_pmt->set_statistic($stat);
-$time_based_pmt->set_standard_deviation_scale(2);
 $time_based_pmt->set_page_stage('TIME BASED PMT');
 $time_based_pmt->build_table_data();
 echo $time_based_pmt->build_table_html();

@@ -13,7 +13,6 @@ $osipv = new qnaire_generator(
   'osipv', $rank, $begin_date, $end_date);
 
 $osipv->set_statistic($stat);
-$osipv->set_standard_deviation_scale(2);
 $osipv->set_page_stage('OSIPV');
 $osipv->build_table_data();
 echo $osipv->build_table_html();

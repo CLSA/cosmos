@@ -13,7 +13,6 @@ $social_network = new qnaire_generator(
   'social_network', $rank, $begin_date, $end_date);
 
 $social_network->set_statistic($stat);
-$social_network->set_standard_deviation_scale(2);
 $social_network->set_page_stage('SOCIAL NETWORK');
 $social_network->build_table_data();
 echo $social_network->build_table_html();
