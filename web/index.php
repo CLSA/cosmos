@@ -26,25 +26,26 @@ $date_ranges = json_encode($db->get_all( $sql ));
     <script>
       var stat_stages =[
         'scripts/bloodTable.php',
-        'scripts/osipvTable.php',
-        'scripts/social_networkTable.php',
-        'scripts/contraindicationsTable.php',
-        'scripts/urineTable.php',
-        'scripts/time_based_pmtTable.php',
-        'scripts/event_pmtTable.php',
-        'scripts/general_healthTable.php',
-        'scripts/functional_statusTable.php',
-        'scripts/retinal_scanTable.php',
-        'scripts/lateral_bone_densityTable.php',
-        'scripts/cognitive_testTable.php',
-        'scripts/carotid_intima_stillTable.php',
-        'scripts/whole_body_bone_densityTable.php',
-        'scripts/forearm_bone_densityTable.php',
-        'scripts/ecgTable.php',
+        'scripts/bone_density_qnaireTable.php',
         'scripts/carotid_intima_cineloopTable.php',
-        'scripts/dual_hip_bone_densityTable.php',
         'scripts/carotid_intima_srTable.php',
-        'scripts/spine_bone_densityTable.php'];
+        'scripts/carotid_intima_stillTable.php',
+        'scripts/cognitive_testTable.php',
+        'scripts/contraindicationsTable.php',
+        'scripts/dual_hip_bone_densityTable.php',
+        'scripts/ecgTable.php',
+        'scripts/event_pmtTable.php',
+        'scripts/forearm_bone_densityTable.php',
+        'scripts/functional_statusTable.php',
+        'scripts/general_healthTable.php',
+        'scripts/lateral_bone_densityTable.php',
+        'scripts/osipvTable.php',
+        'scripts/retinal_scanTable.php',
+        'scripts/social_networkTable.php',
+        'scripts/spine_bone_densityTable.php',
+        'scripts/time_based_pmtTable.php',
+        'scripts/urineTable.php',
+        'scripts/whole_body_bone_densityTable.php'];
       var date_json = <?php echo $date_ranges; ?>;
       var date_ranges = [];
       date_json.forEach(function(obj){
@@ -91,6 +92,7 @@ $date_ranges = json_encode($db->get_all( $sql ));
           $('#to, #from').datepicker('option','maxDate',date_ranges[num].max_date);
           $('#from').datepicker('option','defaultDate',date_ranges[num].min_date);
           $('#to').datepicker('option','defaultDate',date_ranges[num].max_date);
+          $('#stage').val('scripts/bloodTable.php');
           if(3==num) {
             $('#stage option[value="scripts/functional_statusTable.php"]').hide();
             $('#stage option[value="scripts/social_networkTable.php"]').show();
@@ -98,6 +100,10 @@ $date_ranges = json_encode($db->get_all( $sql ));
             $('#stage option[value="scripts/spine_bone_densityTable.php"]').show();
             $('#stage option[value="scripts/sitting_heightTable.php"]').show();
             $('#stage option[value="scripts/osipvTable.php"]').show();
+            $('#stage option[value="scripts/deviation_aecrfTable.php"]').show();
+            $('#stage option[value="scripts/oseaTable.php"]').hide();
+            $('#stage option[value="scripts/osonlyTable.php"]').hide();
+            $('#stage option[value="scripts/quality_assurance_inhomeTable.php"]').show();
           } else if(2==num) {
             $('#stage option[value="scripts/functional_statusTable.php"]').show();
             $('#stage option[value="scripts/social_networkTable.php"]').hide();
@@ -105,6 +111,10 @@ $date_ranges = json_encode($db->get_all( $sql ));
             $('#stage option[value="scripts/general_healthTable.php"]').show();
             $('#stage option[value="scripts/sitting_heightTable.php"]').hide();
             $('#stage option[value="scripts/osipvTable.php"]').hide();
+            $('#stage option[value="scripts/deviation_aecrfTable.php"]').hide();
+            $('#stage option[value="scripts/oseaTable.php"]').show();
+            $('#stage option[value="scripts/osonlyTable.php"]').show();
+            $('#stage option[value="scripts/quality_assurance_inhomeTable.php"]').show();
           } else if(1==num) {
             $('#stage option[value="scripts/sitting_heightTable.php"]').hide();
             $('#stage option[value="scripts/general_healthTable.php"]').hide();
@@ -112,6 +122,10 @@ $date_ranges = json_encode($db->get_all( $sql ));
             $('#stage option[value="scripts/spine_bone_densityTable.php"]').hide();
             $('#stage option[value="scripts/sitting_heightTable.php"]').show();
             $('#stage option[value="scripts/osipvTable.php"]').hide();
+            $('#stage option[value="scripts/deviation_aecrfTable.php"]').hide();
+            $('#stage option[value="scripts/oseaTable.php"]').hide();
+            $('#stage option[value="scripts/osonlyTable.php"]').hide();
+            $('#stage option[value="scripts/quality_assurance_inhomeTable.php"]').hide();
           }
           $('#from').val(date_ranges[num].min_date);
           $('#to').val(date_ranges[num].max_date);
@@ -151,12 +165,14 @@ $date_ranges = json_encode($db->get_all( $sql ));
           <select name="stage" id="stage">
             <option value="scripts/bloodTable.php">Blood Qnaire</option>
             <option value="scripts/blood_pressureTable.php">Blood Pressure</option>
+            <option value="scripts/bone_density_qnaireTable.php">Bone Density Qnaire</option>
             <option value="scripts/chair_riseTable.php">Chair Rise</option>
             <option value="scripts/cognitive_testTable.php">Cognitive Test</option>
             <option value="scripts/contraindicationsTable.php">ContraIndications Qnaire</option>
             <option value="scripts/carotid_intima_stillTable.php">Carotid Intima Still</option>
             <option value="scripts/carotid_intima_cineloopTable.php">Carotid Intima Cineloop</option>
             <option value="scripts/carotid_intima_srTable.php">Carotid Intima SR</option>
+            <option value="scripts/deviation_aecrfTable.php">Deviation AE CRF Qnaire</option>
             <option value="scripts/disease_symptomsTable.php">Disease Symptoms Qnaire</option>
             <option value="scripts/dual_hip_bone_densityTable.php">DEXA Dual Hip</option>
             <option value="scripts/forearm_bone_densityTable.php">DEXA Forearm</option>
@@ -171,9 +187,14 @@ $date_ranges = json_encode($db->get_all( $sql ));
             <option value="scripts/grip_strengthTable.php">Grip Strength</option>
             <option value="scripts/hearingTable.php">Hearing</option>
             <option value="scripts/hips_waistTable.php">Hips Waist</option>
+            <option value="scripts/neuropsychological_battery_scoringTable.php">Neuropsychological Battery Scoring Qnaire</option>
+            <option value="scripts/oseaTable.php">OSEA Qnaire</option>
             <option value="scripts/osipvTable.php">OSIPV Qnaire</option>
+            <option value="scripts/osonlyTable.php">OSOnly Qnaire</option>
+            <option value="scripts/quality_assurance_inhomeTable.php">Quality Assurance IH Qnaire</option>
             <option value="scripts/retinal_scanTable.php">Retinal Scan</option>
             <option value="scripts/sitting_heightTable.php">Sitting Height</option>
+            <option value="scripts/social_networkTable.php">Social Network Qnaire</option>
             <option value="scripts/spirometryTable.php">Spirometry</option>
             <option value="scripts/standing_balanceTable.php">Standing Balance</option>
             <option value="scripts/standing_heightTable.php">Standing Height</option>
