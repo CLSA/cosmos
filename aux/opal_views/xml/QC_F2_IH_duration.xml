@@ -1,0 +1,258 @@
+<org.obiba.magma.views.View>
+  <name>QC_F2_IH_duration</name>
+  <from class="org.obiba.magma.views.JoinTable">
+    <list>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-inhome-f2.Participants</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-inhome-f2.InHome_1</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-inhome-f2.InHome_2</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-inhome-f2.InHome_3</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-inhome-f2.InHome_4</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-inhome-f2.ConclusionQuestionnaire</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>Quality_Control.QC_F2_IH</reference>
+      </table>
+    </list>
+  </from>
+  <select class="org.obiba.magma.views.support.NoneClause"/>
+  <where class="org.obiba.magma.views.support.AllClause"/>
+  <variables class="org.obiba.magma.js.views.VariablesClause">
+    <variables class="linked-hash-set">
+      <variable name="stage_technician_conclusion_questionnaire" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;Quality_Control.QC_F2_IH:stage_technician_conclusion_questionnaire&apos;)</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_technician_inhome_1" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;Quality_Control.QC_F2_IH:stage_technician_inhome_1&apos;)</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_technician_inhome_2" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;Quality_Control.QC_F2_IH:stage_technician_inhome_2&apos;)</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_technician_inhome_3" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;Quality_Control.QC_F2_IH:stage_technician_inhome_3&apos;)</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_technician_inhome_4" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;Quality_Control.QC_F2_IH:stage_technician_inhome_4&apos;)</attribute>
+        </attributes>
+      </variable>
+      <variable name="interview_site" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;Quality_Control.QC_F2_IH:interview_site&apos;)</attribute>
+        </attributes>
+      </variable>
+      <variable name="interview_barcode" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;Quality_Control.QC_F2_IH:interview_barcode&apos;)</attribute>
+        </attributes>
+      </variable>
+      <variable name="interview_start_date" valueType="date" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;Quality_Control.QC_F2_IH:interview_start_date&apos;)</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_duration_inhome_1" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var res=null
+if($(&apos;Quality_Control.QC_F2_IH:stage_contraindicated_inhome_1&apos;).eq(0).and(
+   $(&apos;Quality_Control.QC_F2_IH:stage_skip_inhome_1&apos;).isNull()).value()) {
+  var post = $(&apos;clsa-inhome-f2.InHome_1:QuestionnaireRun.timeEnd&apos;)
+  var pre = $(&apos;clsa-inhome-f2.InHome_1:QuestionnaireRun.timeStart&apos;)
+  if(pre.before(post).value()) {
+    res=post.time().minus(pre.time()).div(60000)
+  }
+  if(null===res) {
+    res=$group(
+      &apos;clsa-inhome-f2.Participants:Admin.StageInstance.stage&apos;,
+      &apos;InHome_1&apos;,
+      &apos;Admin.StageInstance.duration&apos;).asSequence().last().div(60)
+  }  
+}
+if(null!==res) {
+  var list=[&apos;AGE&apos;,&apos;ALC&apos;,&apos;ED&apos;,&apos;GED&apos;,&apos;GEN&apos;,&apos;NUT&apos;,&apos;OWN&apos;,&apos;PA2&apos;,&apos;PCM&apos;,&apos;SDC&apos;,&apos;SMK&apos;]
+  var str=[(&apos;stage:&apos;+Math.round(res*1000)/1000)]
+  var section=$(&apos;clsa-inhome-f2.InHome_1:QuestionnaireMetric.section&apos;).asSequence()
+  var duration=$(&apos;clsa-inhome-f2.InHome_1:QuestionnaireMetric.duration&apos;).asSequence()
+  var u=0
+  for(var i=0;i&lt;list.length;i++) {
+    var m=list[i]
+    var t=duration.filter(function(v,k){
+      return section.valueAt(k).value()==m
+    }).asSequence().whenNull(0).sum().div(60)
+    u+=t
+    str.push(m+&apos;:&apos;+ Math.round(t*1000)/1000)
+  }
+  str.push(&apos;module:&apos;+Math.round(u*1000)/1000)
+  res=newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)  
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_duration_inhome_2" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var res=null
+if($(&apos;Quality_Control.QC_F2_IH:stage_contraindicated_inhome_2&apos;).eq(0).and(
+   $(&apos;Quality_Control.QC_F2_IH:stage_skip_inhome_2&apos;).isNull()).value()) {
+  var post = $(&apos;clsa-inhome-f2.InHome_2:QuestionnaireRun.timeEnd&apos;)
+  var pre = $(&apos;clsa-inhome-f2.InHome_2:QuestionnaireRun.timeStart&apos;)
+  if(pre.before(post).value()) {
+    res=post.time().minus(pre.time()).div(60000)
+  }
+  if(null===res) {
+    res=$group(
+      &apos;clsa-inhome-f2.Participants:Admin.StageInstance.stage&apos;,
+      &apos;InHome_2&apos;,
+      &apos;Admin.StageInstance.duration&apos;).asSequence().last().div(60)
+  }  
+}
+if(null!==res) {
+  var list=[&apos;ADL&apos;,&apos;COG&apos;,&apos;FUL&apos;,&apos;IAL&apos;,&apos;LONE&apos;,&apos;LSI&apos;,&apos;PSD&apos;,&apos;SLS&apos;,&apos;WHO&apos;]
+  var str=[(&apos;stage:&apos;+Math.round(res*1000)/1000)]
+  var section=$(&apos;clsa-inhome-f2.InHome_2:QuestionnaireMetric.section&apos;).asSequence()
+  var duration=$(&apos;clsa-inhome-f2.InHome_2:QuestionnaireMetric.duration&apos;).asSequence()
+  var u=0
+  for(var i=0;i&lt;list.length;i++) {
+    var m=list[i]
+    var t=duration.filter(function(v,k){
+      return section.valueAt(k).value()==m
+    }).asSequence().whenNull(0).sum().div(60)
+    u+=t
+    str.push(m+&apos;:&apos;+ Math.round(t*1000)/1000)
+  }
+  str.push(&apos;module:&apos;+Math.round(u*1000)/1000)
+  res=newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)  
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_duration_inhome_3" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var res=null
+if($(&apos;Quality_Control.QC_F2_IH:stage_contraindicated_inhome_3&apos;).eq(0).and(
+   $(&apos;Quality_Control.QC_F2_IH:stage_skip_inhome_3&apos;).isNull()).value()) {
+  var post = $(&apos;clsa-inhome-f2.InHome_3:QuestionnaireRun.timeEnd&apos;)
+  var pre = $(&apos;clsa-inhome-f2.InHome_3:QuestionnaireRun.timeStart&apos;)
+  if(pre.before(post).value()) {
+    res=post.time().minus(pre.time()).div(60000)
+  }
+  if(null===res) {
+    res=$group(
+      &apos;clsa-inhome-f2.Participants:Admin.StageInstance.stage&apos;,
+      &apos;InHome_3&apos;,
+      &apos;Admin.StageInstance.duration&apos;).asSequence().last().div(60)
+  }  
+}
+if(null!==res) {
+  var list=[&apos;CAG&apos;,&apos;CR1&apos;,&apos;CR2&apos;,&apos;FAL&apos;,&apos;INC&apos;,&apos;INJ&apos;,&apos;LBF&apos;,&apos;LFP&apos;,&apos;MEDI&apos;,&apos;RET&apos;,&apos;RPL&apos;,&apos;WLQ&apos;]
+  var str=[(&apos;stage:&apos;+Math.round(res*1000)/1000)]
+  var section=$(&apos;clsa-inhome-f2.InHome_3:QuestionnaireMetric.section&apos;).asSequence()
+  var duration=$(&apos;clsa-inhome-f2.InHome_3:QuestionnaireMetric.duration&apos;).asSequence()
+  var u=0
+  for(var i=0;i&lt;list.length;i++) {
+    var m=list[i]
+    var t=duration.filter(function(v,k){
+      return section.valueAt(k).value()==m
+    }).asSequence().whenNull(0).sum().div(60)
+    u+=t
+    str.push(m+&apos;:&apos;+ Math.round(t*1000)/1000)
+  }
+  str.push(&apos;module:&apos;+Math.round(u*1000)/1000)
+  res=newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)  
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_duration_inhome_4" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var res=null
+if($(&apos;Quality_Control.QC_F2_IH:stage_contraindicated_inhome_4&apos;).eq(0).and(
+   $(&apos;Quality_Control.QC_F2_IH:stage_skip_inhome_4&apos;).isNull()).value()) {
+  var post = $(&apos;clsa-inhome-f2.InHome_4:QuestionnaireRun.timeEnd&apos;)
+  var pre = $(&apos;clsa-inhome-f2.InHome_4:QuestionnaireRun.timeStart&apos;)
+  if(pre.before(post).value()) {
+    res=post.time().minus(pre.time()).div(60000)
+  }
+  if(null===res) {
+    res=$group(
+      &apos;clsa-inhome-f2.Participants:Admin.StageInstance.stage&apos;,
+      &apos;InHome_4&apos;,
+      &apos;Admin.StageInstance.duration&apos;).asSequence().last().div(60)
+  }  
+}
+if(null!==res) {
+  var list=[&apos;ENV&apos;,&apos;HCU1&apos;,&apos;INT&apos;,&apos;K10&apos;,&apos;MEM&apos;,&apos;MET&apos;,&apos;TRA&apos;,&apos;WEA&apos;]
+  var str=[(&apos;stage:&apos;+Math.round(res*1000)/1000)]
+  var section=$(&apos;clsa-inhome-f2.InHome_4:QuestionnaireMetric.section&apos;).asSequence()
+  var duration=$(&apos;clsa-inhome-f2.InHome_4:QuestionnaireMetric.duration&apos;).asSequence()
+  var u=0
+  for(var i=0;i&lt;list.length;i++) {
+    var m=list[i]
+    var t=duration.filter(function(v,k){
+      return section.valueAt(k).value()==m
+    }).asSequence().whenNull(0).sum().div(60)
+    u+=t
+    str.push(m+&apos;:&apos;+ Math.round(t*1000)/1000)
+  }
+  str.push(&apos;module:&apos;+Math.round(u*1000)/1000)
+  res=newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)  
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_duration_conclusion_questionnaire" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var res=null
+if($(&apos;Quality_Control.QC_F2_IH:stage_contraindicated_conclusion_questionnaire&apos;).eq(0).and(
+   $(&apos;Quality_Control.QC_F2_IH:stage_skip_conclusion_questionnaire&apos;).isNull()).value()) {
+  var post = $(&apos;clsa-inhome-f2.ConclusionQuestionnaire:QuestionnaireRun.timeEnd&apos;)
+  var pre = $(&apos;clsa-inhome-f2.ConclusionQuestionnaire:QuestionnaireRun.timeStart&apos;)
+  if(pre.before(post).value()) {
+    res=post.time().minus(pre.time()).div(60000)
+  }
+  if(null===res) {
+    res=$group(
+      &apos;clsa-inhome-f2.Participants:Admin.StageInstance.stage&apos;,
+      &apos;ConclusionQuestionnaire&apos;,
+      &apos;Admin.StageInstance.duration&apos;).asSequence().last().div(60)
+  }
+}
+if(null!==res) {
+  res=newValue(&apos;{stage:&apos;+Math.round(res*1000)/1000+&apos;}&apos;,&apos;text&apos;)
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="module_list" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;clsa-inhome-f2.InHome_4:QuestionnaireMetric.section&apos;).asSequence().filter(function(v,i){
+  return this.indexOf(v)==i
+  }).sort().join(&apos;,&apos;)
+  // inhome1 AGE,ALC,ED,GED,GEN,NUT,OWN,PA2,PCM,SDC,SMK
+  // inhome2 ADL,COG,FUL,IAL,LONE,LSI,PSD,SLS,WHO
+  // inhome3 CAG,CR1,CR2,FAL,INC,INJ,LBF,LFP,MEDI,RET,RPL,WLQ
+  // inhome4 ACE,CEX,ENV,HCU1,INT,K10,MEM,MET,PER,PHB,SEQ,TRA,WEA</attribute>
+        </attributes>
+      </variable>
+    </variables>
+  </variables>
+  <created valueType="datetime">2018-08-13T11:19:23.748-04</created>
+  <updated valueType="datetime">2018-08-15T14:20:46.679-04</updated>
+</org.obiba.magma.views.View>
