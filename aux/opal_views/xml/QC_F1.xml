@@ -2489,8 +2489,27 @@ res</attribute>
 ).value() ? 1 : 0</attribute>
         </attributes>
       </variable>
+      <variable name="stage_technician_height_weight" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;clsa-dcs-f1.HeightWeight:QuestionnaireRun.user&apos;).whenNull(
+  $group(&apos;Admin.Action.stage&apos;,&apos;HeightWeight&apos;,&apos;Admin.Action.user&apos;).asSequence().last()).lowerCase()</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_skip_height_weight" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var action=$group(&apos;Admin.Action.stage&apos;,&apos;HeightWeight&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
+var res=$group(&apos;Admin.Action.stage&apos;,&apos;HeightWeight&apos;,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
+  var j=action.indexOf(&apos;SKIP&apos;)
+  return j==i
+  }).last()
+if(res.isNull().not().value()) {
+  res=newValue(res.value().slice(14),&apos;text&apos;)  
+}
+res</attribute>
+        </attributes>
+      </variable>
     </variables>
   </variables>
   <created valueType="datetime">2018-05-03T13:40:11.946-04</created>
-  <updated valueType="datetime">2018-08-14T13:44:29.538-04</updated>
+  <updated valueType="datetime">2018-08-15T10:33:21.814-04</updated>
 </org.obiba.magma.views.View>
