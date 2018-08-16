@@ -2277,14 +2277,14 @@ res</attribute>
       </variable>
       <variable name="stage_technician_quality_assurance_inhome" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">$(&apos;clsa-dcs-f2.Deviation_AE_CRF:QuestionnaireRun.user&apos;).whenNull(
-  $group(&apos;Admin.Action.stage&apos;,&apos;Deviation_AE_CRF&apos;,&apos;Admin.Action.user&apos;).asSequence().last()).lowerCase()</attribute>
+          <attribute name="script" valueType="text">$(&apos;clsa-dcs-f2.QualityAssuranceIH:QuestionnaireRun.user&apos;).whenNull(
+  $group(&apos;Admin.Action.stage&apos;,&apos;QualityAssuranceIH&apos;,&apos;Admin.Action.user&apos;).asSequence().last()).lowerCase()</attribute>
         </attributes>
       </variable>
       <variable name="stage_skip_quality_assurance_inhome" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">var action=$group(&apos;Admin.Action.stage&apos;,&apos;Deviation_AE_CRF&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
-var res=$group(&apos;Admin.Action.stage&apos;,&apos;Deviation_AE_CRF&apos;,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
+          <attribute name="script" valueType="text">var action=$group(&apos;Admin.Action.stage&apos;,&apos;QualityAssuranceIH&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
+var res=$group(&apos;Admin.Action.stage&apos;,&apos;QualityAssuranceIH&apos;,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
   return action.indexOf(&apos;SKIP&apos;)==i
   }).last()
 if(res.isNull().not().value()) {
@@ -2372,5 +2372,5 @@ res</attribute>
     </variables>
   </variables>
   <created valueType="datetime">2018-05-15T13:40:50.956-04</created>
-  <updated valueType="datetime">2018-08-16T09:17:41.659-04</updated>
+  <updated valueType="datetime">2018-08-16T10:32:29.334-04</updated>
 </org.obiba.magma.views.View>

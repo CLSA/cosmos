@@ -3287,7 +3287,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "$('clsa-dcs-f2.Deviation_AE_CRF:QuestionnaireRun.user').whenNull(\n  $group('Admin.Action.stage','Deviation_AE_CRF','Admin.Action.user').asSequence().last()).lowerCase()"
+            "value": "$('clsa-dcs-f2.QualityAssuranceIH:QuestionnaireRun.user').whenNull(\n  $group('Admin.Action.stage','QualityAssuranceIH','Admin.Action.user').asSequence().last()).lowerCase()"
           }
         ], 
         "entityType": "Participant", 
@@ -3295,6 +3295,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_technician_quality_assurance_inhome", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -3303,7 +3304,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var action=$group('Admin.Action.stage','Deviation_AE_CRF','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','Deviation_AE_CRF','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  return action.indexOf('SKIP')==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
+            "value": "var action=$group('Admin.Action.stage','QualityAssuranceIH','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','QualityAssuranceIH','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  return action.indexOf('SKIP')==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -3311,6 +3312,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_skip_quality_assurance_inhome", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
