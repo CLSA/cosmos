@@ -185,8 +185,7 @@
         <attributes>
           <attribute name="script" valueType="text">var action=$group(&apos;Admin.Action.stage&apos;,&apos;Spirometry&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
 var res=$group(&apos;Admin.Action.stage&apos;,&apos;Spirometry&apos;,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
-  var j=action.indexOf(&apos;SKIP&apos;)
-  return j==i
+  return action.indexOf(&apos;SKIP&apos;)==i
   }).last()
 if(res.isNull().not().value()) {
   res=newValue(res.value().slice(14),&apos;text&apos;)  
@@ -240,8 +239,7 @@ res</attribute>
         <attributes>
           <attribute name="script" valueType="text">var action=$group(&apos;Admin.Action.stage&apos;,&apos;GripStrength&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
 var res=$group(&apos;Admin.Action.stage&apos;,&apos;GripStrength&apos;,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
-  var j=action.indexOf(&apos;SKIP&apos;)
-  return j==i
+  return action.indexOf(&apos;SKIP&apos;)==i
   }).last()
 if(res.isNull().not().value()) {
   res=newValue(res.value().slice(14),&apos;text&apos;)  
@@ -283,8 +281,7 @@ res</attribute>
         <attributes>
           <attribute name="script" valueType="text">var action=$group(&apos;Admin.Action.stage&apos;,&apos;BloodPressure&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
 var res=$group(&apos;Admin.Action.stage&apos;,&apos;BloodPressure&apos;,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
-  var j=action.indexOf(&apos;SKIP&apos;)
-  return j==i
+  return action.indexOf(&apos;SKIP&apos;)==i
   }).last()
 if(res.isNull().not().value()) {
   res=newValue(res.value().slice(14),&apos;text&apos;)  
@@ -326,8 +323,7 @@ res</attribute>
         <attributes>
           <attribute name="script" valueType="text">var action=$group(&apos;Admin.Action.stage&apos;,&apos;ECG&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
 var res=$group(&apos;Admin.Action.stage&apos;,&apos;ECG&apos;,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
-  var j=action.indexOf(&apos;SKIP&apos;)
-  return j==i
+  return action.indexOf(&apos;SKIP&apos;)==i
   }).last()
 if(res.isNull().not().value()) {
   res=newValue(res.value().slice(14),&apos;text&apos;)  
@@ -377,8 +373,7 @@ res</attribute>
         <attributes>
           <attribute name="script" valueType="text">var action=$group(&apos;Admin.Action.stage&apos;,&apos;CognitiveTest&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
 var res=$group(&apos;Admin.Action.stage&apos;,&apos;CognitiveTest&apos;,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
-  var j=action.indexOf(&apos;SKIP&apos;)
-  return j==i
+  return action.indexOf(&apos;SKIP&apos;)==i
   }).last()
 if(res.isNull().not().value()) {
   res=newValue(res.value().slice(14),&apos;text&apos;)  
@@ -420,8 +415,7 @@ res</attribute>
         <attributes>
           <attribute name="script" valueType="text">var action=$group(&apos;Admin.Action.stage&apos;,&apos;Hearing&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
 var res=$group(&apos;Admin.Action.stage&apos;,&apos;Hearing&apos;,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
-  var j=action.indexOf(&apos;SKIP&apos;)
-  return j==i
+  return action.indexOf(&apos;SKIP&apos;)==i
   }).last()
 if(res.isNull().not().value()) {
   res=newValue(res.value().slice(14),&apos;text&apos;)  
@@ -482,8 +476,7 @@ res = (0 == count.RIGHT &amp;&amp; 0 == count.LEFT &amp;&amp;
         <attributes>
           <attribute name="script" valueType="text">var action=$group(&apos;Admin.Action.stage&apos;,&apos;Tonometer&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
 var res=$group(&apos;Admin.Action.stage&apos;,&apos;Tonometer&apos;,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
-  var j=action.indexOf(&apos;SKIP&apos;)
-  return j==i
+  return action.indexOf(&apos;SKIP&apos;)==i
   }).last()
 if(res.isNull().not().value()) {
   res=newValue(res.value().slice(14),&apos;text&apos;)  
@@ -602,8 +595,7 @@ res</attribute>
         <attributes>
           <attribute name="script" valueType="text">var action=$group(&apos;Admin.Action.stage&apos;,&apos;Weight&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
 var res=$group(&apos;Admin.Action.stage&apos;,&apos;Weight&apos;,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
-  var j=action.indexOf(&apos;SKIP&apos;)
-  return j==i
+  return action.indexOf(&apos;SKIP&apos;)==i
   }).last()
 if(res.isNull().not().value()) {
   res=newValue(res.value().slice(14),&apos;text&apos;)  
@@ -648,8 +640,7 @@ res</attribute>
         <attributes>
           <attribute name="script" valueType="text">var action=$group(&apos;Admin.Action.stage&apos;,&apos;RetinalScanLeft&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
 var res=$group(&apos;Admin.Action.stage&apos;,&apos;RetinalScanLeft&apos;,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
-  var j=action.indexOf(&apos;SKIP&apos;)
-  return j==i
+  return action.indexOf(&apos;SKIP&apos;)==i
   }).last()
 if(res.isNull().not().value()) {
   res=newValue(res.value().slice(14),&apos;text&apos;)
@@ -692,8 +683,7 @@ res</attribute>
         <attributes>
           <attribute name="script" valueType="text">var action=$group(&apos;Admin.Action.stage&apos;,&apos;RetinalScanRight&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
 var res=$group(&apos;Admin.Action.stage&apos;,&apos;RetinalScanRight&apos;,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
-  var j=action.indexOf(&apos;SKIP&apos;)
-  return j==i
+  return action.indexOf(&apos;SKIP&apos;)==i
   }).last()
 if(res.isNull().not().value()) {
   res=newValue(res.value().slice(14),&apos;text&apos;)
@@ -736,8 +726,7 @@ res</attribute>
         <attributes>
           <attribute name="script" valueType="text">var action=$group(&apos;Admin.Action.stage&apos;,&apos;LateralBoneDensity&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
 var res=$group(&apos;Admin.Action.stage&apos;,&apos;LateralBoneDensity&apos;,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
-  var j=action.indexOf(&apos;SKIP&apos;)
-  return j==i
+  return action.indexOf(&apos;SKIP&apos;)==i
   }).last()
 if(res.isNull().not().value()) {
   res=newValue(res.value().slice(14),&apos;text&apos;)
@@ -779,8 +768,7 @@ res</attribute>
         <attributes>
           <attribute name="script" valueType="text">var action=$group(&apos;Admin.Action.stage&apos;,&apos;StandingHeight&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
 var res=$group(&apos;Admin.Action.stage&apos;,&apos;StandingHeight&apos;,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
-  var j=action.indexOf(&apos;SKIP&apos;)
-  return j==i
+  return action.indexOf(&apos;SKIP&apos;)==i
   }).last()
 if(res.isNull().not().value()) {
   res=newValue(res.value().slice(14),&apos;text&apos;)
@@ -825,8 +813,7 @@ res</attribute>
         <attributes>
           <attribute name="script" valueType="text">var action=$group(&apos;Admin.Action.stage&apos;,&apos;SpineBoneDensity&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
 var res=$group(&apos;Admin.Action.stage&apos;,&apos;SpineBoneDensity&apos;,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
-  var j=action.indexOf(&apos;SKIP&apos;)
-  return j==i
+  return action.indexOf(&apos;SKIP&apos;)==i
   }).last()
 if(res.isNull().not().value()) {
   res=newValue(res.value().slice(14),&apos;text&apos;)  
@@ -868,8 +855,7 @@ res</attribute>
         <attributes>
           <attribute name="script" valueType="text">var action=$group(&apos;Admin.Action.stage&apos;,&apos;ForearmBoneDensity&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
 var res=$group(&apos;Admin.Action.stage&apos;,&apos;ForearmBoneDensity&apos;,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
-  var j=action.indexOf(&apos;SKIP&apos;)
-  return j==i
+  return action.indexOf(&apos;SKIP&apos;)==i
   }).last()
 if(res.isNull().not().value()) {
   res=newValue(res.value().slice(14),&apos;text&apos;)  
@@ -915,8 +901,7 @@ res</attribute>
         <attributes>
           <attribute name="script" valueType="text">var action=$group(&apos;Admin.Action.stage&apos;,&apos;WholeBodyBoneDensity&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
 var res=$group(&apos;Admin.Action.stage&apos;,&apos;WholeBodyBoneDensity&apos;,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
-  var j=action.indexOf(&apos;SKIP&apos;)
-  return j==i
+  return action.indexOf(&apos;SKIP&apos;)==i
   }).last()
 if(res.isNull().not().value()) {
   res=newValue(res.value().slice(14),&apos;text&apos;)  
@@ -958,8 +943,7 @@ res</attribute>
         <attributes>
           <attribute name="script" valueType="text">var action=$group(&apos;Admin.Action.stage&apos;,&apos;DualHipBoneDensity&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
 var res=$group(&apos;Admin.Action.stage&apos;,&apos;DualHipBoneDensity&apos;,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
-  var j=action.indexOf(&apos;SKIP&apos;)
-  return j==i
+  return action.indexOf(&apos;SKIP&apos;)==i
   }).last()
 if(res.isNull().not().value()) {
   res=newValue(res.value().slice(14),&apos;text&apos;)  
@@ -1008,8 +992,7 @@ res</attribute>
         <attributes>
           <attribute name="script" valueType="text">var action=$group(&apos;Admin.Action.stage&apos;,&apos;CarotidIntima&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
 var res=$group(&apos;Admin.Action.stage&apos;,&apos;CarotidIntima&apos;,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
-  var j=action.indexOf(&apos;SKIP&apos;)
-  return j==i
+  return action.indexOf(&apos;SKIP&apos;)==i
   }).last()
 if(res.isNull().not().value()) {
   res=newValue(res.value().slice(14),&apos;text&apos;)  
@@ -1072,8 +1055,7 @@ res</attribute>
         <attributes>
           <attribute name="script" valueType="text">var action=$group(&apos;Admin.Action.stage&apos;,&apos;TUG&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
 var res=$group(&apos;Admin.Action.stage&apos;,&apos;TUG&apos;,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
-  var j=action.indexOf(&apos;SKIP&apos;)
-  return j==i
+  return action.indexOf(&apos;SKIP&apos;)==i
   }).last()
 if(res.isNull().not().value()) {
   res=newValue(res.value().slice(14),&apos;text&apos;)  
@@ -1126,8 +1108,7 @@ res</attribute>
         <attributes>
           <attribute name="script" valueType="text">var action=$group(&apos;Admin.Action.stage&apos;,&apos;ChairRise&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
 var res=$group(&apos;Admin.Action.stage&apos;,&apos;ChairRise&apos;,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
-  var j=action.indexOf(&apos;SKIP&apos;)
-  return j==i
+  return action.indexOf(&apos;SKIP&apos;)==i
   }).last()
 if(res.isNull().not().value()) {
   res=newValue(res.value().slice(14),&apos;text&apos;)  
@@ -1180,8 +1161,7 @@ res</attribute>
         <attributes>
           <attribute name="script" valueType="text">var action=$group(&apos;Admin.Action.stage&apos;,&apos;HipsWaist&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
 var res=$group(&apos;Admin.Action.stage&apos;,&apos;HipsWaist&apos;,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
-  var j=action.indexOf(&apos;SKIP&apos;)
-  return j==i
+  return action.indexOf(&apos;SKIP&apos;)==i
   }).last()
 if(res.isNull().not().value()) {
   res=newValue(res.value().slice(14),&apos;text&apos;)  
@@ -1231,8 +1211,7 @@ res</attribute>
         <attributes>
           <attribute name="script" valueType="text">var action=$group(&apos;Admin.Action.stage&apos;,&apos;StandingBalance&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
 var res=$group(&apos;Admin.Action.stage&apos;,&apos;StandingBalance&apos;,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
-  var j=action.indexOf(&apos;SKIP&apos;)
-  return j==i
+  return action.indexOf(&apos;SKIP&apos;)==i
   }).last()
 if(res.isNull().not().value()) {
   res=newValue(res.value().slice(14),&apos;text&apos;)  
@@ -1321,8 +1300,7 @@ res</attribute>
         <attributes>
           <attribute name="script" valueType="text">var action=$group(&apos;Admin.Action.stage&apos;,&apos;4mWalk&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
 var res=$group(&apos;Admin.Action.stage&apos;,&apos;4mWalk&apos;,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
-  var j=action.indexOf(&apos;SKIP&apos;)
-  return j==i
+  return action.indexOf(&apos;SKIP&apos;)==i
   }).last()
 if(res.isNull().not().value()) {
   res=newValue(res.value().slice(14),&apos;text&apos;)  
@@ -1375,8 +1353,7 @@ res</attribute>
         <attributes>
           <attribute name="script" valueType="text">var action=$group(&apos;Admin.Action.stage&apos;,&apos;SittingHeight&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
 var res=$group(&apos;Admin.Action.stage&apos;,&apos;SittingHeight&apos;,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
-  var j=action.indexOf(&apos;SKIP&apos;)
-  return j==i
+  return action.indexOf(&apos;SKIP&apos;)==i
   }).last()
 if(res.isNull().not().value()) {
   res=newValue(res.value().slice(14),&apos;text&apos;)  
@@ -1421,8 +1398,7 @@ res</attribute>
         <attributes>
           <attribute name="script" valueType="text">var action=$group(&apos;Admin.Action.stage&apos;,&apos;VisionAcuity&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
 var res=$group(&apos;Admin.Action.stage&apos;,&apos;VisionAcuity&apos;,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
-  var j=action.indexOf(&apos;SKIP&apos;)
-  return j==i
+  return action.indexOf(&apos;SKIP&apos;)==i
   }).last()
 if(res.isNull().not().value()) {
   res=newValue(res.value().slice(14),&apos;text&apos;)  
@@ -1491,27 +1467,19 @@ res</attribute>
       </variable>
       <variable name="stage_contraindicated_stroop_fas" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">$(&apos;clsa-dcs-f2.Participants:DCS_PHONE&apos;).isNull().and(
-  $group(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,&apos;StroopFAS&apos;,
-&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;)).value()
-? 1 : null</attribute>
+          <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,&apos;StroopFAS&apos;,
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value()
+? 1 : 0</attribute>
         </attributes>
       </variable>
       <variable name="stage_skip_stroop_fas" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">// if a dcs by phone visit, then the skip will be &quot;ModifiedVisit&quot;
-var res=null
-if($(&apos;clsa-dcs-f2.Participants:DCS_PHONE&apos;).isNull().not().value()){
-  res=newValue(&apos;ModifiedVisit&apos;,&apos;text&apos;)
-} else {
-  var action=$group(&apos;Admin.Action.stage&apos;,&apos;StroopFAS&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
-  var res=$group(&apos;Admin.Action.stage&apos;,&apos;StroopFAS&apos;,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
-    var j=action.indexOf(&apos;SKIP&apos;)
-    return j==i
-    }).last()
-  if(res.isNull().not().value()) {
-    res=newValue(res.value().slice(14),&apos;text&apos;)
-  }
+          <attribute name="script" valueType="text">var action=$group(&apos;Admin.Action.stage&apos;,&apos;StroopFAS&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
+var res=$group(&apos;Admin.Action.stage&apos;,&apos;StroopFAS&apos;,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
+    return action.indexOf(&apos;SKIP&apos;)==i
+  }).last()
+if(res.isNull().not().value()) {
+  res=newValue(res.value().slice(14),&apos;text&apos;)
 }
 res</attribute>
         </attributes>
@@ -1591,8 +1559,7 @@ res</attribute>
         <attributes>
           <attribute name="script" valueType="text">var action=$group(&apos;Admin.Action.stage&apos;,&apos;Consent&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
 var res=$group(&apos;Admin.Action.stage&apos;,&apos;Consent&apos;,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
-  var j=action.indexOf(&apos;SKIP&apos;)
-  return j==i
+  return action.indexOf(&apos;SKIP&apos;)==i
   }).last()
 if(res.isNull().not().value()) {
   res=newValue(res.value().slice(14),&apos;text&apos;)  
@@ -1610,8 +1577,7 @@ res</attribute>
         <attributes>
           <attribute name="script" valueType="text">var action=$group(&apos;Admin.Action.stage&apos;,&apos;ContraIndications&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
 var res=$group(&apos;Admin.Action.stage&apos;,&apos;ContraIndications&apos;,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
-  var j=action.indexOf(&apos;SKIP&apos;)
-  return j==i
+  return action.indexOf(&apos;SKIP&apos;)==i
   }).last()
 if(res.isNull().not().value()) {
   res=newValue(res.value().slice(14),&apos;text&apos;)  
@@ -1658,8 +1624,7 @@ res</attribute>
         <attributes>
           <attribute name="script" valueType="text">var action=$group(&apos;Admin.Action.stage&apos;,&apos;EventPMT&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
 var res=$group(&apos;Admin.Action.stage&apos;,&apos;EventPMT&apos;,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
-  var j=action.indexOf(&apos;SKIP&apos;)
-  return j==i
+  return action.indexOf(&apos;SKIP&apos;)==i
   }).last()
 if(res.isNull().not().value()) {
   res=newValue(res.value().slice(14),&apos;text&apos;)  
@@ -1706,8 +1671,7 @@ res</attribute>
         <attributes>
           <attribute name="script" valueType="text">var action=$group(&apos;Admin.Action.stage&apos;,&apos;DiseaseSymptoms&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
 var res=$group(&apos;Admin.Action.stage&apos;,&apos;DiseaseSymptoms&apos;,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
-  var j=action.indexOf(&apos;SKIP&apos;)
-  return j==i
+  return action.indexOf(&apos;SKIP&apos;)==i
   }).last()
 if(res.isNull().not().value()) {
   res=newValue(res.value().slice(14),&apos;text&apos;)  
@@ -1754,8 +1718,7 @@ res</attribute>
         <attributes>
           <attribute name="script" valueType="text">var action=$group(&apos;Admin.Action.stage&apos;,&apos;ConclusionQuestionnaire&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
 var res=$group(&apos;Admin.Action.stage&apos;,&apos;ConclusionQuestionnaire&apos;,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
-  var j=action.indexOf(&apos;SKIP&apos;)
-  return j==i
+  return action.indexOf(&apos;SKIP&apos;)==i
   }).last()
 if(res.isNull().not().value()) {
   res=newValue(res.value().slice(14),&apos;text&apos;)  
@@ -1803,8 +1766,7 @@ res</attribute>
         <attributes>
           <attribute name="script" valueType="text">var action=$group(&apos;Admin.Action.stage&apos;,&apos;QuestionnaireBoneDensity&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
 var res=$group(&apos;Admin.Action.stage&apos;,&apos;QuestionnaireBoneDensity&apos;,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
-  var j=action.indexOf(&apos;SKIP&apos;)
-  return j==i
+  return action.indexOf(&apos;SKIP&apos;)==i
   }).last()
 if(res.isNull().not().value()) {
   res=newValue(res.value().slice(14),&apos;text&apos;)  
@@ -1851,8 +1813,7 @@ res</attribute>
         <attributes>
           <attribute name="script" valueType="text">var action=$group(&apos;Admin.Action.stage&apos;,&apos;HearingQuestionnaire&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
 var res=$group(&apos;Admin.Action.stage&apos;,&apos;HearingQuestionnaire&apos;,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
-  var j=action.indexOf(&apos;SKIP&apos;)
-  return j==i
+  return action.indexOf(&apos;SKIP&apos;)==i
   }).last()
 if(res.isNull().not().value()) {
   res=newValue(res.value().slice(14),&apos;text&apos;)  
@@ -1901,8 +1862,7 @@ res</attribute>
         <attributes>
           <attribute name="script" valueType="text">var action=$group(&apos;Admin.Action.stage&apos;,&apos;TimeBasedProspectiveMemoryTask&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
 var res=$group(&apos;Admin.Action.stage&apos;,&apos;TimeBasedProspectiveMemoryTask&apos;,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
-  var j=action.indexOf(&apos;SKIP&apos;)
-  return j==i
+  return action.indexOf(&apos;SKIP&apos;)==i
   }).last()
 if(res.isNull().not().value()) {
   res=newValue(res.value().slice(14),&apos;text&apos;)  
@@ -1983,8 +1943,7 @@ res</attribute>
         <attributes>
           <attribute name="script" valueType="text">var action=$group(&apos;Admin.Action.stage&apos;,&apos;Frax&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
 var res=$group(&apos;Admin.Action.stage&apos;,&apos;Frax&apos;,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
-  var j=action.indexOf(&apos;SKIP&apos;)
-  return j==i
+  return action.indexOf(&apos;SKIP&apos;)==i
   }).last()
 if(res.isNull().not().value()) {
   res=newValue(res.value().slice(14),&apos;text&apos;)  
@@ -2002,8 +1961,7 @@ res</attribute>
         <attributes>
           <attribute name="script" valueType="text">var action=$group(&apos;Admin.Action.stage&apos;,&apos;SocialNetwork&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
 var res=$group(&apos;Admin.Action.stage&apos;,&apos;SocialNetwork&apos;,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
-  var j=action.indexOf(&apos;SKIP&apos;)
-  return j==i
+  return action.indexOf(&apos;SKIP&apos;)==i
   }).last()
 if(res.isNull().not().value()) {
   res=newValue(res.value().slice(14),&apos;text&apos;)  
@@ -2050,8 +2008,7 @@ res</attribute>
         <attributes>
           <attribute name="script" valueType="text">var action=$group(&apos;Admin.Action.stage&apos;,&apos;GenHealth&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
 var res=$group(&apos;Admin.Action.stage&apos;,&apos;GenHealth&apos;,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
-  var j=action.indexOf(&apos;SKIP&apos;)
-  return j==i
+  return action.indexOf(&apos;SKIP&apos;)==i
   }).last()
 if(res.isNull().not().value()) {
   res=newValue(res.value().slice(14),&apos;text&apos;)  
@@ -2098,8 +2055,7 @@ res</attribute>
         <attributes>
           <attribute name="script" valueType="text">var action=$group(&apos;Admin.Action.stage&apos;,&apos;OSIPV&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
 var res=$group(&apos;Admin.Action.stage&apos;,&apos;OSIPV&apos;,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
-  var j=action.indexOf(&apos;SKIP&apos;)
-  return j==i
+  return action.indexOf(&apos;SKIP&apos;)==i
   }).last()
 if(res.isNull().not().value()) {
   res=newValue(res.value().slice(14),&apos;text&apos;)  
@@ -2146,8 +2102,7 @@ res</attribute>
         <attributes>
           <attribute name="script" valueType="text">var action=$group(&apos;Admin.Action.stage&apos;,&apos;Urine&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
 var res=$group(&apos;Admin.Action.stage&apos;,&apos;Urine&apos;,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
-  var j=action.indexOf(&apos;SKIP&apos;)
-  return j==i
+  return action.indexOf(&apos;SKIP&apos;)==i
   }).last()
 if(res.isNull().not().value()) {
   res=newValue(res.value().slice(14),&apos;text&apos;)  
@@ -2204,8 +2159,7 @@ if(stage.isNull().not().value()) {
   stage=stage.value()
   var action=$group(&apos;Admin.Action.stage&apos;,stage,&apos;Admin.Action.actionType&apos;).asSequence()
   var res=$group(&apos;Admin.Action.stage&apos;,stage,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
-    var j=action.indexOf(&apos;SKIP&apos;)
-    return j==i
+    return action.indexOf(&apos;SKIP&apos;)==i
     }).last()
   if(res.isNull().not().value()) {
     res=newValue(res.value().slice(14),&apos;text&apos;)
@@ -2284,8 +2238,7 @@ res</attribute>
         <attributes>
           <attribute name="script" valueType="text">var action=$group(&apos;Admin.Action.stage&apos;,&apos;Deviation_AE_CRF&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
 var res=$group(&apos;Admin.Action.stage&apos;,&apos;Deviation_AE_CRF&apos;,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
-  var j=action.indexOf(&apos;SKIP&apos;)
-  return j==i
+  return action.indexOf(&apos;SKIP&apos;)==i
   }).last()
 if(res.isNull().not().value()) {
   res=newValue(res.value().slice(14),&apos;text&apos;)  
@@ -2332,8 +2285,7 @@ res</attribute>
         <attributes>
           <attribute name="script" valueType="text">var action=$group(&apos;Admin.Action.stage&apos;,&apos;Deviation_AE_CRF&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
 var res=$group(&apos;Admin.Action.stage&apos;,&apos;Deviation_AE_CRF&apos;,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
-  var j=action.indexOf(&apos;SKIP&apos;)
-  return j==i
+  return action.indexOf(&apos;SKIP&apos;)==i
   }).last()
 if(res.isNull().not().value()) {
   res=newValue(res.value().slice(14),&apos;text&apos;)  
@@ -2380,8 +2332,7 @@ res</attribute>
         <attributes>
           <attribute name="script" valueType="text">var action=$group(&apos;Admin.Action.stage&apos;,&apos;NeuropsychologicalBatteryScoring&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
 var res=$group(&apos;Admin.Action.stage&apos;,&apos;NeuropsychologicalBatteryScoring&apos;,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
-  var j=action.indexOf(&apos;SKIP&apos;)
-  return j==i
+  return action.indexOf(&apos;SKIP&apos;)==i
   }).last()
 if(res.isNull().not().value()) {
   res=newValue(res.value().slice(14),&apos;text&apos;)  
@@ -2421,5 +2372,5 @@ res</attribute>
     </variables>
   </variables>
   <created valueType="datetime">2018-05-15T13:40:50.956-04</created>
-  <updated valueType="datetime">2018-08-14T14:01:46.584-04</updated>
+  <updated valueType="datetime">2018-08-16T09:17:41.659-04</updated>
 </org.obiba.magma.views.View>

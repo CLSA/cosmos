@@ -57,7 +57,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var action=$group('Admin.Action.stage','Spirometry','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','Spirometry','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  var j=action.indexOf('SKIP')\n  return j==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
+            "value": "var action=$group('Admin.Action.stage','Spirometry','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','Spirometry','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  return action.indexOf('SKIP')==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -183,7 +183,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var action=$group('Admin.Action.stage','GripStrength','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','GripStrength','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  var j=action.indexOf('SKIP')\n  return j==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
+            "value": "var action=$group('Admin.Action.stage','GripStrength','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','GripStrength','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  return action.indexOf('SKIP')==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -263,7 +263,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var action=$group('Admin.Action.stage','BloodPressure','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','BloodPressure','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  var j=action.indexOf('SKIP')\n  return j==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
+            "value": "var action=$group('Admin.Action.stage','BloodPressure','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','BloodPressure','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  return action.indexOf('SKIP')==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -343,7 +343,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var action=$group('Admin.Action.stage','ECG','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','ECG','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  var j=action.indexOf('SKIP')\n  return j==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
+            "value": "var action=$group('Admin.Action.stage','ECG','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','ECG','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  return action.indexOf('SKIP')==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -423,7 +423,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var action=$group('Admin.Action.stage','CognitiveTest','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','CognitiveTest','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  var j=action.indexOf('SKIP')\n  return j==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
+            "value": "var action=$group('Admin.Action.stage','CognitiveTest','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','CognitiveTest','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  return action.indexOf('SKIP')==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -503,7 +503,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var action=$group('Admin.Action.stage','Hearing','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','Hearing','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  var j=action.indexOf('SKIP')\n  return j==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
+            "value": "var action=$group('Admin.Action.stage','Hearing','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','Hearing','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  return action.indexOf('SKIP')==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -583,7 +583,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var action=$group('Admin.Action.stage','Tonometer','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','Tonometer','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  var j=action.indexOf('SKIP')\n  return j==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
+            "value": "var action=$group('Admin.Action.stage','Tonometer','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','Tonometer','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  return action.indexOf('SKIP')==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -663,7 +663,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var action=$group('Admin.Action.stage','Weight','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','Weight','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  var j=action.indexOf('SKIP')\n  return j==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
+            "value": "var action=$group('Admin.Action.stage','Weight','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','Weight','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  return action.indexOf('SKIP')==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -743,7 +743,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var action=$group('Admin.Action.stage','RetinalScan','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','RetinalScan','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  var j=action.indexOf('SKIP')\n  return j==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
+            "value": "var action=$group('Admin.Action.stage','RetinalScan','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','RetinalScan','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  return action.indexOf('SKIP')==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -823,7 +823,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var action=$group('Admin.Action.stage','LateralBoneDensity','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','LateralBoneDensity','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  var j=action.indexOf('SKIP')\n  return j==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')\n}\nres"
+            "value": "var action=$group('Admin.Action.stage','LateralBoneDensity','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','LateralBoneDensity','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  return action.indexOf('SKIP')==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')\n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -903,7 +903,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var action=$group('Admin.Action.stage','StandingHeight','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','StandingHeight','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  var j=action.indexOf('SKIP')\n  return j==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')\n}\nres"
+            "value": "var action=$group('Admin.Action.stage','StandingHeight','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','StandingHeight','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  return action.indexOf('SKIP')==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')\n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -983,7 +983,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var action=$group('Admin.Action.stage','ForearmBoneDensity','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','ForearmBoneDensity','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  var j=action.indexOf('SKIP')\n  return j==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
+            "value": "var action=$group('Admin.Action.stage','ForearmBoneDensity','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','ForearmBoneDensity','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  return action.indexOf('SKIP')==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -1063,7 +1063,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var action=$group('Admin.Action.stage','WholeBodyBoneDensity','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','WholeBodyBoneDensity','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  var j=action.indexOf('SKIP')\n  return j==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
+            "value": "var action=$group('Admin.Action.stage','WholeBodyBoneDensity','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','WholeBodyBoneDensity','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  return action.indexOf('SKIP')==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -1143,7 +1143,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var action=$group('Admin.Action.stage','DualHipBoneDensity','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','DualHipBoneDensity','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  var j=action.indexOf('SKIP')\n  return j==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
+            "value": "var action=$group('Admin.Action.stage','DualHipBoneDensity','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','DualHipBoneDensity','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  return action.indexOf('SKIP')==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -1223,7 +1223,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var action=$group('Admin.Action.stage','CarotidIntima','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','CarotidIntima','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  var j=action.indexOf('SKIP')\n  return j==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
+            "value": "var action=$group('Admin.Action.stage','CarotidIntima','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','CarotidIntima','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  return action.indexOf('SKIP')==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -1303,7 +1303,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var action=$group('Admin.Action.stage','TUG','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','TUG','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  var j=action.indexOf('SKIP')\n  return j==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
+            "value": "var action=$group('Admin.Action.stage','TUG','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','TUG','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  return action.indexOf('SKIP')==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -1383,7 +1383,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var action=$group('Admin.Action.stage','ChairRise','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','ChairRise','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  var j=action.indexOf('SKIP')\n  return j==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
+            "value": "var action=$group('Admin.Action.stage','ChairRise','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','ChairRise','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  return action.indexOf('SKIP')==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -1463,7 +1463,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var action=$group('Admin.Action.stage','HipsWaist','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','HipsWaist','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  var j=action.indexOf('SKIP')\n  return j==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
+            "value": "var action=$group('Admin.Action.stage','HipsWaist','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','HipsWaist','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  return action.indexOf('SKIP')==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -1543,7 +1543,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var action=$group('Admin.Action.stage','NeuropsychologicalBattery','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','NeuropsychologicalBattery','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  var j=action.indexOf('SKIP')\n  return j==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')\n}\nres"
+            "value": "var action=$group('Admin.Action.stage','NeuropsychologicalBattery','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','NeuropsychologicalBattery','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  return action.indexOf('SKIP')==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')\n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -1623,7 +1623,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var action=$group('Admin.Action.stage','StandingBalance','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','StandingBalance','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  var j=action.indexOf('SKIP')\n  return j==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n} else {\n  var l1=$('clsa-dcs.StandingBalance:STAND_COMPLETION_LEFT')  \n  var r1=$('clsa-dcs.StandingBalance:STAND_COMPLETION_RIGHT')  \n  if(l1.any('NO').value()) {\n    var l2=$('clsa-dcs.StandingBalance:STAND_UNCOMPLETE_LEFT').map({\n      'TECHNICAL':'TechnicalProblem',\n      'PARTICIPANT-DECISION':'ParticipantDecision',\n      'INTERVIEWER-DECISION':'InterviewerDecision',\n      'OTHER-SPEFICY':'SeeComment'},null)\n    if(l2.isNull().not().value()) {\n      res=l2\n    }  \n  } \n  if (null===res && r1.any('NO').value()) {\n    var r2=$('clsa-dcs.StandingBalance:STAND_UNCOMPLETE_RIGHT').map({\n      'TECHNICAL':'TechnicalProblem',\n      'PARTICIPANT-DECISION':'ParticipantDecision',\n      'INTERVIEWER-DECISION':'InterviewerDecision',\n      'OTHER-SPEFICY':'SeeComment'},null)\n    if(r2.isNull().not().value()) {\n      res=r2\n    }\n  }\n}\nres"
+            "value": "var action=$group('Admin.Action.stage','StandingBalance','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','StandingBalance','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  return action.indexOf('SKIP')==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n} else {\n  var l1=$('clsa-dcs.StandingBalance:STAND_COMPLETION_LEFT')  \n  var r1=$('clsa-dcs.StandingBalance:STAND_COMPLETION_RIGHT')  \n  if(l1.any('NO').value()) {\n    var l2=$('clsa-dcs.StandingBalance:STAND_UNCOMPLETE_LEFT').map({\n      'TECHNICAL':'TechnicalProblem',\n      'PARTICIPANT-DECISION':'ParticipantDecision',\n      'INTERVIEWER-DECISION':'InterviewerDecision',\n      'OTHER-SPEFICY':'SeeComment'},null)\n    if(l2.isNull().not().value()) {\n      res=l2\n    }  \n  } \n  if (null===res && r1.any('NO').value()) {\n    var r2=$('clsa-dcs.StandingBalance:STAND_UNCOMPLETE_RIGHT').map({\n      'TECHNICAL':'TechnicalProblem',\n      'PARTICIPANT-DECISION':'ParticipantDecision',\n      'INTERVIEWER-DECISION':'InterviewerDecision',\n      'OTHER-SPEFICY':'SeeComment'},null)\n    if(r2.isNull().not().value()) {\n      res=r2\n    }\n  }\n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -1703,7 +1703,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var action=$group('Admin.Action.stage','4mWalk','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','4mWalk','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  var j=action.indexOf('SKIP')\n  return j==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
+            "value": "var action=$group('Admin.Action.stage','4mWalk','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','4mWalk','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  return action.indexOf('SKIP')==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -1783,7 +1783,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var action=$group('Admin.Action.stage','SittingHeight','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','SittingHeight','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  var j=action.indexOf('SKIP')\n  return j==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')\n}\nres"
+            "value": "var action=$group('Admin.Action.stage','SittingHeight','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','SittingHeight','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  return action.indexOf('SKIP')==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')\n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -1863,7 +1863,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var action=$group('Admin.Action.stage','VisionAcuity','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','VisionAcuity','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  var j=action.indexOf('SKIP')\n  return j==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n} else {\n  var tests=['DONE_VA','DONE_BOTH_VA','DONE_LEFT_VA','DONE_RIGHT_VA','DONE_LEFT_PO_VA','DONE_RIGHT_PO_VA']\n  var reasons=['DONE_RSN_VA','DONE_RSN_BOTH_VA','DONE_RSN_LEFT_VA','DONE_RSN_RIGHT_VA','DONE_RSN_LEFT_PO_VA','DONE_RSN_RIGHT_PO_VA']\n  for(var i=0;i<tests.length;i++) {\n    var t=$('clsa-dcs.VisionAcuity:'+tests[i])\n    if(t.any('NO').value()) {\n      var r=$('clsa-dcs.VisionAcuity:'+reasons[i]).map({\n      'TECHNICAL-PROBLEM':'TechnicalProblem',\n      'PARTICIPANT-DECISION':'ParticipantDecision',\n      'INTERVIEWER-DECISION':'InterviewerDecision',\n      'OTHER':'SeeComment'},null)\n      if(r.isNull().not().value()) {\n        res=r\n        break\n      }\n    }\n  }  \n}\nres"
+            "value": "var action=$group('Admin.Action.stage','VisionAcuity','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','VisionAcuity','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  return action.indexOf('SKIP')==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n} else {\n  var tests=['DONE_VA','DONE_BOTH_VA','DONE_LEFT_VA','DONE_RIGHT_VA','DONE_LEFT_PO_VA','DONE_RIGHT_PO_VA']\n  var reasons=['DONE_RSN_VA','DONE_RSN_BOTH_VA','DONE_RSN_LEFT_VA','DONE_RSN_RIGHT_VA','DONE_RSN_LEFT_PO_VA','DONE_RSN_RIGHT_PO_VA']\n  for(var i=0;i<tests.length;i++) {\n    var t=$('clsa-dcs.VisionAcuity:'+tests[i])\n    if(t.any('NO').value()) {\n      var r=$('clsa-dcs.VisionAcuity:'+reasons[i]).map({\n      'TECHNICAL-PROBLEM':'TechnicalProblem',\n      'PARTICIPANT-DECISION':'ParticipantDecision',\n      'INTERVIEWER-DECISION':'InterviewerDecision',\n      'OTHER':'SeeComment'},null)\n      if(r.isNull().not().value()) {\n        res=r\n        break\n      }\n    }\n  }  \n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -1975,7 +1975,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var action=$group('Admin.Action.stage','Consent','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','Consent','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  var j=action.indexOf('SKIP')\n  return j==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
+            "value": "var action=$group('Admin.Action.stage','Consent','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','Consent','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  return action.indexOf('SKIP')==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -2007,7 +2007,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var action=$group('Admin.Action.stage','ContraIndications','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','ContraIndications','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  var j=action.indexOf('SKIP')\n  return j==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
+            "value": "var action=$group('Admin.Action.stage','ContraIndications','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','ContraIndications','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  return action.indexOf('SKIP')==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -2087,7 +2087,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var action=$group('Admin.Action.stage','EventPMT','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','EventPMT','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  var j=action.indexOf('SKIP')\n  return j==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
+            "value": "var action=$group('Admin.Action.stage','EventPMT','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','EventPMT','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  return action.indexOf('SKIP')==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -2167,7 +2167,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var action=$group('Admin.Action.stage','DiseaseSymptoms','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','DiseaseSymptoms','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  var j=action.indexOf('SKIP')\n  return j==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
+            "value": "var action=$group('Admin.Action.stage','DiseaseSymptoms','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','DiseaseSymptoms','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  return action.indexOf('SKIP')==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -2247,7 +2247,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var action=$group('Admin.Action.stage','ConclusionQuestionnaire','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','ConclusionQuestionnaire','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  var j=action.indexOf('SKIP')\n  return j==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
+            "value": "var action=$group('Admin.Action.stage','ConclusionQuestionnaire','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','ConclusionQuestionnaire','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  return action.indexOf('SKIP')==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -2327,7 +2327,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var action=$group('Admin.Action.stage','QuestionnaireBoneDensity','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','QuestionnaireBoneDensity','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  var j=action.indexOf('SKIP')\n  return j==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
+            "value": "var action=$group('Admin.Action.stage','QuestionnaireBoneDensity','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','QuestionnaireBoneDensity','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  return action.indexOf('SKIP')==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -2407,7 +2407,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var action=$group('Admin.Action.stage','HearingQuestionnaire','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','HearingQuestionnaire','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  var j=action.indexOf('SKIP')\n  return j==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
+            "value": "var action=$group('Admin.Action.stage','HearingQuestionnaire','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','HearingQuestionnaire','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  return action.indexOf('SKIP')==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -2487,7 +2487,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var action=$group('Admin.Action.stage','FunctionalStatus','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','FunctionalStatus','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  var j=action.indexOf('SKIP')\n  return j==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')\n}\nres"
+            "value": "var action=$group('Admin.Action.stage','FunctionalStatus','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','FunctionalStatus','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  return action.indexOf('SKIP')==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')\n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -2567,7 +2567,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var action=$group('Admin.Action.stage','TimeBasedProspectiveMemoryTask','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','TimeBasedProspectiveMemoryTask','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  var j=action.indexOf('SKIP')\n  return j==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
+            "value": "var action=$group('Admin.Action.stage','TimeBasedProspectiveMemoryTask','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','TimeBasedProspectiveMemoryTask','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  return action.indexOf('SKIP')==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -2663,7 +2663,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var action=$group('Admin.Action.stage','Urine','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','Urine','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  var j=action.indexOf('SKIP')\n  return j==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
+            "value": "var action=$group('Admin.Action.stage','Urine','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','Urine','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  return action.indexOf('SKIP')==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -2743,7 +2743,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var stage=$this('group_blood')\nvar res=null\nif(stage.isNull().not().value()) {\n  stage=stage.value()\n  var action=$group('Admin.Action.stage',stage,'Admin.Action.actionType').asSequence()\n  var res=$group('Admin.Action.stage',stage,'Admin.Action.eventReason').asSequence().filter(function(v,i){\n    var j=action.indexOf('SKIP')\n    return j==i\n    }).last()\n  if(res.isNull().not().value()) {\n    res=newValue(res.value().slice(14),'text')\n  }\n}  \nres"
+            "value": "var stage=$this('group_blood')\nvar res=null\nif(stage.isNull().not().value()) {\n  stage=stage.value()\n  var action=$group('Admin.Action.stage',stage,'Admin.Action.actionType').asSequence()\n  var res=$group('Admin.Action.stage',stage,'Admin.Action.eventReason').asSequence().filter(function(v,i){\n    return action.indexOf('SKIP')==i\n    }).last()\n  if(res.isNull().not().value()) {\n    res=newValue(res.value().slice(14),'text')\n  }\n}  \nres"
           }
         ], 
         "entityType": "Participant", 
@@ -2839,7 +2839,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var action=$group('Admin.Action.stage','NeuropsychologicalBatteryScoring','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','NeuropsychologicalBatteryScoring','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  var j=action.indexOf('SKIP')\n  return j==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
+            "value": "var action=$group('Admin.Action.stage','NeuropsychologicalBatteryScoring','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','NeuropsychologicalBatteryScoring','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  return action.indexOf('SKIP')==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
           }
         ], 
         "entityType": "Participant", 
