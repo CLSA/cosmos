@@ -88,7 +88,7 @@ if($(&apos;Quality_Control.QC_F1_IH:stage_contraindicated_inhome_1&apos;).eq(0).
 }
 if(null!==res) {
   var list=[&apos;AGE&apos;,&apos;ALC&apos;,&apos;ED&apos;,&apos;GEN&apos;,&apos;NUT&apos;,&apos;OWN&apos;,&apos;PA2&apos;,&apos;PCM&apos;,&apos;SDC&apos;,&apos;SMK&apos;]
-  var str=[(&apos;stage:&apos;+Math.round(res*1000)/1000)]
+  var str=[&apos;stage:&apos;+res.round(3)]
   var section=$(&apos;clsa-inhome-f1.InHome_1:QuestionnaireMetric.section&apos;).asSequence()
   var duration=$(&apos;clsa-inhome-f1.InHome_1:QuestionnaireMetric.duration&apos;).asSequence()
   var u=0
@@ -125,7 +125,7 @@ if($(&apos;Quality_Control.QC_F1_IH:stage_contraindicated_inhome_2&apos;).eq(0).
 }
 if(null!==res) {
   var list=[&apos;ADL&apos;,&apos;COG&apos;,&apos;IAL&apos;,&apos;LONE&apos;,&apos;LSI&apos;,&apos;SLS&apos;,&apos;WHO&apos;]
-  var str=[(&apos;stage:&apos;+Math.round(res*1000)/1000)]
+  var str=[&apos;stage:&apos;+res.round(3)]
   var section=$(&apos;clsa-inhome-f1.InHome_2:QuestionnaireMetric.section&apos;).asSequence()
   var duration=$(&apos;clsa-inhome-f1.InHome_2:QuestionnaireMetric.duration&apos;).asSequence()
   var u=0
@@ -162,7 +162,7 @@ if($(&apos;Quality_Control.QC_F1_IH:stage_contraindicated_inhome_3&apos;).eq(0).
 }
 if(null!==res) {
   var list=[&apos;CAG&apos;,&apos;CR1&apos;,&apos;CR2&apos;,&apos;FAL&apos;,&apos;INC&apos;,&apos;INJ&apos;,&apos;LBF&apos;,&apos;LFP&apos;,&apos;MEDI&apos;,&apos;RET&apos;,&apos;RPL&apos;,&apos;WLQ&apos;]
-  var str=[(&apos;stage:&apos;+Math.round(res*1000)/1000)]
+  var str=[&apos;stage:&apos;+res.round(3)]
   var section=$(&apos;clsa-inhome-f1.InHome_3:QuestionnaireMetric.section&apos;).asSequence()
   var duration=$(&apos;clsa-inhome-f1.InHome_3:QuestionnaireMetric.duration&apos;).asSequence()
   var u=0
@@ -199,7 +199,7 @@ if($(&apos;Quality_Control.QC_F1_IH:stage_contraindicated_inhome_4&apos;).eq(0).
 }
 if(null!==res) {
   var list=[&apos;ACE&apos;,&apos;CEX&apos;,&apos;ENV&apos;,&apos;HCU1&apos;,&apos;INT&apos;,&apos;K10&apos;,&apos;MEM&apos;,&apos;MET&apos;,&apos;PER&apos;,&apos;PHB&apos;,&apos;SEQ&apos;,&apos;TRA&apos;,&apos;WEA&apos;]
-  var str=[(&apos;stage:&apos;+Math.round(res*1000)/1000)]
+  var str=[&apos;stage:&apos;+res.round(3)]
   var section=$(&apos;clsa-inhome-f1.InHome_4:QuestionnaireMetric.section&apos;).asSequence()
   var duration=$(&apos;clsa-inhome-f1.InHome_4:QuestionnaireMetric.duration&apos;).asSequence()
   var u=0
@@ -235,7 +235,7 @@ if($(&apos;Quality_Control.QC_F1_IH:stage_contraindicated_conclusion_questionnai
   }
 }
 if(null!==res) {
-  res=newValue(&apos;{stage:&apos;+Math.round(res*1000)/1000+&apos;}&apos;,&apos;text&apos;)
+  res=newValue(&apos;{stage:&apos;+res.round(3)+&apos;}&apos;,&apos;text&apos;)
 }
 res</attribute>
         </attributes>
@@ -243,5 +243,5 @@ res</attribute>
     </variables>
   </variables>
   <created valueType="datetime">2018-08-13T13:43:24.444-04</created>
-  <updated valueType="datetime">2018-08-15T14:14:49.231-04</updated>
+  <updated valueType="datetime">2018-08-20T12:00:16.960-04</updated>
 </org.obiba.magma.views.View>

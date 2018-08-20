@@ -91,7 +91,7 @@ if($(&apos;Quality_Control.QC_BL_IH:stage_contraindicated_inhome_1&apos;).eq(0).
 }
 if(null!==res) {
   var list=[&apos;ALC&apos;,&apos;ED&apos;,&apos;GEN&apos;,&apos;NUT&apos;,&apos;OWN&apos;,&apos;SDC&apos;,&apos;SMK&apos;,&apos;VET&apos;]
-  var str=[(&apos;stage:&apos;+Math.round(res*1000)/1000)]
+  var str=[&apos;stage:&apos;+res.round(3)]
   var section=$(&apos;clsa-inhome.InHome_1:QuestionnaireMetric.section&apos;).asSequence()
   var duration=$(&apos;clsa-inhome.InHome_1:QuestionnaireMetric.duration&apos;).asSequence()
   var u=0
@@ -128,7 +128,7 @@ if($(&apos;Quality_Control.QC_BL_IH:stage_contraindicated_inhome_2&apos;).eq(0).
 }
 if(null!==res) {
   var list=[&apos;ADL&apos;,&apos;COG&apos;,&apos;HRG&apos;,&apos;IAL&apos;,&apos;LSI&apos;,&apos;PSD&apos;,&apos;SLE&apos;,&apos;SLS&apos;,&apos;VIS&apos;,&apos;WHO&apos;]
-  var str=[(&apos;stage:&apos;+Math.round(res*1000)/1000)]
+  var str=[&apos;stage:&apos;+res.round(3)]
   var section=$(&apos;clsa-inhome.InHome_2:QuestionnaireMetric.section&apos;).asSequence()
   var duration=$(&apos;clsa-inhome.InHome_2:QuestionnaireMetric.duration&apos;).asSequence()
   var u=0
@@ -165,7 +165,7 @@ if($(&apos;Quality_Control.QC_BL_IH:stage_contraindicated_inhome_3&apos;).eq(0).
 }
 if(null!==res) {
   var list=[&apos;ADM&apos;,&apos;CAG&apos;,&apos;CR1&apos;,&apos;CR2&apos;,&apos;FAL&apos;,&apos;INC&apos;,&apos;INJ&apos;,&apos;LBF&apos;,&apos;LFP&apos;,&apos;MEDI&apos;,&apos;RET&apos;,&apos;RPL&apos;]
-  var str=[(&apos;stage:&apos;+Math.round(res*1000)/1000)]
+  var str=[&apos;stage:&apos;+res.round(3)]
   var section=$(&apos;clsa-inhome.InHome_3:QuestionnaireMetric.section&apos;).asSequence()
   var duration=$(&apos;clsa-inhome.InHome_3:QuestionnaireMetric.duration&apos;).asSequence()
   var u=0
@@ -202,7 +202,7 @@ if($(&apos;Quality_Control.QC_BL_IH:stage_contraindicated_inhome_id&apos;).eq(0)
 }
 if(null!==res) {
   var list=[&apos;AGE&apos;,&apos;SEX&apos;]
-  var str=[(&apos;stage:&apos;+Math.round(res*1000)/1000)]
+  var str=[&apos;stage:&apos;+res.round(3)]
   var section=$(&apos;clsa-inhome.InHome_Id:QuestionnaireMetric.section&apos;).asSequence()
   var duration=$(&apos;clsa-inhome.InHome_Id:QuestionnaireMetric.duration&apos;).asSequence()
   var u=0
@@ -238,7 +238,7 @@ if($(&apos;Quality_Control.QC_BL_IH:stage_contraindicated_conclusion_questionnai
   }
 }
 if(null!==res) {
-  res=newValue(&apos;{stage:&apos;+Math.round(res*1000)/1000+&apos;}&apos;,&apos;text&apos;)
+  res=newValue(&apos;{stage:&apos;+res.round(3)+&apos;}&apos;,&apos;text&apos;)
 }
 res</attribute>
         </attributes>
@@ -256,7 +256,7 @@ var v=$group(
       &apos;Consent&apos;,
       &apos;Admin.StageInstance.duration&apos;).asSequence().last()      
 if(v.isNull().not().value()) {
-  res=newValue(&apos;{stage:&apos;+Math.round(v.div(60).value()*1000)/1000+&apos;}&apos;,&apos;text&apos;)
+  res=newValue(&apos;{stage:&apos;+v.div(60).round(3)+&apos;}&apos;,&apos;text&apos;)
 }
 res</attribute>
         </attributes>
@@ -264,5 +264,5 @@ res</attribute>
     </variables>
   </variables>
   <created valueType="datetime">2018-08-13T14:00:37.361-04</created>
-  <updated valueType="datetime">2018-08-15T14:24:19.751-04</updated>
+  <updated valueType="datetime">2018-08-20T11:58:02.655-04</updated>
 </org.obiba.magma.views.View>
