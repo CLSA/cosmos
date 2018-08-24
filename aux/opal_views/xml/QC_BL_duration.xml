@@ -68,433 +68,1241 @@
       <table inner="false" class="org.obiba.magma.support.ValueTableReference">
         <reference>clsa-dcs-images.WholeBodyBoneDensity</reference>
       </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>Quality_Control.QC_BL</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs.ContraIndications</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs.EventPMT</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs.FunctionalStatus</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs.Consent</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs.ConclusionQuestionnaire</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs.HearingQuestionnaire</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs.QuestionnaireBoneDensity</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs.TimeBasedProspectiveMemoryTask</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs.DiseaseSymptoms</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs.Urine</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs.Blood2</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs.Blood</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs.NeuropsychologicalBatteryScoring</reference>
+      </table>
     </list>
   </from>
   <select class="org.obiba.magma.views.support.NoneClause"/>
   <where class="org.obiba.magma.views.support.AllClause"/>
   <variables class="org.obiba.magma.js.views.VariablesClause">
     <variables class="linked-hash-set">
-      <variable name="stage_duration_spirometry" valueType="decimal" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+      <variable name="stage_duration_spirometry" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">var res=null
-if( $group(
-  &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
-  &apos;Spirometry&apos;,
-  &apos;Admin.StageInstance.lastState&apos;).asSequence().last().any(&apos;Skipped&apos;,&apos;NotApplicable&apos;).not().value() ) {
-  res=$group(
+if($(&apos;Quality_Control.QC_BL:stage_contraindicated_spirometry&apos;).eq(0).and(
+   $(&apos;Quality_Control.QC_BL:stage_skip_spirometry&apos;).isNull()).value()) {
+  var v=$group(
     &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
     &apos;Spirometry&apos;,
     &apos;Admin.StageInstance.duration&apos;).asSequence().last()
-  if(res.isNull().not().value()) {
-    res=Math.round(res.div(60.0).multiply(10.0).value()) / 10.0
-  }
+  if(v.isNull().not().value()) {    
+    res=newValue(&apos;{stage:&apos;+v.div(60).round(3)+&apos;}&apos;,&apos;text&apos;)
+  }  
 }
-res</attribute>
+res </attribute>
         </attributes>
       </variable>
-      <variable name="stage_duration_grip_strength" valueType="decimal" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+      <variable name="stage_duration_grip_strength" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">var res=null
-if( $group(
-  &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
-  &apos;GripStrength&apos;,
-  &apos;Admin.StageInstance.lastState&apos;).asSequence().last().any(&apos;Skipped&apos;,&apos;NotApplicable&apos;).not().value() ) {
-  res=$group(
+if($(&apos;Quality_Control.QC_BL:stage_contraindicated_grip_strength&apos;).eq(0).and(
+   $(&apos;Quality_Control.QC_BL:stage_skip_grip_strength&apos;).isNull()).value()) {
+  var v=$group(
     &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
     &apos;GripStrength&apos;,
     &apos;Admin.StageInstance.duration&apos;).asSequence().last()
-  if(res.isNull().not().value()) {
-    res=Math.round(res.div(60.0).multiply(10.0).value()) / 10.0 
-  }
+  if(v.isNull().not().value()) {    
+    res=newValue(&apos;{stage:&apos;+v.div(60).round(3)+&apos;}&apos;,&apos;text&apos;)
+  }  
 }
 res</attribute>
         </attributes>
       </variable>
-      <variable name="stage_duration_blood_pressure" valueType="decimal" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+      <variable name="stage_duration_blood_pressure" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">var res=null
-if( $group(
-  &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
-  &apos;BloodPressure&apos;,
-  &apos;Admin.StageInstance.lastState&apos;).asSequence().last().any(&apos;Skipped&apos;,&apos;NotApplicable&apos;).not().value() ) {
-  res=$group(
+if($(&apos;Quality_Control.QC_BL:stage_contraindicated_blood_pressure&apos;).eq(0).and(
+   $(&apos;Quality_Control.QC_BL:stage_skip_blood_pressure&apos;).isNull()).value()) {
+  var v=$group(
     &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
     &apos;BloodPressure&apos;,
     &apos;Admin.StageInstance.duration&apos;).asSequence().last()
-  if(res.isNull().not().value()) {
-    res=Math.round(res.div(60.0).multiply(10.0).value()) / 10.0 
-  }
+  if(v.isNull().not().value()) {    
+    res=newValue(&apos;{stage:&apos;+v.div(60).round(3)+&apos;}&apos;,&apos;text&apos;)
+  }  
 }
 res</attribute>
         </attributes>
       </variable>
-      <variable name="stage_duration_ecg" valueType="decimal" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+      <variable name="stage_duration_ecg" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">var res=null
-if( $group(
-  &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
-  &apos;ECG&apos;,
-  &apos;Admin.StageInstance.lastState&apos;).asSequence().last().any(&apos;Skipped&apos;,&apos;NotApplicable&apos;).not().value() ) {
-  var pre = $(&apos;clsa-dcs.BloodPressure:InstrumentRun.timeEnd&apos;)
-  var post = $(&apos;clsa-dcs.Spirometry:InstrumentRun.timeStart&apos;)
-  var diff=-1
-  if(pre.isNull().not().and(post.isNull().not()).value()) {
-    pre = new Date(pre.value())
-    post = new Date(post.value())
-    var diff = post.getTime() - pre.getTime()
-  }  
-  if(0 &lt; diff) {
-    res=newValue(Math.round(diff / 1000.0 / 60.00 * 10.0) / 10.0, &apos;decimal&apos;)  
-  } else {    
-    res=$group(
-      &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
-      &apos;ECG&apos;,
-      &apos;Admin.StageInstance.duration&apos;).asSequence().last()
-    if(res.isNull().not().value()) {
-      res=newValue(Math.round(res.div(60.0).multiply(10.0).value()) / 10.0, &apos;decimal&apos;)
+if($(&apos;Quality_Control.QC_BL:stage_contraindicated_ecg&apos;).eq(0).and(
+  $(&apos;Quality_Control.QC_BL:stage_skip_ecg&apos;).isNull(),
+  $this(&apos;group_duration_ecg&apos;).isNull().not()).value()) {
+  var stages=$(&apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;).asSequence()
+  var preIndex=$this(&apos;group_duration_ecg&apos;).first().value()
+  var postIndex=$this(&apos;group_duration_ecg&apos;).last().value()
+  var ecgIndex=-1
+  for(var i=preIndex;i&lt;=postIndex;i++) {
+    if(&apos;ECG&apos;==stages.valueAt(i).value()) {
+      ecgIndex=i
+      break
     }
   }
+  if(-1!=ecgIndex) {
+    var pre=newValue(null,&apos;datetime&apos;)
+    var post=newValue(null,&apos;datetime&apos;)
+    var stage=stages.valueAt(preIndex).value()
+    try {
+      pre=$(&apos;clsa-dcs.&apos;+stage+&apos;:QuestionnaireRun.timeEnd&apos;)
+    } catch(e) {
+      pre=$(&apos;clsa-dcs.&apos;+stage+&apos;:InstrumentRun.timeEnd&apos;)
+    }
+    stage=stages.valueAt(ecgIndex).value()
+    try {
+      post=$(&apos;clsa-dcs.&apos;+stage+&apos;:QuestionnaireRun.timeEnd&apos;)
+    } catch(e) {
+      post=$(&apos;clsa-dcs.&apos;+stage+&apos;:InstrumentRun.timeEnd&apos;)
+    }
+    if(post.after(pre).value()) {
+      res=newValue(&apos;{stage:&apos;+post.time().minus(pre.time()).div(60000).round(3)+&apos;}&apos;,&apos;text&apos;)
+    }
+  }  
 }
 res</attribute>
         </attributes>
       </variable>
-      <variable name="stage_duration_cognitive_test" valueType="decimal" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+      <variable name="stage_duration_cognitive_test" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">var res=null
-if( $group(
-  &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
-  &apos;CognitiveTest&apos;,
-  &apos;Admin.StageInstance.lastState&apos;).asSequence().last().any(&apos;Skipped&apos;,&apos;NotApplicable&apos;).not().value() ) {
-  res=$group(
+if($(&apos;Quality_Control.QC_BL:stage_contraindicated_cognitive_test&apos;).eq(0).and(
+   $(&apos;Quality_Control.QC_BL:stage_skip_cognitive_test&apos;).isNull()).value()) {
+  var v=$group(
     &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
     &apos;CognitiveTest&apos;,
     &apos;Admin.StageInstance.duration&apos;).asSequence().last()
-  if(res.isNull().not().value()) {
-    res=Math.round(res.div(60.0).multiply(10.0).value()) / 10.0 
-  }
+  if(v.isNull().not().value()) {    
+    res=newValue(&apos;{stage:&apos;+v.div(60).round(3)+&apos;}&apos;,&apos;text&apos;)
+  }  
 }
 res</attribute>
         </attributes>
       </variable>
-      <variable name="stage_duration_hearing" valueType="decimal" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+      <variable name="stage_duration_hearing" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">var res=null
-if( $group(
-  &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
-  &apos;Hearing&apos;,
-  &apos;Admin.StageInstance.lastState&apos;).asSequence().last().any(&apos;Skipped&apos;,&apos;NotApplicable&apos;).not().value() ) {
-  res=$group(
+if($(&apos;Quality_Control.QC_BL:stage_contraindicated_hearing&apos;).eq(0).and(
+   $(&apos;Quality_Control.QC_BL:stage_skip_hearing&apos;).isNull()).value()) {
+  var v=$group(
     &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
     &apos;Hearing&apos;,
     &apos;Admin.StageInstance.duration&apos;).asSequence().last()
-  if(res.isNull().not().value()) {
-    res=Math.round(res.div(60.0).multiply(10.0).value()) / 10.0 
-  }
+  if(v.isNull().not().value()) {    
+    res=newValue(&apos;{stage:&apos;+v.div(60).round(3)+&apos;}&apos;,&apos;text&apos;)
+  }  
 }
 res</attribute>
         </attributes>
       </variable>
-      <variable name="stage_duration_tonometer" valueType="decimal" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+      <variable name="stage_duration_tonometer" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">var res=null
-if( $group(
-  &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
-  &apos;Tonometer&apos;,
-  &apos;Admin.StageInstance.lastState&apos;).asSequence().last().any(&apos;Skipped&apos;,&apos;NotApplicable&apos;).not().value() ) {
-  res=$group(
+if($(&apos;Quality_Control.QC_BL:stage_contraindicated_tonometer&apos;).eq(0).and(
+   $(&apos;Quality_Control.QC_BL:stage_skip_tonometer&apos;).isNull()).value()) {
+  var v=$group(
     &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
     &apos;Tonometer&apos;,
     &apos;Admin.StageInstance.duration&apos;).asSequence().last()
-  if(res.isNull().not().value()) {
-    res=Math.round(res.div(60.0).multiply(10.0).value()) / 10.0 
-  }
+  if(v.isNull().not().value()) {    
+    res=newValue(&apos;{stage:&apos;+v.div(60).round(3)+&apos;}&apos;,&apos;text&apos;)
+  } 
 }
 res</attribute>
         </attributes>
       </variable>
-      <variable name="stage_duration_weight" valueType="decimal" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+      <variable name="stage_duration_weight" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">var res=null
-if( $group(
-  &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
-  &apos;Weight&apos;,
-  &apos;Admin.StageInstance.lastState&apos;).asSequence().last().any(&apos;Skipped&apos;,&apos;NotApplicable&apos;).not().value() ) {
-  res=$group(
+if($(&apos;Quality_Control.QC_BL:stage_contraindicated_weight&apos;).eq(0).and(
+   $(&apos;Quality_Control.QC_BL:stage_skip_weight&apos;).isNull()).value()) {
+  var v=$group(
     &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
     &apos;Weight&apos;,
     &apos;Admin.StageInstance.duration&apos;).asSequence().last()
-  if(res.isNull().not().value()) {
-    res=Math.round(res.div(60.0).multiply(10.0).value()) / 10.0 
-  }
+  if(v.isNull().not().value()) {    
+    res=newValue(&apos;{stage:&apos;+v.div(60).round(3)+&apos;}&apos;,&apos;text&apos;)
+  }  
 }
-res</attribute>
+res  </attribute>
         </attributes>
       </variable>
-      <variable name="stage_duration_retinal_scan" valueType="decimal" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+      <variable name="stage_duration_retinal_scan" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">var res=null
-if( $group(
-  &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
-  &apos;RetinalScan&apos;,
-  &apos;Admin.StageInstance.lastState&apos;).asSequence().last().any(&apos;Skipped&apos;,&apos;NotApplicable&apos;).not().value() ) {
-  res=$group(
+if($(&apos;Quality_Control.QC_BL:stage_contraindicated_retinal_scan&apos;).eq(0).and(
+   $(&apos;Quality_Control.QC_BL:stage_skip_retinal_scan&apos;).isNull()).value()) {
+  var v=$group(
     &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
     &apos;RetinalScan&apos;,
     &apos;Admin.StageInstance.duration&apos;).asSequence().last()
-  if(res.isNull().not().value()) {
-    res=Math.round(res.div(60.0).multiply(10.0).value()) / 10.0 
-  }
+  if(v.isNull().not().value()) {    
+    res=newValue(&apos;{stage:&apos;+v.div(60).round(3)+&apos;}&apos;,&apos;text&apos;)
+  } 
 }
 res</attribute>
         </attributes>
       </variable>
-      <variable name="stage_duration_lateral_bone_density" valueType="decimal" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+      <variable name="stage_duration_lateral_bone_density" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">var res=null
-if( $group(
-  &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
-  &apos;LateralBoneDensity&apos;,
-  &apos;Admin.StageInstance.lastState&apos;).asSequence().last().any(&apos;Skipped&apos;,&apos;NotApplicable&apos;).not().value() ) {
-  res=$group(
-    &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
-    &apos;LateralBoneDensity&apos;,
-    &apos;Admin.StageInstance.duration&apos;).asSequence().last()
-  if(res.isNull().not().value()) {
-    res=Math.round(res.div(60.0).multiply(10.0).value()) / 10.0 
+if($this(&apos;group_duration_dexa&apos;).isNull().not().value()) {
+  var types=[&apos;lateral&apos;,&apos;forearm&apos;,&apos;whole_body&apos;,&apos;dual_hip&apos;]
+  var has_dxa=[false,false,false,false]
+  var num=0
+  for(var i=0;i&lt;4;i++) {
+    if($(&apos;Quality_Control.QC_BL:stage_contraindicated_&apos;+types[i]+&apos;_bone_density&apos;).eq(0).and(
+     $(&apos;Quality_Control.QC_BL:stage_skip_&apos;+types[i]+&apos;_bone_density&apos;).isNull()).value()) {
+      has_dxa[i]=true
+      num++;
+    }
   }
+  if(has_dxa[types.indexOf(&apos;lateral&apos;)]) {
+    res=newValue(&apos;{stage:&apos;+$this(&apos;group_duration_dexa&apos;).div(num).round(3)+&apos;}&apos;,&apos;text&apos;)
+  }  
 }
 res</attribute>
         </attributes>
       </variable>
-      <variable name="stage_duration_standing_height" valueType="decimal" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+      <variable name="stage_duration_standing_height" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">var res=null
-if( $group(
-  &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
-  &apos;StandingHeight&apos;,
-  &apos;Admin.StageInstance.lastState&apos;).asSequence().last().any(&apos;Skipped&apos;,&apos;NotApplicable&apos;).not().value() ) {
-  res=$group(
+if($(&apos;Quality_Control.QC_BL:stage_contraindicated_standing_height&apos;).eq(0).and(
+   $(&apos;Quality_Control.QC_BL:stage_skip_standing_height&apos;).isNull()).value()) {
+  var v=$group(
     &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
     &apos;StandingHeight&apos;,
     &apos;Admin.StageInstance.duration&apos;).asSequence().last()
-  if(res.isNull().not().value()) {
-    res=Math.round(res.div(60.0).multiply(10.0).value()) / 10.0 
+  if(v.isNull().not().value()) {    
+    res=newValue(&apos;{stage:&apos;+v.div(60).round(3)+&apos;}&apos;,&apos;text&apos;)
   }
 }
 res</attribute>
         </attributes>
       </variable>
-      <variable name="stage_duration_forearm_bone_density" valueType="decimal" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+      <variable name="stage_duration_forearm_bone_density" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">var res=null
-if( $group(
-  &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
-  &apos;ForearmBoneDensity&apos;,
-  &apos;Admin.StageInstance.lastState&apos;).asSequence().last().any(&apos;Skipped&apos;,&apos;NotApplicable&apos;).not().value() ) {
-  res=$group(
-    &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
-    &apos;ForearmBoneDensity&apos;,
-    &apos;Admin.StageInstance.duration&apos;).asSequence().last()
-  if(res.isNull().not().value()) {
-    res=Math.round(res.div(60.0).multiply(10.0).value()) / 10.0 
+if($this(&apos;group_duration_dexa&apos;).isNull().not().value()) {
+  var types=[&apos;lateral&apos;,&apos;forearm&apos;,&apos;whole_body&apos;,&apos;dual_hip&apos;]
+  var has_dxa=[false,false,false,false]
+  var num=0
+  for(var i=0;i&lt;4;i++) {
+    if($(&apos;Quality_Control.QC_BL:stage_contraindicated_&apos;+types[i]+&apos;_bone_density&apos;).eq(0).and(
+     $(&apos;Quality_Control.QC_BL:stage_skip_&apos;+types[i]+&apos;_bone_density&apos;).isNull()).value()) {
+      has_dxa[i]=true
+      num++;
+    }
   }
+  if(has_dxa[types.indexOf(&apos;forearm&apos;)]) {
+    res=newValue(&apos;{stage:&apos;+$this(&apos;group_duration_dexa&apos;).div(num).round(3)+&apos;}&apos;,&apos;text&apos;)
+  }  
 }
 res</attribute>
         </attributes>
       </variable>
-      <variable name="stage_duration_whole_body_bone_density" valueType="decimal" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+      <variable name="stage_duration_whole_body_bone_density" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">var res=null
-if( $group(
-  &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
-  &apos;WholeBodyBoneDensity&apos;,
-  &apos;Admin.StageInstance.lastState&apos;).asSequence().last().any(&apos;Skipped&apos;,&apos;NotApplicable&apos;).not().value() ) {
-  res=$group(
-    &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
-    &apos;WholeBodyBoneDensity&apos;,
-    &apos;Admin.StageInstance.duration&apos;).asSequence().last()
-  if(res.isNull().not().value()) {
-    res=Math.round(res.div(60.0).multiply(10.0).value()) / 10.0 
+if($this(&apos;group_duration_dexa&apos;).isNull().not().value()) {
+  var types=[&apos;lateral&apos;,&apos;forearm&apos;,&apos;whole_body&apos;,&apos;dual_hip&apos;]
+  var has_dxa=[false,false,false,false]
+  var num=0
+  for(var i=0;i&lt;4;i++) {
+    if($(&apos;Quality_Control.QC_BL:stage_contraindicated_&apos;+types[i]+&apos;_bone_density&apos;).eq(0).and(
+     $(&apos;Quality_Control.QC_BL:stage_skip_&apos;+types[i]+&apos;_bone_density&apos;).isNull()).value()) {
+      has_dxa[i]=true
+      num++;
+    }
   }
+  if(has_dxa[types.indexOf(&apos;whole_body&apos;)]) {
+    res=newValue(&apos;{stage:&apos;+$this(&apos;group_duration_dexa&apos;).div(num).round(3)+&apos;}&apos;,&apos;text&apos;)
+  }  
 }
 res</attribute>
         </attributes>
       </variable>
-      <variable name="stage_duration_dual_hip_bone_density" valueType="decimal" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+      <variable name="stage_duration_dual_hip_bone_density" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">var res=null
-if( $group(
-  &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
-  &apos;DualHipBoneDensity&apos;,
-  &apos;Admin.StageInstance.lastState&apos;).asSequence().last().any(&apos;Skipped&apos;,&apos;NotApplicable&apos;).not().value() ) {
-  res=$group(
-    &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
-    &apos;DualHipBoneDensity&apos;,
-    &apos;Admin.StageInstance.duration&apos;).asSequence().last()
-  if(res.isNull().not().value()) {
-    res=Math.round(res.div(60.0).multiply(10.0).value()) / 10.0 
+if($this(&apos;group_duration_dexa&apos;).isNull().not().value()) {
+  var types=[&apos;lateral&apos;,&apos;forearm&apos;,&apos;whole_body&apos;,&apos;dual_hip&apos;]
+  var has_dxa=[false,false,false,false]
+  var num=0
+  for(var i=0;i&lt;4;i++) {
+    if($(&apos;Quality_Control.QC_BL:stage_contraindicated_&apos;+types[i]+&apos;_bone_density&apos;).eq(0).and(
+     $(&apos;Quality_Control.QC_BL:stage_skip_&apos;+types[i]+&apos;_bone_density&apos;).isNull()).value()) {
+      has_dxa[i]=true
+      num++;
+    }
   }
+  if(has_dxa[types.indexOf(&apos;dual_hip&apos;)]) {
+    res=newValue(&apos;{stage:&apos;+$this(&apos;group_duration_dexa&apos;).div(num).round(3)+&apos;}&apos;,&apos;text&apos;)
+  }  
 }
 res</attribute>
         </attributes>
       </variable>
-      <variable name="stage_duration_carotid_intima" valueType="decimal" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+      <variable name="stage_duration_carotid_intima" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">var res=null
-if( $group(
-  &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
-  &apos;CarotidIntima&apos;,
-  &apos;Admin.StageInstance.lastState&apos;).asSequence().last().any(&apos;Skipped&apos;,&apos;NotApplicable&apos;).not().value() ) {
-  res=$group(
-    &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
-    &apos;CarotidIntima&apos;,
-    &apos;Admin.StageInstance.duration&apos;).asSequence().last()
-  if(res.isNull().not().value()) {
-    res=Math.round(res.div(60.0).multiply(10.0).value()) / 10.0
-  }
+if($(&apos;Quality_Control.QC_BL:stage_contraindicated_carotid_intima&apos;).eq(0).and(
+  $(&apos;Quality_Control.QC_BL:stage_skip_carotid_intima&apos;).isNull(),
+  $this(&apos;group_duration_ecg&apos;).isNull().not()).value()) {    
+  var stages=$(&apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;).asSequence()  
+  var preIndex=$this(&apos;group_duration_ecg&apos;).first().value()
+  var postIndex=$this(&apos;group_duration_ecg&apos;).last().value()
+  var cimtGroup=stages.filter(function(v,i){
+    return (i&lt;=postIndex &amp;&amp; i&gt;=preIndex)
+  })  
+  var pre=newValue(null,&apos;datetime&apos;)
+  var post=newValue(null,&apos;datetime&apos;)
+  var intervals=[]
+  var cimtIndex=cimtGroup.indexOf(&apos;CarotidIntima&apos;)
+  if(-1==cimtIndex) {
+    for(var i=preIndex;i&lt;postIndex;i++) {
+      var stagePre=stages.valueAt(i).value() 
+      try {
+        pre=$(&apos;clsa-dcs.&apos;+stagePre+&apos;:QuestionnaireRun.timeEnd&apos;)
+      } catch(e) {
+        pre=$(&apos;clsa-dcs.&apos;+stagePre+&apos;:InstrumentRun.timeEnd&apos;)
+      }
+      var stagePost=stages.valueAt(i+1).value()
+      try {
+        post=$(&apos;clsa-dcs.&apos;+stagePost+&apos;:QuestionnaireRun.timeStart&apos;)
+      } catch(e) {
+        post=$(&apos;clsa-dcs.&apos;+stagePost+&apos;:InstrumentRun.timeStart&apos;)
+      }
+      if(post.after(pre).value()) {        
+        var t=post.time().minus(pre.time()).div(60000).round(3).value()
+        if(t!=null) {  
+          intervals.push(t)  
+        }
+      }  
+    }// end for loop    
+    if(0&lt;intervals.length) {
+      intervals.sort()
+      res=newValue(&apos;{stage:&apos;+intervals.pop()+&apos;}&apos;,&apos;text&apos;)      
+    }  
+  } else {    
+    cimtIndex=-1
+    for(var i=preIndex;i&lt;=postIndex;i++)
+    {
+      if(&apos;CarotidIntima&apos;==stages.valueAt(i).value()) {
+        cimtIndex=i
+        break
+      }
+    }
+    if(-1!=cimtIndex) {
+      post=$(&apos;clsa-dcs.CarotidIntima:InstrumentRun.timeEnd&apos;)
+      for(var i=cimtIndex-1;i&gt;0;i--) {
+        var stagePre=stages.valueAt(i).value()
+        try {
+          pre=$(&apos;clsa-dcs.&apos;+stagePre+&apos;:QuestionnaireRun.timeEnd&apos;)
+        } catch(e) {
+          pre=$(&apos;clsa-dcs.&apos;+stagePre+&apos;:InstrumentRun.timeEnd&apos;)
+        }
+        if(post.after(pre).value()) {
+          var t=post.time().minus(pre.time()).div(60000).round(3).value()
+          if(t!=null) {
+            res=newValue(&apos;{stage:&apos;+t+&apos;}&apos;,&apos;text&apos;)
+            i=0
+          }
+        }  
+      }// end for loop
+    }
+  }  
 }
 res</attribute>
         </attributes>
       </variable>
-      <variable name="stage_duration_tug" valueType="decimal" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+      <variable name="stage_duration_tug" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">var res=null
-if( $group(
-  &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
-  &apos;TUG&apos;,
-  &apos;Admin.StageInstance.lastState&apos;).asSequence().last().any(&apos;Skipped&apos;,&apos;NotApplicable&apos;).not().value() ) {
-  res=$group(
+if($(&apos;Quality_Control.QC_BL:stage_contraindicated_tug&apos;).eq(0).and(
+   $(&apos;Quality_Control.QC_BL:stage_skip_tug&apos;).isNull()).value()) {
+  var v=$group(
     &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
     &apos;TUG&apos;,
     &apos;Admin.StageInstance.duration&apos;).asSequence().last()
-  if(res.isNull().not().value()) {
-    res=Math.round(res.div(60.0).multiply(10.0).value()) / 10.0
+  if(v.isNull().not().value()) {    
+    res=newValue(&apos;{stage:&apos;+v.div(60).round(3)+&apos;}&apos;,&apos;text&apos;)
   }
 }
 res</attribute>
         </attributes>
       </variable>
-      <variable name="stage_duration_chair_rise" valueType="decimal" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+      <variable name="stage_duration_chair_rise" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">var res=null
-if( $group(
-  &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
-  &apos;ChairRise&apos;,
-  &apos;Admin.StageInstance.lastState&apos;).asSequence().last().any(&apos;Skipped&apos;,&apos;NotApplicable&apos;).not().value() ) {
-  res=$group(
+if($(&apos;Quality_Control.QC_BL:stage_contraindicated_chair_rise&apos;).eq(0).and(
+   $(&apos;Quality_Control.QC_BL:stage_skip_chair_rise&apos;).isNull()).value()) {
+  var v=$group(
     &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
     &apos;ChairRise&apos;,
     &apos;Admin.StageInstance.duration&apos;).asSequence().last()
-  if(res.isNull().not().value()) {
-    res=Math.round(res.div(60.0).multiply(10.0).value()) / 10.0
+  if(v.isNull().not().value()) {    
+    res=newValue(&apos;{stage:&apos;+v.div(60).round(3)+&apos;}&apos;,&apos;text&apos;)
   }
 }
 res</attribute>
         </attributes>
       </variable>
-      <variable name="stage_duration_hips_waist" valueType="decimal" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+      <variable name="stage_duration_hips_waist" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">var res=null
-if( $group(
-  &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
-  &apos;HipsWaist&apos;,
-  &apos;Admin.StageInstance.lastState&apos;).asSequence().last().any(&apos;Skipped&apos;,&apos;NotApplicable&apos;).not().value() ) {
-  res=$group(
+if($(&apos;Quality_Control.QC_BL:stage_contraindicated_hips_waist&apos;).eq(0).and(
+   $(&apos;Quality_Control.QC_BL:stage_skip_hips_waist&apos;).isNull()).value()) {
+  var v=$group(
     &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
     &apos;HipsWaist&apos;,
     &apos;Admin.StageInstance.duration&apos;).asSequence().last()
-  if(res.isNull().not().value()) {
-    res=Math.round(res.div(60.0).multiply(10.0).value()) / 10.0
+  if(v.isNull().not().value()) {    
+    res=newValue(&apos;{stage:&apos;+v.div(60).round(3)+&apos;}&apos;,&apos;text&apos;)
   }
 }
 res</attribute>
         </attributes>
       </variable>
-      <variable name="stage_duration_neuropsychological_battery" valueType="decimal" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+      <variable name="stage_duration_neuropsychological_battery" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">var res=null
-if( $group(
-  &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
-  &apos;NeuropsychologicalBattery&apos;,
-  &apos;Admin.StageInstance.lastState&apos;).asSequence().last().any(&apos;Skipped&apos;,&apos;NotApplicable&apos;).not().value() ) {
-  res=$group(
-    &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
-    &apos;NeuropsychologicalBattery&apos;,
-    &apos;Admin.StageInstance.duration&apos;).asSequence().last()
-  if(res.isNull().not().value()) {
-    res=Math.round(res.div(60.0).multiply(10.0).value()) / 10.0
+if($(&apos;Quality_Control.QC_BL:stage_contraindicated_neuropsychological_battery&apos;).eq(0).and(
+   $(&apos;Quality_Control.QC_BL:stage_skip_neuropsychological_battery&apos;).isNull()).value()) {
+  var post = $(&apos;clsa-dcs.NeuropsychologicalBattery:QuestionnaireRun.timeEnd&apos;)
+  var pre = $(&apos;clsa-dcs.NeuropsychologicalBattery:QuestionnaireRun.timeStart&apos;)
+  if(pre.before(post).value()) {
+    res=post.time().minus(pre.time()).div(60000)
   }
+  if(null===res) {
+    res=$group(
+      &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
+      &apos;NeuropsychologicalBattery&apos;,
+      &apos;Admin.StageInstance.duration&apos;).asSequence().last().div(60)
+  }  
+}
+if(null!==res &amp;&amp; res.isNull().not().value()) {
+  var list=[&apos;FAS&apos;,&apos;SN&apos;,&apos;SPA&apos;,&apos;SSA&apos;,&apos;STP&apos;]
+  var str=[(&apos;stage:&apos;+Math.round(res*1000)/1000)]
+  var section=$(&apos;clsa-dcs.NeuropsychologicalBattery:QuestionnaireMetric.section&apos;).asSequence()
+  var duration=$(&apos;clsa-dcs.NeuropsychologicalBattery:QuestionnaireMetric.duration&apos;).asSequence()
+  var u=0
+  for(var i=0;i&lt;list.length;i++) {
+    var m=list[i]
+    var t=duration.filter(function(v,k){
+      return section.valueAt(k).value()==m
+    }).asSequence().whenNull(0).sum().div(60)
+    u+=t
+    str.push(m+&apos;:&apos;+ Math.round(t*1000)/1000)
+  }
+  str.push(&apos;module:&apos;+Math.round(u*1000)/1000)
+  res=newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)  
 }
 res</attribute>
         </attributes>
       </variable>
-      <variable name="stage_duration_standing_balance" valueType="decimal" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+      <variable name="stage_duration_standing_balance" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">var res=null
-if( $group(
-  &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
-  &apos;StandingBalance&apos;,
-  &apos;Admin.StageInstance.lastState&apos;).asSequence().last().any(&apos;Skipped&apos;,&apos;NotApplicable&apos;).not().value() ) {
-  res=$group(
+if($(&apos;Quality_Control.QC_BL:stage_contraindicated_standing_balance&apos;).eq(0).and(
+   $(&apos;Quality_Control.QC_BL:stage_skip_standing_balance&apos;).isNull()).value()) {
+  var v=$group(
     &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
     &apos;StandingBalance&apos;,
     &apos;Admin.StageInstance.duration&apos;).asSequence().last()
-  if(res.isNull().not().value()) {
-    res=Math.round(res.div(60.0).multiply(10.0).value()) / 10.0
+  if(v.isNull().not().value()) {    
+    res=newValue(&apos;{stage:&apos;+v.div(60).round(3)+&apos;}&apos;,&apos;text&apos;)
   }
 }
 res</attribute>
         </attributes>
       </variable>
-      <variable name="stage_duration_four_metre_walk" valueType="decimal" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+      <variable name="stage_duration_four_metre_walk" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">var res=null
-if( $group(
-  &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
-  &apos;4mWalk&apos;,
-  &apos;Admin.StageInstance.lastState&apos;).asSequence().last().any(&apos;Skipped&apos;,&apos;NotApplicable&apos;).not().value() ) {
-  res=$group(
+if($(&apos;Quality_Control.QC_BL:stage_contraindicated_four_metre_walk&apos;).eq(0).and(
+   $(&apos;Quality_Control.QC_BL:stage_skip_four_metre_walk&apos;).isNull()).value()) {
+  var v=$group(
     &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
     &apos;4mWalk&apos;,
     &apos;Admin.StageInstance.duration&apos;).asSequence().last()
-  if(res.isNull().not().value()) {
-    res=Math.round(res.div(60.0).multiply(10.0).value()) / 10.0
+  if(v.isNull().not().value()) {    
+    res=newValue(&apos;{stage:&apos;+v.div(60).round(3)+&apos;}&apos;,&apos;text&apos;)
   }
 }
 res</attribute>
         </attributes>
       </variable>
-      <variable name="stage_duration_sitting_height" valueType="decimal" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+      <variable name="stage_duration_sitting_height" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">var res=null
-if( $group(
-  &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
-  &apos;SittingHeight&apos;,
-  &apos;Admin.StageInstance.lastState&apos;).asSequence().last().any(&apos;Skipped&apos;,&apos;NotApplicable&apos;).not().value() ) {
-  res=$group(
+if($(&apos;Quality_Control.QC_BL:stage_contraindicated_sitting_height&apos;).eq(0).and(
+   $(&apos;Quality_Control.QC_BL:stage_skip_sitting_height&apos;).isNull()).value()) {
+  var v=$group(
     &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
     &apos;SittingHeight&apos;,
     &apos;Admin.StageInstance.duration&apos;).asSequence().last()
-  if(res.isNull().not().value()) {
-    res=Math.round(res.div(60.0).multiply(10.0).value()) / 10.0
+  if(v.isNull().not().value()) {    
+    res=newValue(&apos;{stage:&apos;+v.div(60).round(3)+&apos;}&apos;,&apos;text&apos;)
   }
 }
 res</attribute>
         </attributes>
       </variable>
-      <variable name="stage_duration_vision_acuity" valueType="decimal" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+      <variable name="stage_duration_vision_acuity" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">var res=null
-if( $group(
-  &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
-  &apos;VisionAcuity&apos;,
-  &apos;Admin.StageInstance.lastState&apos;).asSequence().last().any(&apos;Skipped&apos;,&apos;NotApplicable&apos;).not().value() ) {
-  res=$group(
+if($(&apos;Quality_Control.QC_BL:stage_contraindicated_vision_acuity&apos;).eq(0).and(
+   $(&apos;Quality_Control.QC_BL:stage_skip_vision_acuity&apos;).isNull()).value()) {
+  var v=$group(
     &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
     &apos;VisionAcuity&apos;,
     &apos;Admin.StageInstance.duration&apos;).asSequence().last()
-  if(res.isNull().not().value()) {
-    res=Math.round(res.div(60.0).multiply(10.0).value()) / 10.0
+  if(v.isNull().not().value()) {    
+    res=newValue(&apos;{stage:&apos;+v.div(60).round(3)+&apos;}&apos;,&apos;text&apos;)
+  }
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_duration_consent" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var res=null
+if($(&apos;Quality_Control.QC_BL:stage_contraindicated_consent&apos;).eq(0).and(
+   $(&apos;Quality_Control.QC_BL:stage_skip_consent&apos;).isNull()).value()) {
+  var v=$group(
+    &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
+    &apos;Consent&apos;,
+    &apos;Admin.StageInstance.duration&apos;).asSequence().last()
+  if(v.isNull().not().value()) {    
+    res=newValue(&apos;{stage:&apos;+v.div(60).round(3)+&apos;}&apos;,&apos;text&apos;)
+  }
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_duration_contraindications" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var res=null
+if($(&apos;Quality_Control.QC_BL:stage_contraindicated_contraindications&apos;).eq(0).and(
+   $(&apos;Quality_Control.QC_BL:stage_skip_contraindications&apos;).isNull()).value()) {
+  var post = $(&apos;clsa-dcs.ContraIndications:QuestionnaireRun.timeEnd&apos;)
+  var pre = $(&apos;clsa-dcs.ContraIndications:QuestionnaireRun.timeStart&apos;)
+  if(pre.before(post).value()) {
+    res=post.time().minus(pre.time()).div(60000)
+  }
+  if(null===res) {
+    res=$group(
+      &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
+      &apos;ContraIndications&apos;,
+      &apos;Admin.StageInstance.duration&apos;).asSequence().last().div(60)
+  }  
+}
+if(null!==res &amp;&amp; res.isNull().not().value()) {
+  var list=[&apos;ICQ_COM&apos;,&apos;QAH_COM&apos;]
+  var str=[&apos;stage:&apos;+res.round(3)]
+  var section=$(&apos;clsa-dcs.ContraIndications:QuestionnaireMetric.section&apos;).asSequence()
+  var duration=$(&apos;clsa-dcs.ContraIndications:QuestionnaireMetric.duration&apos;).asSequence()
+  var u=0
+  for(var i=0;i&lt;list.length;i++) {
+    var m=list[i]
+    var t=duration.filter(function(v,k){
+      return section.valueAt(k).value()==m
+    }).asSequence().whenNull(0).sum().div(60)
+    u+=t
+    str.push(m+&apos;:&apos;+ t.round(3))
+  }
+  str.push(&apos;module:&apos;+Math.round(u*1000)/1000)
+  res=newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)  
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_duration_event_pmt" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var res=null
+if($(&apos;Quality_Control.QC_BL:stage_contraindicated_event_pmt&apos;).eq(0).and(
+   $(&apos;Quality_Control.QC_BL:stage_skip_event_pmt&apos;).isNull()).value()) {
+  var post = $(&apos;clsa-dcs.EventPMT:QuestionnaireRun.timeEnd&apos;)
+  var pre = $(&apos;clsa-dcs.EventPMT:QuestionnaireRun.timeStart&apos;)
+  if(pre.before(post).value()) {
+    res=post.time().minus(pre.time()).div(60000)
+  }
+  if(null===res) {
+    res=$group(
+      &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
+      &apos;EventPMT&apos;,
+      &apos;Admin.StageInstance.duration&apos;).asSequence().last().div(60)
+  }  
+}
+if(null!==res &amp;&amp; res.isNull().not().value()) {
+  var list=[&apos;PMT&apos;]
+  var str=[&apos;stage:&apos;+res.round(3)]
+  var section=$(&apos;clsa-dcs.EventPMT:QuestionnaireMetric.section&apos;).asSequence()
+  var duration=$(&apos;clsa-dcs.EventPMT:QuestionnaireMetric.duration&apos;).asSequence()
+  var u=0
+  for(var i=0;i&lt;list.length;i++) {
+    var m=list[i]
+    var t=duration.filter(function(v,k){
+      return section.valueAt(k).value()==m
+    }).asSequence().whenNull(0).sum().div(60)
+    u+=t
+    str.push(m+&apos;:&apos;+t.round(3))
+  }
+  str.push(&apos;module:&apos;+Math.round(u*1000)/1000)
+  res=newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)  
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_duration_functional_status" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var res=null
+if($(&apos;Quality_Control.QC_BL:stage_contraindicated_functional_status&apos;).eq(0).and(
+   $(&apos;Quality_Control.QC_BL:stage_skip_functional_status&apos;).isNull()).value()) {
+  var post = $(&apos;clsa-dcs.FunctionalStatus:QuestionnaireRun.timeEnd&apos;)
+  var pre = $(&apos;clsa-dcs.FunctionalStatus:QuestionnaireRun.timeStart&apos;)
+  if(pre.before(post).value()) {
+    res=post.time().minus(pre.time()).div(60000)
+  }
+  if(null===res) {
+    res=$group(
+      &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
+      &apos;FunctionalStatus&apos;,
+      &apos;Admin.StageInstance.duration&apos;).asSequence().last().div(60)
+  }  
+}
+if(null!==res &amp;&amp; res.isNull().not().value()) {
+  var list=[&apos;Fun&apos;]
+  var str=[(&apos;stage:&apos;+Math.round(res*1000)/1000)]
+  var section=$(&apos;clsa-dcs.FunctionalStatus:QuestionnaireMetric.section&apos;).asSequence()
+  var duration=$(&apos;clsa-dcs.FunctionalStatus:QuestionnaireMetric.duration&apos;).asSequence()
+  var u=0
+  for(var i=0;i&lt;list.length;i++) {
+    var m=list[i]
+    var t=duration.filter(function(v,k){
+      return section.valueAt(k).value()==m
+    }).asSequence().whenNull(0).sum().div(60)
+    u+=t
+    str.push(m+&apos;:&apos;+ Math.round(t*1000)/1000)
+  }
+  str.push(&apos;module:&apos;+Math.round(u*1000)/1000)
+  res=newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)  
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_duration_disease_symptoms" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var res=null
+if($(&apos;Quality_Control.QC_BL:stage_contraindicated_disease_symptoms&apos;).eq(0).and(
+   $(&apos;Quality_Control.QC_BL:stage_skip_disease_symptoms&apos;).isNull()).value()) {
+  var post = $(&apos;clsa-dcs.DiseaseSymptoms:QuestionnaireRun.timeEnd&apos;)
+  var pre = $(&apos;clsa-dcs.DiseaseSymptoms:QuestionnaireRun.timeStart&apos;)
+  if(pre.before(post).value()) {
+    res=post.time().minus(pre.time()).div(60000)
+  }
+  if(null===res) {
+    res=$group(
+      &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
+      &apos;DiseaseSymptoms&apos;,
+      &apos;Admin.StageInstance.duration&apos;).asSequence().last().div(60)
+  }  
+}
+if(null!==res &amp;&amp; res.isNull().not().value()) {
+  var list=[&apos;CAO&apos;,&apos;CCC_CANCER&apos;,&apos;CCC_CARDIAC&apos;,&apos;CCC_GASTRO&apos;,&apos;CCC_INFECTION&apos;,&apos;CCC_MENTAL&apos;,&apos;CCC_NEURO&apos;,&apos;CCC_OTHER&apos;,&apos;CCC_VISION&apos;,
+  &apos;DEP&apos;,&apos;DIA&apos;,&apos;DPR&apos;,&apos;HBP&apos;,&apos;HYP&apos;,&apos;IHD&apos;,&apos;OAR&apos;,&apos;OSA&apos;,&apos;OSH&apos;,&apos;OSK&apos;,&apos;OST&apos;,&apos;PKD&apos;,&apos;ROS&apos;,&apos;STR&apos;,&apos;TBI&apos;]
+
+  var str=[&apos;stage:&apos;+res.round(3)]
+  var section=$(&apos;clsa-dcs.DiseaseSymptoms:QuestionnaireMetric.section&apos;).asSequence()
+  var duration=$(&apos;clsa-dcs.DiseaseSymptoms:QuestionnaireMetric.duration&apos;).asSequence()
+  var u=0
+  for(var i=0;i&lt;list.length;i++) {
+    var m=list[i]
+    var t=duration.filter(function(v,k){
+      return section.valueAt(k).value()==m
+    }).asSequence().whenNull(0).sum().div(60)
+    u+=t
+    str.push(m+&apos;:&apos;+t.round(3))
+  }
+  str.push(&apos;module:&apos;+Math.round(u*1000)/1000)
+  res=newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)  
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_duration_time_based_pmt" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var res=null
+if($(&apos;Quality_Control.QC_BL:stage_contraindicated_time_based_pmt&apos;).eq(0).and(
+   $(&apos;Quality_Control.QC_BL:stage_skip_time_based_pmt&apos;).isNull()).value()) {
+  var post = $(&apos;clsa-dcs.TimeBasedProspectiveMemoryTask:QuestionnaireRun.timeEnd&apos;)
+  var pre = $(&apos;clsa-dcs.TimeBasedProspectiveMemoryTask:QuestionnaireRun.timeStart&apos;)
+  if(pre.before(post).value()) {
+    res=post.time().minus(pre.time()).div(60000)
+  }
+  if(null===res) {
+    res=$group(
+      &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
+      &apos;TimeBasedProspectiveMemoryTask&apos;,
+      &apos;Admin.StageInstance.duration&apos;).asSequence().last().div(60)
+  }  
+}
+if(null!==res &amp;&amp; res.isNull().not().value()) {
+  var list=[&apos;TMT&apos;]
+  var str=[&apos;stage:&apos;+res.round(3)]
+  var section=$(&apos;clsa-dcs.TimeBasedProspectiveMemoryTask:QuestionnaireMetric.section&apos;).asSequence()
+  var duration=$(&apos;clsa-dcs.TimeBasedProspectiveMemoryTask:QuestionnaireMetric.duration&apos;).asSequence()
+  var u=0
+  for(var i=0;i&lt;list.length;i++) {
+    var m=list[i]
+    var t=duration.filter(function(v,k){
+      return section.valueAt(k).value()==m
+    }).asSequence().whenNull(0).sum().div(60)
+    u+=t
+    str.push(m+&apos;:&apos;+t.round(3))
+  }
+  str.push(&apos;module:&apos;+Math.round(u*1000)/1000)
+  res=newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)  
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_duration_hearing_questionnaire" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var res=null
+if($(&apos;Quality_Control.QC_BL:stage_contraindicated_hearing_questionnaire&apos;).eq(0).and(
+   $(&apos;Quality_Control.QC_BL:stage_skip_hearing_questionnaire&apos;).isNull()).value()) {
+  var post = $(&apos;clsa-dcs.HearingQuestionnaire:QuestionnaireRun.timeEnd&apos;)
+  var pre = $(&apos;clsa-dcs.HearingQuestionnaire:QuestionnaireRun.timeStart&apos;)
+  if(pre.before(post).value()) {
+    res=newValue(&apos;{stage:&apos;+post.time().minus(pre.time()).div(60000).round(3)+&apos;}&apos;,&apos;text&apos;)
+  } else {
+    var v=$group(
+      &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
+      &apos;HearingQuestionnaire&apos;,
+      &apos;Admin.StageInstance.duration&apos;).asSequence().last()
+    if(v.isNull().not().value()) {
+      res=newValue(&apos;{stage:&apos;+v.div(60).round(3)+&apos;}&apos;,&apos;text&apos;)
+    }      
+  }
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_duration_conclusion_questionnaire" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var res=null
+if($(&apos;Quality_Control.QC_BL:stage_contraindicated_conclusion_questionnaire&apos;).eq(0).and(
+   $(&apos;Quality_Control.QC_BL:stage_skip_conclusion_questionnaire&apos;).isNull()).value()) {
+  var post = $(&apos;clsa-dcs.ConclusionQuestionnaire:QuestionnaireRun.timeEnd&apos;)
+  var pre = $(&apos;clsa-dcs.ConclusionQuestionnaire:QuestionnaireRun.timeStart&apos;)
+  if(pre.before(post).value()) {
+    res=newValue(&apos;{stage:&apos;+post.time().minus(pre.time()).div(60000).round(3)+&apos;}&apos;,&apos;text&apos;)
+  } else {
+    var v=$group(
+      &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
+      &apos;ConclusionQuestionnaire&apos;,
+      &apos;Admin.StageInstance.duration&apos;).asSequence().last()
+    if(v.isNull().not().value()) {
+      res=newValue(&apos;{stage:&apos;+v.div(60).round(3)+&apos;}&apos;,&apos;text&apos;)
+    }      
+  }
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_duration_bone_density_questionnaire" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var res=null
+if($(&apos;Quality_Control.QC_BL:stage_contraindicated_bone_density_questionnaire&apos;).eq(0).and(
+   $(&apos;Quality_Control.QC_BL:stage_skip_bone_density_questionnaire&apos;).isNull()).value()) {
+  var post = $(&apos;clsa-dcs.QuestionnaireBoneDensity:QuestionnaireRun.timeEnd&apos;)
+  var pre = $(&apos;clsa-dcs.QuestionnaireBoneDensity:QuestionnaireRun.timeStart&apos;)
+  if(pre.before(post).value()) {
+    res=newValue(&apos;{stage:&apos;+post.time().minus(pre.time()).div(60000).round(3)+&apos;}&apos;,&apos;text&apos;)
+  } else {
+    var v=$group(
+      &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
+      &apos;QuestionnaireBoneDensity&apos;,
+      &apos;Admin.StageInstance.duration&apos;).asSequence().last()
+    if(v.isNull().not().value()) {
+      res=newValue(&apos;{stage:&apos;+v.div(60).round(3)+&apos;}&apos;,&apos;text&apos;)
+    }      
+  }
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="group_duration_dexa" valueType="decimal" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var list=[&apos;LateralBoneDensity&apos;,&apos;ForearmBoneDensity&apos;,&apos;WholeBodyBoneDensity&apos;,&apos;DualHipBoneDensity&apos;]
+var stages=$(&apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;).asSequence()
+var dexa=stages.filter(function(v) {
+    return -1!==list.indexOf(v.value())
+  })
+var res=null
+if(dexa.empty().not().value()) {
+  var stageBefore=&apos;QuestionnaireBoneDensity&apos;
+  var stageAfter=&apos;EventPMT&apos;
+  // bracket the actual bone density acquisitions
+  // 
+  var pre=$(&apos;clsa-dcs.QuestionnaireBoneDensity:QuestionnaireRun.timeEnd&apos;)
+  var post=newValue(null,&apos;datetime&apos;)
+  
+  try {
+    post=$(&apos;clsa-dcs.&apos;+stageAfter+&apos;:QuestionnaireRun.timeStart&apos;)      
+  } catch(e) {   
+    post=$(&apos;clsa-dcs.&apos;+stageAfter+&apos;:InstrumentRun.timeStart&apos;)
+  }
+  
+  if(pre.before(post).value()) {    
+    res=post.time().minus(pre.time()).div(60000)
+  }  
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_technician_grip_strength" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;Quality_Control.QC_BL:stage_technician_grip_strength&apos;)</attribute>
+          <attribute name="derivedFrom" namespace="opal" valueType="text">/datasource/Quality_Control/table/QC_BL/variable/stage_technician_grip_strength</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_technician_dual_hip_bone_density" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;Quality_Control.QC_BL:stage_technician_dual_hip_bone_density&apos;)</attribute>
+          <attribute name="derivedFrom" namespace="opal" valueType="text">/datasource/Quality_Control/table/QC_BL/variable/stage_technician_dual_hip_bone_density</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_technician_tug" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;Quality_Control.QC_BL:stage_technician_tug&apos;)</attribute>
+          <attribute name="derivedFrom" namespace="opal" valueType="text">/datasource/Quality_Control/table/QC_BL/variable/stage_technician_tug</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_technician_sitting_height" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;Quality_Control.QC_BL:stage_technician_sitting_height&apos;)</attribute>
+          <attribute name="derivedFrom" namespace="opal" valueType="text">/datasource/Quality_Control/table/QC_BL/variable/stage_technician_sitting_height</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_technician_blood_pressure" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;Quality_Control.QC_BL:stage_technician_blood_pressure&apos;)</attribute>
+          <attribute name="derivedFrom" namespace="opal" valueType="text">/datasource/Quality_Control/table/QC_BL/variable/stage_technician_blood_pressure</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_technician_ecg" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;Quality_Control.QC_BL:stage_technician_ecg&apos;)</attribute>
+          <attribute name="derivedFrom" namespace="opal" valueType="text">/datasource/Quality_Control/table/QC_BL/variable/stage_technician_ecg</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_technician_hearing" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;Quality_Control.QC_BL:stage_technician_hearing&apos;)</attribute>
+          <attribute name="derivedFrom" namespace="opal" valueType="text">/datasource/Quality_Control/table/QC_BL/variable/stage_technician_hearing</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_technician_retinal_scan" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;Quality_Control.QC_BL:stage_technician_retinal_scan&apos;)</attribute>
+          <attribute name="derivedFrom" namespace="opal" valueType="text">/datasource/Quality_Control/table/QC_BL/variable/stage_technician_retinal_scan</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_technician_standing_height" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;Quality_Control.QC_BL:stage_technician_standing_height&apos;)</attribute>
+          <attribute name="derivedFrom" namespace="opal" valueType="text">/datasource/Quality_Control/table/QC_BL/variable/stage_technician_standing_height</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_technician_chair_rise" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;Quality_Control.QC_BL:stage_technician_chair_rise&apos;)</attribute>
+          <attribute name="derivedFrom" namespace="opal" valueType="text">/datasource/Quality_Control/table/QC_BL/variable/stage_technician_chair_rise</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_technician_hips_waist" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;Quality_Control.QC_BL:stage_technician_hips_waist&apos;)</attribute>
+          <attribute name="derivedFrom" namespace="opal" valueType="text">/datasource/Quality_Control/table/QC_BL/variable/stage_technician_hips_waist</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_technician_neuropsychological_battery" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;Quality_Control.QC_BL:stage_technician_neuropsychological_battery&apos;)</attribute>
+          <attribute name="derivedFrom" namespace="opal" valueType="text">/datasource/Quality_Control/table/QC_BL/variable/stage_technician_neuropsychological_battery</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_technician_four_metre_walk" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;Quality_Control.QC_BL:stage_technician_four_metre_walk&apos;)</attribute>
+          <attribute name="derivedFrom" namespace="opal" valueType="text">/datasource/Quality_Control/table/QC_BL/variable/stage_technician_four_metre_walk</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_technician_cognitive_test" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;Quality_Control.QC_BL:stage_technician_cognitive_test&apos;)</attribute>
+          <attribute name="derivedFrom" namespace="opal" valueType="text">/datasource/Quality_Control/table/QC_BL/variable/stage_technician_cognitive_test</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_technician_tonometer" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;Quality_Control.QC_BL:stage_technician_tonometer&apos;)</attribute>
+          <attribute name="derivedFrom" namespace="opal" valueType="text">/datasource/Quality_Control/table/QC_BL/variable/stage_technician_tonometer</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_technician_weight" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;Quality_Control.QC_BL:stage_technician_weight&apos;)</attribute>
+          <attribute name="derivedFrom" namespace="opal" valueType="text">/datasource/Quality_Control/table/QC_BL/variable/stage_technician_weight</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_technician_lateral_bone_density" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;Quality_Control.QC_BL:stage_technician_lateral_bone_density&apos;)</attribute>
+          <attribute name="derivedFrom" namespace="opal" valueType="text">/datasource/Quality_Control/table/QC_BL/variable/stage_technician_lateral_bone_density</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_technician_whole_body_bone_density" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;Quality_Control.QC_BL:stage_technician_whole_body_bone_density&apos;)</attribute>
+          <attribute name="derivedFrom" namespace="opal" valueType="text">/datasource/Quality_Control/table/QC_BL/variable/stage_technician_whole_body_bone_density</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_technician_carotid_intima" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;Quality_Control.QC_BL:stage_technician_carotid_intima&apos;)</attribute>
+          <attribute name="derivedFrom" namespace="opal" valueType="text">/datasource/Quality_Control/table/QC_BL/variable/stage_technician_carotid_intima</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_technician_spirometry" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="stage" valueType="text">Spirometry</attribute>
+          <attribute name="derivedFrom" namespace="opal" valueType="text">/datasource/Quality_Control/table/QC_BL/variable/stage_technician_spirometry</attribute>
+          <attribute name="script" valueType="text">$(&apos;Quality_Control.QC_BL:stage_technician_spirometry&apos;)</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_technician_forearm_bone_density" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;Quality_Control.QC_BL:stage_technician_forearm_bone_density&apos;)</attribute>
+          <attribute name="derivedFrom" namespace="opal" valueType="text">/datasource/Quality_Control/table/QC_BL/variable/stage_technician_forearm_bone_density</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_technician_standing_balance" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;Quality_Control.QC_BL:stage_technician_standing_balance&apos;)</attribute>
+          <attribute name="derivedFrom" namespace="opal" valueType="text">/datasource/Quality_Control/table/QC_BL/variable/stage_technician_standing_balance</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_technician_vision_acuity" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;Quality_Control.QC_BL:stage_technician_vision_acuity&apos;)</attribute>
+          <attribute name="derivedFrom" namespace="opal" valueType="text">/datasource/Quality_Control/table/QC_BL/variable/stage_technician_vision_acuity</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_technician_functional_status" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;Quality_Control.QC_BL:stage_technician_functional_status&apos;)</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_technician_consent" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;Quality_Control.QC_BL:stage_technician_consent&apos;)</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_technician_contraindications" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;Quality_Control.QC_BL:stage_technician_contraindications&apos;)</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_technician_event_pmt" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;Quality_Control.QC_BL:stage_technician_event_pmt&apos;)</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_technician_disease_symptoms" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;Quality_Control.QC_BL:stage_technician_disease_symptoms&apos;)</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_technician_time_based_pmt" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;Quality_Control.QC_BL:stage_technician_time_based_pmt&apos;)</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_technician_bone_density_questionnaire" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;Quality_Control.QC_BL:stage_technician_bone_density_questionnaire&apos;)</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_technician_hearing_questionnaire" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;Quality_Control.QC_BL:stage_technician_hearing_questionnaire&apos;)</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_technician_conclusion_questionnaire" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;Quality_Control.QC_BL:stage_technician_conclusion_questionnaire&apos;)</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_technician_urine" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;Quality_Control.QC_BL:stage_technician_urine&apos;)</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_duration_urine" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var res=null
+if($(&apos;Quality_Control.QC_BL:stage_contraindicated_urine&apos;).eq(0).and(
+   $(&apos;Quality_Control.QC_BL:stage_skip_urine&apos;).isNull()).value()) {
+  var post = $(&apos;clsa-dcs.Urine:QuestionnaireRun.timeEnd&apos;)
+  var pre = $(&apos;clsa-dcs.Urine:QuestionnaireRun.timeStart&apos;)
+  if(pre.before(post).value()) {
+    res=post.time().minus(pre.time()).div(60000)
+  }
+  if(null===res) {
+    res=$group(
+      &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
+      &apos;Urine&apos;,
+      &apos;Admin.StageInstance.duration&apos;).asSequence().last().div(60)
+  }  
+}
+if(null!==res &amp;&amp; res.isNull().not().value()) {
+  var list=[&apos;URINE&apos;]
+  var str=[(&apos;stage:&apos;+Math.round(res*1000)/1000)]
+  var section=$(&apos;clsa-dcs.Urine:QuestionnaireMetric.section&apos;).asSequence()
+  var duration=$(&apos;clsa-dcs.Urine:QuestionnaireMetric.duration&apos;).asSequence()
+  var u=0
+  for(var i=0;i&lt;list.length;i++) {
+    var m=list[i]
+    var t=duration.filter(function(v,k){
+      return section.valueAt(k).value()==m
+    }).asSequence().whenNull(0).sum().div(60)
+    u+=t
+    str.push(m+&apos;:&apos;+ Math.round(t*1000)/1000)
+  }
+  str.push(&apos;module:&apos;+Math.round(u*1000)/1000)
+  res=newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)  
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_duration_blood" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var res=null
+var stage=$(&apos;Quality_Control.QC_BL:group_blood&apos;).whenNull(&apos;Blood&apos;).value()
+if($(&apos;Quality_Control.QC_BL:stage_contraindicated_blood&apos;).eq(0).and(
+   $(&apos;Quality_Control.QC_BL:stage_skip_blood&apos;).isNull()).value()) {
+  var post = $(&apos;clsa-dcs.&apos;+stage+&apos;:QuestionnaireRun.timeEnd&apos;)
+  var pre = $(&apos;clsa-dcs.&apos;+stage+&apos;:QuestionnaireRun.timeStart&apos;)
+  if(pre.before(post).value()) {
+    res=post.time().minus(pre.time()).div(60000)
+  }
+  if(null===res) {
+    res=$group(
+      &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
+      stage,
+      &apos;Admin.StageInstance.duration&apos;).asSequence().last().div(60)
+  }  
+}
+if(null!==res &amp;&amp; res.isNull().not().value()) {
+  var list=[&apos;BLOOD&apos;]
+  var str=[(&apos;stage:&apos;+Math.round(res*1000)/1000)]
+  var section=$(&apos;clsa-dcs.&apos;+stage+&apos;:QuestionnaireMetric.section&apos;).asSequence()
+  var duration=$(&apos;clsa-dcs.&apos;+stage+&apos;:QuestionnaireMetric.duration&apos;).asSequence()
+  var u=0
+  for(var i=0;i&lt;list.length;i++) {
+    var m=list[i]
+    var t=duration.filter(function(v,k){
+      return section.valueAt(k).value()==m
+    }).asSequence().whenNull(0).sum().div(60)
+    u+=t
+    str.push(m+&apos;:&apos;+ Math.round(t*1000)/1000)
+  }
+  str.push(&apos;module:&apos;+Math.round(u*1000)/1000)
+  res=newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)  
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_technician_blood" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0"/>
+      <variable name="group_duration_ecg" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0" repeatable="true" occurrenceGroup="">
+        <attributes>
+          <attribute name="script" valueType="text">var res=null
+if($(&apos;Quality_Control.QC_BL:stage_contraindicated_ecg&apos;).eq(0).and(
+   $(&apos;clsa-dcs.ECG:RES_XML_FILE&apos;).isNull().not()).value()) {
+  // ecg records the date and time
+  // find which stage ends just before it, and which ends just after it
+  //
+  var ecg=newValue(
+    $(&apos;clsa-dcs.ECG:RES_MEASUREMENT_DATE&apos;).value() + &apos; &apos; +
+    $(&apos;clsa-dcs.ECG:RES_MEASUREMENT_TIME&apos;).value(), &apos;datetime&apos;)
+  var ecgTime=ecg.time()  
+  if(ecgTime.gt(0).value()) {
+    var stages=$(&apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;).asSequence()
+    var ecgIndex = stages.indexOf(&apos;ECG&apos;).value()
+    var preIndex=-1
+    var postIndex=-1
+    var ecgSet=[]
+    var pre=newValue(null,&apos;datetime&apos;)
+    var post=newValue(null,&apos;datetime&apos;)
+    var minPre=10000000000000000
+    var minPost=minPre
+    var exclude=[&apos;BloodUrineSamplesCollection&apos;,&apos;Consent&apos;,&apos;GeneralProxy&apos;,&apos;UrineSamplesCollection&apos;]
+    for(var i=0;i&lt;stages.size();i++) {      
+      stage=stages.valueAt(i).value()
+      if(-1!=exclude.indexOf(stage)) continue
+      if(&apos;ECG&apos;==stage) ecgSet.push(i)  
+      try {
+        pre=$(&apos;clsa-dcs.&apos;+stage+&apos;:QuestionnaireRun.timeEnd&apos;)
+      } catch(e) {
+        pre=$(&apos;clsa-dcs.&apos;+stage+&apos;:InstrumentRun.timeEnd&apos;)
+      }
+      if(ecg.after(pre).value()) {
+        var p=ecgTime.minus(pre.time()).value()
+        if(p&lt;minPre) {
+          minPre=p
+          preIndex=i
+        }
+      } else {      
+        try {
+          post=$(&apos;clsa-dcs.&apos;+stage+&apos;:QuestionnaireRun.timeStart&apos;)
+        } catch(e) {
+          post=$(&apos;clsa-dcs.&apos;+stage+&apos;:InstrumentRun.timeStart&apos;)
+        }
+        if(ecg.before(post).value()) {
+          var p=post.time().minus(ecgTime).value()
+          if(p&lt;minPost) {
+            minPost=p
+            postIndex=i
+          }
+        }
+      }  
+    }// end for loop
+    
+    if(preIndex&gt;ecgIndex || ecgIndex&gt;postIndex) {
+      postIndex=ecgIndex+1
+      preIndex=ecgIndex-1
+    }    
+    if(-1!=ecgSet.indexOf(preIndex)) {
+      // find the first preceding stage with a valid time
+      for(var i=preIndex; i&gt;0; i--) {
+        var stage=stages.valueAt(i).value()
+        try {
+          pre=$(&apos;clsa-dcs.&apos;+stage+&apos;:QuestionnaireRun.timeEnd&apos;)
+        } catch(e) {
+          pre=$(&apos;clsa-dcs.&apos;+stage+&apos;:InstrumentRun.timeEnd&apos;)
+        }
+        if(pre.time().gt(0).value()) {
+          preIndex=i
+          break
+        }
+      }
+    }
+    if(-1!=ecgSet.indexOf(postIndex)) {
+      for(var i=postIndex; i&lt;18; i++) {
+        var stage=stages.valueAt(i).value()
+        try {
+          post=$(&apos;clsa-dcs.&apos;+stage+&apos;:QuestionnaireRun.timeStart&apos;)
+        } catch(e) {
+          post=$(&apos;clsa-dcs.&apos;+stage+&apos;:InstrumentRun.timeStart&apos;)
+        }
+        if(post.time().gt(0).value() &amp;&amp; -1==ecgSet.indexOf(i)) {
+          postIndex=i
+          break
+        }
+      }
+    }
+  
+    if(-1!=preIndex &amp;&amp; postIndex&lt;18 &amp;&amp; (postIndex-preIndex)&gt;1) {
+      res=newSequence([preIndex,postIndex])
+    }
+  }  
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="module_list" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;clsa-dcs.NeuropsychologicalBattery:QuestionnaireMetric.section&apos;).asSequence().filter(function(v,i){
+  return this.indexOf(v)==i
+  }).sort().join(&apos;,&apos;)
+  
+//FunctionalStatus Fun
+//DiseaseSymptoms CAO,CCC_CANCER,CCC_CARDIAC,CCC_GASTRO,CCC_INFECTION,CCC_MENTAL,CCC_NEURO,CCC_OTHER,CCC_VISION,DEP,DIA
+// DPR,HBP,HYP,IHD,OAR,OSA,OSH,OSK,OST,PKD,ROS,STR,TBI
+//ContraIndications ICQ_COM,QAH_COM
+//NeuropsychologicalBattery FAS,SN,SPA,SSA,STP
+//EventPMT PMT
+//TimeBasedProspectiveMemoryTask TMT
+//Urine URINE
+//Blood BLOOD</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_technician_neuropsychological_battery_scoring" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;Quality_Control.QC_BL:stage_technician_neuropsychological_battery_scoring&apos;)</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_duration_neuropsychological_battery_scoring" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var res=null
+if($(&apos;Quality_Control.QC_BL:stage_contraindicated_neuropsychological_battery_scoring&apos;).eq(0).and(
+   $(&apos;Quality_Control.QC_BL:stage_skip_neuropsychological_battery_scoring&apos;).isNull()).value()) {
+  var post = $(&apos;clsa-dcs.NeuropsychologicalBatteryScoring:QuestionnaireRun.timeEnd&apos;)
+  var pre = $(&apos;clsa-dcs.NeuropsychologicalBatteryScoring:QuestionnaireRun.timeStart&apos;)
+  if(pre.before(post).value()) {
+    res=newValue(&apos;{stage:&apos;+post.time().minus(pre.time()).div(60000).round(3)+&apos;}&apos;,&apos;text&apos;)
+  } else {
+    var v=$group(
+      &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
+      &apos;NeuropsychologicalBatteryScoring&apos;,
+      &apos;Admin.StageInstance.duration&apos;).asSequence().last()
+    if(v.isNull().not().value()) {
+      res=newValue(&apos;{stage:&apos;+v.div(60).round(3)+&apos;}&apos;,&apos;text&apos;)
+    }      
   }
 }
 res</attribute>
@@ -503,5 +1311,5 @@ res</attribute>
     </variables>
   </variables>
   <created valueType="datetime">2018-06-18T09:52:50.447-04</created>
-  <updated valueType="datetime">2018-06-18T11:37:27.380-04</updated>
+  <updated valueType="datetime">2018-08-24T13:17:37.074-04</updated>
 </org.obiba.magma.views.View>
