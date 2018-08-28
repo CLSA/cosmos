@@ -194,38 +194,19 @@ res</attribute>
       <variable name="stage_duration_ecg" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">var res=null
-if($(&apos;Quality_Control.QC_F2:stage_contraindicated_ecg&apos;).eq(0).and(
-  $(&apos;Quality_Control.QC_F2:stage_skip_ecg&apos;).isNull(),
-  $this(&apos;group_duration_ecg&apos;).isNull().not()).value()) {
+if($this(&apos;group_duration_ecg&apos;).isNull().not().value()) {
   var stages=$(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;).asSequence()
-  var preIndex=$this(&apos;group_duration_ecg&apos;).first().value()
-  var postIndex=$this(&apos;group_duration_ecg&apos;).last().value()
-  var ecgIndex=-1
-  for(var i=preIndex;i&lt;=postIndex;i++) {
-    if(&apos;ECG&apos;==stages.valueAt(i).value()) {
-      ecgIndex=i
-      break
-    }
+  var preStage=stages.valueAt($this(&apos;group_duration_ecg&apos;).first()).value()
+  var pre=(-1!=$this(&apos;group_questionnaire&apos;).indexOf(preStage)) ?
+    $(&apos;clsa-dcs-f2.&apos;+preStage+&apos;:QuestionnaireRun.timeEnd&apos;) :
+    $(&apos;clsa-dcs-f2.&apos;+preStage+&apos;:InstrumentRun.timeEnd&apos;)
+  var postStage=stages.valueAt($this(&apos;group_duration_ecg&apos;).last()).value()
+  var post=(-1!=$this(&apos;group_questionnaire&apos;).indexOf(postStage)) ?
+    $(&apos;clsa-dcs-f2.&apos;+postStage+&apos;:QuestionnaireRun.timeStart&apos;) :
+    $(&apos;clsa-dcs-f2.&apos;+postStage+&apos;:InstrumentRun.timeStart&apos;)
+  if(post.after(pre).value()) {
+    res=newValue(&apos;{stage:&apos;+post.time().minus(pre.time()).div(60000).round(3)+&apos;}&apos;,&apos;text&apos;)
   }
-  if(-1!=ecgIndex) {
-    var pre=newValue(null,&apos;datetime&apos;)
-    var post=newValue(null,&apos;datetime&apos;)
-    var stage=stages.valueAt(preIndex).value()
-    try {
-      pre=$(&apos;clsa-dcs-f2.&apos;+stage+&apos;:QuestionnaireRun.timeEnd&apos;)
-    } catch(e) {
-      pre=$(&apos;clsa-dcs-f2.&apos;+stage+&apos;:InstrumentRun.timeEnd&apos;)
-    }
-    stage=stages.valueAt(ecgIndex).value()
-    try {
-      post=$(&apos;clsa-dcs-f2.&apos;+stage+&apos;:QuestionnaireRun.timeEnd&apos;)
-    } catch(e) {
-      post=$(&apos;clsa-dcs-f2.&apos;+stage+&apos;:InstrumentRun.timeEnd&apos;)
-    }
-    if(post.after(pre).value()) {
-      res=newValue(&apos;{stage:&apos;+post.time().minus(pre.time()).div(60000).round(3)+&apos;}&apos;,&apos;text&apos;)
-    }
-  }  
 }
 res</attribute>
         </attributes>
@@ -434,73 +415,55 @@ res</attribute>
       <variable name="stage_duration_carotid_intima" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">var res=null
-if($(&apos;Quality_Control.QC_F2:stage_contraindicated_carotid_intima&apos;).eq(0).and(
-  $(&apos;Quality_Control.QC_F2:stage_skip_carotid_intima&apos;).isNull(),
-  $this(&apos;group_duration_ecg&apos;).isNull().not()).value()) {    
-  var stages=$(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;).asSequence()  
+if($(&apos;Quality_Control.QC_F2:stage_contraindicated_carotid_intima&apos;).eq(0).and(  
+  $this(&apos;group_duration_ecg&apos;).isNull().not()).value()) {
+  var stages=$(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;).asSequence()
   var preIndex=$this(&apos;group_duration_ecg&apos;).first().value()
   var postIndex=$this(&apos;group_duration_ecg&apos;).last().value()
-  var cimtGroup=stages.filter(function(v,i){
-    return (i&lt;=postIndex &amp;&amp; i&gt;=preIndex)
-  })  
-  var pre=newValue(null,&apos;datetime&apos;)
-  var post=newValue(null,&apos;datetime&apos;)
-  var intervals=[]
-  var cimtIndex=cimtGroup.indexOf(&apos;CarotidIntima&apos;)
-  if(-1==cimtIndex) {
-    for(var i=preIndex;i&lt;postIndex;i++) {
-      var stagePre=stages.valueAt(i).value() 
-      try {
-        pre=$(&apos;clsa-dcs-f2.&apos;+stagePre+&apos;:QuestionnaireRun.timeEnd&apos;)
-      } catch(e) {
-        pre=$(&apos;clsa-dcs-f2.&apos;+stagePre+&apos;:InstrumentRun.timeEnd&apos;)
-      }
-      var stagePost=stages.valueAt(i+1).value()
-      try {
-        post=$(&apos;clsa-dcs-f2.&apos;+stagePost+&apos;:QuestionnaireRun.timeStart&apos;)
-      } catch(e) {
-        post=$(&apos;clsa-dcs-f2.&apos;+stagePost+&apos;:InstrumentRun.timeStart&apos;)
-      }
-      if(post.after(pre).value()) {        
-        var t=post.time().minus(pre.time()).div(60000).round(3).value()
-        if(t!=null) {  
-          intervals.push(t)  
-        }
-      }  
-    }// end for loop    
-    if(0&lt;intervals.length) {
-      intervals.sort()
-      res=newValue(&apos;{stage:&apos;+intervals.pop()+&apos;}&apos;,&apos;text&apos;)      
-    }  
-  } else {    
-    cimtIndex=-1
-    for(var i=preIndex;i&lt;=postIndex;i++)
-    {
-      if(&apos;CarotidIntima&apos;==stages.valueAt(i).value()) {
+  var cimtStages=stages.filter(function(v,i){
+    return (preIndex&lt;=i &amp;&amp; i&lt;=postIndex)
+  })
+  var ecgIndex=cimtStages.indexOf(&apos;ECG&apos;).value()
+  var cimtIndex=cimtStages.indexOf(&apos;CarotidIntima&apos;).value()
+  if(-1!=ecgIndex &amp;&amp; -1!=cimtIndex) {
+    var pre=newValue(null,&apos;datetime&apos;)
+    var post=newValue(null,&apos;datetime&apos;)
+    // get the stage immediately before cimt
+    cimtIndex=0
+    for(var i=postIndex;i&gt;0;i--) {
+      var stage=stages.valueAt(i).value()
+      if(&apos;CarotidIntima&apos;==stage) {
         cimtIndex=i
         break
       }
     }
-    if(-1!=cimtIndex) {
-      post=$(&apos;clsa-dcs-f2.CarotidIntima:InstrumentRun.timeEnd&apos;)
-      for(var i=cimtIndex-1;i&gt;0;i--) {
-        var stagePre=stages.valueAt(i).value()
-        try {
-          pre=$(&apos;clsa-dcs-f2.&apos;+stagePre+&apos;:QuestionnaireRun.timeEnd&apos;)
-        } catch(e) {
-          pre=$(&apos;clsa-dcs-f2.&apos;+stagePre+&apos;:InstrumentRun.timeEnd&apos;)
-        }
-        if(post.after(pre).value()) {
-          var t=post.time().minus(pre.time()).div(60000).round(3).value()
-          if(t!=null) {
-            res=newValue(&apos;{stage:&apos;+t+&apos;}&apos;,&apos;text&apos;)
-            i=0
-          }
-        }  
-      }// end for loop
+    for(var i=cimtIndex-1;i&gt;0;i--) {
+      var stage=stages.valueAt(i).value()
+      var isQ=-1!=$this(&apos;group_questionnaire&apos;).indexOf(stage)
+      var isI=-1!=$this(&apos;group_instrument&apos;).indexOf(stage)
+      if(!(isQ || isI)) continue
+      pre=isQ ? 
+        $(&apos;clsa-dcs-f2.&apos;+stage+&apos;:QuestionnaireRun.timeEnd&apos;) :
+        $(&apos;clsa-dcs-f2.&apos;+stage+&apos;:InstrumentRun.timeEnd&apos;)
+      break
     }
-  }  
-}
+    // get the stage immediately after cimt
+    for(var i=cimtIndex+1;i&lt;postIndex+5;i--) {
+      var stage=stages.valueAt(i).value()
+      var isQ=-1!=$this(&apos;group_questionnaire&apos;).indexOf(stage)
+      var isI=-1!=$this(&apos;group_instrument&apos;).indexOf(stage)
+      if(!(isQ || isI)) continue
+      post=isQ ? 
+        $(&apos;clsa-dcs-f2.&apos;+stage+&apos;:QuestionnaireRun.timeStart&apos;) :
+        $(&apos;clsa-dcs-f2.&apos;+stage+&apos;:InstrumentRun.timeStart&apos;)
+      break
+    }    
+    
+    if(post.after(pre).value()) {
+      res=newValue(&apos;{stage:&apos;+post.time().minus(pre.time()).div(60000).round(3)+&apos;}&apos;,&apos;text&apos;)
+    }  
+  }
+}  
 res</attribute>
         </attributes>
       </variable>
@@ -918,19 +881,13 @@ if(dexa.empty().not().value()) {
     return -1!==list.indexOf(v.value())
   }).join(&apos;&apos;).value()
   
-  var stageBefore=&apos;QuestionnaireBoneDensity&apos;
   var stageAfter=seq.endsWith(&apos;FraxEventPMT&apos;)?&apos;Frax&apos;:&apos;EventPMT&apos;
-
   // bracket the actual bone density acquisitions
   // 
-  var pre=$(&apos;clsa-dcs-f2.QuestionnaireBoneDensity:QuestionnaireRun.timeEnd&apos;)
-  var post=newValue(null,&apos;datetime&apos;)
-  
-  try {
-    post=$(&apos;clsa-dcs-f2.&apos;+stageAfter+&apos;:QuestionnaireRun.timeStart&apos;)      
-  } catch(e) {   
-    post=$(&apos;clsa-dcs-f2.&apos;+stageAfter+&apos;:InstrumentRun.timeStart&apos;)
-  }
+  var pre=$(&apos;clsa-dcs-f2.QuestionnaireBoneDensity:QuestionnaireRun.timeEnd&apos;)  
+  var post=-1!=$this(&apos;group_questionnaire&apos;).indexOf(stageAfter) ?
+    $(&apos;clsa-dcs-f2.&apos;+stageAfter+&apos;:QuestionnaireRun.timeStart&apos;) :
+    $(&apos;clsa-dcs-f2.&apos;+stageAfter+&apos;:InstrumentRun.timeStart&apos;)
   
   if(pre.before(post).value()) {    
     res=post.time().minus(pre.time()).div(60000)
@@ -1499,30 +1456,32 @@ res</attribute>
           <attribute name="script" valueType="text">var res=null
 if($(&apos;Quality_Control.QC_F2:stage_contraindicated_ecg&apos;).eq(0).and(
    $(&apos;clsa-dcs-f2.ECG:RES_XML_FILE&apos;).isNull().not()).value()) {
-  // ecg records the date and time
-  // find which stage ends just before it, and which ends just after it
-  //
-  var ecg=newValue(
+  var ecg=newValue(null,&apos;datetime&apos;)
+  try {   
+    ecg=newValue(
     $(&apos;clsa-dcs-f2.ECG:RES_MEASUREMENT_DATE&apos;).value() + &apos; &apos; +
-    $(&apos;clsa-dcs-f2.ECG:RES_MEASUREMENT_TIME&apos;).value(), &apos;datetime&apos;)
-  var ecgTime=ecg.time()  
-  if(ecgTime.gt(0).value()) {
-    var stages=$(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;).asSequence()
-    var ecgIndex = stages.indexOf(&apos;ECG&apos;).value()
+    $(&apos;clsa-dcs-f2.ECG:RES_MEASUREMENT_TIME&apos;).value(), &apos;datetime&apos;)  
+  } catch(e) {  
+  }
+    
+  if(ecg.isNull().not().and(ecg.time().gt(0)).value()) {
+    var ecgTime=ecg.time()
     var preIndex=-1
-    var postIndex=-1
-    var ecgSet=[]
+    var postIndex=-1    
     var pre=newValue(null,&apos;datetime&apos;)
     var post=newValue(null,&apos;datetime&apos;)
     var minPre=10000000000000000
     var minPost=minPre
-    for(var i=0;i&lt;stages.size();i++) {      
-      stage=stages.valueAt(i).value()
-      if(&apos;GeneralProxy&apos;==stage || &apos;Consent&apos;==stage) continue
-      if(&apos;ECG&apos;==stage) ecgSet.push(i)  
-      try {
+    var stages=$(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;).asSequence()
+    for(var i=0;i&lt;stages.size();i++) {
+      var stage=stages.valueAt(i).value()
+      if(&apos;ECG&apos;==stage) continue
+      var isQ = -1!=$this(&apos;group_questionnaire&apos;).indexOf(stage)
+      var isI = -1!=$this(&apos;group_instrument&apos;).indexOf(stage)
+      if(!(isQ || isI)) continue
+      if(isQ) {
         pre=$(&apos;clsa-dcs-f2.&apos;+stage+&apos;:QuestionnaireRun.timeEnd&apos;)
-      } catch(e) {
+      } else  {
         pre=$(&apos;clsa-dcs-f2.&apos;+stage+&apos;:InstrumentRun.timeEnd&apos;)
       }
       if(ecg.after(pre).value()) {
@@ -1530,11 +1489,11 @@ if($(&apos;Quality_Control.QC_F2:stage_contraindicated_ecg&apos;).eq(0).and(
         if(p&lt;minPre) {
           minPre=p
           preIndex=i
-        }
-      } else {      
-        try {
+        }        
+      } else {  
+        if(isQ) {
           post=$(&apos;clsa-dcs-f2.&apos;+stage+&apos;:QuestionnaireRun.timeStart&apos;)
-        } catch(e) {
+        } else {
           post=$(&apos;clsa-dcs-f2.&apos;+stage+&apos;:InstrumentRun.timeStart&apos;)
         }
         if(ecg.before(post).value()) {
@@ -1544,53 +1503,94 @@ if($(&apos;Quality_Control.QC_F2:stage_contraindicated_ecg&apos;).eq(0).and(
             postIndex=i
           }
         }
-      }  
+      }
     }// end for loop
-    
-    if(preIndex&gt;ecgIndex || ecgIndex&gt;postIndex) {
-      postIndex=ecgIndex+1
-      preIndex=ecgIndex-1
-    }    
-    if(-1!=ecgSet.indexOf(preIndex)) {
-      // find the first preceding stage with a valid time
-      for(var i=preIndex; i&gt;0; i--) {
-        var stage=stages.valueAt(i).value()
-        try {
-          pre=$(&apos;clsa-dcs-f2.&apos;+stage+&apos;:QuestionnaireRun.timeEnd&apos;)
-        } catch(e) {
-          pre=$(&apos;clsa-dcs-f2.&apos;+stage+&apos;:InstrumentRun.timeEnd&apos;)
-        }
-        if(pre.time().gt(0).value()) {
-          preIndex=i
-          break
-        }
-      }
-    }
-    if(-1!=ecgSet.indexOf(postIndex)) {
-      for(var i=postIndex; i&lt;18; i++) {
-        var stage=stages.valueAt(i).value()
-        try {
-          post=$(&apos;clsa-dcs-f2.&apos;+stage+&apos;:QuestionnaireRun.timeStart&apos;)
-        } catch(e) {
-          post=$(&apos;clsa-dcs-f2.&apos;+stage+&apos;:InstrumentRun.timeStart&apos;)
-        }
-        if(post.time().gt(0).value() &amp;&amp; -1==ecgSet.indexOf(i)) {
-          postIndex=i
-          break
-        }
-      }
-    }
-  
-    if(-1!=preIndex &amp;&amp; postIndex&lt;18 &amp;&amp; (postIndex-preIndex)&gt;1) {
-      res=newSequence([preIndex,postIndex])
-    }
+    if(-1!=preIndex &amp;&amp; preIndex&lt;postIndex) {
+      res=newSequence([preIndex,postIndex],&apos;integer&apos;)
+    }  
   }  
 }
 res</attribute>
         </attributes>
       </variable>
+      <variable name="interview_barcode" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;Quality_Control.QC_F2:interview_barcode&apos;)</attribute>
+        </attributes>
+      </variable>
+      <variable name="interview_site" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;Quality_Control.QC_F2:interview_site&apos;)</attribute>
+        </attributes>
+      </variable>
+      <variable name="interview_start_date" valueType="date" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;Quality_Control.QC_F2:interview_start_date&apos;)</attribute>
+        </attributes>
+      </variable>
+      <variable name="group_questionnaire" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0" repeatable="true" occurrenceGroup="">
+        <attributes>
+          <attribute name="script" valueType="text">var list=[
+&apos;4mWalk&apos;,
+&apos;Blood&apos;,
+&apos;Blood2&apos;,
+&apos;ChairRise&apos;,
+&apos;ConclusionQuestionnaire&apos;,
+&apos;ContraIndications&apos;,
+&apos;Deviation_AE_CRF&apos;,
+&apos;DiseaseSymptoms&apos;,
+&apos;EventPMT&apos;,
+&apos;GenHealth&apos;,
+&apos;HearingQuestionnaire&apos;,
+&apos;NeuropsychologicalBatteryScoring&apos;,
+&apos;OSIPV&apos;,
+&apos;QualityAssuranceIH&apos;,
+&apos;QuestionnaireBoneDensity&apos;,
+&apos;SocialNetwork&apos;,
+&apos;StandingBalance&apos;,
+&apos;StroopFAS&apos;,
+&apos;TUG&apos;,
+&apos;TimeBasedProspectiveMemoryTask&apos;,
+&apos;Urine&apos;,
+&apos;VisionAcuity&apos;
+]
+$(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;).asSequence().filter(function(v){
+  return -1!=list.indexOf(v.value())
+})</attribute>
+        </attributes>
+      </variable>
+      <variable name="group_instrument" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0" repeatable="true" occurrenceGroup="">
+        <attributes>
+          <attribute name="script" valueType="text">var list=[
+&apos;BloodPressure&apos;,
+&apos;CarotidIntima&apos;,
+&apos;CognitiveTest&apos;,
+&apos;DualHipBoneDensity&apos;,
+&apos;ECG&apos;,
+&apos;ForearmBoneDensity&apos;,
+&apos;Frax&apos;,
+&apos;GripStrength&apos;,
+&apos;Hearing&apos;,
+&apos;HipBoneDensity&apos;,
+&apos;HipsWaist&apos;,
+&apos;LateralBoneDensity&apos;,
+&apos;RetinalScanLeft&apos;,
+&apos;RetinalScanRight&apos;,
+&apos;SittingHeight&apos;,
+&apos;SpineBoneDensity&apos;,
+&apos;Spirometry&apos;,
+&apos;StandingHeight&apos;,
+&apos;Tonometer&apos;,
+&apos;Weight&apos;,
+&apos;WholeBodyBoneDensity&apos;
+]
+$(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;).asSequence().filter(function(v){
+  return -1!=list.indexOf(v.value())
+})</attribute>
+        </attributes>
+      </variable>
     </variables>
   </variables>
   <created valueType="datetime">2018-06-18T10:49:42.955-04</created>
-  <updated valueType="datetime">2018-08-23T15:51:13.604-04</updated>
+  <updated valueType="datetime">2018-08-27T15:20:29.771-04</updated>
 </org.obiba.magma.views.View>
