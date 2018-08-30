@@ -1915,18 +1915,9 @@ res</attribute>
       <variable name="data_qac_frax" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">var res=null
-if($(&apos;clsa-dcs-f2.Frax:InstrumentRun.user&apos;).isNull().not().value()) {
+if($(&apos;clsa-dcs-f2.Frax:RES_RESULT_FILE&apos;).isNull().not().value()) {
   var f=$(&apos;clsa-dcs-f2.Frax:RES_RESULT_FILE&apos;)
-  var list=[&apos;clsa-dcs-f2.Frax:FRAX_OSTFX_COF2&apos;,&apos;clsa-dcs-f2.Frax:FRAX_HIPFX_COF2&apos;,
-            &apos;clsa-dcs-f2.Frax:FRAX_OSTFX_BMD_COF2&apos;,&apos;clsa-dcs-f2.Frax:FRAX_HIPFX_BMD_COF2&apos;]
-  var n=list.length
-  for(var i=0;i&lt;list.length;i++) {
-    if($(list[i]).isNull().not().value()) n--
-  }
-  res=newValue(
-    &apos;{file_size:&apos;+ (f.isNull().value()?&apos;0&apos;:f.length()) + &apos;,&apos; +
-    &apos;missing:&apos; + n +
-    &apos;}&apos;,&apos;text&apos;)
+  res=newValue(&apos;{filesize:&apos;+f.length()+&apos;}&apos;,&apos;text&apos;)
 }
 res</attribute>
         </attributes>
@@ -2372,5 +2363,5 @@ res</attribute>
     </variables>
   </variables>
   <created valueType="datetime">2018-05-15T13:40:50.956-04</created>
-  <updated valueType="datetime">2018-08-24T13:24:25.173-04</updated>
+  <updated valueType="datetime">2018-08-30T15:25:49.804-04</updated>
 </org.obiba.magma.views.View>

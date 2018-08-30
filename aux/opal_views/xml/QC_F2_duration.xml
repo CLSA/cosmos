@@ -1571,7 +1571,6 @@ $(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;).asSequence().f
 &apos;Frax&apos;,
 &apos;GripStrength&apos;,
 &apos;Hearing&apos;,
-&apos;HipBoneDensity&apos;,
 &apos;HipsWaist&apos;,
 &apos;LateralBoneDensity&apos;,
 &apos;RetinalScanLeft&apos;,
@@ -1592,5 +1591,5 @@ $(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;).asSequence().f
     </variables>
   </variables>
   <created valueType="datetime">2018-06-18T10:49:42.955-04</created>
-  <updated valueType="datetime">2018-08-27T15:20:29.771-04</updated>
+  <updated valueType="datetime">2018-08-30T14:16:30.967-04</updated>
 </org.obiba.magma.views.View>

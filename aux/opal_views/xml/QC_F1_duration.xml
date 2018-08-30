@@ -1641,7 +1641,8 @@ res</attribute>
 &apos;Spirometry&apos;,
 &apos;StandingHeight&apos;,
 &apos;Tonometer&apos;,
-&apos;Weight&apos;
+&apos;Weight&apos;,
+&apos;WholeBodyBoneDensity&apos;
 ]
 $(&apos;clsa-dcs-f1.Participants:Admin.StageInstance.stage&apos;).asSequence().filter(function(v){
   return -1!=list.indexOf(v.value())
@@ -1685,5 +1686,5 @@ $(&apos;clsa-dcs-f1.Participants:Admin.StageInstance.stage&apos;).asSequence().f
     </variables>
   </variables>
   <created valueType="datetime">2018-08-23T14:12:03.737-04</created>
-  <updated valueType="datetime">2018-08-27T15:20:10.386-04</updated>
+  <updated valueType="datetime">2018-08-30T14:11:57.767-04</updated>
 </org.obiba.magma.views.View>

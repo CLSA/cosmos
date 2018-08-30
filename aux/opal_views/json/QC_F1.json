@@ -2743,7 +2743,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var res=null\nif($('clsa-dcs-f1.Frax:InstrumentRun.user').isNull().not().value()) {\n  var f=$('clsa-dcs-f1.Frax:RES_RESULT_FILE')\n  var list=['clsa-dcs-f1.Frax:FRAX_OSTFX_COF1','clsa-dcs-f1.Frax:FRAX_HIPFX_COF1',\n    'clsa-dcs-f1.Frax:FRAX_OSTFX_BMD_COF1','clsa-dcs-f1.Frax:FRAX_HIPFX_BMD_COF1']\n  var n=list.length\n  for(var i=0;i<list.length;i++) {\n    if($(list[i]).isNull().not().value()) n--\n  }\n  res=newValue(\n    '{file_size:'+ (f.isNull().value()?'0':f.length()) + ',' +\n    'missing:' + n +\n    '}','text')\n}\nres"
+            "value": "var res=null\nif($('clsa-dcs-f1.Frax:RES_RESULT_FILE').isNull().not().value()) {\n  var f=$('clsa-dcs-f1.Frax:RES_RESULT_FILE')\n  res=newValue('{filesize:'+f.length()+'}','text')\n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -2751,6 +2751,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_frax", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"

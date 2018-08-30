@@ -1280,7 +1280,6 @@ $(&apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;).asSequence().filt
       <variable name="group_instrument" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0" repeatable="true" occurrenceGroup="">
         <attributes>
           <attribute name="script" valueType="text">var list=[
-&apos;AnkleBrachial&apos;,
 &apos;BloodPressure&apos;,
 &apos;CarotidIntima&apos;,
 &apos;CognitiveTest&apos;,
@@ -1289,7 +1288,6 @@ $(&apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;).asSequence().filt
 &apos;ForearmBoneDensity&apos;,
 &apos;GripStrength&apos;,
 &apos;Hearing&apos;,
-&apos;HipBoneDensity&apos;,
 &apos;HipsWaist&apos;,
 &apos;LateralBoneDensity&apos;,
 &apos;Plaque&apos;,
@@ -1308,5 +1306,5 @@ $(&apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;).asSequence().filt
     </variables>
   </variables>
   <created valueType="datetime">2018-06-18T09:52:50.447-04</created>
-  <updated valueType="datetime">2018-08-27T15:22:36.303-04</updated>
+  <updated valueType="datetime">2018-08-30T14:17:59.028-04</updated>
 </org.obiba.magma.views.View>
