@@ -11,7 +11,6 @@ if(array_key_exists('stat-option',$_POST))
 
 $dual_hip_bone_density = new dual_file_generator(
   'dual_hip_bone_density', $rank, $begin_date, $end_date);
-
 $dual_hip_bone_density->set_statistic($stat);
 $dual_hip_bone_density->set_standard_deviation_scale(3);
 $dual_hip_bone_density->set_file_scale(1024.0);

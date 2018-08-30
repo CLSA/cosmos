@@ -1,11 +1,12 @@
 form {
   /* Just to center the form on the page */
   margin: 0 auto;
-  width: 400px;
+  width: 500px;
   /* To see the outline of the form */
   padding: 1em;
   border: 1px solid #CCC;
   border-radius: 1em;
+  white-space: nowrap
 }
 
 form div + div {
@@ -15,18 +16,18 @@ form div + div {
 label {
   /* To make sure that all labels have the same size and are properly aligned */
   display: inline-block;
-  width: 90px;
+  width: 130px;
   text-align: right;
 }
 
-input, textarea {
+input, textarea, select {
   /* To make sure that all text fields have the same font settings
      By default, textareas have a monospace font */
   font: 1em sans-serif;
 
   /* To give the same size to all text fields */
   width: 300px;
-  box-sizing: border-box;
+  box-sizing: content-box;
 
   /* To harmonize the look & feel of text field border */
   border: 1px solid #999;
@@ -47,7 +48,7 @@ textarea {
 
 .button {
   /* To position the buttons to the same position of the text fields */
-  padding-left: 90px; /* same size as the label elements */
+  padding-left: 130px; /* same size as the label elements */
 }
 
 button {

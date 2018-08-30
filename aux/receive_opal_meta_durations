@@ -1,0 +1,284 @@
+#!/usr/bin/php
+<?php
+require_once '../settings.ini.php';
+require_once $SETTINGS['path']['PHP_UTIL'].'/opalcurl.class.php';
+require_once $SETTINGS['path']['PHP_UTIL'].'/database.class.php';
+require_once $SETTINGS['path']['PHP_UTIL'].'/util.class.php';
+
+define( 'MIN_RANK', 1 );
+define( 'MAX_RANK', 3 );
+
+function valid_date($date) {
+  return preg_match('/^20(1|2)[0-9]-(0|1)[0-9]{1}-[0-3]{1}[0-9]{1}/',$date);
+}
+
+$active_ranks = array(3);
+$view_list = array(1=>'QC_BL_duration', 2=>'QC_F1_duration', 3=>'QC_F2_duration');
+
+$rank = 1; // set default
+$after_date = null;
+$before_date = null;
+if( 2 == $argc )
+{
+  $rank = $argv[1];
+}
+else if( 4 == $argc )
+{
+  $rank = $argv[1];
+  $after_date = $argv[2];
+  $before_date = $argv[3];
+  if( !( valid_date($after_date) &&
+         valid_date($after_date) ) )
+  {
+    $after_date = null;
+    $before_date = null;
+    util::out(sprintf('invalid dates: %s %s', $after_date, $before_date));
+  }
+}
+
+if($rank < MIN_RANK || $rank > MAX_RANK )
+{
+  util::out('invalid rank');
+  die();
+}
+
+$db = new database(
+  $SETTINGS['db']['DB_SERV'],
+  $SETTINGS['db']['DB_USER'],
+  $SETTINGS['db']['DB_PASS'],
+  $SETTINGS['db']['DB_NAME'] );
+
+// for wave ranks in the process of collecting and exporting data nightly
+// a date range must be specified and the json view will be sed modified to
+// retrict opal data to fall within the range.
+//
+
+if(in_array($rank,$active_ranks))
+{
+  if(null == $after_date && null == $before_date)
+  {
+    $a_date = new DateTime();
+    $a_date->modify('-1 week');
+    $b_date = new DateTime();
+    $after_date = $a_date->format('Y-m-d');
+    $before_date = $b_date->format('Y-m-d');
+  }
+  else
+  {
+    $sql = sprintf(
+      'select '.
+      'min(start_date) as min_date, '.
+      'max(start_date) as max_date, '.
+      'rank '.
+      'from interview '.
+      'where rank=%d', $rank);
+
+    $res = $db->get_all( $sql );
+    if( array_key_exists('min_date',$res) &&
+        array_key_exists('max_date',$res) &&
+        valid_date($res['min_date']) &&
+        valid_date($res['max_date']) )
+    {
+      $a_date = DateTime::createFromFormat('Y-m-d', $res['min_date']);
+      $b_date = DateTime::createFromFormat('Y-m-d', $res['max_date']);
+
+      // ensure dates make sense
+      $input_a_date = DateTime::createFromFormat('Y-m-d', $after_date);
+      $input_b_date = DateTime::createFromFormat('Y-m-d', $before_date);
+
+      if($input_a_date < $a_date)
+        $after_date = $a_date->format('Y-m-d');
+      if($input_b_date > $b_date)
+        $before_date = $b_date->format('Y-m-d');
+    }
+  }
+}
+
+util::out( sprintf('rank %d, range: %s => %s', $rank, $after_date, $before_date));
+
+$opal = new opalcurl(
+  $SETTINGS['opal']['OPAL_SERV'],
+  $SETTINGS['opal']['OPAL_PORT'],
+  $SETTINGS['opal']['OPAL_USER'],
+  $SETTINGS['opal']['OPAL_PASS'],
+  'Quality_Control',
+  $view_list[$rank],
+  $SETTINGS['path']['OPAL_VIEWS'] );
+
+$sql = 'SELECT id, name FROM site';
+$res = $db->get_all( $sql );
+$site_id_map = array();
+foreach( $res as $item )
+  $site_id_map[$item['name']]=$item['id'];
+util::out( 'getting opal data...' );
+if( in_array($rank,$active_ranks) && null != $before_date && null != $after_date )
+{
+//  $opal->set_date_range( $before_date, $after_date );
+//  util::out('setting date range...');
+}
+
+$identifier_list = $opal->get_identifiers();
+$max_limit = count( $identifier_list );
+$offset = 0;
+$limit = 200;
+while($offset < $max_limit)
+{
+  $list = $opal->get_list($offset, $limit);
+  $total = count( $list );
+  if(0 < $total)
+  {
+    $offset += $total;
+
+    util::out( sprintf('processing data at offset %d from view %s with %d participants...',$offset,$view_list[$rank],$total));
+    $interview_values = array();
+    $technician_values = array();
+    $target = count($list);
+    $num = 0;
+    foreach( $list as $uid => $row )
+    {
+      $site=$row['interview_site'];
+      if( '' == $row['interview_start_date'] || '' == $row['interview_barcode'] ||
+          '' == $site )
+      {
+        util::show_status( ++$num, $target );
+        continue;
+      }
+      $interview_values[] =
+        sprintf( '(%d,"%s","%s","%s",%d)',
+          $site_id_map[$site], $row['interview_start_date'],
+          $uid,$row['interview_barcode'],$rank);
+
+      $res=array_filter(array_keys($row), function($var) {
+        return preg_match('/stage_technician_/', $var); } );
+
+      foreach($res as $tech_key)
+      {
+        $tech=$row[$tech_key];
+        if('' == $tech)
+        {
+          util::show_status( ++$num, $target );
+          continue;
+        }
+        $tech_str = sprintf( '(%d,"%s")',
+          $site_id_map[$site], $tech);
+        if(!in_array($tech_str,$technician_values))
+          $technician_values[] = $tech_str;
+      }
+
+      util::show_status( ++$num, $target );
+    }
+
+    if(0==count($interview_values))
+    {
+      util::out('error: no interviews found');
+      die();
+    }
+
+    $sql =
+      'INSERT IGNORE INTO interview '.
+      '(site_id, start_date, uid, barcode, rank) '.
+      'VALUES '.
+      implode(',', $interview_values);
+
+    if(false === $db->execute( $sql ) )
+    {
+      util::out( 'ERROR: failed to insert interview records');
+      var_dump( $sql );
+      die();
+    }
+
+    $sql =
+      'INSERT IGNORE INTO technician '.
+      '(site_id, name) '.
+      'VALUES '.
+      implode(',',$technician_values);
+
+    if(false === $db->execute( $sql ) )
+    {
+      util::out( 'ERROR: failed to insert technician records');
+      var_dump( $sql );
+      die();
+    }
+
+    //TODO:
+    // comments and durations are in separate opal views
+    // write scripts to receive comments and durations
+
+    $num = 0;
+    foreach($list as $uid=>$row)
+    {
+      $res=array_filter(array_keys($row), function($var) {
+        return preg_match('/stage_technician_/', $var); } );
+      $stage_list = str_replace('stage_technician_','',$res);
+
+      foreach($stage_list as $stage)
+      {
+        $tech=$row['stage_technician_'.$stage];
+        $site=$row['interview_site'];
+        $duration=$row['stage_duration_'.$stage];
+
+        if( '' == $row['interview_start_date'] || '' == $row['interview_barcode'] ||
+            '' == $site || '' == $duration)
+        {
+          util::show_status( ++$num, $target );
+          continue;
+        }
+
+        $sql = sprintf(
+          'SELECT s.interview_id, s.technician_id '.
+          'FROM interview i '.
+          'join stage s on s.interview_id=i.id '.
+          'join technician t on t.id=s.technician_id '.
+          'join site on site.id=t.site_id and site.id=i.site_id '.
+          'WHERE site.id=%d '.
+          'AND uid="%s" '.
+          'AND barcode="%s" '.
+          'AND t.name="%s"' .
+          'AND start_date="%s"',
+          $site_id_map[$site], $uid, $row['interview_barcode'],$tech,$row['interview_start_date']);
+
+        $res = $db->get_row( $sql );
+        if(false===$res)
+        {
+          util::out('ERROR: failed to find interview and technician primary keys');
+          util::out($sql);
+
+          die();
+        }
+
+        $tech_id=$res['technician_id'];
+        $interview_id=$res['interview_id'];        
+
+        $sql = sprintf(
+          'UPDATE stage '.
+          'SET duration=%s '.
+          'WHERE '.
+          'interview_id=%d '.
+          'AND technician_id=%d '.
+          'AND name="%s"',
+          $db->format_string($duration),
+          $interview_id,
+          $tech_id,
+          $stage);
+        if(false===$db->execute( $sql ))
+        {
+          $error = $db->get_last_error();
+          if( false === strpos($error,'1062)') )
+          {
+            util::out( $error );
+            util::out($sql);
+            die();
+          }  
+        }
+      }
+
+      util::show_status( ++$num, $target );
+    }
+  }  
+  else
+  {
+    $offset = $max_limit;
+  }
+}    
+
+?>

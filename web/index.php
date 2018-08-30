@@ -26,7 +26,7 @@ $date_ranges = json_encode($db->get_all( $sql ));
     <script>
       var stat_stages =[
         'scripts/bloodTable.php',
-        'scripts/bone_density_qnaireTable.php',
+        'scripts/bone_density_questionnaireTable.php',
         'scripts/carotid_intima_cineloopTable.php',
         'scripts/carotid_intima_srTable.php',
         'scripts/carotid_intima_stillTable.php',
@@ -36,6 +36,7 @@ $date_ranges = json_encode($db->get_all( $sql ));
         'scripts/ecgTable.php',
         'scripts/event_pmtTable.php',
         'scripts/forearm_bone_densityTable.php',
+        'scripts/fraxTable.php',
         'scripts/functional_statusTable.php',
         'scripts/general_healthTable.php',
         'scripts/lateral_bone_densityTable.php',
@@ -53,6 +54,16 @@ $date_ranges = json_encode($db->get_all( $sql ));
       });
       $(function(){
         $('#stage').change( function() {
+          $('#qacform').attr('action', $(this).val());
+          console.log('changing action to : '+$(this).val());
+          if(stat_stages.indexOf($(this).val()) > -1) {
+            $('#stat-option').prop('disabled',false).change();
+          } else {
+            $('#stat-option').prop('disabled',true).change();
+          }
+        }).change();
+
+        $('#duration').change( function() {
           $('#qacform').attr('action', $(this).val());
           console.log('changing action to : '+$(this).val());
           if(stat_stages.indexOf($(this).val()) > -1) {
@@ -104,6 +115,24 @@ $date_ranges = json_encode($db->get_all( $sql ));
             $('#stage option[value="scripts/oseaTable.php"]').hide();
             $('#stage option[value="scripts/osonlyTable.php"]').hide();
             $('#stage option[value="scripts/quality_assurance_inhomeTable.php"]').show();
+            $('#stage option[value="scripts/fraxTable.php"]').show();
+            $('#duration option[value="scripts/functional_statusDuration.php"]').hide();
+            $('#duration option[value="scripts/social_networkDuration.php"]').show();
+            $('#duration option[value="scripts/general_healthDuration.php"]').show();
+            $('#duration option[value="scripts/spine_bone_densityDuration.php"]').show();
+            $('#duration option[value="scripts/sitting_heightDuration.php"]').show();
+            $('#duration option[value="scripts/osipvDuration.php"]').show();
+            $('#duration option[value="scripts/deviation_aecrfDuration.php"]').show();
+            $('#duration option[value="scripts/oseaDuration.php"]').hide();
+            $('#duration option[value="scripts/osonlyDuration.php"]').hide();
+            $('#duration option[value="scripts/quality_assurance_inhomeDuration.php"]').show();
+            $('#duration option[value="scripts/neuropsychological_batteryDuration.php"]').hide();
+            $('#duration option[value="scripts/stroop_fasDuration.php"]').show();
+            $('#duration option[value="scripts/body_composition_weightDuration.php"]').hide();
+            $('#duration option[value="scripts/fraxDuration.php"]').show();
+            $('#duration option[value="scripts/retinal_scan_leftDuration.php"]').show();
+            $('#duration option[value="scripts/retinal_scan_rightDuration.php"]').show();
+            $('#duration option[value="scripts/retinal_scanDuration.php"]').hide();
           } else if(2==num) {
             $('#stage option[value="scripts/functional_statusTable.php"]').show();
             $('#stage option[value="scripts/social_networkTable.php"]').hide();
@@ -114,7 +143,25 @@ $date_ranges = json_encode($db->get_all( $sql ));
             $('#stage option[value="scripts/deviation_aecrfTable.php"]').hide();
             $('#stage option[value="scripts/oseaTable.php"]').show();
             $('#stage option[value="scripts/osonlyTable.php"]').show();
+            $('#stage option[value="scripts/fraxTable.php"]').show();
             $('#stage option[value="scripts/quality_assurance_inhomeTable.php"]').show();
+            $('#duration option[value="scripts/functional_statusDuration.php"]').show();
+            $('#duration option[value="scripts/social_networkDuration.php"]').hide();
+            $('#duration option[value="scripts/spine_bone_densityDuration.php"]').show();
+            $('#duration option[value="scripts/general_healthDuration.php"]').show();
+            $('#duration option[value="scripts/sitting_heightDuration.php"]').hide();
+            $('#duration option[value="scripts/osipvDuration.php"]').hide();
+            $('#duration option[value="scripts/deviation_aecrfDuration.php"]').hide();
+            $('#duration option[value="scripts/oseaDuration.php"]').show();
+            $('#duration option[value="scripts/osonlyDuration.php"]').show();
+            $('#duration option[value="scripts/quality_assurance_inhomeDuration.php"]').show();
+            $('#duration option[value="scripts/neuropsychological_batteryDuration.php"]').show();
+            $('#duration option[value="scripts/stroop_fasDuration.php"]').hide();
+            $('#duration option[value="scripts/body_composition_weightDuration.php"]').show();
+            $('#duration option[value="scripts/fraxDuration.php"]').show();
+            $('#duration option[value="scripts/retinal_scan_leftDuration.php"]').show();
+            $('#duration option[value="scripts/retinal_scan_rightDuration.php"]').show();
+            $('#duration option[value="scripts/retinal_scanDuration.php"]').hide();
           } else if(1==num) {
             $('#stage option[value="scripts/sitting_heightTable.php"]').hide();
             $('#stage option[value="scripts/general_healthTable.php"]').hide();
@@ -125,7 +172,25 @@ $date_ranges = json_encode($db->get_all( $sql ));
             $('#stage option[value="scripts/deviation_aecrfTable.php"]').hide();
             $('#stage option[value="scripts/oseaTable.php"]').hide();
             $('#stage option[value="scripts/osonlyTable.php"]').hide();
+            $('#stage option[value="scripts/fraxTable.php"]').hide();
             $('#stage option[value="scripts/quality_assurance_inhomeTable.php"]').hide();
+            $('#duration option[value="scripts/sitting_heightDuration.php"]').hide();
+            $('#duration option[value="scripts/general_healthDuration.php"]').hide();
+            $('#duration option[value="scripts/social_networkDuration.php"]').hide();
+            $('#duration option[value="scripts/spine_bone_densityDuration.php"]').hide();
+            $('#duration option[value="scripts/sitting_heightDuration.php"]').show();
+            $('#duration option[value="scripts/osipvDuration.php"]').hide();
+            $('#duration option[value="scripts/deviation_aecrfDuration.php"]').hide();
+            $('#duration option[value="scripts/oseaDuration.php"]').hide();
+            $('#duration option[value="scripts/osonlyDuration.php"]').hide();
+            $('#duration option[value="scripts/quality_assurance_inhomeDuration.php"]').hide();
+            $('#duration option[value="scripts/neuropsychological_batteryDuration.php"]').show();
+            $('#duration option[value="scripts/stroop_fasDuration.php"]').hide();
+            $('#duration option[value="scripts/body_composition_weightDuration.php"]').hide();
+            $('#duration option[value="scripts/fraxDuration.php"]').hide();
+            $('#duration option[value="scripts/retinal_scan_leftDuration.php"]').hide();
+            $('#duration option[value="scripts/retinal_scan_rightDuration.php"]').hide();
+            $('#duration option[value="scripts/retinal_scanDuration.php"]').show();
           }
           $('#from').val(date_ranges[num].min_date);
           $('#to').val(date_ranges[num].max_date);
@@ -161,24 +226,28 @@ $date_ranges = json_encode($db->get_all( $sql ));
           <input type="text" id="to" name="to">
         </div>
         <div>
-          <label for="stage">Stage:</label>
+          <label for="stage">Stage QAC:</label>
           <select name="stage" id="stage">
             <option value="scripts/bloodTable.php">Blood Qnaire</option>
             <option value="scripts/blood_pressureTable.php">Blood Pressure</option>
-            <option value="scripts/bone_density_qnaireTable.php">Bone Density Qnaire</option>
+            <option value="scripts/body_composition_weightTable.php">Body Composition Weight</option>
             <option value="scripts/chair_riseTable.php">Chair Rise</option>
             <option value="scripts/cognitive_testTable.php">Cognitive Test</option>
+            <option value="scripts/conclusion_questionnaireTable.php">Conclusion Qnaire</option>
             <option value="scripts/contraindicationsTable.php">ContraIndications Qnaire</option>
             <option value="scripts/carotid_intima_stillTable.php">Carotid Intima Still</option>
             <option value="scripts/carotid_intima_cineloopTable.php">Carotid Intima Cineloop</option>
             <option value="scripts/carotid_intima_srTable.php">Carotid Intima SR</option>
             <option value="scripts/deviation_aecrfTable.php">Deviation AE CRF Qnaire</option>
             <option value="scripts/disease_symptomsTable.php">Disease Symptoms Qnaire</option>
+            <option value="scripts/bone_density_questionnaireTable.php">DEXA Bone Density Qnaire</option>
             <option value="scripts/dual_hip_bone_densityTable.php">DEXA Dual Hip</option>
             <option value="scripts/forearm_bone_densityTable.php">DEXA Forearm</option>
             <option value="scripts/lateral_bone_densityTable.php">DEXA Lateral</option>
             <option value="scripts/spine_bone_densityTable.php">DEXA Spine</option>
             <option value="scripts/whole_body_bone_densityTable.php">DEXA Whole Body</option>
+            <option value="scripts/fraxTable.php">DEXA Frax</option>
+            <option value="scripts/event_pmtTable.php">Event PMT Qnaire</option>
             <option value="scripts/ecgTable.php">ECG</option>
             <option value="scripts/event_pmtTable.php">Event PMT Qnaire</option>
             <option value="scripts/four_metre_walkTable.php">4 m Walk</option>
@@ -202,7 +271,7 @@ $date_ranges = json_encode($db->get_all( $sql ));
             <option value="scripts/tonometerTable.php">Tonometer</option>
             <option value="scripts/tugTable.php">TUG</option>
             <option value="scripts/urineTable.php">Urine Qnaire</option>
-            <option value="scripts/visionAcuityTable.php">Vision Acuity</option>
+            <option value="scripts/vision_acuityTable.php">Vision Acuity</option>
             <option value="scripts/weightTable.php">Weight</option>
           </select>
         </div>
@@ -214,7 +283,61 @@ $date_ranges = json_encode($db->get_all( $sql ));
           </select>
         </div>
         <div class="button">
-          <button type="submit">Request Data</button>
+          <button type="submit" name="button_1" value="qac">Request Data</button>
+        </div>
+        <div>
+          <label for="duration">Stage Duration:</label>
+          <select name="duration" id="duration">
+            <option value="scripts/bloodDuration.php">Blood Qnaire</option>
+            <option value="scripts/blood_pressureDuration.php">Blood Pressure</option>
+            <option value="scripts/body_composition_weightDuration.php">Body Composition Weight</option>
+            <option value="scripts/chair_riseDuration.php">Chair Rise</option>
+            <option value="scripts/cognitive_testDuration.php">Cognitive Test</option>
+            <option value="scripts/conclusion_questionnaireDuration.php">Conclusion Qnaire</option>
+            <option value="scripts/contraindicationsDuration.php">ContraIndications Qnaire</option>
+            <option value="scripts/carotid_intimaDuration.php">Carotid Intima</option>
+            <option value="scripts/deviation_aecrfDuration.php">Deviation AE CRF Qnaire</option>
+            <option value="scripts/disease_symptomsDuration.php">Disease Symptoms Qnaire</option>
+            <option value="scripts/bone_density_questionnaireDuration.php">DEXA Bone Density Qnaire</option>
+            <option value="scripts/dual_hip_bone_densityDuration.php">DEXA Dual Hip</option>
+            <option value="scripts/forearm_bone_densityDuration.php">DEXA Forearm</option>
+            <option value="scripts/lateral_bone_densityDuration.php">DEXA Lateral</option>
+            <option value="scripts/spine_bone_densityDuration.php">DEXA Spine</option>
+            <option value="scripts/whole_body_bone_densityDuration.php">DEXA Whole Body</option>
+            <option value="scripts/fraxDuration.php">DEXA Frax</option>
+            <option value="scripts/ecgDuration.php">ECG</option>
+            <option value="scripts/event_pmtDuration.php">Event PMT Qnaire</option>
+            <option value="scripts/four_metre_walkDuration.php">4 m Walk</option>
+            <option value="scripts/functional_statusDuration.php">Functional Status Qnaire</option>
+            <option value="scripts/general_healthDuration.php">General Health Qnaire</option>
+            <option value="scripts/grip_strengthDuration.php">Grip Strength</option>
+            <option value="scripts/hearingDuration.php">Hearing</option>
+            <option value="scripts/hips_waistDuration.php">Hips Waist</option>
+            <option value="scripts/neuropsychological_batteryDuration.php">Neuropsychological Battery</option>
+            <option value="scripts/neuropsychological_battery_scoringDuration.php">Neuropsychological Battery Scoring Qnaire</option>
+            <option value="scripts/oseaDuration.php">OSEA Qnaire</option>
+            <option value="scripts/osipvDuration.php">OSIPV Qnaire</option>
+            <option value="scripts/osonlyDuration.php">OSOnly Qnaire</option>
+            <option value="scripts/quality_assurance_inhomeDuration.php">Quality Assurance IH Qnaire</option>
+            <option value="scripts/retinal_scanDuration.php">Retinal Scan</option>
+            <option value="scripts/retinal_scan_leftDuration.php">Retinal Scan Left</option>
+            <option value="scripts/retinal_scan_rightDuration.php">Retinal Scan Right</option>
+            <option value="scripts/sitting_heightDuration.php">Sitting Height</option>
+            <option value="scripts/social_networkDuration.php">Social Network Qnaire</option>
+            <option value="scripts/spirometryDuration.php">Spirometry</option>
+            <option value="scripts/standing_balanceDuration.php">Standing Balance</option>
+            <option value="scripts/standing_heightDuration.php">Standing Height</option>
+            <option value="scripts/stroop_fasDuration.php">Stroop FAS</option>
+            <option value="scripts/time_based_pmtDuration.php">Time Based PMT Qnaire</option>
+            <option value="scripts/tonometerDuration.php">Tonometer</option>
+            <option value="scripts/tugDuration.php">TUG</option>
+            <option value="scripts/urineDuration.php">Urine Qnaire</option>
+            <option value="scripts/vision_acuityDuration.php">Vision Acuity</option>
+            <option value="scripts/weightDuration.php">Weight</option>
+          </select>
+        </div>
+        <div class="button">
+          <button type="submit" name="button_2" value="duration">Request Data</button>
         </div>
       <form>
     </div>

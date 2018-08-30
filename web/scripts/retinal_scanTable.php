@@ -9,11 +9,8 @@ $stat='mean';
 if(array_key_exists('stat-option',$_POST))
   $stat  = 'mode'==htmlspecialchars($_POST['stat-option']) ? 'mode' : 'mean';
 
-$retinal_scan = new retinal_scan_generator(
-  'retinal_scan',$rank,$begin_date,$end_date);
-
+$retinal_scan = new retinal_scan_generator('retinal_scan',$rank,$begin_date,$end_date);
 $retinal_scan->set_statistic($stat);
 $retinal_scan->set_standard_deviation_scale(2);
-$retinal_scan->set_page_stage('RETINAL SCAN');
 $retinal_scan->build_table_data();
 echo $retinal_scan->build_table_html();

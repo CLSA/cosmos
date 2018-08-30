@@ -11,7 +11,6 @@ if(array_key_exists('stat-option',$_POST))
 
 $lateral_bone_density = new single_file_generator(
   'lateral_bone_density', $rank, $begin_date, $end_date);
-
 $lateral_bone_density->set_file_scale(1024.0);
 $lateral_bone_density->set_statistic($stat);
 $lateral_bone_density->set_standard_deviation_scale(2);

@@ -11,7 +11,6 @@ if(array_key_exists('stat-option',$_POST))
 
 $spine_bone_density = new single_file_generator(
   'spine_bone_density', $rank, $begin_date, $end_date);
-
 $spine_bone_density->set_file_scale(1024.0);
 $spine_bone_density->set_statistic($stat);
 $spine_bone_density->set_standard_deviation_scale(2);

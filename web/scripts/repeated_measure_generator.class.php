@@ -69,7 +69,7 @@ class repeated_measure_generator extends table_generator
 
     $sql .=
       'sum(if(qcdata is null, 0, '.
-      'if(cast(trim("{" from substring_index(substring_index(qcdata,",",2),":",-1)) as signed)!=2,1,0))) as total_trial_deviation, ';
+      'if(cast(trim("}" from substring_index(substring_index(qcdata,",",2),":",-1)) as signed)!=2,1,0))) as total_trial_deviation, ';
 
     $sql .= $this->get_main_query();
 

@@ -8,6 +8,5 @@ $rank = htmlspecialchars($_POST['rank']);
 $four_metre_walk = new timed_move_generator('four_metre_walk', $rank, $begin_date, $end_date);
 $four_metre_walk->set_standard_deviation_scale(2);
 $four_metre_walk->set_congruency_threshold(10);
-$four_metre_walk->set_page_stage('4 m WALK');
 $four_metre_walk->build_table_data();
 echo $four_metre_walk->build_table_html();

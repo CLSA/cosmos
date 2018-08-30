@@ -11,8 +11,6 @@ if(array_key_exists('stat-option',$_POST))
 
 $osea = new qnaire_generator(
   'osea', $rank, $begin_date, $end_date);
-
 $osea->set_statistic($stat);
-$osea->set_page_stage('OSEA');
 $osea->build_table_data();
 echo $osea->build_table_html();

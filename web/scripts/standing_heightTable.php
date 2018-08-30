@@ -6,7 +6,6 @@ $end_date = htmlspecialchars($_POST['to']);
 $rank = htmlspecialchars($_POST['rank']);
 
 $standing_height = new repeated_measure_generator('standing_height', $rank, $begin_date, $end_date);
-$standing_height->set_page_stage( 'STANDING HEIGHT' );
 $standing_height->set_measurement_units('cm');
 $standing_height->set_deviation_minimum(0.01);
 $standing_height->set_deviation_maximum(0.1);

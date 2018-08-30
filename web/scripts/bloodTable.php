@@ -13,6 +13,5 @@ $blood = new qnaire_generator(
   'blood', $rank, $begin_date, $end_date);
 
 $blood->set_statistic($stat);
-$blood->set_page_stage('BLOOD');
 $blood->build_table_data();
 echo $blood->build_table_html();

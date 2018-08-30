@@ -11,7 +11,6 @@ if(array_key_exists('stat-option',$_POST))
 
 $whole_body_bone_density = new single_file_generator(
   'whole_body_bone_density', $rank, $begin_date, $end_date);
-
 $whole_body_bone_density->set_file_scale(1024.0);
 $whole_body_bone_density->set_statistic($stat);
 $whole_body_bone_density->set_standard_deviation_scale(2);

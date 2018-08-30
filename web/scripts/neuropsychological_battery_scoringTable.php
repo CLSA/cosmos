@@ -11,8 +11,6 @@ if(array_key_exists('stat-option',$_POST))
 
 $neuropsychological_battery_scoring = new qnaire_generator(
   'neuropsychological_battery_scoring', $rank, $begin_date, $end_date);
-
 $neuropsychological_battery_scoring->set_statistic($stat);
-$neuropsychological_battery_scoring->set_page_stage('OSIPV');
 $neuropsychological_battery_scoring->build_table_data();
 echo $neuropsychological_battery_scoring->build_table_html();

@@ -9,8 +9,8 @@ require_once $SETTINGS['path']['PHP_UTIL'].'/database.class.php';
 require_once $SETTINGS['path']['PHP_UTIL'].'/util.class.php';
 require_once $SETTINGS['path']['PHP_UTIL'].'/phplot-6.2.0/phplot.php';
 
-$semaphore = sem_get( getmyinode() );
-sem_acquire( $semaphore ) or die( 'Unable to acquire semaphore.' );
+//$semaphore = sem_get( getmyinode() );
+//sem_acquire( $semaphore ) or die( 'Unable to acquire semaphore.' );
 
 ini_set( 'date.timezone', 'US/Eastern' );
 

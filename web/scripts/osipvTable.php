@@ -11,8 +11,6 @@ if(array_key_exists('stat-option',$_POST))
 
 $osipv = new qnaire_generator(
   'osipv', $rank, $begin_date, $end_date);
-
 $osipv->set_statistic($stat);
-$osipv->set_page_stage('OSIPV');
 $osipv->build_table_data();
 echo $osipv->build_table_html();

@@ -34,7 +34,7 @@ abstract class table_generator
     $this->total_keys = array();
     $this->site_list = array();
 
-    $this->page_stage = '';
+    $this->page_stage = str_replace('_',' ',strtoupper($this->name));
     $this->page_explanation = array();
   }
 

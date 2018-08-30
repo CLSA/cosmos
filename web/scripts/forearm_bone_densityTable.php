@@ -11,7 +11,6 @@ if(array_key_exists('stat-option',$_POST))
 
 $forearm_bone_density = new single_file_generator(
   'forearm_bone_density', $rank, $begin_date, $end_date);
-
 $forearm_bone_density->set_file_scale(1024.0);
 $forearm_bone_density->set_statistic($stat);
 $forearm_bone_density->set_standard_deviation_scale(2);

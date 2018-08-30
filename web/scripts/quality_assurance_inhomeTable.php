@@ -11,7 +11,6 @@ if(array_key_exists('stat-option',$_POST))
 
 $quality_assurance_inhome = new qnaire_generator(
   'quality_assurance_inhome', $rank, $begin_date, $end_date);
-
 $quality_assurance_inhome->set_statistic($stat);
 $quality_assurance_inhome->set_page_stage('QUALITY ASSURANCE IH');
 $quality_assurance_inhome->build_table_data();
