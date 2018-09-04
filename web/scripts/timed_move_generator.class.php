@@ -32,42 +32,25 @@ class timed_move_generator extends table_generator
 
     // build the main query
     $sql = sprintf(
-      'select avg( '.
-      '  if( qcdata is null, null, '.
-      '      cast(substring_index( '.
-      '        substring_index( '.
-      '          qcdata,",",1), ":", -1 ) as decimal ) ) ) as t_avg '.
-      'from interview i '.
-      'join stage s on i.id=s.interview_id '.
-      'where rank=%d '.
-      'and s.name="%s"', $this->rank, $this->name);
+        'select avg(t_time) as t_avg, stddev(t_time) as t_std '.
+        'from ( '.
+        '  select cast(substring_index(substring_index(qcdata,",",1),":",-1) as decimal(10,3)) as t_time '.
+        '  from interview i '.
+        '  join stage s on i.id=s.interview_id '.
+        '  where rank=%d '.
+        '  and qcdata is not null '.
+        '  and s.name="%s" '.
+        ') as t', $this->rank, $this->name);
 
-    $avg = $db->get_one( $sql );
-    if( false === $avg )
+    $res = $db->get_row( $sql );
+    if( false === $res )
     {
-      echo sprintf('failed to get average test time: %s', $db->get_last_error() );
+      echo sprintf('failed to get test time data: %s', $db->get_last_error() );
       echo $sql;
       die();
     }
-
-    $sql = sprintf(
-      'select stddev( '.
-      '  if( qcdata is null, null, '.
-      '      cast(substring_index( '.
-      '        substring_index( '.
-      '          qcdata, ",",1),":", -1 ) as decimal ) ) ) as t_std '.
-      'from interview i '.
-      'join stage s on i.id=s.interview_id '.
-      'where rank=%d '.
-      'and s.name="%s"', $this->rank, $this->name);
-
-    $stdev = $db->get_one( $sql );
-    if( false === $stdev )
-    {
-      echo sprintf('failed to get stddev test time: %s', $db->get_last_error() );
-      echo $sql;
-      die();
-    }
+    $avg = $res['t_avg'];
+    $stdev = $res['t_std'];
 
     $test_time_min = intval(round($avg - $this->standard_deviation_scale*$stdev));
     $test_time_max = intval(round($avg + $this->standard_deviation_scale*$stdev));

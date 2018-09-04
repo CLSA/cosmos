@@ -67,6 +67,12 @@ class single_file_generator extends table_generator
         'where fsz>0', $this->file_scale, $this->rank, $this->name);
 
       $res = $db->get_row( $sql );
+      if( false === $res )
+      {
+        echo sprintf('failed to get file size data: %s', $db->get_last_error() );
+        echo $sql;
+        die();
+      }
       $minsz = $res['minsz'];
       $maxsz = $res['maxsz'];
       $filesize_min = max(intval(($minsz + 0.5*($mode-$minsz))*$this->file_scale),0);
@@ -77,7 +83,7 @@ class single_file_generator extends table_generator
       $avg=0;
       $stdev=0;
       $sql = sprintf(
-        'select avg(fsz) as favg '.
+        'select avg(fsz) as favg, stddev(fsz) as fstd '.
         'from ( '.
         '  select cast(trim("}" from substring_index(qcdata, ":", -1)) as decimal)/%s as fsz '.
         '  from interview i '.
@@ -89,22 +95,15 @@ class single_file_generator extends table_generator
         'where fsz>0', $this->file_scale, $this->rank, $this->name);
 
       $res = $db->get_row( $sql );
+      if( false === $res )
+      {
+        echo sprintf('failed to get file size data: %s', $db->get_last_error() );
+        echo $sql;
+        die();
+      }
       $avg = $res['favg'];
-
-      $sql = sprintf(
-        'select stddev(fsz) as fstd '.
-        'from ( '.
-        '  select cast(trim("}" from substring_index(qcdata, ":", -1)) as decimal)/%s as fsz '.
-        '  from interview i '.
-        '  join stage s on i.id=s.interview_id '.
-        '  where rank=%d '.
-        '  and qcdata is not null '.
-        '  and s.name="%s" '.
-        ') as t '.
-        'where fsz>0', $this->file_scale, $this->rank, $this->name);
-
-      $res = $db->get_row( $sql );
       $stdev = $res['fstd'];
+
       $filesize_min = max(intval(($avg - $this->standard_deviation_scale*$stdev)*$this->file_scale),0);
       $filesize_max = intval(($avg + $this->standard_deviation_scale*$stdev)*$this->file_scale);
     }
