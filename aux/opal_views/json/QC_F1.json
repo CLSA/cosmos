@@ -2743,7 +2743,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var res=null\nif($('clsa-dcs-f1.Frax:RES_RESULT_FILE').isNull().not().value()) {\n  var f=$('clsa-dcs-f1.Frax:RES_RESULT_FILE')\n  res=newValue('{filesize:'+f.length()+'}','text')\n}\nres"
+            "value": "var res=$('clsa-dcs-f1.Frax:RES_RESULT_FILE')\nif(res.isNull().not().value()) {\n  res=newValue('{filesize:'+res.length()+'}','text')\n}\nres"
           }
         ], 
         "entityType": "Participant", 

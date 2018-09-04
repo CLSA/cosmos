@@ -1914,10 +1914,9 @@ res</attribute>
       </variable>
       <variable name="data_qac_frax" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">var res=null
-if($(&apos;clsa-dcs-f1.Frax:RES_RESULT_FILE&apos;).isNull().not().value()) {
-  var f=$(&apos;clsa-dcs-f1.Frax:RES_RESULT_FILE&apos;)
-  res=newValue(&apos;{filesize:&apos;+f.length()+&apos;}&apos;,&apos;text&apos;)
+          <attribute name="script" valueType="text">var res=$(&apos;clsa-dcs-f1.Frax:RES_RESULT_FILE&apos;)
+if(res.isNull().not().value()) {
+  res=newValue(&apos;{filesize:&apos;+res.length()+&apos;}&apos;,&apos;text&apos;)
 }
 res</attribute>
         </attributes>
@@ -2458,5 +2457,5 @@ res</attribute>
     </variables>
   </variables>
   <created valueType="datetime">2018-05-03T13:40:11.946-04</created>
-  <updated valueType="datetime">2018-08-30T15:25:17.221-04</updated>
+  <updated valueType="datetime">2018-09-04T14:06:51.615-04</updated>
 </org.obiba.magma.views.View>
