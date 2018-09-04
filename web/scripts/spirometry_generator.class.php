@@ -10,11 +10,6 @@ class spirometry_generator extends table_generator
     $this->page_stage = 'SPIROMETRY';
   }
 
-  public function set_indicator_keys( $_keys )
-  {
-    // do nothing: the keys are auto generated
-  }
-
   protected function build_data()
   {
     global $db;
