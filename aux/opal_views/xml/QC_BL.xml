@@ -772,13 +772,10 @@ res</attribute>
       </variable>
       <variable name="data_qac_forearm_bone_density" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">var l=$group(&apos;OUTPUT_FA_SIDE&apos;,&apos;LEFT&apos;,&apos;RES_FA_DICOM&apos;).asSequence().last()
-var r=$group(&apos;OUTPUT_FA_SIDE&apos;,&apos;RIGHT&apos;,&apos;RES_FA_DICOM&apos;).asSequence().last()
-var res=null
-if(l.isNull().not().value()) {
-  res=newValue(&apos;{filesize:&apos;+ l.length().value() + &apos;}&apos;, &apos;text&apos;)
-} else if(r.isNull().not().value()) {
-  res=newValue(&apos;{filesize:&apos;+ r.length().value() + &apos;}&apos;, &apos;text&apos;)
+          <attribute name="script" valueType="text">var res=$group(&apos;OUTPUT_FA_SIDE&apos;,&apos;LEFT&apos;,&apos;RES_FA_DICOM&apos;).asSequence().last().whenNull(
+  $group(&apos;OUTPUT_FA_SIDE&apos;,&apos;RIGHT&apos;,&apos;RES_FA_DICOM&apos;).asSequence().last())
+if(res.isNull().not().value()) {
+  res=newValue(&apos;{filesize:&apos;+res.length().value()+&apos;}&apos;,&apos;text&apos;)
 }
 res</attribute>
         </attributes>
@@ -2054,5 +2051,5 @@ res</attribute>
     </variables>
   </variables>
   <created valueType="datetime">2018-05-15T17:37:52.240-04</created>
-  <updated valueType="datetime">2018-08-16T09:35:00.606-04</updated>
+  <updated valueType="datetime">2018-09-04T14:17:44.406-04</updated>
 </org.obiba.magma.views.View>

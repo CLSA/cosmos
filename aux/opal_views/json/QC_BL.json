@@ -1015,7 +1015,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var l=$group('OUTPUT_FA_SIDE','LEFT','RES_FA_DICOM').asSequence().last()\nvar r=$group('OUTPUT_FA_SIDE','RIGHT','RES_FA_DICOM').asSequence().last()\nvar res=null\nif(l.isNull().not().value()) {\n  res=newValue('{filesize:'+ l.length().value() + '}', 'text')\n} else if(r.isNull().not().value()) {\n  res=newValue('{filesize:'+ r.length().value() + '}', 'text')\n}\nres"
+            "value": "var res=$group('OUTPUT_FA_SIDE','LEFT','RES_FA_DICOM').asSequence().last().whenNull(\n  $group('OUTPUT_FA_SIDE','RIGHT','RES_FA_DICOM').asSequence().last())\nif(res.isNull().not().value()) {\n  res=newValue('{filesize:'+res.length().value()+'}','text')\n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -1023,6 +1023,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_forearm_bone_density", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
