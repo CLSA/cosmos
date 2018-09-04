@@ -384,7 +384,7 @@ HTML;
 
   protected $percent_keys;
 
-  private $total_keys;
+  protected $total_keys;
 
   protected $rank;
 

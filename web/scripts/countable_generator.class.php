@@ -18,11 +18,11 @@ class countable_generator extends table_generator
       $this->countable_target = $_target;
   }
 
-  public function set_countable_lable( $_label )
+  public function set_countable_label( $_label )
   {
-    if( $this->countable_lable == $_label ) return;
-
+    if( $this->countable_label == $_label ) return;
     $this->indicator_keys = str_replace($this->countable_label, $_label, $this->indicator_keys);
+    $this->countable_label = $_label; 
   }
 
   protected function build_data()
