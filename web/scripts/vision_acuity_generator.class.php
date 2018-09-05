@@ -40,7 +40,7 @@ class vision_acuity_generator extends table_generator
     $this->data = $res;
 
     $this->page_explanation=array();
-    $this->page_explanation[]='measure count sub:  0 - 1 measures</li>';
-    $this->page_explanation[]='measure count par:  2 measures';
+    $this->page_explanation[]='subpar measure count:  0 - 1 measures</li>';
+    $this->page_explanation[]='par measure count:  2 measures';
   }
 }

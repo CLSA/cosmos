@@ -26,13 +26,13 @@ class standing_balance_generator extends table_generator
     // build the main query
 
     $sql = sprintf(
-      'select avg(s_time) as t_avg from '.
-      '('.
+      'select avg(s_time) as t_avg, stddev(s_time) as t_std '.
+      'from ('.
       '  ( '.
       '    select '.
       '      cast( substring_index( '.
       '        substring_index( '.
-      '          qcdata, ",", 2 ), ":", -1) as decimal) as s_time '.
+      '          qcdata, ",", 2 ), ":", -1) as decimal(10,3)) as s_time '.
       '    from interview i '.
       '    join stage s on i.id=s.interview_id '.
       '    where rank=%d '.
@@ -45,7 +45,7 @@ class standing_balance_generator extends table_generator
       '      cast( trim( "}" from '.
       '        substring_index( '.
       '          substring_index( '.
-      '            qcdata, ",", -1 ), ":", -1 ) ) as decimal) as s_time '.
+      '            qcdata, ",", -1 ), ":", -1 ) ) as decimal(10,3)) as s_time '.
       '    from interview i '.
       '    join stage s on i.id=s.interview_id '.
       '    where rank=%d '.
@@ -55,54 +55,17 @@ class standing_balance_generator extends table_generator
       ') as t '.
       'where s_time>0', $this->rank, $this->name, $this->rank, $this->name);
 
-    $res = $db->get_one( $sql );
+    $res = $db->get_row( $sql );
     if( false === $res )
     {
-      echo sprintf('failed to get average standing balance time: %s', $db->get_last_error() );
+      echo sprintf('failed to get standing balance time data: %s', $db->get_last_error() );
       echo $sql;
       die();
     }
 
-    $avg = $res;
+    $avg = $res['t_avg'];
+    $std = $res['t_std'];
 
-    $sql = sprintf(
-      'select stddev(s_time) as t_std from '.
-      '('.
-      '  ( '.
-      '    select '.
-      '      cast( substring_index( '.
-      '        substring_index( '.
-      '          qcdata, ",", 2 ), ":", -1) as decimal) as s_time '.
-      '    from interview i '.
-      '    join stage s on i.id=s.interview_id '.
-      '    where rank=%d '.
-      '    and qcdata is not null '.
-      '    and s.name="%s" '.
-      '  ) '.
-      '  union all '.
-      '  ( '.
-      '    select '.
-      '      cast( trim( "}" from '.
-      '        substring_index( '.
-      '          substring_index( '.
-      '            qcdata, ",", -1 ), ":", -1 ) ) as decimal) as s_time '.
-      '    from interview i '.
-      '    join stage s on i.id=s.interview_id '.
-      '    where rank=%d '.
-      '    and qcdata is not null '.
-      '    and s.name="%s" '.
-      '  ) '.
-      ') as t '.
-      'where s_time>0', $this->rank, $this->name, $this->rank, $this->name);
-
-    $res = $db->get_one( $sql );
-    if( false === $res )
-    {
-      echo sprintf('failed to get stddev standing balance time: %s', $db->get_last_error() );
-      echo $sql;
-      die();
-    }
-    $std = $res;
     $time_min = max(round($avg - $this->standard_deviation_scale*$std,3),0);
     $time_max = round($avg + $this->standard_deviation_scale*$std,3);
 
@@ -113,15 +76,15 @@ class standing_balance_generator extends table_generator
 
     $sql .= sprintf(
       'sum(if(qcdata is null, 0, '.
-      'if(cast(substring_index(substring_index(qcdata,",",1),":",-1) as decimal)<%s,1,0))) as total_best_time_sub, ',$time_min);
+      'if(cast(substring_index(substring_index(qcdata,",",1),":",-1) as decimal(10,3))<%s,1,0))) as total_best_time_sub, ',$time_min);
 
     $sql .= sprintf(
       'sum(if(qcdata is null, 0, '.
-      'if(cast(substring_index(substring_index(qcdata,",",1),":",-1) as decimal) between %s and %s,1,0))) as total_best_time_par, ',$time_min,$time_max);
+      'if(cast(substring_index(substring_index(qcdata,",",1),":",-1) as decimal(10,3)) between %s and %s,1,0))) as total_best_time_par, ',$time_min,$time_max);
 
     $sql .= sprintf(
       'sum(if(qcdata is null, 0, '.
-      'if(cast(substring_index(substring_index(qcdata,",",1),":",-1) as decimal)>%s,1,0))) as total_best_time_sup, ',$time_max);
+      'if(cast(substring_index(substring_index(qcdata,",",1),":",-1) as decimal(10,3))>%s,1,0))) as total_best_time_sup, ',$time_max);
 
     $sql .= $this->get_main_query();
 
@@ -135,9 +98,9 @@ class standing_balance_generator extends table_generator
     $this->data = $res;
 
     $this->page_explanation=array();
-    $this->page_explanation[]=sprintf('best time sub: time < %s sec (mean - %s x SD)',$time_min, $this->standard_deviation_scale);
-    $this->page_explanation[]=sprintf('best time par: %s <= time <= %s sec',$time_min,$time_max);
-    $this->page_explanation[]=sprintf('best time sup: time > %s sec (mean + %s x SD)',$time_max, $this->standard_deviation_scale);
+    $this->page_explanation[]=sprintf('subpar best time: time < %s sec (mean - %s x SD)',$time_min, $this->standard_deviation_scale);
+    $this->page_explanation[]=sprintf('par best time: %s <= time <= %s sec',$time_min,$time_max);
+    $this->page_explanation[]=sprintf('above par best time: time > %s sec (mean + %s x SD)',$time_max, $this->standard_deviation_scale);
   }
 
   private $standard_deviation_scale;

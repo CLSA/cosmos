@@ -26,6 +26,7 @@ $date_ranges = json_encode($db->get_all( $sql ));
     <script>
       var stat_stages =[
         'scripts/bloodTable.php',
+        'scripts/body_composition_weightTable.php',
         'scripts/bone_density_questionnaireTable.php',
         'scripts/carotid_intima_cineloopTable.php',
         'scripts/carotid_intima_srTable.php',
@@ -33,6 +34,8 @@ $date_ranges = json_encode($db->get_all( $sql ));
         'scripts/cognitive_testTable.php',
         'scripts/contraindicationsTable.php',
         'scripts/dual_hip_bone_densityTable.php',
+        'scripts/deviation_aecrfTable.php',
+        'scripts/disease_symptomsTable.php',
         'scripts/ecgTable.php',
         'scripts/event_pmtTable.php',
         'scripts/forearm_bone_densityTable.php',
@@ -41,6 +44,7 @@ $date_ranges = json_encode($db->get_all( $sql ));
         'scripts/general_healthTable.php',
         'scripts/lateral_bone_densityTable.php',
         'scripts/osipvTable.php',
+        'scripts/quality_assurance_inhomeTable.php',
         'scripts/retinal_scanTable.php',
         'scripts/social_networkTable.php',
         'scripts/spine_bone_densityTable.php',
@@ -256,7 +260,6 @@ $date_ranges = json_encode($db->get_all( $sql ));
             <option value="scripts/grip_strengthTable.php">Grip Strength</option>
             <option value="scripts/hearingTable.php">Hearing</option>
             <option value="scripts/hips_waistTable.php">Hips Waist</option>
-            <option value="scripts/neuropsychological_battery_scoringTable.php">Neuropsychological Battery Scoring Qnaire</option>
             <option value="scripts/oseaTable.php">OSEA Qnaire</option>
             <option value="scripts/osipvTable.php">OSIPV Qnaire</option>
             <option value="scripts/osonlyTable.php">OSOnly Qnaire</option>
@@ -314,7 +317,6 @@ $date_ranges = json_encode($db->get_all( $sql ));
             <option value="scripts/hearingDuration.php">Hearing</option>
             <option value="scripts/hips_waistDuration.php">Hips Waist</option>
             <option value="scripts/neuropsychological_batteryDuration.php">Neuropsychological Battery</option>
-            <option value="scripts/neuropsychological_battery_scoringDuration.php">Neuropsychological Battery Scoring Qnaire</option>
             <option value="scripts/oseaDuration.php">OSEA Qnaire</option>
             <option value="scripts/osipvDuration.php">OSIPV Qnaire</option>
             <option value="scripts/osonlyDuration.php">OSOnly Qnaire</option>

@@ -25,44 +25,28 @@ class hips_waist_generator extends table_generator
     // build the main query
 
     $sql = sprintf(
-      'select avg( '.
-      '  if( qcdata is null, null, '.
-      '    cast( trim("}" from '.
+      'select avg(ratio) as r_avg, stddev(ratio) as r_std '.
+      'from ( '.
+      '  select cast( trim("}" from '.
       '      substring_index( '.
       '        substring_index( '.
-      '          qcdata, ",", 4), ":", -1 ) ) as decimal ) ) ) as r_avg '.
-      'from interview i '.
-      'join stage s on i.id=s.interview_id '.
-      'where rank=%d '.
-      'and s.name="%s"', $this->rank, $this->name);
+      '          qcdata, ",", 4), ":", -1)) as decimal(10,3)) as ratio '.
+      '  from interview i '.
+      '  join stage s on i.id=s.interview_id '.
+      '  where rank=%d '.
+      '  and qcdata is not null '.
+      '  and s.name="%s" '.
+      ') as t', $this->rank, $this->name);
 
-    $avg = $db->get_one( $sql );
-    if( false === $avg )
+    $res = $db->get_row( $sql );
+    if( false === $res )
     {
-      echo sprintf('failed to get average hips to waist ratio: %s', $db->get_last_error() );
+      echo sprintf('failed to get ratio data: %s', $db->get_last_error() );
       echo $sql;
       die();
     }
-
-    $sql = sprintf(
-      'select stddev( '.
-      '  if( qcdata is null, null, '.
-      '    cast( trim("}" from '.
-      '      substring_index( '.
-      '        substring_index( '.
-      '          qcdata, ",", 4), ":", -1 ) ) as decimal ) ) ) as r_std '.
-      'from interview i '.
-      'join stage s on i.id=s.interview_id '.
-      'where rank=%d '.
-      'and s.name="%s"', $this->rank, $this->name);
-
-    $std = $db->get_one( $sql );
-    if( false === $std )
-    {
-      echo sprintf('failed to get stddev hips to waist ratio: %s', $db->get_last_error() );
-      echo $sql;
-      die();
-    }
+    $avg = $res['r_avg'];
+    $std = $res['r_std'];
 
     $ratio_min = max(round($avg - $this->standard_deviation_scale*$std,3),0);
     $ratio_max = round($avg + $this->standard_deviation_scale*$std,3);
@@ -86,15 +70,15 @@ class hips_waist_generator extends table_generator
 
     $sql .= sprintf(
       'sum(if(qcdata is null, 0, '.
-      'if(cast(trim("}" from substring_index(substring_index(qcdata,",",4),":",-1)) as decimal)<%s,1,0))) as total_ratio_sub, ',$ratio_min);
+      'if(cast(trim("}" from substring_index(substring_index(qcdata,",",4),":",-1)) as decimal(10,3))<%s,1,0))) as total_ratio_sub, ',$ratio_min);
 
     $sql .= sprintf(
       'sum(if(qcdata is null, 0, '.
-      'if(cast(trim("}" from substring_index(substring_index(qcdata,",",4),":",-1)) as decimal) between %s and %s,1,0))) as total_ratio_par, ',$ratio_min,$ratio_max);
+      'if(cast(trim("}" from substring_index(substring_index(qcdata,",",4),":",-1)) as decimal(10,3)) between %s and %s,1,0))) as total_ratio_par, ',$ratio_min,$ratio_max);
 
     $sql .= sprintf(
       'sum(if(qcdata is null, 0, '.
-      'if(cast(trim("}" from substring_index(qcdata,":",-1)) as decimal)>%s,1,0))) as total_ratio_sup, ',$ratio_max);
+      'if(cast(trim("}" from substring_index(qcdata,":",-1)) as decimal(10,3))>%s,1,0))) as total_ratio_sup, ',$ratio_max);
 
     $sql .= $this->get_main_query();
 
@@ -111,9 +95,9 @@ class hips_waist_generator extends table_generator
     $this->page_explanation[]='measurement over skin';
     $this->page_explanation[]='measurement over one layer';
     $this->page_explanation[]='measurement over two layers';
-    $this->page_explanation[]=sprintf('hips to waist ratio sub: ratio < %s (mean - %s x SD)',$ratio_min,$this->standard_deviation_scale);
-    $this->page_explanation[]=sprintf('hips to waist ratio par: %s <= ratio <= %s',$ratio_min,$ratio_max);
-    $this->page_explanation[]=sprintf('hips to waist ratio sup: ratio > %s (mean + %s x SD)',$ratio_max,$this->standard_deviation_scale);
+    $this->page_explanation[]=sprintf('subpar ratio: ratio < %s (mean - %s x SD)',$ratio_min,$this->standard_deviation_scale);
+    $this->page_explanation[]=sprintf('par ratio: %s <= ratio <= %s',$ratio_min,$ratio_max);
+    $this->page_explanation[]=sprintf('above par ratio: ratio > %s (mean + %s x SD)',$ratio_max,$this->standard_deviation_scale);
   }
 
   private $standard_deviation_scale;

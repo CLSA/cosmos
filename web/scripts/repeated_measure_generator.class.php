@@ -54,22 +54,23 @@ class repeated_measure_generator extends table_generator
 
     $sql .= sprintf(
       'sum(if(qcdata is null, 0, '.
-      'if(cast(substring_index(substring_index(qcdata,",",1),":",-1) as decimal)<%s,1,0))) as total_deviation_par, ',
+      'if(cast(substring_index(substring_index(qcdata,",",1),":",-1) as decimal(10,3))<%s,1,0))) as total_deviation_par, ',
       $this->deviation_minimum);
 
     $sql .= sprintf(
       'sum(if(qcdata is null, 0, '.
-      'if(cast(substring_index(substring_index(qcdata,",",1),":",-1) as decimal) between %s and %s,1,0))) as total_deviation_sub, ',
+      'if(cast(substring_index(substring_index(qcdata,",",1),":",-1) as decimal(10,3)) between %s and %s,1,0))) as total_deviation_sub, ',
       $this->deviation_minimum, $this->deviation_maximum);
 
     $sql .= sprintf(
       'sum(if(qcdata is null, 0, '.
-      'if(cast(substring_index(substring_index(qcdata,",",1),":",-1) as decimal)>%s,1,0))) as total_deviation_sup, ',
+      'if(cast(substring_index(substring_index(qcdata,",",1),":",-1) as decimal(10,3))>%s,1,0))) as total_deviation_sup, ',
       $this->deviation_maximum);
 
-    $sql .=
+    $sql .= sprintf(
       'sum(if(qcdata is null, 0, '.
-      'if(cast(trim("}" from substring_index(substring_index(qcdata,",",2),":",-1)) as signed)!=2,1,0))) as total_trial_deviation, ';
+      'if(cast(trim("}" from substring_index(substring_index(qcdata,",",2),":",-1)) as signed)!=%d,1,0))) as total_trial_deviation, ',
+      $this->trial_count);
 
     $sql .= $this->get_main_query();
 
@@ -85,13 +86,13 @@ class repeated_measure_generator extends table_generator
     $this->page_explanation = array();
     $this->page_explanation[]='Deviation = standard deviation of repeated measurements';
     $this->page_explanation[]=
-      sprintf('deviation par: size < %s %s (measurement resolution)',
+      sprintf('par deviation: size < %s %s (measurement resolution)',
         $this->deviation_minimum, $this->measurement_units);
     $this->page_explanation[]=
-      sprintf('deviation sub: %s <= size <= %s %s',
+      sprintf('subpar deviation: %s <= size <= %s %s',
       $this->deviation_minimum,$this->deviation_maximum, $this->measurement_units);
     $this->page_explanation[]=
-      sprintf('deviation sup: size > %s %s',
+      sprintf('above par deviation: size > %s %s',
       $this->deviation_maximum, $this->measurement_units);
     $this->page_explanation[]=sprintf('Trial deviation signalled when more or less than %s measurements made', $this->trial_count);
   }

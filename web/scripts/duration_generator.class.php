@@ -105,14 +105,14 @@ class duration_generator extends table_generator
       'if(cast(substring_index(substring_index(duration,",",1),":",-1) as decimal(10,3))>%s,1,0))) as total_time_sup, ',$stage_time_max);
 
     $this->page_explanation = array();
-    $this->page_explanation[]=sprintf('time [min, max] : [%s, %s] ', 
+    $this->page_explanation[]=sprintf('time [min, max] : [%s, %s] ',
       util::time_to_label($stage_min), util::time_to_label($stage_max));
-    $this->page_explanation[]=sprintf('time [avg, stdev] : [%s, %s] ', 
+    $this->page_explanation[]=sprintf('time [avg, stdev] : [%s, %s] ',
       util::time_to_label($stage_avg), util::time_to_label($stage_stdev));
     $this->page_explanation[]=sprintf('time threshold : %s min', $this->threshold);
-    $this->page_explanation[]=sprintf('time sub: time < %s (mean - %s x SD) min', $stage_time_min, $this->standard_deviation_scale);
-    $this->page_explanation[]=sprintf('time par: %s <= time <= %d min', $stage_time_min, $stage_time_max);
-    $this->page_explanation[]=sprintf('time sup: time > %s (mean + %s x SD) min', $stage_time_max, $this->standard_deviation_scale);
+    $this->page_explanation[]=sprintf('subpar time: time < %s (mean - %s x SD) min', $stage_time_min, $this->standard_deviation_scale);
+    $this->page_explanation[]=sprintf('par time: %s <= time <= %d min', $stage_time_min, $stage_time_max);
+    $this->page_explanation[]=sprintf('above par time: time > %s (mean + %s x SD) min', $stage_time_max, $this->standard_deviation_scale);
 
     if($this->has_module)
     {
@@ -153,9 +153,9 @@ class duration_generator extends table_generator
       $this->page_explanation[]=sprintf('module time [min,max] : [%s,%s] ', util::time_to_label($module_min), util::time_to_label($module_max));
       $this->page_explanation[]=sprintf('module time [avg,stdev] : [%s,%s] ', util::time_to_label($module_avg), util::time_to_label($module_stdev));
       $this->page_explanation[]=sprintf('module time threshold : %s min', $this->threshold);
-      $this->page_explanation[]=sprintf('module time sub: time < %s (mean - %s x SD) min', $module_time_min, $this->standard_deviation_scale);
-      $this->page_explanation[]=sprintf('module time par: %s <= time <= %d min', $module_time_min, $module_time_max);
-      $this->page_explanation[]=sprintf('module time sup: time > %s (mean + %s x SD) min', $module_time_max, $this->standard_deviation_scale);
+      $this->page_explanation[]=sprintf('subpar module time: time < %s (mean - %s x SD) min', $module_time_min, $this->standard_deviation_scale);
+      $this->page_explanation[]=sprintf('par module time: %s <= time <= %d min', $module_time_min, $module_time_max);
+      $this->page_explanation[]=sprintf('above par module time: time > %s (mean + %s x SD) min', $module_time_max, $this->standard_deviation_scale);
 
       $lag_sql = sprintf(
         'select avg(d_time) as d_avg, stddev(d_time) as d_std, min(d_time) as d_min, max(d_time) as d_max '.
@@ -198,9 +198,9 @@ class duration_generator extends table_generator
       $this->page_explanation[]=sprintf('lag time [min,max] : [%s,%s] ', util::time_to_label($lag_min), util::time_to_label($lag_max));
       $this->page_explanation[]=sprintf('lag time [avg,stdev] : [%s,%s] ', util::time_to_label($lag_avg), util::time_to_label($lag_stdev));
       $this->page_explanation[]=sprintf('lag time threshold : %s min', $this->threshold);
-      $this->page_explanation[]=sprintf('lag time sub: time < %s (mean - %s x SD) min', $lag_time_min, $this->standard_deviation_scale);
-      $this->page_explanation[]=sprintf('lag time par: %s <= time <= %d min', $lag_time_min, $lag_time_max);
-      $this->page_explanation[]=sprintf('lag time sup: time > %s (mean + %s x SD) min', $lag_time_max, $this->standard_deviation_scale);
+      $this->page_explanation[]=sprintf('subpar lag time: time < %s (mean - %s x SD) min', $lag_time_min, $this->standard_deviation_scale);
+      $this->page_explanation[]=sprintf('par lag time: %s <= time <= %d min', $lag_time_min, $lag_time_max);
+      $this->page_explanation[]=sprintf('above par lag time: time > %s (mean + %s x SD) min', $lag_time_max, $this->standard_deviation_scale);
     }
 
     $sql .= $this->get_main_query();

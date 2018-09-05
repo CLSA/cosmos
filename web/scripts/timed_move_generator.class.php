@@ -88,9 +88,9 @@ class timed_move_generator extends table_generator
     $this->data = $res;
 
     $this->page_explanation=array();
-    $this->page_explanation[]=sprintf('test time sub: time < %s sec (mean - %s x SD)',$test_time_min, $this->standard_deviation_scale);
-    $this->page_explanation[]=sprintf('test time par: %s <= time <= %s sec',$test_time_min,$test_time_max);
-    $this->page_explanation[]=sprintf('test time sup: time > %s sec (mean + %s x SD)',$test_time_max, $this->standard_deviation_scale);
+    $this->page_explanation[]=sprintf('subpar test time: time < %s sec (mean - %s x SD)',$test_time_min, $this->standard_deviation_scale);
+    $this->page_explanation[]=sprintf('par test time: %s <= time <= %s sec',$test_time_min,$test_time_max);
+    $this->page_explanation[]=sprintf('above par test time: time > %s sec (mean + %s x SD)',$test_time_max, $this->standard_deviation_scale);
     $this->page_explanation[]=sprintf(
       'congruency threshold = abs( tug - (1.5 x four metre walk + chair rise) ) > %s sec',$this->congruency_threshold);
   }

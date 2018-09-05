@@ -43,7 +43,7 @@ class hearing_generator extends table_generator
 
     $this->page_explanation=array();
     $this->page_explanation[]='frequency error only: 0 frequencies + 1 or more errors</li>';
-    $this->page_explanation[]='frequency count sub:  1 - 7 frequencies</li>';
-    $this->page_explanation[]='frequency count par:  8 frequencies';
+    $this->page_explanation[]='subpar frequency count:  1 - 7 frequencies</li>';
+    $this->page_explanation[]='par frequency count:  8 frequencies';
   }
 }

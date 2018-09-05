@@ -28,27 +28,27 @@ class tonometer_generator extends table_generator
 
     $sql .=
       'sum(if(qcdata is null, 0, '.
-      'if(cast(substring_index(substring_index(qcdata,",",2),":",-1) as decimal)<2.5,1,0))) as total_quality_low_left, ';
+      'if(cast(substring_index(substring_index(qcdata,",",2),":",-1) as decimal(10,3))<2.5,1,0))) as total_quality_low_left, ';
 
     $sql .=
       'sum(if(qcdata is null, 0, '.
-      'if(cast(substring_index(substring_index(qcdata,",",2),":",-1) as decimal) between 2.5 and 7.5,1,0))) as total_quality_medium_left, ';
+      'if(cast(substring_index(substring_index(qcdata,",",2),":",-1) as decimal(10,3)) between 2.5 and 7.5,1,0))) as total_quality_medium_left, ';
 
     $sql .=
       'sum(if(qcdata is null, 0, '.
-      'if(cast(substring_index(substring_index(qcdata,",",2),":",-1) as decimal)>7.5,1,0))) as total_quality_high_left, ';
+      'if(cast(substring_index(substring_index(qcdata,",",2),":",-1) as decimal(10,3))>7.5,1,0))) as total_quality_high_left, ';
 
     $sql .=
       'sum(if(qcdata is null, 0, '.
-      'if(cast(substring_index(substring_index(qcdata,",",6),":",-1) as decimal)<2.5,1,0))) as total_quality_low_right, ';
+      'if(cast(substring_index(substring_index(qcdata,",",6),":",-1) as decimal(10,3))<2.5,1,0))) as total_quality_low_right, ';
 
     $sql .=
       'sum(if(qcdata is null, 0, '.
-      'if(cast(substring_index(substring_index(qcdata,",",6),":",-1) as decimal) between 2.5 and 7.5,1,0))) as total_quality_medium_right, ';
+      'if(cast(substring_index(substring_index(qcdata,",",6),":",-1) as decimal(10,3)) between 2.5 and 7.5,1,0))) as total_quality_medium_right, ';
 
     $sql .=
       'sum(if(qcdata is null, 0, '.
-      'if(cast(substring_index(substring_index(qcdata,",",6),":",-1) as decimal)>7.5,1,0))) as total_quality_high_right, ';
+      'if(cast(substring_index(substring_index(qcdata,",",6),":",-1) as decimal(10,3))>7.5,1,0))) as total_quality_high_right, ';
 
     $sql .=
       'sum(if(qcdata is null, 0, '.
@@ -73,9 +73,9 @@ class tonometer_generator extends table_generator
 
     $this->page_explanation=array();
     $this->page_explanation[]='tonometer quality index 0 - 10';
-    $this->page_explanation[]='quality low: q < 2.5';
-    $this->page_explanation[]='quality medium: 2.5 <  q < 7.5';
-    $this->page_explanation[]='quality high: q > 7.5';
+    $this->page_explanation[]='subpar quality: q < 2.5';
+    $this->page_explanation[]='par quality: 2.5 <  q < 7.5';
+    $this->page_explanation[]='above par quality: q > 7.5';
     $this->page_explanation[]='curve availability if both pressure and applanation data are present';
   }
 

@@ -72,7 +72,16 @@ class qnaire_generator extends table_generator
 
     $sql .= sprintf(
       'sum(if(qcdata is null, 0, '.
-      'if(cast( trim("}" from substring_index(qcdata,":",-1)) as signed)>=%d,1,0))) as total_complete_par, ',$complete_perc);
+      'if(cast(trim("}" from substring_index(qcdata,":",-1)) as signed)=%d,1,0))) as total_complete_par, ',$complete_perc);
+
+    if(100>$complete_perc)
+    {
+      $sql .= sprintf(
+        'sum(if(qcdata is null, 0, '.
+        'if(cast(trim("}" from substring_index(qcdata,":",-1)) as signed)>%d,1,0))) as total_complete_sup, ',$complete_perc);
+
+      $this->indicator_keys[] = 'total_complete_sup';
+    }
 
     $sql .= $this->get_main_query();
 
@@ -86,11 +95,12 @@ class qnaire_generator extends table_generator
     $this->data = $res;
 
     $this->page_explanation = array();
-    $this->page_explanation[]=sprintf('percent complete sub: < %d%% (%s, no answer or other)', $complete_perc, $this->statistic);
-    if(100==$complete_perc)
-      $this->page_explanation[]=sprintf('percent complete par: = 100%% (%s, all answered no other)', $this->statistic);
-    else  
-      $this->page_explanation[]=sprintf('percent complete par: %d <= %% <= 100 (%s, all answered no other)', $complete_perc, $this->statistic);
+    $this->page_explanation[]=sprintf('subpar percent: < %d%% (%s)', $complete_perc, $this->statistic);
+    $this->page_explanation[]=sprintf('on par percent: = %d%% (%s)', $complete_perc, $this->statistic);
+    if(100>$complete_perc)
+    {
+      $this->page_explanation[]=sprintf('above par percent: >%d%% (%s)', $complete_perc, $this->statistic);
+    }
   }
 
   private $statistic;

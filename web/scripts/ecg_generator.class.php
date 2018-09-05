@@ -80,7 +80,7 @@ class ecg_generator extends table_generator
       $avg=0;
       $stdev=0;
       $sql = sprintf(
-        'select avg(fsz) as favg '.
+        'select avg(fsz) as favg, stddev(fsz) as fstd  '.
         'from ( '.
         '  select round( '.
         '    cast(substring_index( '.
@@ -94,24 +94,17 @@ class ecg_generator extends table_generator
         'where fsz>0', $this->file_scale, $this->rank, $this->name);
 
       $res = $db->get_row( $sql );
-      $avg = $res['favg'];
-
-      $sql = sprintf(
-        'select stddev(fsz) as fstd '.
-        'from ( '.
-        '  select round('.
-        '    cast(substring_index( '.
-        '      substring_index(qcdata, ",", 1), ":", -1) as decimal)/%s) as fsz '.
-        '  from interview i '.
-        '  join stage s on i.id=s.interview_id '.
-        '  where rank=%d '.
-        '  and qcdata is not null '.
-        '  and s.name="%s" '.
-        ') as t '.
-        'where fsz>0', $this->file_scale, $this->rank, $this->name);
-
       $res = $db->get_row( $sql );
+      if( false === $res )
+      {
+        echo sprintf('failed to get test time data: %s', $db->get_last_error() );
+        echo $sql;
+        die();
+      }
+
+      $avg = $res['favg'];
       $stdev = $res['fstd'];
+
       $filesize_min = max(intval(($avg - $this->standard_deviation_scale*$stdev)*$this->file_scale),0);
       $filesize_max = intval(($avg + $this->standard_deviation_scale*$stdev)*$this->file_scale);
     }
@@ -150,15 +143,15 @@ class ecg_generator extends table_generator
     $this->page_explanation = array();
     if('mode'==$this->statistic)
     {
-      $this->page_explanation[]=sprintf('filesize sub: size < %d (min + 0.5 x (mode - min))', $filesize_min);
-      $this->page_explanation[]=sprintf('filesize par: %d <= size <= %d', $filesize_min, $filesize_max);
-      $this->page_explanation[]=sprintf('filesize sup: size > %d (mode + 0.5 x (max - mode))', $filesize_max);
+      $this->page_explanation[]=sprintf('subpar filesize: size < %d (min + 0.5 x (mode - min))', $filesize_min);
+      $this->page_explanation[]=sprintf('par filesize: %d <= size <= %d', $filesize_min, $filesize_max);
+      $this->page_explanation[]=sprintf('above par filesize: size > %d (mode + 0.5 x (max - mode))', $filesize_max);
     }
     else
     {
-      $this->page_explanation[]=sprintf('filesize sub: size < %d (mean - %s x SD)', $filesize_min, $this->standard_deviation_scale);
-      $this->page_explanation[]=sprintf('filesize par: %d <= size <= %d', $filesize_min, $filesize_max);
-      $this->page_explanation[]=sprintf('filesize sup: size > %d (mean + %s x SD)', $filesize_max, $this->standard_deviation_scale);
+      $this->page_explanation[]=sprintf('subpar filesize: size < %d (mean - %s x SD)', $filesize_min, $this->standard_deviation_scale);
+      $this->page_explanation[]=sprintf('par filesize: %d <= size <= %d', $filesize_min, $filesize_max);
+      $this->page_explanation[]=sprintf('above par filesize: size > %d (mean + %s x SD)', $filesize_max, $this->standard_deviation_scale);
     }
     $this->page_explanation[]="'poor quality' as indicated by ECG diagnosis output text";
   }
