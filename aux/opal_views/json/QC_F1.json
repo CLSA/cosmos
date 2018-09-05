@@ -775,7 +775,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var e=$('clsa-dcs-images-f1.RetinalScanLeft:EYE')\nvar res=null\nif(e.isNull().not().value()) {\n  res=newValue('{filesize:'+e.length()+'}','text')\n}\nres"
+            "value": "var res=$('clsa-dcs-images-f1.RetinalScanLeft:EYE')\nif(res.isNull().not().value()) {\n  res=newValue('{filesize:'+res.length()+'}','text')\n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -783,6 +783,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_retinal_scan_left", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -855,7 +856,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var e=$('clsa-dcs-images-f1.RetinalScanRight:EYE')\nvar res=null\nif(e.isNull().not().value()) {\n  res=newValue('{filesize:'+e.length()+'}','text')\n}\nres"
+            "value": "var res=$('clsa-dcs-images-f1.RetinalScanRight:EYE')\nif(res.isNull().not().value()) {\n  res=newValue('{filesize:'+res.length()+'}','text')\n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -863,6 +864,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_retinal_scan_right", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"

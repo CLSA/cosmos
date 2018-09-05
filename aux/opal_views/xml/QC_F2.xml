@@ -658,10 +658,9 @@ res</attribute>
       </variable>
       <variable name="data_qac_retinal_scan_left" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">var e=$(&apos;clsa-dcs-images-f2.RetinalScanLeft:EYE&apos;)
-var res=null
-if(e.isNull().not().value()) {
-  res=newValue(&apos;{filesize:&apos;+e.length()+&apos;}&apos;,&apos;text&apos;)
+          <attribute name="script" valueType="text">var res=$(&apos;clsa-dcs-images-f2.RetinalScanLeft:EYE&apos;)
+if(res.isNull().not().value()) {
+  res=newValue(&apos;{filesize:&apos;+res.length()+&apos;}&apos;,&apos;text&apos;)
 }
 res</attribute>
         </attributes>
@@ -701,10 +700,9 @@ res</attribute>
       </variable>
       <variable name="data_qac_retinal_scan_right" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">var e=$(&apos;clsa-dcs-images-f2.RetinalScanRight:EYE&apos;)
-var res=null
-if(e.isNull().not().value()) {
-  res=newValue(&apos;{filesize:&apos;+e.length()+&apos;}&apos;,&apos;text&apos;)
+          <attribute name="script" valueType="text">var res=$(&apos;clsa-dcs-images-f2.RetinalScanRight:EYE&apos;)
+if(res.isNull().not().value()) {
+  res=newValue(&apos;{filesize:&apos;+res.length()+&apos;}&apos;,&apos;text&apos;)
 }
 res</attribute>
         </attributes>
@@ -2347,5 +2345,5 @@ res</attribute>
     </variables>
   </variables>
   <created valueType="datetime">2018-05-15T13:40:50.956-04</created>
-  <updated valueType="datetime">2018-09-05T13:55:07.476-04</updated>
+  <updated valueType="datetime">2018-09-05T14:08:56.081-04</updated>
 </org.obiba.magma.views.View>
