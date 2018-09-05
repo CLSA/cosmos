@@ -110,7 +110,7 @@ var res=null
 if(p.isNull().and(q.isNull()).not().value() &amp;&amp; 0!=q.sum()){
   res=newValue(
     &apos;{complete:&apos;+
-    Math.round(100.0*(q.sum()-p.sum())/q.sum())
+    Math.round(q.sum().minus(p.sum()).multiply(100).div(q.sum()).value())
     +&apos;}&apos;,&apos;text&apos;)
 }
 res</attribute>
@@ -158,7 +158,7 @@ var res=null
 if(p.isNull().and(q.isNull()).not().value() &amp;&amp; 0!=q.sum()){
   res=newValue(
     &apos;{complete:&apos;+
-    Math.round(100.0*(q.sum()-p.sum())/q.sum())
+    Math.round(q.sum().minus(p.sum()).multiply(100).div(q.sum()).value())
     +&apos;}&apos;,&apos;text&apos;)
 }
 res</attribute>
@@ -206,7 +206,7 @@ var res=null
 if(p.isNull().and(q.isNull()).not().value() &amp;&amp; 0!=q.sum()){
   res=newValue(
     &apos;{complete:&apos;+
-    Math.round(100.0*(q.sum()-p.sum())/q.sum())
+    Math.round(q.sum().minus(p.sum()).multiply(100).div(q.sum()).value())
     +&apos;}&apos;,&apos;text&apos;)
 }
 res</attribute>
@@ -254,7 +254,7 @@ var res=null
 if(p.isNull().and(q.isNull()).not().value() &amp;&amp; 0!=q.sum()){
   res=newValue(
     &apos;{complete:&apos;+
-    Math.round(100.0*(q.sum()-p.sum())/q.sum())
+    Math.round(q.sum().minus(p.sum()).multiply(100).div(q.sum()).value())
     +&apos;}&apos;,&apos;text&apos;)
 }
 res</attribute>
@@ -304,5 +304,5 @@ res</attribute>
     </variables>
   </variables>
   <created valueType="datetime">2018-08-13T13:40:03.197-04</created>
-  <updated valueType="datetime">2018-08-14T14:06:58.396-04</updated>
+  <updated valueType="datetime">2018-09-05T13:54:37.782-04</updated>
 </org.obiba.magma.views.View>

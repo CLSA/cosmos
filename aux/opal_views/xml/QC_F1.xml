@@ -1069,7 +1069,7 @@ if(tt.isNull().not().value()) {
   var str = &apos;0&apos;
   if(tt.isNull().not().and(ct.isNull().not()).value()) {
     var cv=ct.div($(&apos;clsa-dcs-f1.ChairRise:CR_NB&apos;).whenNull(1))
-    str=Math.round(tt.minus(wt.multiply(1.5).plus(cv)).abs().value(),0)
+    str=Math.round(tt.minus(wt.multiply(1.5).plus(cv)).abs().value())
   }  
   res=newValue(
     &apos;{time:&apos;+tt.round(3).value()+
@@ -1122,7 +1122,7 @@ if(ct.isNull().not().value()) {
   var str = &apos;0&apos;
   if(tt.isNull().not().and(ct.isNull().not()).value()) {
     var cv=ct.div($(&apos;clsa-dcs-f1.ChairRise:CR_NB&apos;).whenNull(1))
-    str=Math.round(tt.minus(wt.multiply(1.5).plus(cv)).abs().value(),0)
+    str=Math.round(tt.minus(wt.multiply(1.5).plus(cv)).abs().value())
   }  
   res=newValue(
     &apos;{time:&apos;+ct.round(3).value()+
@@ -1224,28 +1224,24 @@ res</attribute>
       </variable>
       <variable name="data_qac_neuropsychological_battery" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">var d=$(&apos;clsa-dcs-f1.NeuropsychologicalBattery:STP_DOTREC_COF1&apos;)
-var w=$(&apos;clsa-dcs-f1.NeuropsychologicalBattery:STP_WORREC_COF1&apos;)
-var c=$(&apos;clsa-dcs-f1.NeuropsychologicalBattery:STP_COLREC_COF1&apos;)
-var f=$(&apos;clsa-dcs-f1.NeuropsychologicalBattery:FAS_FREC_COF1&apos;)
-var a=$(&apos;clsa-dcs-f1.NeuropsychologicalBattery:FAS_AREC_COF1&apos;)
-var s=$(&apos;clsa-dcs-f1.NeuropsychologicalBattery:FAS_SREC_COF1&apos;)
-var res=null
-var str=[]
-if(!d.isNull().and(w.isNull(),c.isNull(),f.isNull(),a.isNull(),s.isNull()).value()) {
+          <attribute name="script" valueType="text">var res=null
+var p=$(&apos;clsa-dcs-f1.NeuropsychologicalBattery:QuestionnaireMetric.missingCount&apos;).asSequence()
+var q=$(&apos;clsa-dcs-f1.NeuropsychologicalBattery:QuestionnaireMetric.questionCount&apos;).asSequence()
+if(p.isNull().and(q.isNull()).not().value() &amp;&amp; 0!=q.sum()){  
+  var d=$(&apos;clsa-dcs-f1.NeuropsychologicalBattery:STP_DOTREC_COF1&apos;)
+  var w=$(&apos;clsa-dcs-f1.NeuropsychologicalBattery:STP_WORREC_COF1&apos;)
+  var c=$(&apos;clsa-dcs-f1.NeuropsychologicalBattery:STP_COLREC_COF1&apos;)
+  var f=$(&apos;clsa-dcs-f1.NeuropsychologicalBattery:FAS_FREC_COF1&apos;)
+  var a=$(&apos;clsa-dcs-f1.NeuropsychologicalBattery:FAS_AREC_COF1&apos;)
+  var s=$(&apos;clsa-dcs-f1.NeuropsychologicalBattery:FAS_SREC_COF1&apos;)
+  var str=[]
   str.push(&apos;filesize_dot:&apos;+(d.isNull().value()?&apos;0&apos;:d.length().value()))
   str.push(&apos;filesize_wor:&apos;+(w.isNull().value()?&apos;0&apos;:w.length().value()))
   str.push(&apos;filesize_col:&apos;+(c.isNull().value()?&apos;0&apos;:c.length().value()))
   str.push(&apos;filesize_f:&apos;+(f.isNull().value()?&apos;0&apos;:f.length().value()))
   str.push(&apos;filesize_a:&apos;+(a.isNull().value()?&apos;0&apos;:a.length().value()))
   str.push(&apos;filesize_s:&apos;+(s.isNull().value()?&apos;0&apos;:s.length().value()))  
-}
-var p=$(&apos;clsa-dcs-f1.NeuropsychologicalBattery:QuestionnaireMetric.missingCount&apos;).asSequence()
-var q=$(&apos;clsa-dcs-f1.NeuropsychologicalBattery:QuestionnaireMetric.questionCount&apos;).asSequence()
-if(p.isNull().and(q.isNull()).not().value() &amp;&amp; 0!=q.sum()){
-  str.push(&apos;complete:&apos;+Math.round(100.0*(q.sum()-p.sum())/q.sum()))
-}
-if(0&lt;str.length) {
+  str.push(&apos;complete:&apos;+Math.round(q.sum().minus(p.sum()).multiply(100).div(q.sum()).value()))
   res=newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)
 }
 res</attribute>
@@ -1383,7 +1379,7 @@ if(wt.isNull().not().value()) {
   var str = &apos;0&apos;
   if(tt.isNull().not().and(ct.isNull().not()).value()) {
     var cv=ct.div($(&apos;clsa-dcs-f1.ChairRise:CR_NB&apos;).whenNull(1))
-    str=Math.round(tt.minus(wt.multiply(1.5).plus(cv)).abs().value(),0)
+    str=Math.round(tt.minus(wt.multiply(1.5).plus(cv)).abs().value())
   }  
   res=newValue(
     &apos;{time:&apos;+wt.round(3).value()+
@@ -1504,7 +1500,7 @@ var res=null
 if(p.isNull().and(q.isNull()).not().value() &amp;&amp; 0!=q.sum()){
   res=newValue(
     &apos;{complete:&apos;+
-    Math.round(100.0*(q.sum()-p.sum())/q.sum())
+    Math.round(q.sum().minus(p.sum()).multiply(100).div(q.sum()).value())
     +&apos;}&apos;,&apos;text&apos;)
 }
 res</attribute>
@@ -1551,7 +1547,7 @@ var res=null
 if(p.isNull().and(q.isNull()).not().value() &amp;&amp; 0!=q.sum()){
   res=newValue(
     &apos;{complete:&apos;+
-    Math.round(100.0*(q.sum()-p.sum())/q.sum())
+    Math.round(q.sum().minus(p.sum()).multiply(100).div(q.sum()).value())
     +&apos;}&apos;,&apos;text&apos;)
 }
 res</attribute>
@@ -1592,14 +1588,11 @@ res</attribute>
       </variable>
       <variable name="data_qac_conclusion_questionnaire" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">var q=$(&apos;clsa-dcs-f1.ConclusionQuestionnaire:PARTICIPANT_OFFERED_DOCUMENT&apos;).lowerCase()
-var res=null
-if(q.isNull().not().value()){
-  var a=q.any(&apos;consent_form&apos;).value()
-  var b=q.any(&apos;physical_measures_report&apos;).value()
-  var n=0 
-  if(a) n++
-  if(b) n++
+          <attribute name="script" valueType="text">var res=$(&apos;clsa-dcs-f1.ConclusionQuestionnaire:PARTICIPANT_OFFERED_DOCUMENT&apos;).lowerCase()
+if(res.isNull().not().value()) {
+  var n=0
+  if(res.any(&apos;consent_form&apos;).value()) n++
+  if(res.any(&apos;physical_measures_report&apos;).value()) n++  
   res=newValue(&apos;{documents:&apos;+n+&apos;}&apos;,&apos;text&apos;)
 }
 res</attribute>
@@ -1646,7 +1639,7 @@ var res=null
 if(p.isNull().and(q.isNull()).not().value() &amp;&amp; 0!=q.sum()){
   res=newValue(
     &apos;{complete:&apos;+
-    Math.round(100.0*(q.sum()-p.sum())/q.sum())
+    Math.round(q.sum().minus(p.sum()).multiply(100).div(q.sum()).value())
     +&apos;}&apos;,&apos;text&apos;)
 }
 res</attribute>
@@ -1742,7 +1735,7 @@ var res=null
 if(p.isNull().and(q.isNull()).not().value() &amp;&amp; 0!=q.sum()){
   res=newValue(
     &apos;{complete:&apos;+
-    Math.round(100.0*(q.sum()-p.sum())/q.sum())
+    Math.round(q.sum().minus(p.sum()).multiply(100).div(q.sum()).value())
     +&apos;}&apos;,&apos;text&apos;)
 }
 res</attribute>
@@ -1789,7 +1782,7 @@ var res=null
 if(p.isNull().and(q.isNull()).not().value() &amp;&amp; 0!=q.sum()){
   res=newValue(
     &apos;{complete:&apos;+
-    Math.round(100.0*(q.sum()-p.sum())/q.sum())
+    Math.round(q.sum().minus(p.sum()).multiply(100).div(q.sum()).value())
     +&apos;}&apos;,&apos;text&apos;)
 }
 res</attribute>
@@ -1882,7 +1875,7 @@ var res=null
 if(p.isNull().and(q.isNull()).not().value() &amp;&amp; 0!=q.sum()){
   res=newValue(
     &apos;{complete:&apos;+
-    Math.round(100.0*(q.sum()-p.sum())/q.sum())
+    Math.round(q.sum().minus(p.sum()).multiply(100).div(q.sum()).value())
     +&apos;}&apos;,&apos;text&apos;)
 }
 res</attribute>
@@ -1971,7 +1964,7 @@ var res=null
 if(p.isNull().and(q.isNull()).not().value() &amp;&amp; 0!=q.sum()){
   res=newValue(
     &apos;{complete:&apos;+
-    Math.round(100.0*(q.sum()-p.sum())/q.sum())
+    Math.round(q.sum().minus(p.sum()).multiply(100).div(q.sum()).value())
     +&apos;}&apos;,&apos;text&apos;)
 }
 res</attribute>
@@ -2018,7 +2011,7 @@ var res=null
 if(p.isNull().and(q.isNull()).not().value() &amp;&amp; 0!=q.sum()){
   res=newValue(
     &apos;{complete:&apos;+
-    Math.round(100.0*(q.sum()-p.sum())/q.sum())
+    Math.round(q.sum().minus(p.sum()).multiply(100).div(q.sum()).value())
     +&apos;}&apos;,&apos;text&apos;)
 }
 res</attribute>
@@ -2072,7 +2065,7 @@ if(stage.isNull().not().value()) {
   if(p.isNull().and(q.isNull()).not().value() &amp;&amp; 0!=q.sum()){
     res=newValue(
       &apos;{complete:&apos;+
-      Math.round(100.0*(q.sum()-p.sum())/q.sum())
+      Math.round(q.sum().minus(p.sum()).multiply(100).div(q.sum()).value())
       +&apos;}&apos;,&apos;text&apos;)
   }
 }
@@ -2154,7 +2147,7 @@ var res=null
 if(p.isNull().and(q.isNull()).not().value() &amp;&amp; 0!=q.sum()){
   res=newValue(
     &apos;{complete:&apos;+
-    Math.round(100.0*(q.sum()-p.sum())/q.sum())
+    Math.round(q.sum().minus(p.sum()).multiply(100).div(q.sum()).value())
     +&apos;}&apos;,&apos;text&apos;)
 }
 res</attribute>
@@ -2201,7 +2194,7 @@ var res=null
 if(p.isNull().and(q.isNull()).not().value() &amp;&amp; 0!=q.sum()){
   res=newValue(
     &apos;{complete:&apos;+
-    Math.round(100.0*(q.sum()-p.sum())/q.sum())
+    Math.round(q.sum().minus(p.sum()).multiply(100).div(q.sum()).value())
     +&apos;}&apos;,&apos;text&apos;)
 }
 res</attribute>
@@ -2249,7 +2242,7 @@ var res=null
 if(p.isNull().and(q.isNull()).not().value() &amp;&amp; 0!=q.sum()){
   res=newValue(
     &apos;{complete:&apos;+
-    Math.round(100.0*(q.sum()-p.sum())/q.sum())
+    Math.round(q.sum().minus(p.sum()).multiply(100).div(q.sum()).value())
     +&apos;}&apos;,&apos;text&apos;)
 }
 res</attribute>
@@ -2278,7 +2271,7 @@ var res=null
 if(p.isNull().and(q.isNull()).not().value() &amp;&amp; 0!=q.sum()){
   res=newValue(
     &apos;{complete:&apos;+
-    Math.round(100.0*(q.sum()-p.sum())/q.sum())
+    Math.round(q.sum().minus(p.sum()).multiply(100).div(q.sum()).value())
     +&apos;}&apos;,&apos;text&apos;)
 }
 res</attribute>
@@ -2325,7 +2318,7 @@ var res=null
 if(p.isNull().and(q.isNull()).not().value() &amp;&amp; 0!=q.sum()){
   res=newValue(
     &apos;{complete:&apos;+
-    Math.round(100.0*(q.sum()-p.sum())/q.sum())
+    Math.round(q.sum().minus(p.sum()).multiply(100).div(q.sum()).value())
     +&apos;}&apos;,&apos;text&apos;)
 }
 res</attribute>
@@ -2372,7 +2365,7 @@ var res=null
 if(p.isNull().and(q.isNull()).not().value() &amp;&amp; 0!=q.sum()){
   res=newValue(
     &apos;{complete:&apos;+
-    Math.round(100.0*(q.sum()-p.sum())/q.sum())
+    Math.round(q.sum().minus(p.sum()).multiply(100).div(q.sum()).value())
     +&apos;}&apos;,&apos;text&apos;)
 }
 res</attribute>
@@ -2419,7 +2412,7 @@ var res=null
 if(p.isNull().and(q.isNull()).not().value() &amp;&amp; 0!=q.sum()){
   res=newValue(
     &apos;{complete:&apos;+
-    Math.round(100.0*(q.sum()-p.sum())/q.sum())
+    Math.round(q.sum().minus(p.sum()).multiply(100).div(q.sum()).value())
     +&apos;}&apos;,&apos;text&apos;)
 }
 res</attribute>
@@ -2454,5 +2447,5 @@ res</attribute>
     </variables>
   </variables>
   <created valueType="datetime">2018-05-03T13:40:11.946-04</created>
-  <updated valueType="datetime">2018-09-04T14:16:53.751-04</updated>
+  <updated valueType="datetime">2018-09-05T13:54:22.925-04</updated>
 </org.obiba.magma.views.View>
