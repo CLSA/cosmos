@@ -215,7 +215,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var res=null\nif($('clsa-dcs-f1.GripStrength:Measure.RES_TRIAL_MAX').isNull().not().value()) {\n  res=newValue('{trial_count:'+$('clsa-dcs-f1.GripStrength:Measure.RES_TRIAL_MAX').size()+'}','text')\n}\nres"
+            "value": "var res=$('clsa-dcs-f1.GripStrength:Measure.RES_TRIAL_MAX')\nif(res.isNull().not().value()) {\n  res=newValue('{trial_count:'+res.size()+'}','text')\n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -223,6 +223,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_grip_strength", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -295,7 +296,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var res=null\nif($('clsa-dcs-f1.BloodPressure:RES_AVG_COUNT').isNull().not().value()) {\n  res=newValue('{trial_count:'+$('clsa-dcs-f1.BloodPressure:RES_AVG_COUNT')+'}','text')\n}\nres"
+            "value": "var res=$('clsa-dcs-f1.BloodPressure:RES_AVG_COUNT')\nif(res.isNull().not().value()) {\n  res=newValue('{trial_count:'+res.value()+'}','text')\n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -303,6 +304,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_blood_pressure", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"

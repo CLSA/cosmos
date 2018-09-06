@@ -257,9 +257,9 @@ res</attribute>
       </variable>
       <variable name="data_qac_grip_strength" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">var res=null
-if($(&apos;clsa-dcs-f2.GripStrength:Measure.RES_TRIAL_MAX&apos;).isNull().not().value()) {
-  res=newValue(&apos;{trial_count:&apos;+$(&apos;clsa-dcs-f2.GripStrength:Measure.RES_TRIAL_MAX&apos;).size()+&apos;}&apos;,&apos;text&apos;)
+          <attribute name="script" valueType="text">var res=$(&apos;clsa-dcs-f2.GripStrength:Measure.RES_TRIAL_MAX&apos;)
+if(res.isNull().not().value()) {
+  res=newValue(&apos;{trial_count:&apos;+res.size()+&apos;}&apos;,&apos;text&apos;)
 }
 res</attribute>
         </attributes>
@@ -299,9 +299,9 @@ res</attribute>
       </variable>
       <variable name="data_qac_blood_pressure" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">var res=null
-if($(&apos;clsa-dcs-f2.BloodPressure:RES_AVG_COUNT&apos;).isNull().not().value()) {
-  res=newValue(&apos;{trial_count:&apos;+$(&apos;clsa-dcs-f2.BloodPressure:RES_AVG_COUNT&apos;)+&apos;}&apos;,&apos;text&apos;)
+          <attribute name="script" valueType="text">var res=$(&apos;clsa-dcs-f2.BloodPressure:RES_AVG_COUNT&apos;)
+if(res.isNull().not().value()) {
+  res=newValue(&apos;{trial_count:&apos;+res.value()+&apos;}&apos;,&apos;text&apos;)
 }
 res</attribute>
         </attributes>
@@ -2342,5 +2342,5 @@ res</attribute>
     </variables>
   </variables>
   <created valueType="datetime">2018-05-15T13:40:50.956-04</created>
-  <updated valueType="datetime">2018-09-06T11:31:40.539-04</updated>
+  <updated valueType="datetime">2018-09-06T14:45:38.870-04</updated>
 </org.obiba.magma.views.View>
