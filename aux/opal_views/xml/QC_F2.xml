@@ -139,7 +139,7 @@
   <select class="org.obiba.magma.views.support.NoneClause"/>
   <where class="org.obiba.magma.js.views.JavascriptClause">
     <scriptName>customScript</scriptName>
-    <script>$lastupdate().before(newValue(&apos;2018-08-24&apos;,&apos;date&apos;)).and($lastupdate().after(newValue(&apos;2018-04-30&apos;,&apos;date&apos;)))</script>
+    <script>$lastupdate().before(newValue(&apos;2018-09-06&apos;,&apos;date&apos;)).and($lastupdate().after(newValue(&apos;2018-04-01&apos;,&apos;date&apos;)))</script>
   </where>
   <variables class="org.obiba.magma.js.views.VariablesClause">
     <variables class="linked-hash-set">
@@ -613,13 +613,12 @@ res</attribute>
       </variable>
       <variable name="data_qac_weight" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">var w=$(&apos;clsa-dcs-f2.Weight:Measure.RES_WEIGHT_MEASURE&apos;)
-var res=null
-if(w.size().gt(1).value()){
-  res=newValue(&apos;{stddev:&apos;+w.stddev().round(6).value()+&apos;,size:&apos;+w.size().value()+&apos;}&apos;,&apos;text&apos;)
-} else if(w.size().eq(1).value()) {
+          <attribute name="script" valueType="text">var res=$(&apos;clsa-dcs-f2.Weight:Measure.RES_WEIGHT_MEASURE&apos;)
+if(res.size().gt(1).value()){
+  res=newValue(&apos;{stddev:&apos;+res.stddev().round(6).value()+&apos;,size:&apos;+res.size().value()+&apos;}&apos;,&apos;text&apos;)
+} else if(res.size().eq(1).value()) {
   res=newValue(&apos;{stddev:0,size:1}&apos;,&apos;text&apos;)
-} 
+}
 res</attribute>
         </attributes>
       </variable>
@@ -784,11 +783,10 @@ res</attribute>
       </variable>
       <variable name="data_qac_standing_height" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">var w=$(&apos;clsa-dcs-f2.StandingHeight:Measure.RES_HEIGHT_MEASURE&apos;)
-var res=null
-if(w.size().gt(1).value()){
-  res=newValue(&apos;{stddev:&apos;+w.stddev().round(6).value()+&apos;,size:&apos;+w.size().value()+&apos;}&apos;,&apos;text&apos;)
-} else if(w.size().eq(1).value()) {
+          <attribute name="script" valueType="text">var res=$(&apos;clsa-dcs-f2.StandingHeight:Measure.RES_HEIGHT_MEASURE&apos;)
+if(res.size().gt(1).value()){
+  res=newValue(&apos;{stddev:&apos;+res.stddev().round(6).value()+&apos;,size:&apos;+res.size().value()+&apos;}&apos;,&apos;text&apos;)
+} else if(res.size().eq(1).value()) {
   res=newValue(&apos;{stddev:0,size:1}&apos;,&apos;text&apos;)
 } 
 res</attribute>
@@ -1366,11 +1364,10 @@ res</attribute>
       </variable>
       <variable name="data_qac_sitting_height" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">var w=$(&apos;clsa-dcs-f2.SittingHeight:Measure.RES_SIT_HEIGHT_MEASURE&apos;)
-var res=null
-if(w.size().gt(1).value()){
-  res=newValue(&apos;{stddev:&apos;+w.stddev().round(6).value()+&apos;,size:&apos;+w.size().value()+&apos;}&apos;,&apos;text&apos;)
-} else if(w.size().eq(1).value()) {
+          <attribute name="script" valueType="text">var res=$(&apos;clsa-dcs-f2.SittingHeight:Measure.RES_SIT_HEIGHT_MEASURE&apos;)
+if(res.size().gt(1).value()){
+  res=newValue(&apos;{stddev:&apos;+res.stddev().round(6).value()+&apos;,size:&apos;+res.size().value()+&apos;}&apos;,&apos;text&apos;)
+} else if(res.size().eq(1).value()) {
   res=newValue(&apos;{stddev:0,size:1}&apos;,&apos;text&apos;)
 } 
 res</attribute>
@@ -2345,5 +2342,5 @@ res</attribute>
     </variables>
   </variables>
   <created valueType="datetime">2018-05-15T13:40:50.956-04</created>
-  <updated valueType="datetime">2018-09-05T14:08:56.081-04</updated>
+  <updated valueType="datetime">2018-09-06T11:31:40.539-04</updated>
 </org.obiba.magma.views.View>

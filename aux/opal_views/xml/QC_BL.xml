@@ -589,11 +589,10 @@ res</attribute>
       </variable>
       <variable name="data_qac_weight" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">var w=$(&apos;clsa-dcs.Weight:Measure.RES_WEIGHT_MEASURE&apos;)
-var res=null
-if(w.size().gt(1).value()){
-  res=newValue(&apos;{stddev:&apos;+w.stddev().round(6).value()+&apos;,size:&apos;+w.size().value()+&apos;}&apos;,&apos;text&apos;)
-} else if(w.size().eq(1).value()) {
+          <attribute name="script" valueType="text">var res=$(&apos;clsa-dcs.Weight:Measure.RES_WEIGHT_MEASURE&apos;)
+if(res.size().gt(1).value()){
+  res=newValue(&apos;{stddev:&apos;+res.stddev().round(6).value()+&apos;,size:&apos;+res.size().value()+&apos;}&apos;,&apos;text&apos;)
+} else if(res.size().eq(1).value()) {
   res=newValue(&apos;{stddev:0,size:1}&apos;,&apos;text&apos;)
 } 
 res</attribute>
@@ -727,11 +726,10 @@ res</attribute>
       </variable>
       <variable name="data_qac_standing_height" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">var w=$(&apos;clsa-dcs.StandingHeight:Measure.RES_HEIGHT_MEASURE&apos;)
-var res=null
-if(w.size().gt(1).value()){
-  res=newValue(&apos;{stddev:&apos;+w.stddev().round(6).value()+&apos;,size:&apos;+w.size().value()+&apos;}&apos;,&apos;text&apos;)
-} else if(w.size().eq(1).value()) {
+          <attribute name="script" valueType="text">var res=$(&apos;clsa-dcs.StandingHeight:Measure.RES_HEIGHT_MEASURE&apos;)
+if(res.size().gt(1).value()){
+  res=newValue(&apos;{stddev:&apos;+res.stddev().round(6).value()+&apos;,size:&apos;+res.size().value()+&apos;}&apos;,&apos;text&apos;)
+} else if(res.size().eq(1).value()) {
   res=newValue(&apos;{stddev:0,size:1}&apos;,&apos;text&apos;)
 } 
 res</attribute>
@@ -1325,11 +1323,10 @@ res</attribute>
       </variable>
       <variable name="data_qac_sitting_height" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">var w=$(&apos;clsa-dcs.SittingHeight:Measure.RES_SIT_HEIGHT_MEASURE&apos;)
-var res=null
-if(w.size().gt(1).value()){
-  res=newValue(&apos;{stddev:&apos;+w.stddev().round(6).value()+&apos;,size:&apos;+w.size().value()+&apos;}&apos;,&apos;text&apos;)
-} else if(w.size().eq(1).value()) {
+          <attribute name="script" valueType="text">var res=$(&apos;clsa-dcs.SittingHeight:Measure.RES_SIT_HEIGHT_MEASURE&apos;)
+if(res.size().gt(1).value()){
+  res=newValue(&apos;{stddev:&apos;+res.stddev().round(6).value()+&apos;,size:&apos;+res.size().value()+&apos;}&apos;,&apos;text&apos;)
+} else if(res.size().eq(1).value()) {
   res=newValue(&apos;{stddev:0,size:1}&apos;,&apos;text&apos;)
 } 
 res</attribute>
@@ -2044,5 +2041,5 @@ res</attribute>
     </variables>
   </variables>
   <created valueType="datetime">2018-05-15T17:37:52.240-04</created>
-  <updated valueType="datetime">2018-09-05T13:53:50.399-04</updated>
+  <updated valueType="datetime">2018-09-06T13:26:46.134-04</updated>
 </org.obiba.magma.views.View>

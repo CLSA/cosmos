@@ -695,7 +695,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var w=$('clsa-dcs-f1.Weight:Measure.RES_WEIGHT_MEASURE')\nvar res=null\nif(w.size().gt(1).value()){\n  res=newValue('{stddev:'+w.stddev().round(6).value()+',size:'+w.size().value()+'}','text')\n} else if(w.size().eq(1).value()) {\n  res=newValue('{stddev:0,size:1}','text')\n} \nres"
+            "value": "var res=$('clsa-dcs-f1.Weight:Measure.RES_WEIGHT_MEASURE')\nif(res.size().gt(1).value()){\n  res=newValue('{stddev:'+res.stddev().round(6).value()+',size:'+res.size().value()+'}','text')\n} else if(res.size().eq(1).value()) {\n  res=newValue('{stddev:0,size:1}','text')\n} \nres"
           }
         ], 
         "entityType": "Participant", 
@@ -703,6 +703,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_weight", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -783,7 +784,6 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_retinal_scan_left", 
-        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -864,7 +864,6 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_retinal_scan_right", 
-        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1017,7 +1016,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var w=$('clsa-dcs-f1.StandingHeight:Measure.RES_HEIGHT_MEASURE')\nvar res=null\nif(w.size().gt(1).value()){\n  res=newValue('{stddev:'+w.stddev().round(6).value()+',size:'+w.size().value()+'}','text')\n} else if(w.size().eq(1).value()) {\n  res=newValue('{stddev:0,size:1}','text')\n} \nres"
+            "value": "var res=$('clsa-dcs-f1.StandingHeight:Measure.RES_HEIGHT_MEASURE')\nif(res.size().gt(1).value()){\n  res=newValue('{stddev:'+res.stddev().round(6).value()+',size:'+res.size().value()+'}','text')\n} else if(res.size().eq(1).value()) {\n  res=newValue('{stddev:0,size:1}','text')\n} \nres"
           }
         ], 
         "entityType": "Participant", 
@@ -1025,6 +1024,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_standing_height", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"

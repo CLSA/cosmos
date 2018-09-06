@@ -604,11 +604,10 @@ res</attribute>
       </variable>
       <variable name="data_qac_weight" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">var w=$(&apos;clsa-dcs-f1.Weight:Measure.RES_WEIGHT_MEASURE&apos;)
-var res=null
-if(w.size().gt(1).value()){
-  res=newValue(&apos;{stddev:&apos;+w.stddev().round(6).value()+&apos;,size:&apos;+w.size().value()+&apos;}&apos;,&apos;text&apos;)
-} else if(w.size().eq(1).value()) {
+          <attribute name="script" valueType="text">var res=$(&apos;clsa-dcs-f1.Weight:Measure.RES_WEIGHT_MEASURE&apos;)
+if(res.size().gt(1).value()){
+  res=newValue(&apos;{stddev:&apos;+res.stddev().round(6).value()+&apos;,size:&apos;+res.size().value()+&apos;}&apos;,&apos;text&apos;)
+} else if(res.size().eq(1).value()) {
   res=newValue(&apos;{stddev:0,size:1}&apos;,&apos;text&apos;)
 } 
 res</attribute>
@@ -775,11 +774,10 @@ res</attribute>
       </variable>
       <variable name="data_qac_standing_height" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">var w=$(&apos;clsa-dcs-f1.StandingHeight:Measure.RES_HEIGHT_MEASURE&apos;)
-var res=null
-if(w.size().gt(1).value()){
-  res=newValue(&apos;{stddev:&apos;+w.stddev().round(6).value()+&apos;,size:&apos;+w.size().value()+&apos;}&apos;,&apos;text&apos;)
-} else if(w.size().eq(1).value()) {
+          <attribute name="script" valueType="text">var res=$(&apos;clsa-dcs-f1.StandingHeight:Measure.RES_HEIGHT_MEASURE&apos;)
+if(res.size().gt(1).value()){
+  res=newValue(&apos;{stddev:&apos;+res.stddev().round(6).value()+&apos;,size:&apos;+res.size().value()+&apos;}&apos;,&apos;text&apos;)
+} else if(res.size().eq(1).value()) {
   res=newValue(&apos;{stddev:0,size:1}&apos;,&apos;text&apos;)
 } 
 res</attribute>
@@ -2445,5 +2443,5 @@ res</attribute>
     </variables>
   </variables>
   <created valueType="datetime">2018-05-03T13:40:11.946-04</created>
-  <updated valueType="datetime">2018-09-05T14:10:33.411-04</updated>
+  <updated valueType="datetime">2018-09-06T13:24:39.536-04</updated>
 </org.obiba.magma.views.View>
