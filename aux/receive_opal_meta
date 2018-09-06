@@ -114,7 +114,7 @@ foreach( $res as $item )
 util::out( 'getting opal data...' );
 if( in_array($rank,$active_ranks) && null != $before_date && null != $after_date )
 {
-  $opal->set_date_range( $before_date, $after_date );
+  $opal->set_date_range( $before_date, $after_date, true );
   util::out('setting date range...');
 }
 $identifier_list = $opal->get_identifiers();
@@ -129,8 +129,6 @@ while($offset < $max_limit)
   if( 0 < $total )
   {
     $offset += $total;
-
-//$list = $opal->get_complete_list();
 
     util::out( sprintf('processing data at offset %d from view %s with %d participants...',$offset,$view_list[$rank],$total));
     $interview_values = array();
