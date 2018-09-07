@@ -223,7 +223,6 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_grip_strength", 
-        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -304,7 +303,6 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_blood_pressure", 
-        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -705,7 +703,6 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_weight", 
-        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -778,7 +775,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var l=$('clsa-dcs-images.RetinalScan:Measure.EYE').valueAt(\n  $('clsa-dcs-images.RetinalScan:Measure.SIDE').indexOf('LEFT')).length()\nvar r=$('clsa-dcs-images.RetinalScan:Measure.EYE').valueAt(\n  $('clsa-dcs-images.RetinalScan:Measure.SIDE').indexOf('RIGHT')).length()\nvar res=null  \nif(!l.isNull().and(r.isNull()).value()) {\n  res=newValue(\n    '{filesize_left:'+\n    (l.isNull().value()?'0':l.value())+\n    ',filesize_right:'+\n    (r.isNull().value()?'0':r.value())+\n    '}', 'text')\n}    \nres    "
+            "value": "var l=$group('clsa-dcs-images.RetinalScan:Measure.SIDE','LEFT','Measure.EYE').asSequence().last()\nvar r=$group('clsa-dcs-images.RetinalScan:Measure.SIDE','RIGHT','Measure.EYE').asSequence().last()\nvar res=null\nif(!l.isNull().and(r.isNull()).value()) {\n  res=newValue(\n    '{filesize_left:'+\n    (l.isNull().value()?'0':l.length().value())+\n    ',filesize_right:'+\n    (r.isNull().value()?'0':r.length().value())+\n    '}', 'text')\n}\nres"
           }
         ], 
         "entityType": "Participant", 
@@ -786,6 +783,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_retinal_scan", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -946,7 +944,6 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_standing_height", 
-        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1827,7 +1824,6 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_sitting_height", 
-        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"

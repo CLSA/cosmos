@@ -633,20 +633,18 @@ res</attribute>
       </variable>
       <variable name="data_qac_retinal_scan" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">var l=$(&apos;clsa-dcs-images.RetinalScan:Measure.EYE&apos;).valueAt(
-  $(&apos;clsa-dcs-images.RetinalScan:Measure.SIDE&apos;).indexOf(&apos;LEFT&apos;)).length()
-var r=$(&apos;clsa-dcs-images.RetinalScan:Measure.EYE&apos;).valueAt(
-  $(&apos;clsa-dcs-images.RetinalScan:Measure.SIDE&apos;).indexOf(&apos;RIGHT&apos;)).length()
-var res=null  
+          <attribute name="script" valueType="text">var l=$group(&apos;clsa-dcs-images.RetinalScan:Measure.SIDE&apos;,&apos;LEFT&apos;,&apos;Measure.EYE&apos;).asSequence().last()
+var r=$group(&apos;clsa-dcs-images.RetinalScan:Measure.SIDE&apos;,&apos;RIGHT&apos;,&apos;Measure.EYE&apos;).asSequence().last()
+var res=null
 if(!l.isNull().and(r.isNull()).value()) {
   res=newValue(
     &apos;{filesize_left:&apos;+
-    (l.isNull().value()?&apos;0&apos;:l.value())+
+    (l.isNull().value()?&apos;0&apos;:l.length().value())+
     &apos;,filesize_right:&apos;+
-    (r.isNull().value()?&apos;0&apos;:r.value())+
+    (r.isNull().value()?&apos;0&apos;:r.length().value())+
     &apos;}&apos;, &apos;text&apos;)
-}    
-res    </attribute>
+}
+res</attribute>
         </attributes>
       </variable>
       <variable name="stage_technician_lateral_bone_density" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
@@ -2041,5 +2039,5 @@ res</attribute>
     </variables>
   </variables>
   <created valueType="datetime">2018-05-15T17:37:52.240-04</created>
-  <updated valueType="datetime">2018-09-06T14:52:10.253-04</updated>
+  <updated valueType="datetime">2018-09-07T10:53:00.357-04</updated>
 </org.obiba.magma.views.View>
