@@ -1386,15 +1386,17 @@ res</attribute>
 var rtests=[&apos;DONE_RIGHT_VA&apos;,&apos;DONE_RIGHT_PO_VA&apos;]
 var ltests=[&apos;DONE_LEFT_VA&apos;,&apos;DONE_LEFT_PO_VA&apos;]
 var n=0
-for(var i=0;i&lt;rtests.length;i++) {
+for(var i=0;i&lt;2;i++) {
   var t=$(&apos;clsa-dcs.VisionAcuity:&apos;+rtests[i])
-  if(t.isNull().value()) n++
-  if(t.any(&apos;YES&apos;).value()) {
+  if(t.isNull().value()) {
+    n++
+  } else if(t.any(&apos;YES&apos;).value()) {
     count[&apos;RIGHT&apos;]++
   }
   t=$(&apos;clsa-dcs.VisionAcuity:&apos;+ltests[i])
-  if(t.isNull().value()) n++
-  if(t.any(&apos;YES&apos;).value()) {
+  if(t.isNull().value()) {
+    n++
+  } else if(t.any(&apos;YES&apos;).value()) {
     count[&apos;LEFT&apos;]++
   }
 }
@@ -2039,5 +2041,5 @@ res</attribute>
     </variables>
   </variables>
   <created valueType="datetime">2018-05-15T17:37:52.240-04</created>
-  <updated valueType="datetime">2018-09-07T10:53:00.357-04</updated>
+  <updated valueType="datetime">2018-09-11T09:37:15.740-04</updated>
 </org.obiba.magma.views.View>

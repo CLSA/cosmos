@@ -139,7 +139,7 @@
   <select class="org.obiba.magma.views.support.NoneClause"/>
   <where class="org.obiba.magma.js.views.JavascriptClause">
     <scriptName>customScript</scriptName>
-    <script>$lastupdate().before(newValue(&apos;2018-09-06&apos;,&apos;date&apos;)).and($lastupdate().after(newValue(&apos;2018-04-01&apos;,&apos;date&apos;)))</script>
+    <script>$lastupdate().before(newValue(&apos;2018-09-11&apos;,&apos;date&apos;)).and($lastupdate().after(newValue(&apos;2018-04-25&apos;,&apos;date&apos;)))</script>
   </where>
   <variables class="org.obiba.magma.js.views.VariablesClause">
     <variables class="linked-hash-set">
@@ -1429,15 +1429,17 @@ res</attribute>
 var rtests=[&apos;DONE_RIGHT_VA&apos;,&apos;DONE_RIGHT_PO_VA&apos;]
 var ltests=[&apos;DONE_LEFT_VA&apos;,&apos;DONE_LEFT_PO_VA&apos;]
 var n=0
-for(var i=0;i&lt;rtests.length;i++) {
+for(var i=0;i&lt;2;i++) {
   var t=$(&apos;clsa-dcs-f2.VisionAcuity:&apos;+rtests[i])
-  if(t.isNull().value()) n++
-  if(t.any(&apos;YES&apos;).value()) {
+  if(t.isNull().value()) {
+    n++
+  } else if(t.any(&apos;YES&apos;).value()) {
     count[&apos;RIGHT&apos;]++
   }
   t=$(&apos;clsa-dcs-f2.VisionAcuity:&apos;+ltests[i])
-  if(t.isNull().value()) n++
-  if(t.any(&apos;YES&apos;).value()) {
+  if(t.isNull().value()) {
+    n++
+  } else if(t.any(&apos;YES&apos;).value()) {
     count[&apos;LEFT&apos;]++
   }
 }
@@ -2342,5 +2344,5 @@ res</attribute>
     </variables>
   </variables>
   <created valueType="datetime">2018-05-15T13:40:50.956-04</created>
-  <updated valueType="datetime">2018-09-06T14:45:38.870-04</updated>
+  <updated valueType="datetime">2018-09-11T09:38:34.520-04</updated>
 </org.obiba.magma.views.View>

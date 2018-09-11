@@ -2097,7 +2097,7 @@
         "attributes": [
           {
             "name": "script", 
-            "value": "var count = {RIGHT:0,LEFT:0}\nvar rtests=['DONE_RIGHT_VA','DONE_RIGHT_PO_VA']\nvar ltests=['DONE_LEFT_VA','DONE_LEFT_PO_VA']\nvar n=0\nfor(var i=0;i<rtests.length;i++) {\n  var t=$('clsa-dcs-f2.VisionAcuity:'+rtests[i])\n  if(t.isNull().value()) n++\n  if(t.any('YES').value()) {\n    count['RIGHT']++\n  }\n  t=$('clsa-dcs-f2.VisionAcuity:'+ltests[i])\n  if(t.isNull().value()) n++\n  if(t.any('YES').value()) {\n    count['LEFT']++\n  }\n}\nvar res=null\nif(4!=n) {\n  res=newValue(\n    '{left_test:'+count['LEFT']+\n    ',right_test:'+count['RIGHT']+\n    '}','text')\n}\nres"
+            "value": "var count = {RIGHT:0,LEFT:0}\nvar rtests=['DONE_RIGHT_VA','DONE_RIGHT_PO_VA']\nvar ltests=['DONE_LEFT_VA','DONE_LEFT_PO_VA']\nvar n=0\nfor(var i=0;i<2;i++) {\n  var t=$('clsa-dcs-f2.VisionAcuity:'+rtests[i])\n  if(t.isNull().value()) {\n    n++\n  } else if(t.any('YES').value()) {\n    count['RIGHT']++\n  }\n  t=$('clsa-dcs-f2.VisionAcuity:'+ltests[i])\n  if(t.isNull().value()) {\n    n++\n  } else if(t.any('YES').value()) {\n    count['LEFT']++\n  }\n}\nvar res=null\nif(4!=n) {\n  res=newValue(\n    '{left_test:'+count['LEFT']+\n    ',right_test:'+count['RIGHT']+\n    '}','text')\n}\nres"
           }
         ], 
         "entityType": "Participant", 
