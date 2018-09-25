@@ -10,10 +10,8 @@ class tonometer_generator extends table_generator
     $this->indicator_keys=array(
       'total_quality_low_left','total_quality_medium_left','total_quality_high_left',
       'total_quality_low_right','total_quality_medium_right','total_quality_high_right');
-    $this->percent_keys = array(
-      'total_curve_left','total_curve_right','total_skip','total_unexplained_missing','total_contraindicated');
 
-    $this->page_stage ='TONOMETER';
+    $this->percent_keys = array('total_curve_left','total_curve_right') + $this->percent_keys;
   }
 
   protected function build_data()
