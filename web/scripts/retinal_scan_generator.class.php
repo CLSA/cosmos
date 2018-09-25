@@ -328,6 +328,7 @@ class retinal_scan_generator extends table_generator
       $sql .= sprintf(
         'sum(if(qcdata is null, 0, '.
         'if(cast(substring_index(substring_index(qcdata,",",1),":",-1) as unsigned)>%d,1,0))) + ',$filesize_max);
+
       $sql .= sprintf(
         'sum(if(qcdata is null, 0, '.
         'if(cast(trim("}" from substring_index(qcdata,":",-1)) as unsigned)>%d,1,0))) as total_filesize_sup, ',$filesize_max);
