@@ -54,18 +54,18 @@ class repeated_measure_generator extends table_generator
 
     $sql .= sprintf(
       'sum(if(qcdata is null, 0, '.
-      'if(cast(substring_index(substring_index(qcdata,",",1),":",-1) as decimal(10,3))<%s,1,0))) as total_deviation_par, ',
-      $this->deviation_minimum);
+      'if(cast(substring_index(substring_index(qcdata,",",1),":",-1) as decimal(10,3))>%s,1,0))) as total_deviation_sub, ',
+      $this->deviation_maximum);
 
     $sql .= sprintf(
       'sum(if(qcdata is null, 0, '.
-      'if(cast(substring_index(substring_index(qcdata,",",1),":",-1) as decimal(10,3)) between %s and %s,1,0))) as total_deviation_sub, ',
+      'if(cast(substring_index(substring_index(qcdata,",",1),":",-1) as decimal(10,3)) between %s and %s,1,0))) as total_deviation_par, ',
       $this->deviation_minimum, $this->deviation_maximum);
 
     $sql .= sprintf(
       'sum(if(qcdata is null, 0, '.
-      'if(cast(substring_index(substring_index(qcdata,",",1),":",-1) as decimal(10,3))>%s,1,0))) as total_deviation_sup, ',
-      $this->deviation_maximum);
+      'if(cast(substring_index(substring_index(qcdata,",",1),":",-1) as decimal(10,3))<%s,1,0))) as total_deviation_sup, ',
+      $this->deviation_minimum);
 
     $sql .= sprintf(
       'sum(if(qcdata is null, 0, '.
@@ -84,17 +84,21 @@ class repeated_measure_generator extends table_generator
     $this->data = $res;
 
     $this->page_explanation = array();
-    $this->page_explanation[]='Deviation = standard deviation of repeated measurements';
+    $this->page_explanation[]='Deviation = standard deviation (SD) of (n) repeated measurements';
+
     $this->page_explanation[]=
-      sprintf('par deviation: size < %s %s (measurement resolution)',
-        $this->deviation_minimum, $this->measurement_units);
-    $this->page_explanation[]=
-      sprintf('subpar deviation: %s <= size <= %s %s',
-      $this->deviation_minimum,$this->deviation_maximum, $this->measurement_units);
-    $this->page_explanation[]=
-      sprintf('above par deviation: size > %s %s',
+      sprintf('subpar deviation: SD > %s %s',
       $this->deviation_maximum, $this->measurement_units);
-    $this->page_explanation[]=sprintf('Trial deviation signalled when more or less than %s measurements made', $this->trial_count);
+
+    $this->page_explanation[]=
+      sprintf('par deviation: %s <= SD <= %s %s',
+      $this->deviation_minimum,$this->deviation_maximum, $this->measurement_units);
+
+    $this->page_explanation[]=
+      sprintf('above par deviation: SD < %s %s (measurement resolution)',
+        $this->deviation_minimum, $this->measurement_units);
+
+    $this->page_explanation[]=sprintf('subpar trial: n != %s measurements', $this->trial_count);
   }
 
   public function build_table_data()
@@ -111,4 +115,5 @@ class repeated_measure_generator extends table_generator
   private $measurement_units;
 
   private $trial_count;
+
 }
