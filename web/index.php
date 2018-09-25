@@ -45,6 +45,8 @@ $date_ranges = json_encode($db->get_all( $sql ));
         'scripts/lateral_bone_densityTable.php',
         'scripts/osipvTable.php',
         'scripts/quality_assurance_inhomeTable.php',
+        'scripts/retinal_scan_leftTable.php',
+        'scripts/retinal_scan_rightTable.php',
         'scripts/retinal_scanTable.php',
         'scripts/social_networkTable.php',
         'scripts/spine_bone_densityTable.php',
@@ -59,7 +61,7 @@ $date_ranges = json_encode($db->get_all( $sql ));
       $(function(){
         $('#stage').change( function() {
           $('#qacform').attr('action', $(this).val());
-          console.log('changing action to : '+$(this).val());
+          console.log('changing qac action to : '+$(this).val());
           if(stat_stages.indexOf($(this).val()) > -1) {
             $('#stat-option').prop('disabled',false).change();
           } else {
@@ -69,12 +71,7 @@ $date_ranges = json_encode($db->get_all( $sql ));
 
         $('#duration').change( function() {
           $('#qacform').attr('action', $(this).val());
-          console.log('changing action to : '+$(this).val());
-          if(stat_stages.indexOf($(this).val()) > -1) {
-            $('#stat-option').prop('disabled',false).change();
-          } else {
-            $('#stat-option').prop('disabled',true).change();
-          }
+          console.log('changing duration action to : '+$(this).val());
         }).change();
 
         $('#from').datepicker({
@@ -108,6 +105,7 @@ $date_ranges = json_encode($db->get_all( $sql ));
           $('#from').datepicker('option','defaultDate',date_ranges[num].min_date);
           $('#to').datepicker('option','defaultDate',date_ranges[num].max_date);
           $('#stage').val('scripts/bloodTable.php');
+          $('#duration').val('scripts/bloodDuration.php');
           if(3==num) {
             $('#stage option[value="scripts/functional_statusTable.php"]').hide();
             $('#stage option[value="scripts/social_networkTable.php"]').show();
@@ -120,6 +118,9 @@ $date_ranges = json_encode($db->get_all( $sql ));
             $('#stage option[value="scripts/osonlyTable.php"]').hide();
             $('#stage option[value="scripts/quality_assurance_inhomeTable.php"]').show();
             $('#stage option[value="scripts/fraxTable.php"]').show();
+            $('#stage option[value="scripts/retinal_scan_leftTable.php"]').show();
+            $('#stage option[value="scripts/retinal_scan_rightTable.php"]').show();
+            $('#stage option[value="scripts/retinal_scanTable.php"]').hide();
             $('#duration option[value="scripts/functional_statusDuration.php"]').hide();
             $('#duration option[value="scripts/social_networkDuration.php"]').show();
             $('#duration option[value="scripts/general_healthDuration.php"]').show();
@@ -149,6 +150,9 @@ $date_ranges = json_encode($db->get_all( $sql ));
             $('#stage option[value="scripts/osonlyTable.php"]').show();
             $('#stage option[value="scripts/fraxTable.php"]').show();
             $('#stage option[value="scripts/quality_assurance_inhomeTable.php"]').show();
+            $('#stage option[value="scripts/retinal_scan_leftTable.php"]').show();
+            $('#stage option[value="scripts/retinal_scan_rightTable.php"]').show();
+            $('#stage option[value="scripts/retinal_scanTable.php"]').hide();
             $('#duration option[value="scripts/functional_statusDuration.php"]').show();
             $('#duration option[value="scripts/social_networkDuration.php"]').hide();
             $('#duration option[value="scripts/spine_bone_densityDuration.php"]').show();
@@ -178,6 +182,9 @@ $date_ranges = json_encode($db->get_all( $sql ));
             $('#stage option[value="scripts/osonlyTable.php"]').hide();
             $('#stage option[value="scripts/fraxTable.php"]').hide();
             $('#stage option[value="scripts/quality_assurance_inhomeTable.php"]').hide();
+            $('#stage option[value="scripts/retinal_scan_leftTable.php"]').hide();
+            $('#stage option[value="scripts/retinal_scan_rightTable.php"]').hide();
+            $('#stage option[value="scripts/retinal_scanTable.php"]').show();
             $('#duration option[value="scripts/sitting_heightDuration.php"]').hide();
             $('#duration option[value="scripts/general_healthDuration.php"]').hide();
             $('#duration option[value="scripts/social_networkDuration.php"]').hide();
@@ -264,6 +271,8 @@ $date_ranges = json_encode($db->get_all( $sql ));
             <option value="scripts/osipvTable.php">OSIPV Qnaire</option>
             <option value="scripts/osonlyTable.php">OSOnly Qnaire</option>
             <option value="scripts/quality_assurance_inhomeTable.php">Quality Assurance IH Qnaire</option>
+            <option value="scripts/retinal_scan_leftTable.php">Retinal Scan Left</option>
+            <option value="scripts/retinal_scan_rightTable.php">Retinal Scan Right</option>
             <option value="scripts/retinal_scanTable.php">Retinal Scan</option>
             <option value="scripts/sitting_heightTable.php">Sitting Height</option>
             <option value="scripts/social_networkTable.php">Social Network Qnaire</option>
@@ -286,7 +295,7 @@ $date_ranges = json_encode($db->get_all( $sql ));
           </select>
         </div>
         <div class="button">
-          <button type="submit" name="button_1" value="qac">Request Data</button>
+          <button type="submit" name="button_stage" value="stage">Request Data</button>
         </div>
         <div>
           <label for="duration">Stage Duration:</label>
@@ -339,7 +348,7 @@ $date_ranges = json_encode($db->get_all( $sql ));
           </select>
         </div>
         <div class="button">
-          <button type="submit" name="button_2" value="duration">Request Data</button>
+          <button type="submit" name="button_duration" value="duration">Request Data</button>
         </div>
       <form>
     </div>

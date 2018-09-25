@@ -51,6 +51,12 @@ class single_file_generator extends table_generator
         'order by freq desc limit 1', $this->file_scale, $this->rank, $this->name);
 
       $res = $db->get_row( $sql );
+      if( false === $res )
+      {
+        echo sprintf('failed to get file size data: %s', $db->get_last_error() );
+        echo $sql;
+        die();
+      }
       $mode = $res['fsz'];
 
       $sql = sprintf(

@@ -23,6 +23,12 @@ class dual_file_generator extends table_generator
     $this->standard_deviation_scale = $_stdev;
   }
 
+  public function set_file_scale( $_scale )
+  {
+    if( 0 < $_scale )
+      $this->file_scale = $_scale;
+  }
+
   protected function build_data()
   {
     global $db;
@@ -42,7 +48,7 @@ class dual_file_generator extends table_generator
         '      round( '.
         '        cast(substring_index( '.
         '          substring_index( '.
-        '            qcdata, ",", 1 ), ":", -1) as decimal)/%s,0) as fsz '.
+        '            qcdata, ",", 1 ), ":", -1) as unsigned)/%s,0) as fsz '.
         '    from interview i'.
         '    join stage s on i.id=s.interview_id'.
         '    where rank=%d'.
@@ -56,7 +62,7 @@ class dual_file_generator extends table_generator
         '        cast(trim( "}" from '.
         '          substring_index( '.
         '            substring_index( '.
-        '              qcdata, ",", -1 ), ":", -1 ) ) as decimal)/%s,0) as fsz '.
+        '              qcdata, ",", -1 ), ":", -1 ) ) as unsigned)/%s,0) as fsz '.
         '    from interview i '.
         '    join stage s on i.id=s.interview_id '.
         '    where rank=%d '.
@@ -70,6 +76,12 @@ class dual_file_generator extends table_generator
           $this->file_scale, $this->rank, $this->name);
 
       $res = $db->get_row( $sql );
+      if( false === $res )
+      {
+        echo sprintf('failed to get file size data: %s', $db->get_last_error() );
+        echo $sql;
+        die();
+      }
       $mode = $res['fsz'];
 
       $sql = sprintf(
@@ -80,7 +92,7 @@ class dual_file_generator extends table_generator
         '      round( '.
         '        cast(substring_index( '.
         '          substring_index( '.
-        '            qcdata, ",", 1 ), ":", -1) as decimal)/%s,0) as fsz '.
+        '            qcdata, ",", 1 ), ":", -1) as unsigned)/%s,0) as fsz '.
         '    from interview i '.
         '    join stage s on i.id=s.interview_id '.
         '    where rank=%d '.
@@ -94,7 +106,7 @@ class dual_file_generator extends table_generator
         '        cast(trim( "}" from '.
         '          substring_index( '.
         '            substring_index( '.
-        '              qcdata, ",", -1 ), ":", -1 ) ) as decimal)/%s,0) as fsz '.
+        '              qcdata, ",", -1 ), ":", -1 ) ) as unsigned)/%s,0) as fsz '.
         '    from interview i '.
         '    join stage s on i.id=s.interview_id '.
         '    where rank=%d '.
@@ -107,6 +119,12 @@ class dual_file_generator extends table_generator
           $this->file_scale, $this->rank, $this->name);
 
       $res = $db->get_row( $sql );
+      if( false === $res )
+      {
+        echo sprintf('failed to get file size data: %s', $db->get_last_error() );
+        echo $sql;
+        die();
+      }
       $minsz = $res['minsz'];
       $maxsz = $res['maxsz'];
       $filesize_min = max(intval(($minsz + 0.5*($mode-$minsz))*$this->file_scale),0);
@@ -115,6 +133,7 @@ class dual_file_generator extends table_generator
     else
     {
       $avg=0;
+      $stdev=0;
       $sql = sprintf(
         'select avg(fsz) as favg, stddev(fsz) as fstd from '.
         '('.
@@ -123,7 +142,7 @@ class dual_file_generator extends table_generator
         '      round( '.
         '        cast(substring_index( '.
         '          substring_index( '.
-        '            qcdata, ",", 1 ), ":", -1) as decimal)/%s,0) as fsz '.
+        '            qcdata, ",", 1 ), ":", -1) as unsigned)/%s,0) as fsz '.
         '    from interview i'.
         '    join stage s on i.id=s.interview_id'.
         '    where rank=%d'.
@@ -136,8 +155,7 @@ class dual_file_generator extends table_generator
         '      round( '.
         '        cast(trim( "}" from '.
         '          substring_index( '.
-        '            substring_index( '.
-        '              qcdata, ",", -1 ), ":", -1 ) ) as decimal)/%s,0) as fsz '.
+        '            qcdata, ":", -1 ) ) as unsigned)/%s,0) as fsz '.
         '    from interview i '.
         '    join stage s on i.id=s.interview_id '.
         '    where rank=%d '.
@@ -150,9 +168,14 @@ class dual_file_generator extends table_generator
           $this->file_scale, $this->rank, $this->name);
 
       $res = $db->get_row( $sql );
+      if( false === $res )
+      {
+        echo sprintf('failed to get file size data: %s', $db->get_last_error() );
+        echo $sql;
+        die();
+      }
       $avg = $res['favg'];
       $stdev = $res['fstd'];
-
       $filesize_min = max(intval(($avg - $this->standard_deviation_scale*$stdev)*$this->file_scale),0);
       $filesize_max = intval(($avg + $this->standard_deviation_scale*$stdev)*$this->file_scale);
     }
@@ -165,46 +188,46 @@ class dual_file_generator extends table_generator
 
     $sql .= sprintf(
       'sum(if(qcdata is null, 0, '.
-      'if(cast(substring_index(substring_index(qcdata,",",1),":",-1) as signed)<%d,1,0))) + ',$filesize_min);
+      'if(cast(substring_index(substring_index(qcdata,",",1),":",-1) as unsigned)<%d,1,0))) + ',$filesize_min);
 
     $sql .= sprintf(
       'sum(if(qcdata is null, 0, '.
-      'if(cast(trim("}" from substring_index(substring_index(qcdata,",",-1),":",-1)) as signed)<%d,1,0))) as total_filesize_sub, ',$filesize_min);
+      'if(cast(trim("}" from substring_index(qcdata,":",-1)) as unsigned)<%d,1,0))) as total_filesize_sub, ',$filesize_min);
 
     $sql .= sprintf(
       'sum(if(qcdata is null, 0, '.
-      'if(cast(substring_index(substring_index(qcdata,",",1),":",-1) as signed) between %d and %d,1,0))) + ',
+      'if(cast(substring_index(substring_index(qcdata,",",1),":",-1) as unsigned) between %d and %d,1,0))) + ',
        $filesize_min,$filesize_max);
 
     $sql .= sprintf(
       'sum(if(qcdata is null, 0, '.
-      'if(cast(trim("}" from substring_index(substring_index(qcdata,",",-1),":",-1)) as signed) between %d and %d,1,0))) as total_filesize_par, ',
+      'if(cast(trim("}" from substring_index(qcdata,":",-1)) as unsigned) between %d and %d,1,0))) as total_filesize_par, ',
        $filesize_min,$filesize_max);
 
     $sql .= sprintf(
       'sum(if(qcdata is null, 0, '.
-      'if(cast(substring_index(substring_index(qcdata,",",1),":",-1) as signed)>%d,1,0))) + ',$filesize_max);
+      'if(cast(substring_index(substring_index(qcdata,",",1),":",-1) as unsigned)>%d,1,0))) + ',$filesize_max);
 
     $sql .= sprintf(
       'sum(if(qcdata is null, 0, '.
-      'if(cast(trim("}" from substring_index(substring_index(qcdata,",",-1),":",-1)) as signed)>%d,1,0))) as total_filesize_sup, ',$filesize_max);
+      'if(cast(trim("}" from substring_index(qcdata,":",-1)) as unsigned)>%d,1,0))) as total_filesize_sup, ',$filesize_max);
 
     $sql .=
       'sum(if(qcdata is null, 0, '.
-      'if(cast(substring_index(substring_index(qcdata,",",1),":",-1) as signed)>0 and
-         cast(trim("}" from substring_index(substring_index(qcdata,",",-1),":",-1)) as signed)=0
+      'if(cast(substring_index(substring_index(qcdata,",",1),":",-1) as unsigned)>0 and
+         cast(trim("}" from substring_index(qcdata,":",-1)) as unsigned)=0
       ,1,0))) as total_left_file, ';
 
     $sql .=
       'sum(if(qcdata is null, 0, '.
-      'if(cast(substring_index(substring_index(qcdata,",",1),":",-1) as signed)=0 and
-         cast(trim("}" from substring_index(substring_index(qcdata,",",-1),":",-1)) as signed)>0
+      'if(cast(substring_index(substring_index(qcdata,",",1),":",-1) as unsigned)=0 and
+         cast(trim("}" from substring_index(qcdata,":",-1)) as unsigned)>0
       ,1,0))) as total_right_file, ';
 
     $sql .=
       'sum(if(qcdata is null, 0, '.
-      'if(cast(substring_index(substring_index(qcdata,",",1),":",-1) as signed)>0 and
-         cast(trim("}" from substring_index(substring_index(qcdata,",",-1),":",-1)) as signed)>0
+      'if(cast(substring_index(substring_index(qcdata,",",1),":",-1) as unsigned)>0 and
+         cast(trim("}" from substring_index(qcdata,":",-1)) as unsigned)>0
       ,1,0))) as total_both_file, ';
 
     $sql .= $this->get_main_query();
@@ -231,9 +254,9 @@ class dual_file_generator extends table_generator
       $this->page_explanation[]=sprintf('par filesize: %d <= size <= %d', $filesize_min, $filesize_max);
       $this->page_explanation[]=sprintf('above par filesize: size > %d (mean + %s x SD)', $filesize_max, $this->standard_deviation_scale);
     }
-    $this->page_explanation[]='total number of left files only';
-    $this->page_explanation[]='total number of right files only';
-    $this->page_explanation[]='total number with both files';
+    $this->page_explanation[]='total number with left file only';
+    $this->page_explanation[]='total number with right file only';
+    $this->page_explanation[]='total number with both left and right files';
   }
 
   public function build_table_data()
@@ -243,12 +266,6 @@ class dual_file_generator extends table_generator
     $this->indicator_keys[]='total_left_file';
     $this->indicator_keys[]='total_right_file';
     $this->indicator_keys[]='total_both_file';
-  }
-
-  public function set_file_scale( $_scale )
-  {
-    if( 0 < $_scale )
-      $this->file_scale = $_scale;
   }
 
   private $statistic;
