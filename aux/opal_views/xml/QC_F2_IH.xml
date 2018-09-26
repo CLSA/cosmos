@@ -26,56 +26,6 @@
   <where class="org.obiba.magma.views.support.AllClause"/>
   <variables class="org.obiba.magma.js.views.VariablesClause">
     <variables class="linked-hash-set">
-      <variable name="stage_skip_conclusion_questionnaire" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
-        <attributes>
-          <attribute name="script" valueType="text">var action=$group(&apos;Admin.Action.stage&apos;,&apos;ConclusionQuestionnaire&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
-var res=$group(&apos;Admin.Action.stage&apos;,&apos;ConclusionQuestionnaire&apos;,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
-  var j=action.indexOf(&apos;SKIP&apos;)
-  return j==i
-  }).last()
-if(res.isNull().not().value()) {
-  res=newValue(res.value().slice(14),&apos;text&apos;)  
-}
-res</attribute>
-        </attributes>
-      </variable>
-      <variable name="data_missing_conclusion_questionnaire" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
-        <attributes>
-          <attribute name="script" valueType="text">$this(&apos;data_qac_conclusion_questionnaire&apos;).isNull().and(
-  $this(&apos;stage_contraindicated_conclusion_questionnaire&apos;).eq(0),
-  $this(&apos;stage_skip_conclusion_questionnaire&apos;).isNull()
-).value() ? 1 : 0</attribute>
-        </attributes>
-      </variable>
-      <variable name="stage_technician_conclusion_questionnaire" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
-        <attributes>
-          <attribute name="script" valueType="text">$(&apos;clsa-inhome-f2.ConclusionQuestionnaire:QuestionnaireRun.user&apos;).whenNull(
-  $group(&apos;Admin.Action.stage&apos;,&apos;ConclusionQuestionnaire&apos;,&apos;Admin.Action.user&apos;).asSequence().last()).lowerCase()</attribute>
-        </attributes>
-      </variable>
-      <variable name="stage_contraindicated_conclusion_questionnaire" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
-        <attributes>
-          <attribute name="script" valueType="text">$group(&apos;clsa-inhome-f2.Participants:Admin.StageInstance.stage&apos;,&apos;ConclusionQuestionnaire&apos;,
-&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
-? 1 : 0</attribute>
-        </attributes>
-      </variable>
-      <variable name="data_qac_conclusion_questionnaire" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
-        <attributes>
-          <attribute name="script" valueType="text">var p=$(&apos;clsa-inhome-f2.ConclusionQuestionnaire:CHECKLIST.DCS_VISIT_INFO&apos;).lowerCase()
-var q=$(&apos;clsa-inhome-f2.ConclusionQuestionnaire:CHECKLIST.PROXY_INFO_PACKAGE&apos;).lowerCase()
-var res=null
-if(p.isNull().or(q.isNull()).not().value()){
-  var a=p.any(&apos;yes&apos;).value()
-  var b=q.any(&apos;yes&apos;).value()
-  var n=0 
-  if(a) n++
-  if(b) n++
-  res=newValue(&apos;{checklist:&apos;+n+&apos;}&apos;,&apos;text&apos;)
-}
-res</attribute>
-        </attributes>
-      </variable>
       <variable name="stage_technician_inhome_1" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">$(&apos;clsa-inhome-f2.InHome_1:QuestionnaireRun.user&apos;).whenNull(
@@ -301,8 +251,58 @@ res</attribute>
           <attribute name="script" valueType="text">$(&apos;Admin.Participant.barcode&apos;)</attribute>
         </attributes>
       </variable>
+      <variable name="stage_contraindicated_inhome_conclusion_questionnaire" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$group(&apos;clsa-inhome-f2.Participants:Admin.StageInstance.stage&apos;,&apos;ConclusionQuestionnaire&apos;,
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
+? 1 : 0</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_skip_inhome_conclusion_questionnaire" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var action=$group(&apos;Admin.Action.stage&apos;,&apos;ConclusionQuestionnaire&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
+var res=$group(&apos;Admin.Action.stage&apos;,&apos;ConclusionQuestionnaire&apos;,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
+  var j=action.indexOf(&apos;SKIP&apos;)
+  return j==i
+  }).last()
+if(res.isNull().not().value()) {
+  res=newValue(res.value().slice(14),&apos;text&apos;)  
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="data_missing_inhome_conclusion_questionnaire" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$this(&apos;data_qac_inhome_conclusion_questionnaire&apos;).isNull().and(
+  $this(&apos;stage_contraindicated_inhome_conclusion_questionnaire&apos;).eq(0),
+  $this(&apos;stage_skip_inhome_conclusion_questionnaire&apos;).isNull()
+).value() ? 1 : 0</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_technician_inhome_conclusion_questionnaire" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;clsa-inhome-f2.ConclusionQuestionnaire:QuestionnaireRun.user&apos;).whenNull(
+  $group(&apos;Admin.Action.stage&apos;,&apos;ConclusionQuestionnaire&apos;,&apos;Admin.Action.user&apos;).asSequence().last()).lowerCase()</attribute>
+        </attributes>
+      </variable>
+      <variable name="data_qac_inhome_conclusion_questionnaire" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var p=$(&apos;clsa-inhome-f2.ConclusionQuestionnaire:CHECKLIST.DCS_VISIT_INFO&apos;).lowerCase()
+var q=$(&apos;clsa-inhome-f2.ConclusionQuestionnaire:CHECKLIST.PROXY_INFO_PACKAGE&apos;).lowerCase()
+var res=null
+if(p.isNull().or(q.isNull()).not().value()){
+  var a=p.any(&apos;yes&apos;).value()
+  var b=q.any(&apos;yes&apos;).value()
+  var n=0 
+  if(a) n++
+  if(b) n++
+  res=newValue(&apos;{checklist:&apos;+n+&apos;}&apos;,&apos;text&apos;)
+}
+res</attribute>
+        </attributes>
+      </variable>
     </variables>
   </variables>
   <created valueType="datetime">2018-08-13T11:15:48.900-04</created>
-  <updated valueType="datetime">2018-09-25T15:57:19.837-04</updated>
+  <updated valueType="datetime">2018-09-26T15:34:26.409-04</updated>
 </org.obiba.magma.views.View>

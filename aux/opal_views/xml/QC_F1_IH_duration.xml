@@ -29,11 +29,6 @@
   <where class="org.obiba.magma.views.support.AllClause"/>
   <variables class="org.obiba.magma.js.views.VariablesClause">
     <variables class="linked-hash-set">
-      <variable name="stage_technician_conclusion_questionnaire" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
-        <attributes>
-          <attribute name="script" valueType="text">$(&apos;Quality_Control.QC_F1_IH:stage_technician_conclusion_questionnaire&apos;)</attribute>
-        </attributes>
-      </variable>
       <variable name="stage_technician_inhome_1" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">$(&apos;Quality_Control.QC_F1_IH:stage_technician_inhome_1&apos;)</attribute>
@@ -217,11 +212,11 @@ if(null!==res &amp;&amp; res.isNull().not().value()) {
 res</attribute>
         </attributes>
       </variable>
-      <variable name="stage_duration_conclusion_questionnaire" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+      <variable name="stage_duration_inhome_conclusion_questionnaire" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">var res=null
-if($(&apos;Quality_Control.QC_F1_IH:stage_contraindicated_conclusion_questionnaire&apos;).eq(0).and(
-   $(&apos;Quality_Control.QC_F1_IH:stage_skip_conclusion_questionnaire&apos;).isNull()).value()) {
+if($(&apos;Quality_Control.QC_F1_IH:stage_contraindicated_inhome_conclusion_questionnaire&apos;).eq(0).and(
+   $(&apos;Quality_Control.QC_F1_IH:stage_skip_inhome_conclusion_questionnaire&apos;).isNull()).value()) {
   var post = $(&apos;clsa-inhome-f1.ConclusionQuestionnaire:QuestionnaireRun.timeEnd&apos;)
   var pre = $(&apos;clsa-inhome-f1.ConclusionQuestionnaire:QuestionnaireRun.timeStart&apos;)
   if(pre.before(post).value()) {
@@ -239,8 +234,13 @@ if($(&apos;Quality_Control.QC_F1_IH:stage_contraindicated_conclusion_questionnai
 res</attribute>
         </attributes>
       </variable>
+      <variable name="stage_technician_inhome_conclusion_questionnaire" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;Quality_Control.QC_F1_IH:stage_technician_inhome_conclusion_questionnaire&apos;)</attribute>
+        </attributes>
+      </variable>
     </variables>
   </variables>
   <created valueType="datetime">2018-08-13T13:43:24.444-04</created>
-  <updated valueType="datetime">2018-08-24T13:38:22.962-04</updated>
+  <updated valueType="datetime">2018-09-26T15:25:44.138-04</updated>
 </org.obiba.magma.views.View>
