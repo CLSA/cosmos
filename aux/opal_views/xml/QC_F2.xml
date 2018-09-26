@@ -139,7 +139,7 @@
   <select class="org.obiba.magma.views.support.NoneClause"/>
   <where class="org.obiba.magma.js.views.JavascriptClause">
     <scriptName>customScript</scriptName>
-    <script>$lastupdate().before(newValue(&apos;2018-09-11&apos;,&apos;date&apos;)).and($lastupdate().after(newValue(&apos;2018-04-25&apos;,&apos;date&apos;)))</script>
+    <script>$lastupdate().before(newValue(&apos;2018-09-25&apos;,&apos;date&apos;)).and($lastupdate().after(newValue(&apos;2018-09-12&apos;,&apos;date&apos;)))</script>
   </where>
   <variables class="org.obiba.magma.js.views.VariablesClause">
     <variables class="linked-hash-set">
@@ -2344,5 +2344,5 @@ res</attribute>
     </variables>
   </variables>
   <created valueType="datetime">2018-05-15T13:40:50.956-04</created>
-  <updated valueType="datetime">2018-09-11T09:38:34.520-04</updated>
+  <updated valueType="datetime">2018-09-25T14:15:35.752-04</updated>
 </org.obiba.magma.views.View>
