@@ -184,7 +184,7 @@ while($offset < $max_limit)
     if(false === $db->execute( $sql ) )
     {
       util::out( 'ERROR: failed to insert interview records');
-      var_dump( $sql );
+      util::out( $sql );
       die();
     }
 
@@ -197,7 +197,7 @@ while($offset < $max_limit)
     if(false === $db->execute( $sql ) )
     {
       util::out( 'ERROR: failed to insert technician records');
-      var_dump( $sql );
+      util::out( $sql );
       die();
     }
 
@@ -233,6 +233,12 @@ while($offset < $max_limit)
           $site_id_map[$site], $uid, $row['interview_barcode'],$row['interview_start_date']);
 
         $interview_id = $db->get_one( $sql );
+        if(false===$interview_id)
+        {
+          util::out('ERROR: failed to find interview primary key');
+          util::out( $sql );
+          die();
+        }
 
         $tech_id = 'NULL';
         if('' != $tech)
@@ -243,12 +249,12 @@ while($offset < $max_limit)
             'AND site_id=%d', $tech, $site_id_map[$site]);
 
           $tech_id = $db->get_one( $sql );
-        }
-
-        if(false===$interview_id || false===$tech_id)
-        {
-          util::out('ERROR: failed to find interview and technician primary keys');
-          die();
+          if(false===$tech_id)
+          {
+            util::out('ERROR: failed to find technician primary key');
+            util::out( $sql );
+            die();
+          }
         }
 
         $sql = sprintf(
@@ -268,6 +274,8 @@ while($offset < $max_limit)
           $error = $db->get_last_error();
           if( false === strpos($error,'1062)') )
             util::out( $error );
+          util::out('failed to replace into');  
+          util::out($sql);  
         }
       }
 

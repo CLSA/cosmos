@@ -13,7 +13,7 @@ function valid_date($date) {
 }
 
 $active_ranks = array(3);
-$view_list = array(1=>'QC_BL_duration', 2=>'QC_F1_duration', 3=>'QC_F2_duration');
+$view_list = array(1=>'QC_BL_IH', 2=>'QC_F1_IH', 3=>'QC_F2_IH');
 
 $rank = 1; // set default
 $after_date = null;
@@ -110,23 +110,26 @@ $res = $db->get_all( $sql );
 $site_id_map = array();
 foreach( $res as $item )
   $site_id_map[$item['name']]=$item['id'];
+
 util::out( 'getting opal data...' );
 /*
 if( in_array($rank,$active_ranks) && null != $before_date && null != $after_date )
 {
-  $opal->set_date_range( $before_date, $after_date );
+  $opal->set_date_range( $before_date, $after_date, true );
   util::out('setting date range...');
 }
 */
 $identifier_list = $opal->get_identifiers();
-$max_limit = count( $identifier_list );
+
+$max_limit = count($identifier_list);
 $offset = 0;
-$limit = 200;
+$limit = 500;
 while($offset < $max_limit)
 {
-  $list = $opal->get_list($offset, $limit);
-  $total = count( $list );
-  if(0 < $total)
+  $list = $opal->get_list( $offset, $limit );
+  //var_dump($list);
+  $total = count($list);
+  if( 0 < $total )
   {
     $offset += $total;
 
@@ -197,7 +200,7 @@ while($offset < $max_limit)
     if(false === $db->execute( $sql ) )
     {
       util::out( 'ERROR: failed to insert technician records');
-      util::out( $sql );
+      util_out( $sql );
       die();
     }
 
@@ -212,58 +215,70 @@ while($offset < $max_limit)
       {
         $tech=$row['stage_technician_'.$stage];
         $site=$row['interview_site'];
-        $duration=$row['stage_duration_'.$stage];
+        $qcdata=$row['data_qac_'.$stage];
+        $missing=$row['data_missing_'.$stage];
+        $contraindicated=$row['stage_contraindicated_'.$stage];
+        $skip=$row['stage_skip_'.$stage];
 
         if( '' == $row['interview_start_date'] || '' == $row['interview_barcode'] ||
-            '' == $site || '' == $duration)
+            '' == $site )
         {
           util::show_status( ++$num, $target );
           continue;
         }
 
         $sql = sprintf(
-          'SELECT s.interview_id, s.technician_id '.
-          'FROM interview i '.
-          'join stage s on s.interview_id=i.id '.
-          'join technician t on t.id=s.technician_id '.
-          'join site on site.id=t.site_id and site.id=i.site_id '.
-          'WHERE site.id=%d '.
+          'SELECT id FROM interview '.
+          'WHERE site_id=%d '.
           'AND uid="%s" '.
           'AND barcode="%s" '.
-          'AND t.name="%s"' .
           'AND start_date="%s"',
-          $site_id_map[$site], $uid, $row['interview_barcode'],$tech,$row['interview_start_date']);
+          $site_id_map[$site], $uid, $row['interview_barcode'],$row['interview_start_date']);
 
-        $res = $db->get_row( $sql );
-        if(false===$res)
+        $interview_id = $db->get_one( $sql );
+        if(false===$interview_id || ''==$interview_id)
         {
-          util::out('ERROR: failed to find interview and technician primary keys');
+          util::out('ERROR: failed to find interview primary key');
           util::out($sql);
           die();
         }
 
-        $tech_id=$res['technician_id'];
-        $interview_id=$res['interview_id'];
+        $tech_id = 'NULL';
+        if('' != $tech)
+        {
+          $sql = sprintf(
+            'SELECT id FROM technician '.
+            'WHERE name="%s" '.
+            'AND site_id=%d', $tech, $site_id_map[$site]);
+
+          $tech_id = $db->get_one( $sql );
+          if(false===$tech_id)
+          {
+            util::out('ERROR: failed to find technician primary key');
+            util::out($sql);
+            die();
+          }
+        }
 
         $sql = sprintf(
-          'UPDATE stage '.
-          'SET duration=%s '.
-          'WHERE '.
-          'interview_id=%d '.
-          'AND technician_id=%d '.
-          'AND name="%s"',
-          $db->format_string($duration),
+          'REPLACE INTO stage '.
+          '(interview_id,technician_id,name,missing,contraindicated,qcdata,skip) '.
+          'VALUES(%d,%s,%s,%d,%d,%s,%s)',
           $interview_id,
           $tech_id,
-          $stage);
+          $db->format_string($stage),
+          $missing,
+          $contraindicated,
+          $db->format_string($qcdata),
+          $db->format_string($skip));
+
         if(false===$db->execute( $sql ))
         {
           $error = $db->get_last_error();
           if( false === strpos($error,'1062)') )
           {
             util::out( $error );
-            util::out($sql);
-            die();
+            util::out( $sql );
           }
         }
       }
@@ -276,5 +291,4 @@ while($offset < $max_limit)
     $offset = $max_limit;
   }
 }
-
 ?>

@@ -201,6 +201,10 @@ while($offset < $max_limit)
       die();
     }
 
+    //TODO:
+    // comments and durations are in separate opal views
+    // write scripts to receive comments and durations
+
     $num = 0;
     foreach($list as $uid=>$row)
     {

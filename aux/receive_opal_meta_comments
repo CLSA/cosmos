@@ -52,9 +52,11 @@ $db = new database(
 // a date range must be specified and the json view will be sed modified to
 // retrict opal data to fall within the range.
 //
-
+/*
 if(in_array($rank,$active_ranks))
 {
+  // if no date is specified, make the before date now
+  // and the after date one week prior to that
   if(null == $after_date && null == $before_date)
   {
     $a_date = new DateTime();
@@ -95,7 +97,7 @@ if(in_array($rank,$active_ranks))
 }
 
 util::out( sprintf('rank %d, range: %s => %s', $rank, $after_date, $before_date));
-
+*/
 $opal = new opalcurl(
   $SETTINGS['opal']['OPAL_SERV'],
   $SETTINGS['opal']['OPAL_PORT'],
@@ -111,11 +113,13 @@ $site_id_map = array();
 foreach( $res as $item )
   $site_id_map[$item['name']]=$item['id'];
 util::out( 'getting opal data...' );
+/*
 if( in_array($rank,$active_ranks) && null != $before_date && null != $after_date )
 {
-//  $opal->set_date_range( $before_date, $after_date );
-//  util::out('setting date range...');
+  $opal->set_date_range( $before_date, $after_date );
+  util::out('setting date range...');
 }
+*/
 $identifier_list = $opal->get_identifiers();
 $max_limit = count( $identifier_list );
 $offset = 0;
@@ -182,7 +186,7 @@ while($offset < $max_limit)
     if(false === $db->execute( $sql ) )
     {
       util::out( 'ERROR: failed to insert interview records');
-      var_dump( $sql );
+      util::out( $sql );
       die();
     }
 
@@ -195,7 +199,7 @@ while($offset < $max_limit)
     if(false === $db->execute( $sql ) )
     {
       util::out( 'ERROR: failed to insert technician records');
-      var_dump( $sql );
+      util::out( $sql );
       die();
     }
 
@@ -249,20 +253,6 @@ while($offset < $max_limit)
           util::out('ERROR: failed to find interview and technician primary keys');
           die();
         }
-    /*
-        $sql = sprintf(
-          'INSERT IGNORE INTO stage '.
-          '(interview_id,technician_id,name,comment) '.
-          'VALUES(%d,%d,"%s",%s) '.
-          'ON DUPLICATE KEY UPDATE '.
-          'interview_id = VALUES( interview_id ), '.
-          'technician_id = VALUES( technician_id ), '.
-          'name = VALUES( name )',
-          $interview_id,
-          $tech_id,
-          $stage,
-          $db->format_string($comment));
-    */
         $sql = sprintf(
           'UPDATE stage '.
           'SET comment=%s '.
@@ -288,9 +278,6 @@ while($offset < $max_limit)
 
       util::show_status( ++$num, $target );
     }
-
-
-
   }  
   else
   {
