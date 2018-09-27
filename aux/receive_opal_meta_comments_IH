@@ -13,7 +13,7 @@ function valid_date($date) {
 }
 
 $active_ranks = array(3);
-$view_list = array(1=>'QC_BL_comment', 2=>'QC_F1_comment', 3=>'QC_F2_comment');
+$view_list = array(1=>'QC_BL_IH_comment', 2=>'QC_F1_IH_comment', 3=>'QC_F2_IH_comment');
 
 $rank = 1; // set default
 $after_date = null;
