@@ -35,7 +35,7 @@
       <variable name="stage_contraindicated_inhome_1" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">$group(&apos;clsa-inhome-f1.Participants:Admin.StageInstance.stage&apos;,&apos;InHome_1&apos;,
-&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value()
 ? 1 : 0</attribute>
         </attributes>
       </variable>
@@ -47,7 +47,7 @@ var res=$group(&apos;Admin.Action.stage&apos;,&apos;InHome_1&apos;,&apos;Admin.A
   return j==i
   }).last()
 if(res.isNull().not().value()) {
-  res=newValue(res.value().slice(14),&apos;text&apos;)  
+  res=newValue(res.value().slice(14),&apos;text&apos;)
 }
 res</attribute>
         </attributes>
@@ -58,10 +58,163 @@ res</attribute>
 var q=$(&apos;clsa-inhome-f1.InHome_1:QuestionnaireMetric.questionCount&apos;).asSequence()
 var res=null
 if(p.isNull().and(q.isNull()).not().value() &amp;&amp; 0!=q.sum()){
-  res=newValue(
-    &apos;{complete:&apos;+
-    Math.round(q.sum().minus(p.sum()).multiply(100).div(q.sum()).value())
-    +&apos;}&apos;,&apos;text&apos;)
+  var str=[]
+  str.push(
+    &apos;complete:&apos;+
+    Math.round(q.sum().minus(p.sum()).multiply(100).div(q.sum()).value()))
+
+var sections={
+&apos;AGE&apos;:[&apos;AGE_ASK_COF1&apos;],
+&apos;ALC&apos;:[
+&apos;ALC_EVER_COF1&apos;,
+&apos;ALC_FREQ_COF1&apos;,
+&apos;ALC_RDWK_COF1&apos;,
+&apos;ALC_WHWK_COF1&apos;,
+&apos;ALC_BRWK_COF1&apos;,
+&apos;ALC_LQRWK_COF1&apos;,
+&apos;ALC_OTWK_COF1&apos;,
+&apos;ALC_WERD_COF1&apos;,
+&apos;ALC_WEWH_COF1&apos;,
+&apos;ALC_WEBR_COF1&apos;,
+&apos;ALC_WELQR_COF1&apos;,
+&apos;ALC_WEOT_COF1&apos;,
+&apos;ALC_MLFQ_COF1&apos;,
+&apos;ALC_FMFQ_COF1&apos;,
+&apos;ALC_HVST_COF1&apos;],
+&apos;ED&apos;:[&apos;ED_OTED_COF1&apos;],
+&apos;GEN&apos;:[
+&apos;GEN_HLTH_COF1&apos;,
+&apos;GEN_MNTL_COF1&apos;,
+&apos;GEN_HLAG_COF1&apos;,
+&apos;GEN_OWNAG_COF1&apos;,
+&apos;GEN_BRD_COF1&apos;,
+&apos;GEN_MUSC_COF1&apos;],
+&apos;NUT&apos;:[
+&apos;NUT_FBR_COF1&apos;,
+&apos;NUT_BRD_COF1&apos;,
+&apos;NUT_MEAT_COF1&apos;,
+&apos;NUT_MTOT_COF1&apos;,
+&apos;NUT_CHCK_COF1&apos;,
+&apos;NUT_FISH_COF1&apos;,
+&apos;NUT_SASG_COF1&apos;,
+&apos;NUT_PATE_COF1&apos;,
+&apos;NUT_SAUC_COF1&apos;,
+&apos;NUT_O3EG_COF1&apos;,
+&apos;NUT_EGGS_COF1&apos;,
+&apos;NUT_LEGM_COF1&apos;,
+&apos;NUT_NUTS_COF1&apos;,
+&apos;NUT_FRUT_COF1&apos;,
+&apos;NUT_GREEN_COF1&apos;,
+&apos;NUT_PTTO_COF1&apos;,
+&apos;NUT_FRIE_COF1&apos;,
+&apos;NUT_CRRT_COF1&apos;,
+&apos;NUT_VGOT_COF1&apos;,
+&apos;NUT_LWCS_COF1&apos;,
+&apos;NUT_CHSE_COF1&apos;,
+&apos;NUT_LWYG_COF1&apos;,
+&apos;NUT_YOGR_COF1&apos;,
+&apos;NUT_CALC_COF1&apos;,
+&apos;NUT_DAIR_COF1&apos;,
+&apos;NUT_SALT_COF1&apos;,
+&apos;NUT_DSRT_COF1&apos;,
+&apos;NUT_CHOC_COF1&apos;,
+&apos;NUT_BTTR_COF1&apos;,
+&apos;NUT_DRSG_COF1&apos;,
+&apos;NUT_CAJC_COF1&apos;,
+&apos;NUT_PURE_COF1&apos;,
+&apos;NUT_CAML_COF1&apos;,
+&apos;NUT_WHML_COF1&apos;,
+&apos;NUT_LFML_COF1&apos;,
+&apos;NUT_CADR_COF1&apos;,
+&apos;NUT_ENEG_COF1&apos;,
+&apos;NUT_PKFD_COF1&apos;,
+&apos;NUT_LSALT_COF1&apos;,
+&apos;NUT_TAST_COF1&apos;,
+&apos;NUT_SMEL_COF1&apos;,
+&apos;NUT_SPDIET_COF1&apos;,
+&apos;NUT_DTYP_COF1&apos;,
+&apos;NUT_DTIM_COF1&apos;],
+&apos;OWN&apos;:[
+&apos;OWN_DWLG_COF1&apos;,
+&apos;OWN_OWN_COF1&apos;,
+&apos;OWN_MRTG_COF1&apos;],
+&apos;PA2&apos;:[
+&apos;PA2_SIT_COF1&apos;,
+&apos;PA2_SIT2_COF1&apos;,
+&apos;PA2_SITHR_SIT_COF1&apos;,
+&apos;PA2_WALK_COF1&apos;,
+&apos;PA2_WALKHR_COF1&apos;,
+&apos;PA2_LSPRT_COF1&apos;,
+&apos;PA2_LSPRT2_COF1&apos;,
+&apos;PA2_LSRTHR_COF1&apos;,
+&apos;PA2_MSPRT_COF1&apos;,
+&apos;PA2_MSPRT2_COF1&apos;,
+&apos;PA2_MSPRTHR_COF1&apos;,
+&apos;PA2_SSPRT_COF1&apos;,
+&apos;PA2_SSPRT2_COF1&apos;,
+&apos;PA2_SSPRTHR_COF1&apos;,
+&apos;PA2_EXER_COF1&apos;,
+&apos;PA2_EXER2_COF1&apos;,
+&apos;PA2_EXERHR_COF1&apos;,
+&apos;PA2_LTHSWK_COF1&apos;,
+&apos;PA2_HVYHSWK_COF1&apos;,
+&apos;PA2_HMREPAIR_COF1&apos;,
+&apos;PA2_HVYODA_COF1&apos;,
+&apos;PA2_LTODA_COF1&apos;,
+&apos;PA2_CRPRSN_COF1&apos;,
+&apos;PA2_WRK_COF1&apos;,
+&apos;PA2_WRKHRS_COF1&apos;,
+&apos;PA2_WRKPA_COF1&apos;,
+&apos;PA2_REPRTN_COF1&apos;,
+&apos;PA2_PALVL_COF1&apos;,
+&apos;PA2_PARTPA_COF1&apos;,
+&apos;PA2_PRVPA_COF1&apos;],
+&apos;PCM&apos;:[
+&apos;GEN_MEMO_COF1&apos;,
+&apos;GEN_WORY_COF1&apos;],
+&apos;SDC&apos;:[
+&apos;SDC_RELGCP_COF1&apos;,
+&apos;SDC_RELGFQ_COF1&apos;,
+&apos;SDC_MRTL_CONFIRM_COF1&apos;,
+&apos;SDC_MRTL_COF1&apos;,
+&apos;SDC_ORTN_COF1&apos;,
+&apos;SDC_CURRSEX_COF1&apos;,
+&apos;SDC_BTHSEX_COF1&apos;],
+&apos;SMK&apos;:[
+&apos;SMK_CURRCG_COF1&apos;,
+&apos;SMK_NBCG_COF1&apos;,
+&apos;SMK_LST30_COF1&apos;,
+&apos;SMK_NB30_COF1&apos;,
+&apos;SMK_OTOCC_COF1&apos;,
+&apos;SMK_OTCURR_COF1&apos;,
+&apos;SMK_HOME_COF1&apos;,
+&apos;SMK_ACTV_COF1&apos;,
+&apos;SMK_ECIGAR_COF1&apos;,
+&apos;SMK_LSTECIGAR_CO1&apos;]
+}
+
+  for(var key in sections) {
+    var rcount=0
+    var qcount=0
+    var arr=sections[key]
+    for(var i=0; i&lt;arr.length; i++ ) {
+      var j=$(&apos;clsa-inhome-f1.InHome_1:&apos;+arr[i])
+      if(j.isNull().value()) continue
+      qcount++
+      rcount+=j.any(&apos;REFUSED&apos;).value()?1:0
+    }
+    if(0==qcount) {
+      str.push(key+&apos;:100&apos;)
+    } else {
+      var perc=100.0*rcount/qcount
+      if(0&lt;perc &amp;&amp; 100&gt;perc &amp;&amp; 0!=(perc-Math.floor(perc))) {
+        perc=perc.toFixed(3)
+      }
+      str.push(key+&apos;:&apos;+perc)
+    }
+  }
+
+  res=newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)
 }
 res</attribute>
         </attributes>
@@ -83,7 +236,7 @@ res</attribute>
       <variable name="stage_contraindicated_inhome_2" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">$group(&apos;clsa-inhome-f1.Participants:Admin.StageInstance.stage&apos;,&apos;InHome_2&apos;,
-&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value()
 ? 1 : 0</attribute>
         </attributes>
       </variable>
@@ -95,21 +248,7 @@ var res=$group(&apos;Admin.Action.stage&apos;,&apos;InHome_2&apos;,&apos;Admin.A
   return j==i
   }).last()
 if(res.isNull().not().value()) {
-  res=newValue(res.value().slice(14),&apos;text&apos;)  
-}
-res</attribute>
-        </attributes>
-      </variable>
-      <variable name="data_qac_inhome_2" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
-        <attributes>
-          <attribute name="script" valueType="text">var p=$(&apos;clsa-inhome-f1.InHome_2:QuestionnaireMetric.missingCount&apos;).asSequence()
-var q=$(&apos;clsa-inhome-f1.InHome_2:QuestionnaireMetric.questionCount&apos;).asSequence()
-var res=null
-if(p.isNull().and(q.isNull()).not().value() &amp;&amp; 0!=q.sum()){
-  res=newValue(
-    &apos;{complete:&apos;+
-    Math.round(q.sum().minus(p.sum()).multiply(100).div(q.sum()).value())
-    +&apos;}&apos;,&apos;text&apos;)
+  res=newValue(res.value().slice(14),&apos;text&apos;)
 }
 res</attribute>
         </attributes>
@@ -131,7 +270,7 @@ res</attribute>
       <variable name="stage_contraindicated_inhome_3" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">$group(&apos;clsa-inhome-f1.Participants:Admin.StageInstance.stage&apos;,&apos;InHome_3&apos;,
-&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value()
 ? 1 : 0</attribute>
         </attributes>
       </variable>
@@ -143,21 +282,7 @@ var res=$group(&apos;Admin.Action.stage&apos;,&apos;InHome_3&apos;,&apos;Admin.A
   return j==i
   }).last()
 if(res.isNull().not().value()) {
-  res=newValue(res.value().slice(14),&apos;text&apos;)  
-}
-res</attribute>
-        </attributes>
-      </variable>
-      <variable name="data_qac_inhome_3" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
-        <attributes>
-          <attribute name="script" valueType="text">var p=$(&apos;clsa-inhome-f1.InHome_3:QuestionnaireMetric.missingCount&apos;).asSequence()
-var q=$(&apos;clsa-inhome-f1.InHome_3:QuestionnaireMetric.questionCount&apos;).asSequence()
-var res=null
-if(p.isNull().and(q.isNull()).not().value() &amp;&amp; 0!=q.sum()){
-  res=newValue(
-    &apos;{complete:&apos;+
-    Math.round(q.sum().minus(p.sum()).multiply(100).div(q.sum()).value())
-    +&apos;}&apos;,&apos;text&apos;)
+  res=newValue(res.value().slice(14),&apos;text&apos;)
 }
 res</attribute>
         </attributes>
@@ -179,7 +304,7 @@ res</attribute>
       <variable name="stage_contraindicated_inhome_4" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">$group(&apos;clsa-inhome-f1.Participants:Admin.StageInstance.stage&apos;,&apos;InHome_4&apos;,
-&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value()
 ? 1 : 0</attribute>
         </attributes>
       </variable>
@@ -191,7 +316,7 @@ var res=$group(&apos;Admin.Action.stage&apos;,&apos;InHome_4&apos;,&apos;Admin.A
   return j==i
   }).last()
 if(res.isNull().not().value()) {
-  res=newValue(res.value().slice(14),&apos;text&apos;)  
+  res=newValue(res.value().slice(14),&apos;text&apos;)
 }
 res</attribute>
         </attributes>
@@ -202,10 +327,228 @@ res</attribute>
 var q=$(&apos;clsa-inhome-f1.InHome_4:QuestionnaireMetric.questionCount&apos;).asSequence()
 var res=null
 if(p.isNull().and(q.isNull()).not().value() &amp;&amp; 0!=q.sum()){
-  res=newValue(
-    &apos;{complete:&apos;+
-    Math.round(q.sum().minus(p.sum()).multiply(100).div(q.sum()).value())
-    +&apos;}&apos;,&apos;text&apos;)
+  var str=[]
+  str.push(
+    &apos;complete:&apos;+
+    Math.round(q.sum().minus(p.sum()).multiply(100).div(q.sum()).value()))
+
+var sections={
+&apos;ACE&apos;:[
+&apos;ACE_DTHPRT_COF1&apos;,
+&apos;ACE_DVRCPRT_COF1&apos;,
+&apos;ACE_BRKDN_COF1&apos;],
+&apos;CEX&apos;:[
+&apos;CEX_HURT_COF1&apos;,
+&apos;CEX_SEEHIT_COF1&apos;,
+&apos;CEX_SPANK_COF1&apos;,
+&apos;CEX_SLAP_COF1&apos;,
+&apos;CEX_PUSH_COF1&apos;,
+&apos;CEX_KICK_COF1&apos;,
+&apos;CEX_CARE_COF1&apos;,
+&apos;CEX_SEX_COF1&apos;,
+&apos;CEX_TOUCH_COF1&apos;,
+&apos;CEX_POLICE_COF1&apos;,
+&apos;CEX_WORD_COF1&apos;],
+&apos;ENV&apos;:[
+&apos;ENV_HMPRB_COF1&apos;,
+&apos;ENV_STFHM_COF1&apos;,
+&apos;ENV_FLPRTAREA1_C OF1&apos;,
+&apos;ENV_VNDLSM_COF1&apos;,
+&apos;ENV_FLLNLY_COF1&apos;,
+&apos;ENV_PPLTRST_COF1&apos;,
+&apos;ENV_AFRDWLK_COF1&apos;,
+&apos;ENV_PPLFRNDLY_COF1&apos;,
+&apos;ENV_PPLTKADV_COF1&apos;,
+&apos;ENV_CLEAN_COF1&apos;,
+&apos;ENV_PPLHLP_COF1&apos;],
+&apos;HCU1&apos;:[
+&apos;HCU_FAMPHY_COF1&apos;,
+&apos;HCU_SPEC_COF1&apos;,
+&apos;HCU_PSYCH_COF1&apos;,
+&apos;HCU_OPTO_COF1&apos;,
+&apos;HCU_PHYSIO_COF1&apos;,
+&apos;HCU_SOCLWRK_COF1&apos;,
+&apos;HCU_EMEREG_COF1&apos;,
+&apos;HCU_HLOVRNT_COF1&apos;,
+&apos;HCU_NRSHM_COF1&apos;,
+&apos;HCU_HAVEFAM_COF1&apos;,
+&apos;HCU_NOFAM_COF1&apos;,
+&apos;HCU_PLACE_COF1&apos;,
+&apos;HCU_FAMV_COF1&apos;,
+&apos;HCU_SPEV_COF1&apos;],
+&apos;INT&apos;:[
+&apos;INT_ACCESSHM_COF1&apos;,
+&apos;INT_FRQEMAIL_COF1&apos;,
+&apos;INT_FRQWBSTS_COF1&apos;,
+&apos;INT_FRQHLTH_COF1&apos;,
+&apos;INT_SCLNTWRK_COF1&apos;,
+&apos;INT_WYSSCL_COF1&apos;,
+&apos;INT_FRQMNF_COF1&apos;,
+&apos;INT_FRQFRI_COF1&apos;,
+&apos;INT_FRQFAM_COF1&apos;,
+&apos;INT_FRQPRO_COF1&apos;,
+&apos;INT_FRQOT_COF1&apos;],
+&apos;K10&apos;:[
+&apos;K10_TIRED_COF1&apos;,
+&apos;K10_NRVS_COF1&apos;,
+&apos;K10_NRVSCLMD_COF1&apos;,
+&apos;K10_HPLS_COF1&apos;,
+&apos;K10_RSTLS_COF1&apos;,
+&apos;K10_RSTLSSTL_COF1&apos;,
+&apos;K10_DEP_COF1&apos;,
+&apos;K10_EFFRT_COF1&apos;,
+&apos;K10_NOCHRUP_COF1&apos;,
+&apos;K10_WRTHLSS_COF1&apos;,
+&apos;K10_FLING_COF1&apos;,
+&apos;K10_FLINGLESS_COF1&apos;,
+&apos;K10_FLINGMORE_COF1&apos;,
+&apos;K10_UNWK_NB1_COF1&apos;,
+&apos;K10_HFWK1_NB_COF1&apos;,
+&apos;K10_DOC1_NB_COF1&apos;,
+&apos;K10_OTPFLING_COF1&apos;,
+&apos;K10_OTPFLING1_OTSP_COF1&apos;,
+&apos;K10_PHYSHLTH_COF1&apos;],
+&apos;MEM&apos;:[
+&apos;MEM_PAYBILL_COF1&apos;,
+&apos;MEM_MPLAC_COF1&apos;,
+&apos;MEM_RMNUM_COF1&apos;,
+&apos;MEM_RCNME_COF1&apos;,
+&apos;MEM_LVTHG_COF1&apos;,
+&apos;MEM_FGAPT_COF1&apos;,
+&apos;MEM_FGTDO_COF1&apos;,
+&apos;MEM_FGERD_COF1&apos;,
+&apos;MEM_SPWRD_COF1&apos;,
+&apos;MEM_MBDTL_COF1&apos;,
+&apos;MEM_FGMED_COF1&apos;,
+&apos;MEM_NAMEK_COF1&apos;,
+&apos;MEM_PSMEG_COF1&apos;,
+&apos;MEM_FGSAY_COF1&apos;,
+&apos;MEM_FGANV_COF1&apos;,
+&apos;MEM_TELNM_COF1&apos;,
+&apos;MEM_RETELL_COF1&apos;,
+&apos;MEM_PLAWY_COF1&apos;,
+&apos;MEM_BUYTH_COF1&apos;,
+&apos;MEM_DTCNV_COF1&apos;],
+&apos;MET&apos;:[
+&apos;MET_NEED_COF1&apos;,
+&apos;MET_RSN_COF1&apos;],
+&apos;PER&apos;:[
+&apos;PER_EXTR_COF1&apos;,
+&apos;PER_EXTRDIS_COF1&apos;,
+&apos;PER_EXTRAGR_COF1&apos;,
+&apos;PER_CRT_COF1&apos;,
+&apos;PER_CRTDIS_COF1&apos;,
+&apos;PER_CRTAGR_COF1&apos;,
+&apos;PER_DP_COF1&apos;,
+&apos;PER_DPDIS_COF1&apos;,
+&apos;PER_DPAGR_COF1&apos;,
+&apos;PER_ANX_COF1&apos;,
+&apos;PER_ANXDIS_COF1&apos;,
+&apos;PER_ANXAGR_COF1&apos;,
+&apos;PER_NEXP_COF1&apos;,
+&apos;PER_NEXPDIS_COF1&apos;,
+&apos;PER_NEXPAGR_COF1&apos;,
+&apos;PER_RSV_COF1&apos;,
+&apos;PER_RSVDIS_COF1&apos;,
+&apos;PER_RSVAGR_COF1&apos;,
+&apos;PER_SYMP_COF1&apos;,
+&apos;PER_SYMPDIS_COF1&apos;,
+&apos;PER_SYMPAGR_COF1&apos;,
+&apos;PER_DORG_COF1&apos;,
+&apos;PER_DORGDIS_COF1&apos;,
+&apos;PER_DORGAGR_COF1&apos;,
+&apos;PER_CALM_COF1&apos;,
+&apos;PER_CALMDIS_COF1&apos;,
+&apos;PER_CALMAGR_COF1&apos;,
+&apos;PER_CNV_COF1&apos;,
+&apos;PER_CNVDIS_COF1&apos;,
+&apos;PER_CNVAGR_COF1&apos;],
+&apos;PHB&apos;:[
+&apos;PHB_BLP_COF1&apos;,
+&apos;PHB_COL_COF1&apos;,
+&apos;PHB_CHOL_COF1&apos;,
+&apos;PHB_GLU_COF1&apos;,
+&apos;PHB_PAP_COF1&apos;,
+&apos;PHB_MG_COF1&apos;,
+&apos;PHB_DEXA_COF1&apos;,
+&apos;PHB_FLUV_COF1&apos;,
+&apos;PHB_PCV_COF1&apos;],
+&apos;SEQ&apos;:[
+&apos;SEQ_LADDER_COF1&apos;],
+&apos;TRA&apos;:[
+&apos;TRA_DSTATUS_COF1&apos;,
+&apos;TRA_DFREQ_COF1&apos;,
+&apos;TRA_CMNTR1_COF1&apos;,
+&apos;TRA_CMNTR2_COF1&apos;,
+&apos;TRA_TYPTR_COF1&apos;,
+&apos;TRA_PUBTR_COF1&apos;,
+&apos;TRA_ACCTR_COF1&apos;,
+&apos;TRA_PUBTRFRQ_COF1&apos;,
+&apos;TRA_TRIP_COF1&apos;,
+&apos;TRA_CHGRS_COF1&apos;,
+&apos;TRA_CHGHC_COF1&apos;,
+&apos;TRA_CHGLPE_COF1&apos;,
+&apos;TRA_CHGSLC_COF1&apos;,
+&apos;TRA_CHGJDG_COF1&apos;,
+&apos;TRA_CHGCOC_COF1&apos;,
+&apos;TRA_CHGCGB_COF1&apos;,
+&apos;TRA_CHGQDD_COF1&apos;,
+&apos;TRA_CHGDS_COF1&apos;,
+&apos;TRA_CHGRS2_COF1&apos;,
+&apos;TRA_CHGCH2_COF1&apos;,
+&apos;TRA_CHGPLE2_COF1&apos;,
+&apos;TRA_CHGSLC2_COF1&apos;,
+&apos;TRA_CHGJDG2_COF1&apos;,
+&apos;TRA_CHGCOC2_COF1&apos;,
+&apos;TRA_CHCCGB2_COF1&apos;,
+&apos;TRA_CGCQDD2_COF1&apos;,
+&apos;TRA_CHGDS2_COF1&apos;,
+&apos;TRA_AVOID_COF1&apos;,
+&apos;TRA_DRVST1_YR_COF1&apos;,
+&apos;TRA_CEASE_COF1&apos;,
+&apos;TRA_MED_COF1&apos;,
+&apos;TRA_MEDTPC_COF1&apos;,
+&apos;TRA_LVDHM1_YR_COF1&apos;,
+&apos;TRA_LVCMNTY1_YR_COF1&apos;,
+&apos;TRA_CMNTY_COF1&apos;],
+&apos;WEA&apos;:[
+&apos;WEA_SVNGS_COF1&apos;,
+&apos;WEA_SVNGSVL_COF1&apos;,
+&apos;WEA_LFINS_COF1&apos;,
+&apos;WEA_ASSETS_COF1&apos;,
+&apos;WEA_ASSETS_OTSP_COF1&apos;,
+&apos;WEA_DEBT_COF1&apos;,
+&apos;WEA_FNSTATUS_COF1&apos;,
+&apos;WEA_INCNEEDS_COF1&apos;,
+&apos;WEA_THNGS_COF1&apos;,
+&apos;WEA_ORGMONEY_COF1&apos;,
+&apos;WEA_FNDEC_COF1&apos;,
+&apos;WEA_SUFFUND_COF1&apos;,
+&apos;WEA_INHERT_COF1&apos;]
+}
+
+  for(var key in sections) {
+    var rcount=0
+    var qcount=0
+    var arr=sections[key]
+    for(var i=0; i&lt;arr.length; i++ ) {
+      var j=$(&apos;clsa-inhome-f1.InHome_4:&apos;+arr[i])
+      if(j.isNull().value()) continue
+      qcount++
+      rcount+=j.any(&apos;REFUSED&apos;).value()?1:0
+    }
+    if(0==qcount) {
+      str.push(key+&apos;:100&apos;)
+    } else {
+      var perc=100.0*rcount/qcount
+      if(0&lt;perc &amp;&amp; 100&gt;perc &amp;&amp; 0!=(perc-Math.floor(perc))) {
+        perc=perc.toFixed(3)
+      }
+      str.push(key+&apos;:&apos;+perc)
+    }
+  }
+
+  res=newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)
 }
 res</attribute>
         </attributes>
@@ -254,7 +597,7 @@ res</attribute>
       <variable name="stage_contraindicated_inhome_conclusion_questionnaire" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">$group(&apos;clsa-inhome-f1.Participants:Admin.StageInstance.stage&apos;,&apos;ConclusionQuestionnaire&apos;,
-&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value()
 ? 1 : 0</attribute>
         </attributes>
       </variable>
@@ -266,7 +609,7 @@ var res=null
 if(p.isNull().or(q.isNull()).not().value()){
   var a=p.any(&apos;yes&apos;).value()
   var b=q.any(&apos;yes&apos;).value()
-  var n=0 
+  var n=0
   if(a) n++
   if(b) n++
   res=newValue(&apos;{checklist:&apos;+n+&apos;}&apos;,&apos;text&apos;)
@@ -296,7 +639,639 @@ var res=$group(&apos;Admin.Action.stage&apos;,&apos;ConclusionQuestionnaire&apos
   return j==i
   }).last()
 if(res.isNull().not().value()) {
-  res=newValue(res.value().slice(14),&apos;text&apos;)  
+  res=newValue(res.value().slice(14),&apos;text&apos;)
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="data_qac_inhome_2" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var p=$(&apos;clsa-inhome-f1.InHome_2:QuestionnaireMetric.missingCount&apos;).asSequence()
+var q=$(&apos;clsa-inhome-f1.InHome_2:QuestionnaireMetric.questionCount&apos;).asSequence()
+var res=null
+if(p.isNull().and(q.isNull()).not().value() &amp;&amp; 0!=q.sum()) {
+  var str=[]
+  str.push(
+    &apos;complete:&apos;+
+    Math.round(q.sum().minus(p.sum()).multiply(100).div(q.sum()).value()))
+
+var sections={
+&apos;ADL&apos;:[
+&apos;ADL_ABLDR_COF1&apos;,
+&apos;ADL_HPDR_COF1&apos;,
+&apos;ADL_UNDR_COF1&apos;,
+&apos;ADL_ABLFD&apos;,
+&apos;ADL_HPFD_COF1&apos;,
+&apos;ADL_UNFD_COF1&apos;,
+&apos;ADL_ABLAP_COF1&apos;,
+&apos;ADL_HPAP_COF1&apos;,
+&apos;ADL_UNAP_COF1&apos;,
+&apos;ADL_ABLWK_COF1&apos;,
+&apos;ADL_HPWK_COF1&apos;,
+&apos;ADL_UNWK_COF1&apos;,
+&apos;ADL_ABLBD_COF1&apos;,
+&apos;ADL_HPBD_COF1&apos;,
+&apos;ADL_UNBD_COF1&apos;,
+&apos;ADL_ABLBT_COF1&apos;,
+&apos;ADL_HPBT_COF1&apos;,
+&apos;ADL_UNBT_COF1&apos;,
+&apos;ADL_BATH_COF1&apos;,
+&apos;ADL_INCNT_COF1&apos;],
+&apos;COG&apos;:[
+&apos;COG_REC_COF1&apos;,
+&apos;COG_RDY_COF1&apos;,
+&apos;COG_RDYRPT_COF1&apos;,
+&apos;COG_RDYIMP_COF1&apos;,
+&apos;COG_BGN_COF1&apos;,
+&apos;COG_HRD_COF1&apos;,
+&apos;COG_HRDIMP_COF1&apos;,
+&apos;COG_WRD_COF1&apos;,
+&apos;COG_WRDRPT_COF1&apos;,
+&apos;COG_WRDIMP_COF1&apos;,
+&apos;COG_WRDLST_COF1&apos;,
+&apos;COG_WRDLST_COMMT_COF1&apos;,
+&apos;COG_ANML_COF1&apos;,
+&apos;COG_ANMLRPT_COF1&apos;,
+&apos;COG_ANMLIMP_COF1&apos;,
+&apos;COG_ANMLLIST_COF1&apos;,
+&apos;COG_ANMLLIST_COMMT_COF1&apos;,
+&apos;COG_CNT_COF1&apos;,
+&apos;COG_CNTRPT_COF1&apos;,
+&apos;COG_CNTFCTR_COF1&apos;,
+&apos;COG_CNTLST_COF1&apos;,
+&apos;COG_CNTTME_RECORD_COF1&apos;,
+&apos;COG_CNTTME_RECYN_COF1&apos;,
+&apos;COG_CNTTME_COMMT_COF1&apos;,
+&apos;COG_CNTTME_NB_COF1&apos;,
+&apos;COG_ALP_COF1&apos;,
+&apos;COG_ALPRPT_COF1&apos;,
+&apos;COG_ALPFCTR_COF1&apos;,
+&apos;COG_ALPLST_COF1&apos;,
+&apos;COG_ALPTME_RECORD_COF1&apos;,
+&apos;COG_ALPTME_RECTN_COF1&apos;,
+&apos;COG_ALPTME_COMMT_COF1&apos;,
+&apos;COG_ALPTME_NB_COF1&apos;,
+&apos;COG_ALT_COF1&apos;,
+&apos;COG_ALTRPT_COF1&apos;,
+&apos;COG_ALTFCT_COF1&apos;,
+&apos;COG_ALTLST_COF1&apos;,
+&apos;COG_ALTTME_RECORD_COF1&apos;,
+&apos;COG_ALTTME_COMMT_COF1&apos;,
+&apos;COG_WRDLST2_RECORD_COF1&apos;,
+&apos;COG_WRDLST2_COMMT_COF1&apos;],
+&apos;IAL&apos;:[
+&apos;IAL_ABLTEL_COF1&apos;,
+&apos;IAL_HPTEL_COF1&apos;,
+&apos;IAL_UNTEL_COF1&apos;,
+&apos;IAL_ABLTRV_COF1&apos;,
+&apos;IAL_HPTRV_COF1&apos;,
+&apos;IAL_UNTRV_COF1&apos;,
+&apos;IAL_ABLGRO_COF1&apos;,
+&apos;IAL_HPGRO_COF1&apos;,
+&apos;IAL_UNGRO_COF1&apos;,
+&apos;IAL_ABLFD_COF1&apos;,
+&apos;IAL_HPFD_COF1&apos;,
+&apos;IAL_UNFD_COF1&apos;,
+&apos;IAL_ABLWK_COF1&apos;,
+&apos;IAL_HPWK_COF1&apos;,
+&apos;IAL_UNWK_COF1&apos;,
+&apos;IAL_ABLMED_COF1&apos;,
+&apos;IAL_HPMED_COF1&apos;,
+&apos;IAL_UNMED_COF1&apos;,
+&apos;IAL_ABLMO_COF1&apos;,
+&apos;IAL_HPMO_COF1&apos;,
+&apos;IAL_UNMO_COF1&apos;],
+&apos;LONE&apos;:[
+&apos;LONE_OFTN_COF1&apos;,
+&apos;LONE_LEFT_COF1&apos;,
+&apos;LONE_ISOL_COF1&apos;],
+&apos;LSI&apos;:[
+&apos;LSI_ROOM_COF1&apos;,
+&apos;LSI_OUT_COF1&apos;,
+&apos;LSI_NGHB_COF1&apos;,
+&apos;LSI_TOWN_COF1&apos;,
+&apos;LSI_FAR_COF1&apos;,
+&apos;LSI_RMFQ_COF1&apos;,
+&apos;LSI_OUTFQ_COF1&apos;,
+&apos;LSI_NGHBFQ_COF1&apos;,
+&apos;LSI_TWNFQ_COF1&apos;,
+&apos;LSI_FARFQ_COF1&apos;,
+&apos;LSI_RMAID_COF1&apos;,
+&apos;LSI_OUTAID_COF1&apos;,
+&apos;LSI_NGHBAID_COF1&apos;,
+&apos;LSI_TWNAID_COF1&apos;,
+&apos;LSI_FARAID_COF1&apos;],
+&apos;SLS&apos;:[
+&apos;SLS_LIFE_COF1&apos;,
+&apos;SLS_LIFENEG_COF1&apos;,
+&apos;SLS_LIFEPOS_COF1&apos;,
+&apos;SLS_COND_COF1&apos;,
+&apos;SLS_CONDNEG_COF1&apos;,
+&apos;SLS_CONDPOS_COF1&apos;,
+&apos;SLS_SATS_COF1&apos;,
+&apos;SLS_SATSNEG_COF1&apos;,
+&apos;SLS_SATSPOS_COF1&apos;,
+&apos;SLS_IMP_COF1&apos;,
+&apos;SLS_IMPNEG_COF1&apos;,
+&apos;SLS_IMPPOS_COF1&apos;,
+&apos;SLS_OVER_COF1&apos;,
+&apos;SLS_OVERNEG_COF1&apos;,
+&apos;SLS_OVERPOS_COF1&apos;],
+&apos;WHO&apos;:[
+&apos;WHO_CONCP_COF1&apos;,
+&apos;WHO_CON_STRT_COF1&apos;,
+&apos;WHO_CONTT_COF1&apos;,
+&apos;WHO_PREG_COF1&apos;,
+&apos;WHO_PREG_FRST_COF1&apos;,
+&apos;WHO_PREG_LIVE_COF1&apos;,
+&apos;WHO_PREG_LAST_COF1&apos;,
+&apos;WHO_MENOP_COF1&apos;,
+&apos;WHO_MPAG_COF1&apos;,
+&apos;WHO_HRT_COF1&apos;,
+&apos;WHO_TYPE_COF1&apos;,
+&apos;WHO_HRTAG_COF1&apos;,
+&apos;WHO_HRTCURR_COF1&apos;,
+&apos;WHO_HRTSTIL_COF1&apos;,
+&apos;WHO_HRTDR_COF1&apos;]
+}
+
+  for(var key in sections) {
+    var rcount=0
+    var qcount=0
+    var arr=sections[key]
+    for(var i=0; i&lt;arr.length; i++ ) {
+      var j=$(&apos;clsa-inhome-f1.InHome_2:&apos;+arr[i])
+      if(j.isNull().value()) continue
+      qcount++
+      rcount+=j.any(&apos;REFUSED&apos;).value()?1:0
+    }
+    if(0==qcount) {
+      str.push(key+&apos;:100&apos;)
+    } else {
+      var perc=100.0*rcount/qcount
+      if(0&lt;perc &amp;&amp; 100&gt;perc &amp;&amp; 0!=(perc-Math.floor(perc))) {
+        perc=perc.toFixed(3)
+      }
+      str.push(key+&apos;:&apos;+perc)
+    }
+  }
+
+  res=newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="data_qac_inhome_3" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var p=$(&apos;clsa-inhome-f1.InHome_3:QuestionnaireMetric.missingCount&apos;).asSequence()
+var q=$(&apos;clsa-inhome-f1.InHome_3:QuestionnaireMetric.questionCount&apos;).asSequence()
+var res=null
+if(p.isNull().and(q.isNull()).not().value() &amp;&amp; 0!=q.sum()){
+  var str=[]
+  str.push(
+    &apos;complete:&apos;+
+    Math.round(q.sum().minus(p.sum()).multiply(100).div(q.sum()).value()))
+
+var sections={
+&apos;CAG&apos;:[
+&apos;CAG_HLT_COF1&apos;,
+&apos;CAG_PPL_COF1&apos;,
+&apos;CAG_PERS_COF1&apos;,
+&apos;CAG_GNDR_COF1&apos;,
+&apos;CAG_RELN_COF1&apos;,
+&apos;CAG_WEEK_COF1&apos;,
+&apos;CAG_HRWK_COF1&apos;],
+&apos;CR1&apos;:[
+&apos;CR1_PRO_COF1&apos;,
+&apos;CR1_IMPT_COF1&apos;,
+&apos;CR1_MOST_COF1&apos;,
+&apos;CR1_PAY_COF1&apos;,
+&apos;CR1_PAY_COST1_COF1&apos;,
+&apos;CR1_FRQ_COF1&apos;,
+&apos;CR1_HOUR_COF1&apos;],
+&apos;CR2&apos;:[
+&apos;CR2_FAM_COF1&apos;,
+&apos;CR2_NMBR_COF1&apos;,
+&apos;CR2_WKALL_COF1&apos;,
+&apos;CR2_HOUR_COF1&apos;,
+&apos;CR2_MOST_COF1&apos;,
+&apos;CR2_PERS_COF1&apos;,
+&apos;CR2_PERS_FAR_COF1&apos;,
+&apos;CR2_GNDR_COF1&apos;,
+&apos;CR2_NAME_COF1&apos;,
+&apos;CR2_AGE_COF1&apos;,
+&apos;CR2_RELN_COF1&apos;,
+&apos;CR2_DUR_COF1&apos;,
+&apos;CR2_WKMST_COF1&apos;,
+&apos;CR2_HRWK_COF1&apos;,
+&apos;CR2_DEVC_COF1&apos;,
+&apos;CR2_HIP_COF1&apos;],
+&apos;FAL&apos;:[
+&apos;FAL_NMBR_COF1&apos;,
+&apos;FAL_MOST_COF1&apos;,
+&apos;FAL_ATTN_COF1&apos;,
+&apos;FAL_HOSP_COF1&apos;,
+&apos;FAL_FU_COF1&apos;,
+&apos;FAL_WHERE_COF1&apos;,
+&apos;FAL_HOW_COF1&apos;,
+&apos;FAL_HOW2_COF1&apos;],
+&apos;INC&apos;:[
+&apos;INC_SRCE_COF1&apos;,
+&apos;INC_FRST_COF1&apos;,
+&apos;INC_SCND_COF1&apos;,
+&apos;INC_THRD_COF1&apos;,
+&apos;INC_TOT_COF1&apos;,
+&apos;INC_PSRCE_COF1&apos;,
+&apos;INC_PFRST_COF1&apos;,
+&apos;INC_PSCND_COF1&apos;,
+&apos;INC_PTHRD_COF1&apos;,
+&apos;INC_PTOT_COF1&apos;],
+&apos;INJ&apos;:[
+&apos;INJ_OCC_COF1&apos;,
+&apos;INJ_NMBR_COF1&apos;,
+&apos;INJ_CAUS_COF1&apos;,
+&apos;INJ_HOW_COF1&apos;,
+&apos;INJ_WHR_COF1&apos;,
+&apos;INJ_ACT_COF1&apos;,
+&apos;INJ_TYPE_COF1&apos;,
+&apos;INJ_BRKN_COF1&apos;,
+&apos;INJ_SITE_COF1&apos;],
+&apos;LBF&apos;:[
+&apos;LBF_CURR_COF1&apos;,
+&apos;LBF_MANY_COF1&apos;,
+&apos;LBF_STTS_COF1&apos;,
+&apos;LBF_SCHD_COF1&apos;,
+&apos;LBF_TYPE_COF1&apos;,
+&apos;LBF_IND_COF1&apos;,
+&apos;LBF_DURN_COF1&apos;,
+&apos;LBF_RSN_COF1&apos;,
+&apos;LBF_UNEM_COF1&apos;],
+&apos;LFP&apos;:[
+&apos;LFP_LAST_COF1&apos;,
+&apos;LFP_WKSAME_COF1&apos;,
+&apos;LFP_HRWK_COF1&apos;,
+&apos;LFP_SCHD_COF1&apos;,
+&apos;LFP_TYPE_COF1&apos;,
+&apos;LFP_IND_COF1&apos;],
+&apos;MEDI&apos;:[
+&apos;MEDI_MORE_1_COF1&apos;,
+&apos;MEDI_PRES_1_COF1&apos;,
+&apos;MEDI_Q_1_COF1&apos;,
+&apos;MEDI_DOSE_FRQ_1_COF1&apos;,
+&apos;MEDI_MORE_2_COF1&apos;,
+&apos;MEDI_ID_2_COF1&apos;,
+&apos;MEDI_PRES_2_COF1&apos;,
+&apos;MEDI_Q_2_COF1&apos;,
+&apos;MEDI_DOSE_FRQ_2_COF1&apos;,
+&apos;MEDI_USE2_2_COF1&apos;,
+&apos;MEDI_START_2_COF1&apos;,
+&apos;MEDI_REASON_2_COF1&apos;,
+&apos;MEDI_MORE_3_COF1&apos;,
+&apos;MEDI_ID_3_COF1&apos;,
+&apos;MEDI_PRES_3_COF1&apos;,
+&apos;MEDI_Q_3_COF1&apos;,
+&apos;MEDI_DOSE_FRQ_3_COF1&apos;,
+&apos;MEDI_USE2_3_COF1&apos;,
+&apos;MEDI_START_3_COF1&apos;,
+&apos;MEDI_REASON_3_COF1&apos;,
+&apos;MEDI_MORE_4_COF1&apos;,
+&apos;MEDI_ID_4_COF1&apos;,
+&apos;MEDI_PRES_4_COF1&apos;,
+&apos;MEDI_Q_4_COF1&apos;,
+&apos;MEDI_DOSE_FRQ_4_COF1&apos;,
+&apos;MEDI_USE2_4_COF1&apos;,
+&apos;MEDI_START_4_COF1&apos;,
+&apos;MEDI_REASON_4_COF1&apos;,
+&apos;MEDI_MORE_5_COF1&apos;,
+&apos;MEDI_ID_5_COF1&apos;,
+&apos;MEDI_PRES_5_COF1&apos;,
+&apos;MEDI_Q_5_COF1&apos;,
+&apos;MEDI_DOSE_FRQ_5_COF1&apos;,
+&apos;MEDI_USE2_5_COF1&apos;,
+&apos;MEDI_START_5_COF1&apos;,
+&apos;MEDI_REASON_5_COF1&apos;,
+&apos;MEDI_MORE_6_COF1&apos;,
+&apos;MEDI_ID_6_COF1&apos;,
+&apos;MEDI_PRES_6_COF1&apos;,
+&apos;MEDI_Q_6_COF1&apos;,
+&apos;MEDI_DOSE_FRQ_6_COF1&apos;,
+&apos;MEDI_USE2_6_COF1&apos;,
+&apos;MEDI_START_6_COF1&apos;,
+&apos;MEDI_REASON_6_COF1&apos;,
+&apos;MEDI_MORE_7_COF1&apos;,
+&apos;MEDI_ID_7_COF1&apos;,
+&apos;MEDI_PRES_7_COF1&apos;,
+&apos;MEDI_Q_7_COF1&apos;,
+&apos;MEDI_DOSE_FRQ_7_COF1&apos;,
+&apos;MEDI_USE2_7_COF1&apos;,
+&apos;MEDI_START_7_COF1&apos;,
+&apos;MEDI_REASON_7_COF1&apos;,
+&apos;MEDI_MORE_8_COF1&apos;,
+&apos;MEDI_ID_8_COF1&apos;,
+&apos;MEDI_PRES_8_COF1&apos;,
+&apos;MEDI_Q_8_COF1&apos;,
+&apos;MEDI_DOSE_FRQ_8_COF1&apos;,
+&apos;MEDI_USE2_8_COF1&apos;,
+&apos;MEDI_START_8_COF1&apos;,
+&apos;MEDI_REASON_8_COF1&apos;,
+&apos;MEDI_MORE_9_COF1&apos;,
+&apos;MEDI_ID_9_COF1&apos;,
+&apos;MEDI_PRES_9_COF1&apos;,
+&apos;MEDI_Q_9_COF1&apos;,
+&apos;MEDI_DOSE_FRQ_9_COF1&apos;,
+&apos;MEDI_USE2_9_COF1&apos;,
+&apos;MEDI_START_9_COF1&apos;,
+&apos;MEDI_REASON_9_COF1&apos;,
+&apos;MEDI_MORE_10_COF1&apos;,
+&apos;MEDI_ID_10_COF1&apos;,
+&apos;MEDI_PRES_10_COF1&apos;,
+&apos;MEDI_Q_10_COF1&apos;,
+&apos;MEDI_DOSE_FRQ_10_COF1&apos;,
+&apos;MEDI_USE2_10_COF1&apos;,
+&apos;MEDI_START_10_COF1&apos;,
+&apos;MEDI_REASON_10_COF1&apos;,
+&apos;MEDI_MORE_11_COF1&apos;,
+&apos;MEDI_ID_11_COF1&apos;,
+&apos;MEDI_PRES_11_COF1&apos;,
+&apos;MEDI_Q_11_COF1&apos;,
+&apos;MEDI_DOSE_FRQ_11_COF1&apos;,
+&apos;MEDI_USE2_11_COF1&apos;,
+&apos;MEDI_START_11_COF1&apos;,
+&apos;MEDI_REASON_11_COF1&apos;,
+&apos;MEDI_MORE_12_COF1&apos;,
+&apos;MEDI_ID_12_COF1&apos;,
+&apos;MEDI_PRES_12_COF1&apos;,
+&apos;MEDI_Q_12_COF1&apos;,
+&apos;MEDI_DOSE_FRQ_12_COF1&apos;,
+&apos;MEDI_USE2_12_COF1&apos;,
+&apos;MEDI_START_12_COF1&apos;,
+&apos;MEDI_REASON_12_COF1&apos;,
+&apos;MEDI_MORE_13_COF1&apos;,
+&apos;MEDI_ID_13_COF1&apos;,
+&apos;MEDI_PRES_13_COF1&apos;,
+&apos;MEDI_Q_13_COF1&apos;,
+&apos;MEDI_DOSE_FRQ_13_COF1&apos;,
+&apos;MEDI_USE2_13_COF1&apos;,
+&apos;MEDI_START_13_COF1&apos;,
+&apos;MEDI_REASON_13_COF1&apos;,
+&apos;MEDI_MORE_14_COF1&apos;,
+&apos;MEDI_ID_14_COF1&apos;,
+&apos;MEDI_PRES_14_COF1&apos;,
+&apos;MEDI_Q_14_COF1&apos;,
+&apos;MEDI_DOSE_FRQ_14_COF1&apos;,
+&apos;MEDI_USE2_14_COF1&apos;,
+&apos;MEDI_START_14_COF1&apos;,
+&apos;MEDI_REASON_14_COF1&apos;,
+&apos;MEDI_MORE_15_COF1&apos;,
+&apos;MEDI_ID_15_COF1&apos;,
+&apos;MEDI_PRES_15_COF1&apos;,
+&apos;MEDI_Q_15_COF1&apos;,
+&apos;MEDI_DOSE_FRQ_15_COF1&apos;,
+&apos;MEDI_USE2_15_COF1&apos;,
+&apos;MEDI_START_15_COF1&apos;,
+&apos;MEDI_REASON_15_COF1&apos;,
+&apos;MEDI_MORE_16_COF1&apos;,
+&apos;MEDI_ID_16_COF1&apos;,
+&apos;MEDI_PRES_16_COF1&apos;,
+&apos;MEDI_Q_16_COF1&apos;,
+&apos;MEDI_DOSE_FRQ_16_COF1&apos;,
+&apos;MEDI_USE2_16_COF1&apos;,
+&apos;MEDI_START_16_COF1&apos;,
+&apos;MEDI_REASON_16_COF1&apos;,
+&apos;MEDI_MORE_17_COF1&apos;,
+&apos;MEDI_ID_17_COF1&apos;,
+&apos;MEDI_PRES_17_COF1&apos;,
+&apos;MEDI_Q_17_COF1&apos;,
+&apos;MEDI_DOSE_FRQ_17_COF1&apos;,
+&apos;MEDI_USE2_17_COF1&apos;,
+&apos;MEDI_START_17_COF1&apos;,
+&apos;MEDI_REASON_17_COF1&apos;,
+&apos;MEDI_MORE_18_COF1&apos;,
+&apos;MEDI_ID_18_COF1&apos;,
+&apos;MEDI_PRES_18_COF1&apos;,
+&apos;MEDI_Q_18_COF1&apos;,
+&apos;MEDI_DOSE_FRQ_18_COF1&apos;,
+&apos;MEDI_USE2_18_COF1&apos;,
+&apos;MEDI_START_18_COF1&apos;,
+&apos;MEDI_REASON_18_COF1&apos;,
+&apos;MEDI_MORE_19_COF1&apos;,
+&apos;MEDI_ID_19_COF1&apos;,
+&apos;MEDI_PRES_19_COF1&apos;,
+&apos;MEDI_Q_19_COF1&apos;,
+&apos;MEDI_DOSE_FRQ_19_COF1&apos;,
+&apos;MEDI_USE2_19_COF1&apos;,
+&apos;MEDI_START_19_COF1&apos;,
+&apos;MEDI_REASON_19_COF1&apos;,
+&apos;MEDI_MORE_20_COF1&apos;,
+&apos;MEDI_ID_20_COF1&apos;,
+&apos;MEDI_PRES_20_COF1&apos;,
+&apos;MEDI_Q_20_COF1&apos;,
+&apos;MEDI_DOSE_FRQ_20_COF1&apos;,
+&apos;MEDI_USE2_20_COF1&apos;,
+&apos;MEDI_START_20_COF1&apos;,
+&apos;MEDI_REASON_20_COF1&apos;,
+&apos;MEDI_MORE_21_COF1&apos;,
+&apos;MEDI_ID_21_COF1&apos;,
+&apos;MEDI_PRES_21_COF1&apos;,
+&apos;MEDI_Q_21_COF1&apos;,
+&apos;MEDI_DOSE_FRQ_21_COF1&apos;,
+&apos;MEDI_USE2_21_COF1&apos;,
+&apos;MEDI_START_21_COF1&apos;,
+&apos;MEDI_REASON_21_COF1&apos;,
+&apos;MEDI_MORE_22_COF1&apos;,
+&apos;MEDI_ID_22_COF1&apos;,
+&apos;MEDI_PRES_22_COF1&apos;,
+&apos;MEDI_Q_22_COF1&apos;,
+&apos;MEDI_DOSE_FRQ_22_COF1&apos;,
+&apos;MEDI_USE2_22_COF1&apos;,
+&apos;MEDI_START_22_COF1&apos;,
+&apos;MEDI_REASON_22_COF1&apos;,
+&apos;MEDI_MORE_23_COF1&apos;,
+&apos;MEDI_ID_23_COF1&apos;,
+&apos;MEDI_PRES_23_COF1&apos;,
+&apos;MEDI_Q_23_COF1&apos;,
+&apos;MEDI_DOSE_FRQ_23_COF1&apos;,
+&apos;MEDI_USE2_23_COF1&apos;,
+&apos;MEDI_START_23_COF1&apos;,
+&apos;MEDI_REASON_23_COF1&apos;,
+&apos;MEDI_MORE_24_COF1&apos;,
+&apos;MEDI_ID_24_COF1&apos;,
+&apos;MEDI_PRES_24_COF1&apos;,
+&apos;MEDI_Q_24_COF1&apos;,
+&apos;MEDI_DOSE_FRQ_24_COF1&apos;,
+&apos;MEDI_USE2_24_COF1&apos;,
+&apos;MEDI_START_24_COF1&apos;,
+&apos;MEDI_REASON_24_COF1&apos;,
+&apos;MEDI_MORE_25_COF1&apos;,
+&apos;MEDI_ID_25_COF1&apos;,
+&apos;MEDI_PRES_25_COF1&apos;,
+&apos;MEDI_Q_25_COF1&apos;,
+&apos;MEDI_DOSE_FRQ_25_COF1&apos;,
+&apos;MEDI_USE2_25_COF1&apos;,
+&apos;MEDI_START_25_COF1&apos;,
+&apos;MEDI_REASON_25_COF1&apos;,
+&apos;MEDI_MORE_26_COF1&apos;,
+&apos;MEDI_ID_26_COF1&apos;,
+&apos;MEDI_PRES_26_COF1&apos;,
+&apos;MEDI_Q_26_COF1&apos;,
+&apos;MEDI_DOSE_FRQ_26_COF1&apos;,
+&apos;MEDI_USE2_26_COF1&apos;,
+&apos;MEDI_START_26_COF1&apos;,
+&apos;MEDI_REASON_26_COF1&apos;,
+&apos;MEDI_MORE_27_COF1&apos;,
+&apos;MEDI_ID_27_COF1&apos;,
+&apos;MEDI_PRES_27_COF1&apos;,
+&apos;MEDI_Q_27_COF1&apos;,
+&apos;MEDI_DOSE_FRQ_27_COF1&apos;,
+&apos;MEDI_USE2_27_COF1&apos;,
+&apos;MEDI_START_27_COF1&apos;,
+&apos;MEDI_REASON_27_COF1&apos;,
+&apos;MEDI_MORE_28_COF1&apos;,
+&apos;MEDI_ID_28_COF1&apos;,
+&apos;MEDI_PRES_28_COF1&apos;,
+&apos;MEDI_Q_28_COF1&apos;,
+&apos;MEDI_DOSE_FRQ_28_COF1&apos;,
+&apos;MEDI_USE2_28_COF1&apos;,
+&apos;MEDI_START_28_COF1&apos;,
+&apos;MEDI_REASON_28_COF1&apos;,
+&apos;MEDI_MORE_29_COF1&apos;,
+&apos;MEDI_ID_29_COF1&apos;,
+&apos;MEDI_PRES_29_COF1&apos;,
+&apos;MEDI_Q_29_COF1&apos;,
+&apos;MEDI_DOSE_FRQ_29_COF1&apos;,
+&apos;MEDI_USE2_29_COF1&apos;,
+&apos;MEDI_START_29_COF1&apos;,
+&apos;MEDI_REASON_29_COF1&apos;,
+&apos;MEDI_MORE_30_COF1&apos;,
+&apos;MEDI_ID_30_COF1&apos;,
+&apos;MEDI_PRES_30_COF1&apos;,
+&apos;MEDI_Q_30_COF1&apos;,
+&apos;MEDI_DOSE_FRQ_30_COF1&apos;,
+&apos;MEDI_USE2_30_COF1&apos;,
+&apos;MEDI_START_30_COF1&apos;,
+&apos;MEDI_REASON_30_COF1&apos;,
+&apos;MEDI_MORE_31_COF1&apos;,
+&apos;MEDI_ID_31_COF1&apos;,
+&apos;MEDI_PRES_31_COF1&apos;,
+&apos;MEDI_Q_31_COF1&apos;,
+&apos;MEDI_DOSE_FRQ_31_COF1&apos;,
+&apos;MEDI_USE2_31_COF1&apos;,
+&apos;MEDI_START_31_COF1&apos;,
+&apos;MEDI_REASON_31_COF1&apos;,
+&apos;MEDI_MORE_32_COF1&apos;,
+&apos;MEDI_ID_32_COF1&apos;,
+&apos;MEDI_PRES_32_COF1&apos;,
+&apos;MEDI_Q_32_COF1&apos;,
+&apos;MEDI_DOSE_FRQ_32_COF1&apos;,
+&apos;MEDI_USE2_32_COF1&apos;,
+&apos;MEDI_START_32_COF1&apos;,
+&apos;MEDI_REASON_32_COF1&apos;,
+&apos;MEDI_MORE_33_COF1&apos;,
+&apos;MEDI_ID_33_COF1&apos;,
+&apos;MEDI_PRES_33_COF1&apos;,
+&apos;MEDI_Q_33_COF1&apos;,
+&apos;MEDI_DOSE_FRQ_33_COF1&apos;,
+&apos;MEDI_USE2_33_COF1&apos;,
+&apos;MEDI_START_33_COF1&apos;,
+&apos;MEDI_REASON_33_COF1&apos;,
+&apos;MEDI_MORE_34_COF1&apos;,
+&apos;MEDI_ID_34_COF1&apos;,
+&apos;MEDI_PRES_34_COF1&apos;,
+&apos;MEDI_Q_34_COF1&apos;,
+&apos;MEDI_DOSE_FRQ_34_COF1&apos;,
+&apos;MEDI_USE2_34_COF1&apos;,
+&apos;MEDI_START_34_COF1&apos;,
+&apos;MEDI_REASON_34_COF1&apos;,
+&apos;MEDI_MORE_35_COF1&apos;,
+&apos;MEDI_ID_35_COF1&apos;,
+&apos;MEDI_PRES_35_COF1&apos;,
+&apos;MEDI_Q_35_COF1&apos;,
+&apos;MEDI_DOSE_FRQ_35_COF1&apos;,
+&apos;MEDI_USE2_35_COF1&apos;,
+&apos;MEDI_START_35_COF1&apos;,
+&apos;MEDI_REASON_35_COF1&apos;,
+&apos;MEDI_MORE_36_COF1&apos;,
+&apos;MEDI_ID_36_COF1&apos;,
+&apos;MEDI_PRES_36_COF1&apos;,
+&apos;MEDI_Q_36_COF1&apos;,
+&apos;MEDI_DOSE_FRQ_36_COF1&apos;,
+&apos;MEDI_USE2_36_COF1&apos;,
+&apos;MEDI_START_36_COF1&apos;,
+&apos;MEDI_REASON_36_COF1&apos;,
+&apos;MEDI_MORE_37_COF1&apos;,
+&apos;MEDI_ID_37_COF1&apos;,
+&apos;MEDI_PRES_37_COF1&apos;,
+&apos;MEDI_Q_37_COF1&apos;,
+&apos;MEDI_DOSE_FRQ_37_COF1&apos;,
+&apos;MEDI_USE2_37_COF1&apos;,
+&apos;MEDI_START_37_COF1&apos;,
+&apos;MEDI_REASON_37_COF1&apos;,
+&apos;MEDI_MORE_38_COF1&apos;,
+&apos;MEDI_ID_38_COF1&apos;,
+&apos;MEDI_PRES_38_COF1&apos;,
+&apos;MEDI_Q_38_COF1&apos;,
+&apos;MEDI_DOSE_FRQ_38_COF1&apos;,
+&apos;MEDI_USE2_38_COF1&apos;,
+&apos;MEDI_START_38_COF1&apos;,
+&apos;MEDI_REASON_38_COF1&apos;,
+&apos;MEDI_MORE_39_COF1&apos;,
+&apos;MEDI_ID_39_COF1&apos;,
+&apos;MEDI_PRES_39_COF1&apos;,
+&apos;MEDI_Q_39_COF1&apos;,
+&apos;MEDI_DOSE_FRQ_39_COF1&apos;,
+&apos;MEDI_USE2_39_COF1&apos;,
+&apos;MEDI_START_39_COF1&apos;,
+&apos;MEDI_REASON_39_COF1&apos;,
+&apos;MEDI_MORE_40_COF1&apos;,
+&apos;MEDI_ID_40_COF1&apos;,
+&apos;MEDI_PRES_40_COF1&apos;,
+&apos;MEDI_Q_40_COF1&apos;,
+&apos;MEDI_DOSE_FRQ_40_COF1&apos;,
+&apos;MEDI_USE2_40_COF1&apos;,
+&apos;MEDI_START_40_COF1&apos;,
+&apos;MEDI_REASON_40_COF1&apos;],
+&apos;RET&apos;:[
+&apos;RET_RTRD_COF1&apos;,
+&apos;RET_RTRN_COF1&apos;,
+&apos;RET_SPSE_COF1&apos;,
+&apos;RET_AGE_COF1&apos;,
+&apos;RET_WHY_COF1&apos;],
+&apos;RPL&apos;:[
+&apos;RPL_AGE_COF1&apos;,
+&apos;RPL_WHYNT_COF1&apos;],
+&apos;WLQ&apos;:[
+&apos;WLQ_GOEASWRK_COF1&apos;,
+&apos;WLQ_STRTARIVWRK_COF1&apos;,
+&apos;WLQ_SITSTNDSTY_COF1&apos;,
+&apos;WLQ_REPMOTION_COF1&apos;,
+&apos;WLQ_PYSEMO_CONTRT_COF1&apos;,
+&apos;WLQ_PYSEMO_SPEAK_COF1&apos;,
+&apos;WLQ_PYSEMO_HDLWRK_COF1&apos;,
+&apos;WLQ_PYSEMO_FHSWRK_COF1&apos;]
+}
+
+  for(var key in sections) {
+    var rcount=0
+    var qcount=0
+    var arr=sections[key]
+    for(var i=0; i&lt;arr.length; i++ ) {
+      var j=$(&apos;clsa-inhome-f1.InHome_3:&apos;+arr[i])
+      if(j.isNull().value()) continue
+      qcount++
+      rcount+=j.any(&apos;REFUSED&apos;).value()?1:0
+    }
+    if(0==qcount) {
+      str.push(key+&apos;:100&apos;)
+    } else {
+      var perc=100.0*rcount/qcount
+      if(0&lt;perc &amp;&amp; 100&gt;perc &amp;&amp; 0!=(perc-Math.floor(perc))) {
+        perc=perc.toFixed(3)
+      }
+      str.push(key+&apos;:&apos;+perc)
+    }
+  }
+
+  res=newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)
 }
 res</attribute>
         </attributes>
@@ -304,5 +1279,5 @@ res</attribute>
     </variables>
   </variables>
   <created valueType="datetime">2018-08-13T13:40:03.197-04</created>
-  <updated valueType="datetime">2018-09-26T15:36:07.875-04</updated>
+  <updated valueType="datetime">2018-10-04T14:29:09.040-04</updated>
 </org.obiba.magma.views.View>
