@@ -137,10 +137,7 @@
     </list>
   </from>
   <select class="org.obiba.magma.views.support.NoneClause"/>
-  <where class="org.obiba.magma.js.views.JavascriptClause">
-    <scriptName>customScript</scriptName>
-    <script>$lastupdate().before(newValue(&apos;2018-09-27&apos;,&apos;date&apos;)).and($lastupdate().after(newValue(&apos;2018-01-01&apos;,&apos;date&apos;)))</script>
-  </where>
+  <where class="org.obiba.magma.views.support.AllClause"/>
   <variables class="org.obiba.magma.js.views.VariablesClause">
     <variables class="linked-hash-set">
       <variable name="stage_technician_spirometry" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
@@ -1016,17 +1013,18 @@ var ls3=$group(&apos;clsa-dcs-images-f2.CarotidIntima:Measure.SIDE&apos;,&apos;L
 var res=null
 if(!rc.isNull().and(rsr.isNull(),rs1.isNull(),rs2.isNull(),rs3.isNull(),
    lc.isNull(),lsr.isNull(),ls1.isNull(),ls2.isNull(),ls3.isNull()).value()) {
-  var str=&apos;{filesize_left_cine:&apos;+(lc.isNull().value()?&apos;0&apos;:lc.length().value())+&apos;,&apos;
-  str+=&apos;filesize_left_sr:&apos;+(lsr.isNull().value()?&apos;0&apos;:lsr.length().value())+&apos;,&apos;
-  str+=&apos;filesize_left_still_1:&apos;+(ls1.isNull().value()?&apos;0&apos;:ls1.length().value())+&apos;,&apos;
-  str+=&apos;filesize_left_still_2:&apos;+(ls2.isNull().value()?&apos;0&apos;:ls2.length().value())+&apos;,&apos;
-  str+=&apos;filesize_left_still_3:&apos;+(ls3.isNull().value()?&apos;0&apos;:ls3.length().value())+&apos;,&apos;
-  str+=&apos;filesize_right_cine:&apos;+(rc.isNull().value()?&apos;0&apos;:rc.length().value())+&apos;,&apos;
-  str+=&apos;filesize_right_sr:&apos;+(rsr.isNull().value()?&apos;0&apos;:rsr.length().value())+&apos;,&apos;
-  str+=&apos;filesize_right_still_1:&apos;+(rs1.isNull().value()?&apos;0&apos;:rs1.length().value())+&apos;,&apos;
-  str+=&apos;filesize_right_still_2:&apos;+(rs2.isNull().value()?&apos;0&apos;:rs2.length().value())+&apos;,&apos;
-  str+=&apos;filesize_right_still_3:&apos;+(rs3.isNull().value()?&apos;0&apos;:rs3.length().value())+&apos;}&apos;
-  res=newValue(str,&apos;text&apos;)
+  var str=[]   
+  str.push(&apos;{filesize_left_cine:&apos;+(lc.isNull().value()?&apos;0&apos;:lc.length().value()))
+  str.push(&apos;filesize_left_sr:&apos;+(lsr.isNull().value()?&apos;0&apos;:lsr.length().value()))
+  str.push(&apos;filesize_left_still_1:&apos;+(ls1.isNull().value()?&apos;0&apos;:ls1.length().value()))
+  str.push(&apos;filesize_left_still_2:&apos;+(ls2.isNull().value()?&apos;0&apos;:ls2.length().value()))
+  str.push(&apos;filesize_left_still_3:&apos;+(ls3.isNull().value()?&apos;0&apos;:ls3.length().value()))
+  str.push(&apos;filesize_right_cine:&apos;+(rc.isNull().value()?&apos;0&apos;:rc.length().value()))
+  str.push(&apos;filesize_right_sr:&apos;+(rsr.isNull().value()?&apos;0&apos;:rsr.length().value()))
+  str.push(&apos;filesize_right_still_1:&apos;+(rs1.isNull().value()?&apos;0&apos;:rs1.length().value()))
+  str.push(&apos;filesize_right_still_2:&apos;+(rs2.isNull().value()?&apos;0&apos;:rs2.length().value()))
+  str.push(&apos;filesize_right_still_3:&apos;+(rs3.isNull().value()?&apos;0&apos;:rs3.length().value()))
+  res=newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)
 }
 res</attribute>
         </attributes>
@@ -1488,24 +1486,78 @@ res</attribute>
       </variable>
       <variable name="data_qac_stroop_fas" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">var res=null
-var p=$(&apos;clsa-dcs-f2.StroopFAS:QuestionnaireMetric.missingCount&apos;).asSequence()
-var q=$(&apos;clsa-dcs-f2.StroopFAS:QuestionnaireMetric.questionCount&apos;).asSequence()
+          <attribute name="script" valueType="text">var stage=&apos;clsa-dcs-f2.StroopFAS:&apos;
+var p=$(stage+&apos;QuestionnaireMetric.missingCount&apos;).asSequence()
+var q=$(stage+&apos;QuestionnaireMetric.questionCount&apos;).asSequence()
+var res=null
 if(p.isNull().and(q.isNull()).not().value() &amp;&amp; 0!=q.sum()) {
-  var d=$(&apos;clsa-dcs-f2.StroopFAS:STP_DOTREC_COF2&apos;)
-  var w=$(&apos;clsa-dcs-f2.StroopFAS:STP_WORREC_COF2&apos;)
-  var c=$(&apos;clsa-dcs-f2.StroopFAS:STP_COLREC_COF2&apos;)
-  var f=$(&apos;clsa-dcs-f2.StroopFAS:FAS_FREC_COF2&apos;)
-  var a=$(&apos;clsa-dcs-f2.StroopFAS:FAS_AREC_COF2&apos;)
-  var s=$(&apos;clsa-dcs-f2.StroopFAS:FAS_SREC_COF2&apos;)
   var str=[]
-  str.push(&apos;filesize_dot:&apos;+(d.isNull().value()?&apos;0&apos;:d.length().value()))
-  str.push(&apos;filesize_wor:&apos;+(w.isNull().value()?&apos;0&apos;:w.length().value()))
-  str.push(&apos;filesize_col:&apos;+(c.isNull().value()?&apos;0&apos;:c.length().value()))
-  str.push(&apos;filesize_f:&apos;+(f.isNull().value()?&apos;0&apos;:f.length().value()))
-  str.push(&apos;filesize_a:&apos;+(a.isNull().value()?&apos;0&apos;:a.length().value()))
-  str.push(&apos;filesize_s:&apos;+(s.isNull().value()?&apos;0&apos;:s.length().value()))  
-  str.push(&apos;complete:&apos;+Math.round(q.sum().minus(p.sum()).multiply(100).div(q.sum()).value()))
+  str.push(
+    &apos;complete:&apos;+
+    Math.round(q.sum().minus(p.sum()).multiply(100).div(q.sum()).value()))
+
+var sections={
+&apos;FAS&apos;:[
+&apos;FAS_INSTRDY_COF2&apos;,
+&apos;FAS_INSTRPT_COF2&apos;,
+&apos;FAS_INSTFCTR_COF2&apos;,
+&apos;FAS_INSTLST_COF2&apos;,
+&apos;FAS_FRECR_COF2&apos;,
+&apos;FAS_FCOMP_COF2&apos;,
+&apos;FAS_FCOMP_COMM_COF2&apos;,
+&apos;FAS_ARECR_COF2&apos;,
+&apos;FAS_ACOMP_COF2&apos;,
+&apos;FAS_ACOMP_COMM_COF2&apos;,
+&apos;FAS_SRECR_COF2&apos;,
+&apos;FAS_SCOMP_COF2&apos;,
+&apos;FAS_SCOMP_COMM_COF2&apos;],
+&apos;STP&apos;:[
+&apos;NEUR_CONSREC_COF2&apos;,
+&apos;STP_DOT_COF2&apos;,
+&apos;STP_DOTRPT_COF2&apos;,
+&apos;STP_DOTFCTR_COF2&apos;,
+&apos;STP_DOTLST_COF2&apos;,
+&apos;STP_DOTRECR_COF2&apos;,
+&apos;STP_DOTABLE_COF2&apos;,
+&apos;STP_DOTTIMEN_COF2&apos;,
+&apos;STP_WOR_COF2&apos;,
+&apos;STP_WORRPT_COF2&apos;,
+&apos;STP_WORFCTR_COF2&apos;,
+&apos;STP_WORLST_COF2&apos;,
+&apos;STP_WORRECR_COF2&apos;,
+&apos;STP_WORABLE_COF2&apos;,
+&apos;STP_WORTIMEN_COF2&apos;,
+&apos;STP_COL_COF2&apos;,
+&apos;STP_COLRPT_COF2&apos;,
+&apos;STP_COLFCTR_COF2&apos;,
+&apos;STP_COLLST_COF2&apos;,
+&apos;STP_COLRECR_COF2&apos;,
+&apos;STP_COLABLE_COF2&apos;,
+&apos;STP_COLTIMEN_COF2&apos;,
+&apos;STP_COLCOMM_COF2&apos;]
+}
+
+  for(var key in sections) {
+    var rcount=0
+    var qcount=0
+    var arr=sections[key]
+    for(var i=0; i&lt;arr.length; i++ ) {
+      var j=$(stage+arr[i])
+      if(j.isNull().value()) continue
+      qcount++      
+      rcount+=j.any(&apos;REFUSED&apos;).value()?1:0
+    }
+    if(0==qcount) {
+      str.push(key+&apos;:100&apos;)
+    } else {
+      var perc=100.0*rcount/qcount      
+      if(0&lt;perc &amp;&amp; 100&gt;perc &amp;&amp; 0!=(perc-Math.floor(perc))) {        
+        perc=perc.toFixed(3)
+      }
+      str.push(key+&apos;:&apos;+perc)
+    }  
+  }
+
   res=newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)
 }
 res</attribute>
@@ -1579,14 +1631,139 @@ res</attribute>
       </variable>
       <variable name="data_qac_contraindications" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">var p=$(&apos;clsa-dcs-f2.ContraIndications:QuestionnaireMetric.missingCount&apos;).asSequence()
-var q=$(&apos;clsa-dcs-f2.ContraIndications:QuestionnaireMetric.questionCount&apos;).asSequence()
+          <attribute name="script" valueType="text">var stage=&apos;clsa-dcs-f2.ContraIndications:&apos;
+var p=$(stage+&apos;QuestionnaireMetric.missingCount&apos;).asSequence()
+var q=$(stage+&apos;QuestionnaireMetric.questionCount&apos;).asSequence()
 var res=null
-if(p.isNull().and(q.isNull()).not().value() &amp;&amp; 0!=q.sum()){
-  res=newValue(
-    &apos;{complete:&apos;+
-    Math.round(q.sum().minus(p.sum()).multiply(100).div(q.sum()).value())
-    +&apos;}&apos;,&apos;text&apos;)
+if(p.isNull().and(q.isNull()).not().value() &amp;&amp; 0!=q.sum()) {
+  var str=[]
+  str.push(
+    &apos;complete:&apos;+
+    Math.round(q.sum().minus(p.sum()).multiply(100).div(q.sum()).value()))
+
+var sections={
+&apos;ICQ_COF2&apos;:[
+&apos;ICQ_DOMHAND_COF2&apos;,
+&apos;ICQ_HNDSWL_COF2&apos;,
+&apos;ICQ_HNDCST_COF2&apos;,
+&apos;ICQ_HNDHMT_COF2&apos;,
+&apos;ICQ_ARMSWL_COF2&apos;,
+&apos;ICQ_ARMCST_COF2&apos;,
+&apos;ICQ_LEGSWL_COF2&apos;,
+&apos;ICQ_LEGCST_COF2&apos;,
+&apos;ICQ_SRG3MO_COF2&apos;,
+&apos;ICQ_SRGYARM_COF2&apos;,
+&apos;ICQ_SRGYCHT_COF2&apos;,
+&apos;ICQ_SRGYHND_COF2&apos;,
+&apos;ICQ_SRGYART_COF2&apos;,
+&apos;ICQ_SRGYEYE_COF2&apos;,
+&apos;ICQ_SRGYABD_COF2&apos;,
+&apos;ICQ_SRGYHRT_COF2&apos;,
+&apos;ICQ_SRGYOT_COF2&apos;,
+&apos;ICQ_SRGYOTSPE_COF2&apos;,
+&apos;ICQ_PAINHND_COF2&apos;,
+&apos;ICQ_RISEASSI_COF2&apos;,
+&apos;ICQ_RISECANE_COF2&apos;,
+&apos;ICQ_ABLESTND_COF2&apos;,
+&apos;ICQ_ABLEWLK_COF2&apos;,
+&apos;ICQ_PREGNT_COF2&apos;,
+&apos;ICQ_PREGNTWK_COF2&apos;,
+&apos;ICQ_ILLLUNG_COF2&apos;,
+&apos;ICQ_HRTCOND_COF2&apos;,
+&apos;ICQ_EMB6WK_COF2&apos;,
+&apos;ICQ_EMBMED_COF2&apos;,
+&apos;ICQ_DERET3MO_COF2&apos;,
+&apos;ICQ_EYEINF_COF2&apos;,
+&apos;ICQ_EARINF_COF2&apos;,
+&apos;ICQ_CATRCT_COF2&apos;,
+&apos;ICQ_CATRCTAGE_COF2&apos;,
+&apos;ICQ_CATRCTS_COF2&apos;,
+&apos;ICQ_CATRCT2_COF2&apos;,
+&apos;ICQ_CATIME_COF2&apos;,
+&apos;ICQ_GLAUC_COF2&apos;,
+&apos;ICQ_GLAUCAGE_COF2&apos;,
+&apos;ICQ_HRAID_COF2&apos;,
+&apos;ICQ_HRAID2_COF2&apos;,
+&apos;ICQ_HRWORKING_COF2&apos;,
+&apos;ICQ_GLASSES2_COF2&apos;,
+&apos;ICQ_CTLENS2_COF2&apos;,
+&apos;ICQ_GLASSES_COF2&apos;,
+&apos;ICQ_CTLENS_COF2&apos;,
+&apos;ICQ_PROSLIM_COF2&apos;,
+&apos;ICQ_PROSARM_COF2&apos;,
+&apos;ICQ_JOINTARM_COF2&apos;,
+&apos;ICQ_PROSLEG_COF2&apos;,
+&apos;ICQ_PROSHND_COF2&apos;,
+&apos;ICQ_PROSFT_COF2&apos;,
+&apos;ICQ_PROSHIP_COF2&apos;,
+&apos;ICQ_PROSKNEE_COF2&apos;,
+&apos;ICQ_PROEYE_COF2&apos;,
+&apos;ICQ_FX_COF2&apos;,
+&apos;ICQ_FXARM_COF2&apos;,
+&apos;ICQ_FXSHLD_COF2&apos;,
+&apos;ICQ_FXHND_COF2&apos;,
+&apos;ICQ_FXWRST_COF2&apos;,
+&apos;ICQ_FXRIB_COF2&apos;,
+&apos;ICQ_FXLEG_COF2&apos;,
+&apos;ICQ_FXANK_COF2&apos;,
+&apos;ICQ_FXFT_COF2&apos;,
+&apos;ICQ_FXHIP_COF2&apos;,
+&apos;ICQ_FXKNEE_COF2&apos;,
+&apos;ICQ_FXCHK_COF2&apos;,
+&apos;ICQ_FXJAW_COF2&apos;,
+&apos;ICQ_FXNOSE_COF2&apos;,
+&apos;ICQ_FXSKL_COF2&apos;,
+&apos;ICQ_FXNECK_COF2&apos;,
+&apos;ICQ_FXBACK_COF2&apos;,
+&apos;ICQ_FXCOLLR_COF2&apos;,
+&apos;ICQ_FXPELV_COF2&apos;,
+&apos;ICQ_LAMIN_COF2&apos;,
+&apos;ICQ_POLIO_COF2&apos;,
+&apos;ICQ_BLDSP3MO_COF2&apos;,
+&apos;ICQ_ANEURY_COF2&apos;,
+&apos;ICQ_PACEMKR_COF2&apos;,
+&apos;ICQ_DEFIBR_COF2&apos;,
+&apos;ICQ_COCHLIMP_COF2&apos;,
+&apos;ICQ_NGTUBE_COF2&apos;,
+&apos;ICQ_ABDTUBE_COF2&apos;,
+&apos;ICQ_CHEMO4WK_COF2&apos;,
+&apos;ICQ_HAEMO_COF2&apos;,
+&apos;ICQ_BLDTR24H_COF2&apos;,
+&apos;ICQ_NUCLMED_COF2&apos;,
+&apos;ICQ_NUCLMED_48H_COF2&apos;,
+&apos;ICQ_NUCLMED_TEST_Q_COF2&apos;,
+&apos;ICQ_NUCLMED_IV24H_COF2&apos;,
+&apos;ICQ_BARSWAL_COF2&apos;,
+&apos;ICQ_TINNIT_COF2&apos;,
+&apos;ICQ_SMOKE_COF2&apos;,
+&apos;ICQ_SMOKETIME_COF2&apos;,
+&apos;ICQ_SMOKETIMEH_COF2&apos;,
+&apos;ICQ_INHALERLONG_COF2&apos;,
+&apos;ICQ_INHALERSHORT_COF2&apos;]
+}
+
+  for(var key in sections) {
+    var rcount=0
+    var qcount=0
+    var arr=sections[key]
+    for(var i=0; i&lt;arr.length; i++ ) {
+      var j=$(stage+arr[i])
+      if(j.isNull().value()) continue
+      qcount++      
+      rcount+=j.any(&apos;REFUSED&apos;).value()?1:0
+    }
+    if(0==qcount) {
+      str.push(key+&apos;:100&apos;)
+    } else {
+      var perc=100.0*rcount/qcount      
+      if(0&lt;perc &amp;&amp; 100&gt;perc &amp;&amp; 0!=(perc-Math.floor(perc))) {        
+        perc=perc.toFixed(3)
+      }
+      str.push(key+&apos;:&apos;+perc)
+    }  
+  }
+
+  res=newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)
 }
 res</attribute>
         </attributes>
@@ -1626,15 +1803,54 @@ res</attribute>
       </variable>
       <variable name="data_qac_event_pmt" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">var p=$(&apos;clsa-dcs-f2.EventPMT:QuestionnaireMetric.missingCount&apos;).asSequence()
-var q=$(&apos;clsa-dcs-f2.EventPMT:QuestionnaireMetric.questionCount&apos;).asSequence()
+          <attribute name="script" valueType="text">var stage=&apos;clsa-dcs-f2.EventPMT:&apos;
+var p=$(stage+&apos;QuestionnaireMetric.missingCount&apos;).asSequence()
+var q=$(stage+&apos;QuestionnaireMetric.questionCount&apos;).asSequence()
 var res=null
-if(p.isNull().and(q.isNull()).not().value() &amp;&amp; 0!=q.sum()){
-  res=newValue(
-    &apos;{complete:&apos;+
-    Math.round(q.sum().minus(p.sum()).multiply(100).div(q.sum()).value())
-    +&apos;}&apos;,&apos;text&apos;)
-}   
+if(p.isNull().and(q.isNull()).not().value() &amp;&amp; 0!=q.sum()) {
+  var str=[]
+  str.push(
+    &apos;complete:&apos;+
+    Math.round(q.sum().minus(p.sum()).multiply(100).div(q.sum()).value()))
+
+var sections={
+&apos;PMT&apos;:[
+&apos;PMT_ABLE_COF2&apos;,
+&apos;PMT_FCT_COF2&apos;,
+&apos;PMT_TIM_COF2&apos;,
+&apos;PMT_NOCUE_COF2&apos;,
+&apos;PMT_ENV_COF2&apos;,
+&apos;PMT_ENV_OBS_COF2&apos;,
+&apos;PMT_MONEY_COF2&apos;,
+&apos;PMT_MONEY_OBS_COF2&apos;,
+&apos;PMT_ITP_COF2&apos;,
+&apos;PMT_ACR_COF2&apos;,
+&apos;PMT_REM_COF2&apos;]
+}
+
+  for(var key in sections) {
+    var rcount=0
+    var qcount=0
+    var arr=sections[key]
+    for(var i=0; i&lt;arr.length; i++ ) {
+      var j=$(stage+arr[i])
+      if(j.isNull().value()) continue
+      qcount++      
+      rcount+=j.any(&apos;REFUSED&apos;).value()?1:0
+    }
+    if(0==qcount) {
+      str.push(key+&apos;:100&apos;)
+    } else {
+      var perc=100.0*rcount/qcount      
+      if(0&lt;perc &amp;&amp; 100&gt;perc &amp;&amp; 0!=(perc-Math.floor(perc))) {        
+        perc=perc.toFixed(3)
+      }
+      str.push(key+&apos;:&apos;+perc)
+    }  
+  }
+
+  res=newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)
+}
 res</attribute>
         </attributes>
       </variable>
@@ -1673,14 +1889,814 @@ res</attribute>
       </variable>
       <variable name="data_qac_disease_symptoms" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">var p=$(&apos;clsa-dcs-f2.DiseaseSymptoms:QuestionnaireMetric.missingCount&apos;).asSequence()
-var q=$(&apos;clsa-dcs-f2.DiseaseSymptoms:QuestionnaireMetric.questionCount&apos;).asSequence()
+          <attribute name="script" valueType="text">var stage=&apos;clsa-dcs-f2.DiseaseSymptoms:&apos;
+var p=$(stage+&apos;QuestionnaireMetric.missingCount&apos;).asSequence()
+var q=$(stage+&apos;QuestionnaireMetric.questionCount&apos;).asSequence()
 var res=null
-if(p.isNull().and(q.isNull()).not().value() &amp;&amp; 0!=q.sum()){
-  res=newValue(
-    &apos;{complete:&apos;+
-    Math.round(q.sum().minus(p.sum()).multiply(100).div(q.sum()).value())
-    +&apos;}&apos;,&apos;text&apos;)
+if(p.isNull().and(q.isNull()).not().value() &amp;&amp; 0!=q.sum()) {
+  var str=[]
+  str.push(
+    &apos;complete:&apos;+
+    Math.round(q.sum().minus(p.sum()).multiply(100).div(q.sum()).value()))
+
+var sections={
+&apos;AOR&apos;:[
+&apos;AOR_AORSTN_COF2&apos;,
+&apos;AOR_AORAGE_COF2&apos;,
+&apos;AOR_SURGAV_COF2&apos;,
+&apos;AOR_SURGAGE_COF2&apos;,
+&apos;AOR_SURTYPE_COF2&apos;,
+&apos;AOR_VALVE_COF2&apos;],
+&apos;CAO&apos;:[
+&apos;CCC_ASTHM_COF2&apos;,
+&apos;CCC_ASTHM_CHANGE_COF2&apos;,
+&apos;CAO_ASTHMAGE_COF2&apos;,
+&apos;CAO_WHEZ_COF2&apos;,
+&apos;CAO_SOBFLAT_COF2&apos;,
+&apos;CAO_EXERT_COF2&apos;,
+&apos;CAO_SOBUP_COF2&apos;,
+&apos;CAO_SOBPM_COF2&apos;,
+&apos;CAO_WKWHEZ_COF2&apos;,
+&apos;CAO_WKCOF_COF2&apos;,
+&apos;CAO_WKSOB_COF2&apos;,
+&apos;CCC_COPD_COF2&apos;,
+&apos;CCC_COPD_CHANGE_COF2&apos;,
+&apos;CAO_COPDAGE_COF2&apos;,
+&apos;CAO_COLD_COF2&apos;,
+&apos;CAO_COFPY_COF2&apos;,
+&apos;CAO_COFAM_COF2&apos;,
+&apos;CAO_COFMAM_COF2&apos;,
+&apos;CAO_PHLEGMPY_COF2&apos;,
+&apos;CAO_TRBCOUGH_COF2&apos;,
+&apos;CCC_COUGHTM_COF2&apos;,
+&apos;CAO_MED_COF2&apos;,
+&apos;CAO_MEDNAME_COF2&apos;,
+&apos;CAO_MED_1_COF2&apos;,
+&apos;CAO_MED_2_COF2&apos;,
+&apos;CAO_MED_3_COF2&apos;,
+&apos;CAO_MED_4_COF2&apos;,
+&apos;CAO_MED_5_COF2&apos;,
+&apos;CAO_MED_6_COF2&apos;,
+&apos;CAO_MED_7_COF2&apos;,
+&apos;CAO_MED_8_COF2&apos;,
+&apos;CAO_MED_9_COF2&apos;,
+&apos;CAO_MED_10_COF2&apos;,
+&apos;CAO_MED_11_COF2&apos;,
+&apos;CAO_MED_12_COF2&apos;,
+&apos;CAO_MED_13_COF2&apos;,
+&apos;CAO_MED_14_COF2&apos;,
+&apos;CAO_MED_15_COF2&apos;,
+&apos;CAO_MED_16_COF2&apos;,
+&apos;CAO_MED_17_COF2&apos;,
+&apos;CAO_MED_18_COF2&apos;,
+&apos;CAO_MED_19_COF2&apos;,
+&apos;CAO_MED_20_COF2&apos;,
+&apos;CAO_MED_21_COF2&apos;,
+&apos;CAO_MED_22_COF2&apos;,
+&apos;CAO_MED_23_COF2&apos;,
+&apos;CAO_MED_24_COF2&apos;,
+&apos;CAO_MED_25_COF2&apos;,
+&apos;CAO_MED_26_COF2&apos;,
+&apos;CAO_MED_27_COF2&apos;,
+&apos;CAO_MED_28_COF2&apos;,
+&apos;CAO_MED_29_COF2&apos;,
+&apos;CAO_MED_30_COF2&apos;,
+&apos;CAO_MED_31_COF2&apos;,
+&apos;CAO_MED_32_COF2&apos;,
+&apos;CAO_MED_33_COF2&apos;,
+&apos;CAO_MED_34_COF2&apos;,
+&apos;CAO_MED_35_COF2&apos;,
+&apos;CAO_MED_36_COF2&apos;,
+&apos;CAO_MED_37_COF2&apos;,
+&apos;CAO_MED_38_COF2&apos;,
+&apos;CAO_MED_39_COF2&apos;,
+&apos;CAO_MED_40_COF2&apos;],
+&apos;CCC_CANCER&apos;:[
+&apos;CCC_CANC_COF2&apos;,
+&apos;CCC_CANTP_COF2&apos;,
+&apos;CCC_CANCAGE_CNS_COF2.CNS2&apos;,
+&apos;CCC_CANCAGE_TH_COF2.TH2&apos;,
+&apos;CCC_CANCAGE_SM_COF2.SM&apos;,
+&apos;CCC_CANCAGE_SNM_COF2.SNM&apos;,
+&apos;CCC_CANCAGE_OR_COF2.OR&apos;,
+&apos;CCC_CANCAGE_LX_COF2.LX&apos;,
+&apos;CCC_CANCAGE_ES_COF2.ES&apos;,
+&apos;CCC_CANCAGE_BR_COF2.BR&apos;,
+&apos;CCC_CANCAGE_LU_COF2.LU&apos;,
+&apos;CCC_CANCAGE_ST_COF2.ST&apos;,
+&apos;CCC_CANCAGE_BL_COF2.BL&apos;,
+&apos;CCC_CANCAGE_KD_COF2.KD&apos;,
+&apos;CCC_CANCAGE_LV_COF2.LV&apos;,
+&apos;CCC_CANCAGE_PA_COF2.PA&apos;,
+&apos;CCC_CANCAGE_COL_COF2.COL&apos;,
+&apos;CCC_CANCAGE_PR_COF2.PR&apos;,
+&apos;CCC_CANCAGE_TT_COF2.TT&apos;,
+&apos;CCC_CANCAGE_OV_COF2.OV&apos;,
+&apos;CCC_CANCAGE_FU_COF2.FU&apos;,
+&apos;CCC_CANCAGE_FC_COF2.FC&apos;,
+&apos;CCC_CANCAGE_LK_COF2.LK&apos;,
+&apos;CCC_CANCAGE_MM_COF2.MM&apos;,
+&apos;CCC_CANCAGE_HL_COF2.HL&apos;,
+&apos;CCC_CANCAGE_NHL_COF2.NHL&apos;,
+&apos;CCC_CANCAGE_OT_COF2.OT&apos;],
+&apos;CCC_CARDIAC&apos;:[
+&apos;CCC_HEART_COF2&apos;,
+&apos;CCC_HEARTAGE_COF2&apos;,
+&apos;CCC_HEARTCHANGE_COF2&apos;,
+&apos;CCC_PAD_COF2&apos;,
+&apos;CCC_PADAGE_COF2&apos;],
+&apos;CCC_GASTRO&apos;:[
+&apos;CCC_ULCR_COF2&apos;,
+&apos;CCC_ULCRAGE_COF2&apos;,
+&apos;CCC_ULCR_CHANGE_COF2&apos;,
+&apos;CCC_CRDIS_COF2&apos;,
+&apos;CCC_ULCOL_COF2&apos;,
+&apos;CCC_IBSYD_COF2&apos;,
+&apos;CCC_CRDISAGE_COF2&apos;,
+&apos;CCC_ULCOLAGE_COF2&apos;,
+&apos;CCC_IBSYDAGE_COF2&apos;,
+&apos;CCC_BOWINC_COF2&apos;,
+&apos;CCC_BOWINCAGE_COF2&apos;,
+&apos;CCC_BOWINC_CHANGE_COF2&apos;,
+&apos;CCC_URIINC_COF2&apos;,
+&apos;CCC_URIINCAGE_COF2&apos;,
+&apos;CCC_URIINC_CHANGE_COF2&apos;],
+&apos;CCC_INFECTION&apos;:[
+&apos;CCC_DRPNEU_COF2&apos;,
+&apos;CCC_DRFLU_COF2&apos;,
+&apos;CCC_DRUTI_COF2&apos;,
+&apos;CCC_DROT_COF2&apos;,
+&apos;CCC_DROTSP_COF2&apos;],
+&apos;CCC_MENTAL&apos;:[
+&apos;CCC_ANXI_COF2&apos;,
+&apos;CCC_ANXIAGE_COF2&apos;,
+&apos;CCC_ANXI_CHANGE_COF2&apos;,
+&apos;CCC_MOOD_COF2&apos;,
+&apos;CCC_MOODAGE_COF2&apos;,
+&apos;CCC_MOOD_CHANGE_COF2&apos;],
+&apos;CCC_NEURO&apos;:[
+&apos;CCC_MEMPB_COF2&apos;,
+&apos;CCC_MEMPBAGE_COF2&apos;,
+&apos;CCC_MEMPB_CHANGE_COF2&apos;,
+&apos;CCC_ALZH_COF2&apos;,
+&apos;CCC_ALZHAGE_COF2&apos;,
+&apos;CCC_ALZH_CHANGE_COF2&apos;,
+&apos;CCC_MS_COF2&apos;,
+&apos;CCC_MSAGE_COF2&apos;,
+&apos;CCC_MS_CHANGE_COF2&apos;,
+&apos;CCC_MGRN_COF2&apos;,
+&apos;CCC_MGRNAGE_COF2&apos;,
+&apos;CCC_MGRN_CHANGE_COF2&apos;],
+&apos;CCC_OTHER&apos;:[
+&apos;CCC_ALLRG_COF2&apos;,
+&apos;CCC_ALLRGAGE_COF2&apos;,
+&apos;CCC_ALLRG_CHANGE_COF2&apos;,
+&apos;CCC_KIDN_COF2&apos;,
+&apos;CCC_KIDNAGE_COF2&apos;,
+&apos;CCC_KIDN_CHANGE_COF2&apos;,
+&apos;CCC_KIDSTN_COF2&apos;,
+&apos;CCC_KIDSTNAGE_COF2&apos;,
+&apos;CCC_DITYP_COF2&apos;,
+&apos;CCC_DITIM_COF2&apos;,
+&apos;CCC_HCV_COF2&apos;,
+&apos;CCC_HCVAGE_COF2&apos;,
+&apos;CCC_HCV_CHANGE_COF2&apos;,
+&apos;CCC_HCV_TRT_COF2&apos;,
+&apos;CCC_HCV_TXS_COF2&apos;,
+&apos;CCC_HCV_CURR_COF2&apos;],
+&apos;CCC_VISION&apos;:[
+&apos;CCC_MACDEG_COF2&apos;,
+&apos;CCC_MACDEGAGE_COF2&apos;,
+&apos;CCC_MACDEG_CHANGE_COF2&apos;],
+&apos;DEP&apos;:[
+&apos;DEP_BOTR_COF2&apos;,
+&apos;DEP_MIND_COF2&apos;,
+&apos;DEP_FLDP_COF2&apos;,
+&apos;DEP_FFRT_COF2&apos;,
+&apos;DEP_HPFL_COF2&apos;,
+&apos;DEP_FRFL_COF2&apos;,
+&apos;DEP_RSTLS_COF2&apos;,
+&apos;DEP_HAPP_COF2&apos;,
+&apos;DEP_LONLY_COF2&apos;,
+&apos;DEP_GTGO_COF2&apos;],
+&apos;DIA&apos;:[
+&apos;DIA_DIAB_COF2&apos;,
+&apos;DIA_DIAB_CHANGE_COF2&apos;,
+&apos;DIA_AGE_COF2&apos;,
+&apos;DIA_DIABRT_COF2&apos;,
+&apos;DIA_DIABRTAGE_COF2&apos;,
+&apos;DIA_EVPRG_COF2&apos;,
+&apos;DIA_PRGDIA_COF2&apos;,
+&apos;DIA_MED_COF2&apos;,
+&apos;DIA_MEDNAME_COF2&apos;,
+&apos;DIA_MEDINSNAME_COF2&apos;,
+&apos;DIA_MED_1_COF2&apos;,
+&apos;DIA_MED_2_COF2&apos;,
+&apos;DIA_MED_3_COF2&apos;,
+&apos;DIA_MED_4_COF2&apos;,
+&apos;DIA_MED_5_COF2&apos;,
+&apos;DIA_MED_6_COF2&apos;,
+&apos;DIA_MED_7_COF2&apos;,
+&apos;DIA_MED_8_COF2&apos;,
+&apos;DIA_MED_9_COF2&apos;,
+&apos;DIA_MED_10_COF2&apos;,
+&apos;DIA_MED_11_COF2&apos;,
+&apos;DIA_MED_12_COF2&apos;,
+&apos;DIA_MED_13_COF2&apos;,
+&apos;DIA_MED_14_COF2&apos;,
+&apos;DIA_MED_15_COF2&apos;,
+&apos;DIA_MED_16_COF2&apos;,
+&apos;DIA_MED_17_COF2&apos;,
+&apos;DIA_MED_18_COF2&apos;,
+&apos;DIA_MED_19_COF2&apos;,
+&apos;DIA_MED_20_COF2&apos;,
+&apos;DIA_MED_21_COF2&apos;,
+&apos;DIA_MED_22_COF2&apos;,
+&apos;DIA_MED_23_COF2&apos;,
+&apos;DIA_MED_24_COF2&apos;,
+&apos;DIA_MED_25_COF2&apos;,
+&apos;DIA_MED_26_COF2&apos;,
+&apos;DIA_MED_27_COF2&apos;,
+&apos;DIA_MED_28_COF2&apos;,
+&apos;DIA_MED_29_COF2&apos;,
+&apos;DIA_MED_30_COF2&apos;,
+&apos;DIA_MED_31_COF2&apos;,
+&apos;DIA_MED_32_COF2&apos;,
+&apos;DIA_MED_33_COF2&apos;,
+&apos;DIA_MED_34_COF2&apos;,
+&apos;DIA_MED_35_COF2&apos;,
+&apos;DIA_MED_36_COF2&apos;,
+&apos;DIA_MED_37_COF2&apos;,
+&apos;DIA_MED_38_COF2&apos;,
+&apos;DIA_MED_39_COF2&apos;,
+&apos;DIA_MED_40_COF2&apos;,
+&apos;DIA_MEDAGE_COF2&apos;,
+&apos;DIA_DIABRT_CHANGE_COF2&apos;],
+&apos;DPR&apos;:[
+&apos;DPR_CLINDEP_COF2&apos;,
+&apos;DPR_CLINDEP_CHANGE_COF2&apos;,
+&apos;DPR_AGE_COF2&apos;,
+&apos;DPR_MED_COF2&apos;,
+&apos;DPR_MEDNAME_COF2&apos;,
+&apos;DPR_MED_1_COF2&apos;,
+&apos;DPR_MED_2_COF2&apos;,
+&apos;DPR_MED_3_COF2&apos;,
+&apos;DPR_MED_4_COF2&apos;,
+&apos;DPR_MED_5_COF2&apos;,
+&apos;DPR_MED_6_COF2&apos;,
+&apos;DPR_MED_7_COF2&apos;,
+&apos;DPR_MED_8_COF2&apos;,
+&apos;DPR_MED_9_COF2&apos;,
+&apos;DPR_MED_10_COF2&apos;,
+&apos;DPR_MED_11_COF2&apos;,
+&apos;DPR_MED_12_COF2&apos;,
+&apos;DPR_MED_13_COF2&apos;,
+&apos;DPR_MED_14_COF2&apos;,
+&apos;DPR_MED_15_COF2&apos;,
+&apos;DPR_MED_16_COF2&apos;,
+&apos;DPR_MED_17_COF2&apos;,
+&apos;DPR_MED_18_COF2&apos;,
+&apos;DPR_MED_19_COF2&apos;,
+&apos;DPR_MED_20_COF2&apos;,
+&apos;DPR_MED_21_COF2&apos;,
+&apos;DPR_MED_22_COF2&apos;,
+&apos;DPR_MED_23_COF2&apos;,
+&apos;DPR_MED_24_COF2&apos;,
+&apos;DPR_MED_25_COF2&apos;,
+&apos;DPR_MED_26_COF2&apos;,
+&apos;DPR_MED_27_COF2&apos;,
+&apos;DPR_MED_28_COF2&apos;,
+&apos;DPR_MED_29_COF2&apos;,
+&apos;DPR_MED_30_COF2&apos;,
+&apos;DPR_MED_31_COF2&apos;,
+&apos;DPR_MED_32_COF2&apos;,
+&apos;DPR_MED_33_COF2&apos;,
+&apos;DPR_MED_34_COF2&apos;,
+&apos;DPR_MED_35_COF2&apos;,
+&apos;DPR_MED_36_COF2&apos;,
+&apos;DPR_MED_37_COF2&apos;,
+&apos;DPR_MED_38_COF2&apos;,
+&apos;DPR_MED_39_COF2&apos;,
+&apos;DPR_MED_40_COF2&apos;,
+&apos;DPR_OTHMD_COF2&apos;,
+&apos;DPR_OTHCOUN_COF2&apos;,
+&apos;DPR_EVRTRT_COF2&apos;,
+&apos;DPR_EVRCOUN_COF2&apos;],
+&apos;EPI&apos;:[
+&apos;EPI_CAUS_FEV_COF2&apos;,
+&apos;EPI_EVER_COF2&apos;,
+&apos;EPI_EPILSZ_COF2&apos;,
+&apos;EPI_MED_COF2&apos;,
+&apos;EPI_CURRMED_COF2&apos;,
+&apos;EPI_CAUS_SEIZ_COF2&apos;,
+&apos;EPI_CAUS_TWIT_COF2&apos;,
+&apos;EPI_CAUS_MENT_COF2&apos;,
+&apos;EPI_CAUS_DREM_COF2&apos;,
+&apos;EPI_CAUS_BDMV_COF2&apos;,
+&apos;EPI_CAUS_JERK_COF2&apos;,
+&apos;EPI_CAUS_SPEL_COF2&apos;,
+&apos;EPI_CAUS5YR_COF2&apos;],
+&apos;HBP&apos;:[
+&apos;CCC_HBP_COF2&apos;,
+&apos;CCC_HBP_CHANGE_COF2&apos;,
+&apos;HBP_AGE_COF2&apos;,
+&apos;HBP_OTPRG_COF2&apos;,
+&apos;HBP_MED_COF2&apos;,
+&apos;HBP_MEDNAME_COF2&apos;,
+&apos;HBP_MED_1_COF2&apos;,
+&apos;HBP_MED_2_COF2&apos;,
+&apos;HBP_MED_3_COF2&apos;,
+&apos;HBP_MED_4_COF2&apos;,
+&apos;HBP_MED_5_COF2&apos;,
+&apos;HBP_MED_6_COF2&apos;,
+&apos;HBP_MED_7_COF2&apos;,
+&apos;HBP_MED_8_COF2&apos;,
+&apos;HBP_MED_9_COF2&apos;,
+&apos;HBP_MED_10_COF2&apos;,
+&apos;HBP_MED_11_COF2&apos;,
+&apos;HBP_MED_12_COF2&apos;,
+&apos;HBP_MED_13_COF2&apos;,
+&apos;HBP_MED_14_COF2&apos;,
+&apos;HBP_MED_15_COF2&apos;,
+&apos;HBP_MED_16_COF2&apos;,
+&apos;HBP_MED_17_COF2&apos;,
+&apos;HBP_MED_18_COF2&apos;,
+&apos;HBP_MED_19_COF2&apos;,
+&apos;HBP_MED_20_COF2&apos;,
+&apos;HBP_MED_21_COF2&apos;,
+&apos;HBP_MED_22_COF2&apos;,
+&apos;HBP_MED_23_COF2&apos;,
+&apos;HBP_MED_24_COF2&apos;,
+&apos;HBP_MED_25_COF2&apos;,
+&apos;HBP_MED_26_COF2&apos;,
+&apos;HBP_MED_27_COF2&apos;,
+&apos;HBP_MED_28_COF2&apos;,
+&apos;HBP_MED_29_COF2&apos;,
+&apos;HBP_MED_30_COF2&apos;,
+&apos;HBP_MED_31_COF2&apos;,
+&apos;HBP_MED_32_COF2&apos;,
+&apos;HBP_MED_33_COF2&apos;,
+&apos;HBP_MED_34_COF2&apos;,
+&apos;HBP_MED_35_COF2&apos;,
+&apos;HBP_MED_36_COF2&apos;,
+&apos;HBP_MED_37_COF2&apos;,
+&apos;HBP_MED_38_COF2&apos;,
+&apos;HBP_MED_39_COF2&apos;,
+&apos;HBP_MED_40_COF2&apos;,
+&apos;HBP_EVRMED_COF2&apos;,
+&apos;HBP_TRT_COF2&apos;,
+&apos;HBP_EVTRT_COF2&apos;],
+&apos;HYP&apos;:[
+&apos;CCC_UTHYR_COF2&apos;,
+&apos;CCC_UTHYR_CHANGE_COF2&apos;,
+&apos;HYP_UTHYRAGE_COF2&apos;,
+&apos;HYP_UTHYRMED_COF2&apos;,
+&apos;HYP_UTHYRMEDNAME_COF2&apos;,
+&apos;HYP_UTHYRMED_1_COF2&apos;,
+&apos;HYP_UTHYRMED_2_COF2&apos;,
+&apos;HYP_UTHYRMED_3_COF2&apos;,
+&apos;HYP_UTHYRMED_4_COF2&apos;,
+&apos;HYP_UTHYRMED_5_COF2&apos;,
+&apos;HYP_UTHYRMED_6_COF2&apos;,
+&apos;HYP_UTHYRMED_7_COF2&apos;,
+&apos;HYP_UTHYRMED_8_COF2&apos;,
+&apos;HYP_UTHYRMED_9_COF2&apos;,
+&apos;HYP_UTHYRMED_10_COF2&apos;,
+&apos;HYP_UTHYRMED_11_COF2&apos;,
+&apos;HYP_UTHYRMED_12_COF2&apos;,
+&apos;HYP_UTHYRMED_13_COF2&apos;,
+&apos;HYP_UTHYRMED_14_COF2&apos;,
+&apos;HYP_UTHYRMED_15_COF2&apos;,
+&apos;HYP_UTHYRMED_16_COF2&apos;,
+&apos;HYP_UTHYRMED_17_COF2&apos;,
+&apos;HYP_UTHYRMED_18_COF2&apos;,
+&apos;HYP_UTHYRMED_19_COF2&apos;,
+&apos;HYP_UTHYRMED_20_COF2&apos;,
+&apos;HYP_UTHYRMED_21_COF2&apos;,
+&apos;HYP_UTHYRMED_22_COF2&apos;,
+&apos;HYP_UTHYRMED_23_COF2&apos;,
+&apos;HYP_UTHYRMED_24_COF2&apos;,
+&apos;HYP_UTHYRMED_25_COF2&apos;,
+&apos;HYP_UTHYRMED_26_COF2&apos;,
+&apos;HYP_UTHYRMED_27_COF2&apos;,
+&apos;HYP_UTHYRMED_28_COF2&apos;,
+&apos;HYP_UTHYRMED_29_COF2&apos;,
+&apos;HYP_UTHYRMED_30_COF2&apos;,
+&apos;HYP_UTHYRMED_31_COF2&apos;,
+&apos;HYP_UTHYRMED_32_COF2&apos;,
+&apos;HYP_UTHYRMED_33_COF2&apos;,
+&apos;HYP_UTHYRMED_34_COF2&apos;,
+&apos;HYP_UTHYRMED_35_COF2&apos;,
+&apos;HYP_UTHYRMED_36_COF2&apos;,
+&apos;HYP_UTHYRMED_37_COF2&apos;,
+&apos;HYP_UTHYRMED_38_COF2&apos;,
+&apos;HYP_UTHYRMED_39_COF2&apos;,
+&apos;HYP_UTHYRMED_40_COF2&apos;,
+&apos;HYP_UTHYREVRMED_COF2&apos;,
+&apos;CCC_OTHYR_COF2&apos;,
+&apos;CCC_OTHYR_CHANGE_COF2&apos;,
+&apos;HYP_OTHYRAGE_COF2&apos;,
+&apos;HYP_OTHYRMED_COF2&apos;,
+&apos;HYP_OTHYRMEDNAME_COF2&apos;,
+&apos;HYP_OTHYRMED_1_COF2&apos;,
+&apos;HYP_OTHYRMED_2_COF2&apos;,
+&apos;HYP_OTHYRMED_3_COF2&apos;,
+&apos;HYP_OTHYRMED_4_COF2&apos;,
+&apos;HYP_OTHYRMED_5_COF2&apos;,
+&apos;HYP_OTHYRMED_6_COF2&apos;,
+&apos;HYP_OTHYRMED_7_COF2&apos;,
+&apos;HYP_OTHYRMED_8_COF2&apos;,
+&apos;HYP_OTHYRMED_9_COF2&apos;,
+&apos;HYP_OTHYRMED_10_COF2&apos;,
+&apos;HYP_OTHYRMED_11_COF2&apos;,
+&apos;HYP_OTHYRMED_12_COF2&apos;,
+&apos;HYP_OTHYRMED_13_COF2&apos;,
+&apos;HYP_OTHYRMED_14_COF2&apos;,
+&apos;HYP_OTHYRMED_15_COF2&apos;,
+&apos;HYP_OTHYRMED_16_COF2&apos;,
+&apos;HYP_OTHYRMED_17_COF2&apos;,
+&apos;HYP_OTHYRMED_18_COF2&apos;,
+&apos;HYP_OTHYRMED_19_COF2&apos;,
+&apos;HYP_OTHYRMED_20_COF2&apos;,
+&apos;HYP_OTHYRMED_21_COF2&apos;,
+&apos;HYP_OTHYRMED_22_COF2&apos;,
+&apos;HYP_OTHYRMED_23_COF2&apos;,
+&apos;HYP_OTHYRMED_24_COF2&apos;,
+&apos;HYP_OTHYRMED_25_COF2&apos;,
+&apos;HYP_OTHYRMED_26_COF2&apos;,
+&apos;HYP_OTHYRMED_27_COF2&apos;,
+&apos;HYP_OTHYRMED_28_COF2&apos;,
+&apos;HYP_OTHYRMED_29_COF2&apos;,
+&apos;HYP_OTHYRMED_30_COF2&apos;,
+&apos;HYP_OTHYRMED_31_COF2&apos;,
+&apos;HYP_OTHYRMED_32_COF2&apos;,
+&apos;HYP_OTHYRMED_33_COF2&apos;,
+&apos;HYP_OTHYRMED_34_COF2&apos;,
+&apos;HYP_OTHYRMED_35_COF2&apos;,
+&apos;HYP_OTHYRMED_36_COF2&apos;,
+&apos;HYP_OTHYRMED_37_COF2&apos;,
+&apos;HYP_OTHYRMED_38_COF2&apos;,
+&apos;HYP_OTHYRMED_39_COF2&apos;,
+&apos;HYP_OTHYRMED_40_COF2&apos;,
+&apos;HYP_OTHYREVRMD_COF2&apos;],
+&apos;IHD&apos;:[
+&apos;CCC_ANGI_COF2&apos;,
+&apos;CCC_ANGI_CHANGE_COF2&apos;,
+&apos;IHD_ANGIAGE_COF2&apos;,
+&apos;CCC_AMI_COF2&apos;,
+&apos;CCC_AMI_CHANGE_COF2&apos;,
+&apos;IHD_AMIAGE_COF2&apos;,
+&apos;IHD_CAB_COF2&apos;,
+&apos;IHD_ANGIO_COF2&apos;,
+&apos;IHD_BLOCK_COF2&apos;,
+&apos;IHD_BLOCK_CHANGE_COF2&apos;,
+&apos;IHD_MED_COF2&apos;,
+&apos;IHD_MEDNAME_COF2&apos;,
+&apos;IHD_MED_1_COF2&apos;,
+&apos;IHD_MED_2_COF2&apos;,
+&apos;IHD_MED_3_COF2&apos;,
+&apos;IHD_MED_4_COF2&apos;,
+&apos;IHD_MED_5_COF2&apos;,
+&apos;IHD_MED_6_COF2&apos;,
+&apos;IHD_MED_7_COF2&apos;,
+&apos;IHD_MED_8_COF2&apos;,
+&apos;IHD_MED_9_COF2&apos;,
+&apos;IHD_MED_10_COF2&apos;,
+&apos;IHD_MED_11_COF2&apos;,
+&apos;IHD_MED_12_COF2&apos;,
+&apos;IHD_MED_13_COF2&apos;,
+&apos;IHD_MED_14_COF2&apos;,
+&apos;IHD_MED_15_COF2&apos;,
+&apos;IHD_MED_16_COF2&apos;,
+&apos;IHD_MED_17_COF2&apos;,
+&apos;IHD_MED_18_COF2&apos;,
+&apos;IHD_MED_19_COF2&apos;,
+&apos;IHD_MED_20_COF2&apos;,
+&apos;IHD_MED_21_COF2&apos;,
+&apos;IHD_MED_22_COF2&apos;,
+&apos;IHD_MED_23_COF2&apos;,
+&apos;IHD_MED_24_COF2&apos;,
+&apos;IHD_MED_25_COF2&apos;,
+&apos;IHD_MED_26_COF2&apos;,
+&apos;IHD_MED_27_COF2&apos;,
+&apos;IHD_MED_28_COF2&apos;,
+&apos;IHD_MED_29_COF2&apos;,
+&apos;IHD_MED_30_COF2&apos;,
+&apos;IHD_MED_31_COF2&apos;,
+&apos;IHD_MED_32_COF2&apos;,
+&apos;IHD_MED_33_COF2&apos;,
+&apos;IHD_MED_34_COF2&apos;,
+&apos;IHD_MED_35_COF2&apos;,
+&apos;IHD_MED_36_COF2&apos;,
+&apos;IHD_MED_37_COF2&apos;,
+&apos;IHD_MED_38_COF2&apos;,
+&apos;IHD_MED_39_COF2&apos;,
+&apos;IHD_MED_40_COF2&apos;,
+&apos;IHD_EVRMED_COF2&apos;],
+&apos;OAR&apos;:[
+&apos;CCC_RA_COF2&apos;,
+&apos;CCC_RA_CHANGE_COF2&apos;],
+&apos;OSA&apos;:[
+&apos;CCC_OAHAND_COF2&apos;,
+&apos;CCC_OAHAND_CHANGE_COF2&apos;,
+&apos;OSA_AGE_COF2&apos;,
+&apos;OSA_LGJNT_COF2&apos;,
+&apos;OSA_NBFNG_COF2&apos;,
+&apos;OSA_PAINJNT_COF2&apos;,
+&apos;OSA_LGTMB_COF2&apos;,
+&apos;OSA_PAINTMB_COF2&apos;],
+&apos;OSH&apos;:[
+&apos;CCC_OAHIP_COF2&apos;,
+&apos;CCC_OAHIP_CHANGE_COF2&apos;,
+&apos;OSH_AGE_COF2&apos;,
+&apos;OSH_HIPRPL_COF2&apos;,
+&apos;OSH_FRAC_COF2&apos;,
+&apos;OSH_PAIN_COF2&apos;,
+&apos;OSH_PAINSL_COF2&apos;,
+&apos;OSH_LOM_COF2&apos;],
+&apos;OSK&apos;:[
+&apos;CCC_OAKNEE_COF2&apos;,
+&apos;CCC_OAKNEE_CHANGE_COF2&apos;,
+&apos;OSK_AGE_COF2&apos;,
+&apos;OSK_KNERPL_COF2&apos;,
+&apos;OSK_PAIN_COF2&apos;,
+&apos;OSK_PAINSL_COF2&apos;,
+&apos;OSK_SWELL_COF2&apos;],
+&apos;OST&apos;:[
+&apos;CCC_OSTPO_COF2&apos;,
+&apos;CCC_OSTPO_CHANGE_COF2&apos;,
+&apos;OST_AGE_COF2&apos;,
+&apos;OST_MED_COF2&apos;,
+&apos;OST_MEDNAME_COF2&apos;,
+&apos;OST_MED_1_COF2&apos;,
+&apos;OST_MED_2_COF2&apos;,
+&apos;OST_MED_3_COF2&apos;,
+&apos;OST_MED_4_COF2&apos;,
+&apos;OST_MED_5_COF2&apos;,
+&apos;OST_MED_6_COF2&apos;,
+&apos;OST_MED_7_COF2&apos;,
+&apos;OST_MED_8_COF2&apos;,
+&apos;OST_MED_9_COF2&apos;,
+&apos;OST_MED_10_COF2&apos;,
+&apos;OST_MED_11_COF2&apos;,
+&apos;OST_MED_12_COF2&apos;,
+&apos;OST_MED_13_COF2&apos;,
+&apos;OST_MED_14_COF2&apos;,
+&apos;OST_MED_15_COF2&apos;,
+&apos;OST_MED_16_COF2&apos;,
+&apos;OST_MED_17_COF2&apos;,
+&apos;OST_MED_18_COF2&apos;,
+&apos;OST_MED_19_COF2&apos;,
+&apos;OST_MED_20_COF2&apos;,
+&apos;OST_MED_21_COF2&apos;,
+&apos;OST_MED_22_COF2&apos;,
+&apos;OST_MED_23_COF2&apos;,
+&apos;OST_MED_24_COF2&apos;,
+&apos;OST_MED_25_COF2&apos;,
+&apos;OST_MED_26_COF2&apos;,
+&apos;OST_MED_27_COF2&apos;,
+&apos;OST_MED_28_COF2&apos;,
+&apos;OST_MED_29_COF2&apos;,
+&apos;OST_MED_30_COF2&apos;,
+&apos;OST_MED_31_COF2&apos;,
+&apos;OST_MED_32_COF2&apos;,
+&apos;OST_MED_33_COF2&apos;,
+&apos;OST_MED_34_COF2&apos;,
+&apos;OST_MED_35_COF2&apos;,
+&apos;OST_MED_36_COF2&apos;,
+&apos;OST_MED_37_COF2&apos;,
+&apos;OST_MED_38_COF2&apos;,
+&apos;OST_MED_39_COF2&apos;,
+&apos;OST_MED_40_COF2&apos;,
+&apos;OST_EVRMD_COF2&apos;,
+&apos;OST_BONE_COF2&apos;,
+&apos;OST_FRAC_COF2&apos;,
+&apos;OST_MOM_COF2&apos;,
+&apos;OST_DAD_COF2&apos;,
+&apos;OST_HGT_COF2&apos;,
+&apos;OST_CST_COF2&apos;,
+&apos;OST_CSTAGE_COF2&apos;,
+&apos;OST_CST_MT_COF2&apos;,
+&apos;OST_BP_COF2&apos;,
+&apos;OST_BP_DUR_COF2&apos;,
+&apos;OST_BCKPPM_COF2&apos;,
+&apos;OST_BCKPLOC_COF2&apos;],
+&apos;PKD&apos;:[
+&apos;CCC_PARK_COF2&apos;,
+&apos;CCC_PARK_CHANGE_COF2&apos;,
+&apos;PKD_AGE_COF2&apos;,
+&apos;PKD_MED_COF2&apos;,
+&apos;PKD_MEDNAME_COF2&apos;,
+&apos;PKD_MED_1_COF2&apos;,
+&apos;PKD_MED_2_COF2&apos;,
+&apos;PKD_MED_3_COF2&apos;,
+&apos;PKD_MED_4_COF2&apos;,
+&apos;PKD_MED_5_COF2&apos;,
+&apos;PKD_MED_6_COF2&apos;,
+&apos;PKD_MED_7_COF2&apos;,
+&apos;PKD_MED_8_COF2&apos;,
+&apos;PKD_MED_9_COF2&apos;,
+&apos;PKD_MED_10_COF2&apos;,
+&apos;PKD_MED_11_COF2&apos;,
+&apos;PKD_MED_12_COF2&apos;,
+&apos;PKD_MED_13_COF2&apos;,
+&apos;PKD_MED_14_COF2&apos;,
+&apos;PKD_MED_15_COF2&apos;,
+&apos;PKD_MED_16_COF2&apos;,
+&apos;PKD_MED_17_COF2&apos;,
+&apos;PKD_MED_18_COF2&apos;,
+&apos;PKD_MED_19_COF2&apos;,
+&apos;PKD_MED_20_COF2&apos;,
+&apos;PKD_MED_21_COF2&apos;,
+&apos;PKD_MED_22_COF2&apos;,
+&apos;PKD_MED_23_COF2&apos;,
+&apos;PKD_MED_24_COF2&apos;,
+&apos;PKD_MED_25_COF2&apos;,
+&apos;PKD_MED_26_COF2&apos;,
+&apos;PKD_MED_27_COF2&apos;,
+&apos;PKD_MED_28_COF2&apos;,
+&apos;PKD_MED_29_COF2&apos;,
+&apos;PKD_MED_30_COF2&apos;,
+&apos;PKD_MED_31_COF2&apos;,
+&apos;PKD_MED_32_COF2&apos;,
+&apos;PKD_MED_33_COF2&apos;,
+&apos;PKD_MED_34_COF2&apos;,
+&apos;PKD_MED_35_COF2&apos;,
+&apos;PKD_MED_36_COF2&apos;,
+&apos;PKD_MED_37_COF2&apos;,
+&apos;PKD_MED_38_COF2&apos;,
+&apos;PKD_MED_39_COF2&apos;,
+&apos;PKD_MED_40_COF2&apos;,
+&apos;PKD_OTHMD_COF2&apos;,
+&apos;PKD_EVRMED_COF2&apos;,
+&apos;PKD_SHKE_COF2&apos;,
+&apos;PKD_SHKSEV_COF2&apos;,
+&apos;PKD_SMWRT_COF2&apos;,
+&apos;PKD_BUTON_COF2&apos;,
+&apos;PKD_VOICE_COF2&apos;,
+&apos;PKD_FEET_COF2&apos;,
+&apos;PKD_WALK_COF2&apos;,
+&apos;PKD_BAL_COF2&apos;,
+&apos;PKD_FACE_COF2&apos;,
+&apos;PKD_RISE_COF2&apos;],
+&apos;ROS&apos;:[
+&apos;ROS_PAIN_COF2&apos;,
+&apos;ROS_HILL_COF2&apos;,
+&apos;ROS_LEVEL_COF2&apos;,
+&apos;ROS_BLOCK_COF2&apos;,
+&apos;ROS_DOWLK_COF2&apos;,
+&apos;ROS_STILL_COF2&apos;,
+&apos;ROS_SOON_COF2&apos;,
+&apos;ROS_LOC_COF2&apos;,
+&apos;ROS_SEVPAIN_COF2&apos;],
+&apos;STR&apos;:[
+&apos;CCC_CVA_COF2&apos;,
+&apos;CCC_CVA_CHANGE_COF2&apos;,
+&apos;STR_CVAAGE_COF2&apos;,
+&apos;STR_MED_COF2&apos;,
+&apos;STR_MEDNAME_COF2&apos;,
+&apos;STR_MED_1_COF2&apos;,
+&apos;STR_MED_2_COF2&apos;,
+&apos;STR_MED_3_COF2&apos;,
+&apos;STR_MED_4_COF2&apos;,
+&apos;STR_MED_5_COF2&apos;,
+&apos;STR_MED_6_COF2&apos;,
+&apos;STR_MED_7_COF2&apos;,
+&apos;STR_MED_8_COF2&apos;,
+&apos;STR_MED_9_COF2&apos;,
+&apos;STR_MED_10_COF2&apos;,
+&apos;STR_MED_11_COF2&apos;,
+&apos;STR_MED_12_COF2&apos;,
+&apos;STR_MED_13_COF2&apos;,
+&apos;STR_MED_14_COF2&apos;,
+&apos;STR_MED_15_COF2&apos;,
+&apos;STR_MED_16_COF2&apos;,
+&apos;STR_MED_17_COF2&apos;,
+&apos;STR_MED_18_COF2&apos;,
+&apos;STR_MED_19_COF2&apos;,
+&apos;STR_MED_20_COF2&apos;,
+&apos;STR_MED_21_COF2&apos;,
+&apos;STR_MED_22_COF2&apos;,
+&apos;STR_MED_23_COF2&apos;,
+&apos;STR_MED_24_COF2&apos;,
+&apos;STR_MED_25_COF2&apos;,
+&apos;STR_MED_26_COF2&apos;,
+&apos;STR_MED_27_COF2&apos;,
+&apos;STR_MED_28_COF2&apos;,
+&apos;STR_MED_29_COF2&apos;,
+&apos;STR_MED_30_COF2&apos;,
+&apos;STR_MED_31_COF2&apos;,
+&apos;STR_MED_32_COF2&apos;,
+&apos;STR_MED_33_COF2&apos;,
+&apos;STR_MED_34_COF2&apos;,
+&apos;STR_MED_35_COF2&apos;,
+&apos;STR_MED_36_COF2&apos;,
+&apos;STR_MED_37_COF2&apos;,
+&apos;STR_MED_38_COF2&apos;,
+&apos;STR_MED_39_COF2&apos;,
+&apos;STR_MED_40_COF2&apos;,
+&apos;STR_OTHMD_COF2&apos;,
+&apos;STR_EVRMD_COF2&apos;,
+&apos;CCC_TIA_COF2&apos;,
+&apos;CCC_TIA_CHANGE_COF2&apos;,
+&apos;STR_TIAAGE_COF2&apos;,
+&apos;STR_TIAMED_COF2&apos;,
+&apos;STR_TIAMEDNAME_COF2&apos;,
+&apos;STR_TIAMED_1_COF2&apos;,
+&apos;STR_TIAMED_2_COF2&apos;,
+&apos;STR_TIAMED_3_COF2&apos;,
+&apos;STR_TIAMED_4_COF2&apos;,
+&apos;STR_TIAMED_5_COF2&apos;,
+&apos;STR_TIAMED_6_COF2&apos;,
+&apos;STR_TIAMED_7_COF2&apos;,
+&apos;STR_TIAMED_8_COF2&apos;,
+&apos;STR_TIAMED_9_COF2&apos;,
+&apos;STR_TIAMED_10_COF2&apos;,
+&apos;STR_TIAMED_11_COF2&apos;,
+&apos;STR_TIAMED_12_COF2&apos;,
+&apos;STR_TIAMED_13_COF2&apos;,
+&apos;STR_TIAMED_14_COF2&apos;,
+&apos;STR_TIAMED_15_COF2&apos;,
+&apos;STR_TIAMED_16_COF2&apos;,
+&apos;STR_TIAMED_17_COF2&apos;,
+&apos;STR_TIAMED_18_COF2&apos;,
+&apos;STR_TIAMED_19_COF2&apos;,
+&apos;STR_TIAMED_20_COF2&apos;,
+&apos;STR_TIAMED_21_COF2&apos;,
+&apos;STR_TIAMED_22_COF2&apos;,
+&apos;STR_TIAMED_23_COF2&apos;,
+&apos;STR_TIAMED_24_COF2&apos;,
+&apos;STR_TIAMED_25_COF2&apos;,
+&apos;STR_TIAMED_26_COF2&apos;,
+&apos;STR_TIAMED_27_COF2&apos;,
+&apos;STR_TIAMED_28_COF2&apos;,
+&apos;STR_TIAMED_29_COF2&apos;,
+&apos;STR_TIAMED_30_COF2&apos;,
+&apos;STR_TIAMED_31_COF2&apos;,
+&apos;STR_TIAMED_32_COF2&apos;,
+&apos;STR_TIAMED_33_COF2&apos;,
+&apos;STR_TIAMED_34_COF2&apos;,
+&apos;STR_TIAMED_35_COF2&apos;,
+&apos;STR_TIAMED_36_COF2&apos;,
+&apos;STR_TIAMED_37_COF2&apos;,
+&apos;STR_TIAMED_38_COF2&apos;,
+&apos;STR_TIAMED_39_COF2&apos;,
+&apos;STR_TIAMED_40_COF2&apos;,
+&apos;STR_TIAOTHMD_COF2&apos;,
+&apos;STR_TIAEVMD_COF2&apos;,
+&apos;CCC_CVAFX_COF2&apos;,
+&apos;STR_WEAK_COF2&apos;,
+&apos;STR_WEAK_DUR_COF2&apos;,
+&apos;STR_NUMB_COF2&apos;,
+&apos;STR_NUMB_DUR_COF2&apos;,
+&apos;STR_VIS_COF2&apos;,
+&apos;STR_VIS_DUR_COF2&apos;,
+&apos;STR_NOVIS_COF2&apos;,
+&apos;STR_NOVIS_DUR_COF2&apos;,
+&apos;STR_NOUND_COF2&apos;,
+&apos;STR_NOUND_DUR_COF2&apos;,
+&apos;STR_NOEXP_COF2&apos;,
+&apos;STR_NOEXP_DUR_COF2&apos;],
+&apos;TBI&apos;:[
+&apos;TBI_TYP_COF2&apos;,
+&apos;TBI_NMBR_COF2&apos;,
+&apos;TBI_NMBR_AGE_COF2&apos;,
+&apos;TBI_RSLT_COF2&apos;,
+&apos;TBI_MCR_COF2&apos;,
+&apos;TBI_PROB_COF2&apos;]
+}
+
+  var skip=[]
+  if($(stage+&apos;QuestionnaireRun.version&apos;).eq(&apos;4.0&apos;).value()) {
+    skip.push(&apos;AOR&apos;)
+  }
+
+  for(var key in sections) {
+    if(-1!=skip.indexOf(key)) {
+      str.push(key+&apos;:0&apos;)
+      continue
+    }
+    var rcount=0
+    var qcount=0
+    var arr=sections[key]
+    for(var i=0; i&lt;arr.length; i++ ) {
+      var j=$(stage+arr[i])
+      if(j.isNull().value()) continue
+      qcount++      
+      rcount+=j.any(&apos;REFUSED&apos;).value()?1:0
+    }
+    if(0==qcount) {
+      str.push(key+&apos;:100&apos;)
+    } else {
+      var perc=100.0*rcount/qcount      
+      if(0&lt;perc &amp;&amp; 100&gt;perc &amp;&amp; 0!=(perc-Math.floor(perc))) {        
+        perc=perc.toFixed(3)
+      }
+      str.push(key+&apos;:&apos;+perc)
+    }  
+  }
+
+  res=newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)
 }
 res</attribute>
         </attributes>
@@ -1861,14 +2877,55 @@ res</attribute>
       </variable>
       <variable name="data_qac_time_based_pmt" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">var p=$(&apos;clsa-dcs-f2.TimeBasedProspectiveMemoryTask:QuestionnaireMetric.missingCount&apos;).asSequence()
-var q=$(&apos;clsa-dcs-f2.TimeBasedProspectiveMemoryTask:QuestionnaireMetric.questionCount&apos;).asSequence()
+          <attribute name="script" valueType="text">var stage=&apos;clsa-dcs-f2.TimeBasedProspectiveMemoryTask:&apos;
+var p=$(stage+&apos;QuestionnaireMetric.missingCount&apos;).asSequence()
+var q=$(stage+&apos;QuestionnaireMetric.questionCount&apos;).asSequence()
 var res=null
-if(p.isNull().and(q.isNull()).not().value() &amp;&amp; 0!=q.sum()){
-  res=newValue(
-    &apos;{complete:&apos;+
-    Math.round(q.sum().minus(p.sum()).multiply(100).div(q.sum()).value())
-    +&apos;}&apos;,&apos;text&apos;)
+if(p.isNull().and(q.isNull()).not().value() &amp;&amp; 0!=q.sum()) {
+  var str=[]
+  str.push(
+    &apos;complete:&apos;+
+    Math.round(q.sum().minus(p.sum()).multiply(100).div(q.sum()).value()))
+
+var sections={
+&apos;TMT&apos;:[
+&apos;TMT_PASS_COF2&apos;,
+&apos;TMT_TST_COF2&apos;,
+&apos;TMT_FCT_COF2&apos;,
+&apos;TMT_DOTIM_COF2&apos;,
+&apos;TMT_DOTIM_REP_COF2&apos;,
+&apos;TMT_DOTIM_OBS_COF2&apos;,
+&apos;TMT_DOENV_COF2&apos;,
+&apos;TMT_DOENV_OBS_COF2&apos;,
+&apos;TMT_DOCARD_COF2&apos;,
+&apos;TMT_DOCARD_OBS_COF2&apos;,
+&apos;TMT_ITPEXACT_COF2&apos;,
+&apos;TMT_ACC_COF2&apos;,
+&apos;TMT_RMD_COF2&apos;]
+}
+
+  for(var key in sections) {
+    var rcount=0
+    var qcount=0
+    var arr=sections[key]
+    for(var i=0; i&lt;arr.length; i++ ) {
+      var j=$(stage+arr[i])
+      if(j.isNull().value()) continue
+      qcount++      
+      rcount+=j.any(&apos;REFUSED&apos;).value()?1:0
+    }
+    if(0==qcount) {
+      str.push(key+&apos;:100&apos;)
+    } else {
+      var perc=100.0*rcount/qcount      
+      if(0&lt;perc &amp;&amp; 100&gt;perc &amp;&amp; 0!=(perc-Math.floor(perc))) {        
+        perc=perc.toFixed(3)
+      }
+      str.push(key+&apos;:&apos;+perc)
+    }  
+  }
+
+  res=newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)
 }
 res</attribute>
         </attributes>
@@ -1950,14 +3007,136 @@ res</attribute>
       </variable>
       <variable name="data_qac_social_network" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">var p=$(&apos;clsa-dcs-f2.SocialNetwork:QuestionnaireMetric.missingCount&apos;).asSequence()
-var q=$(&apos;clsa-dcs-f2.SocialNetwork:QuestionnaireMetric.questionCount&apos;).asSequence()
+          <attribute name="script" valueType="text">var stage=&apos;clsa-dcs-f2.SocialNetwork:&apos;
+var p=$(stage+&apos;QuestionnaireMetric.missingCount&apos;).asSequence()
+var q=$(stage+&apos;QuestionnaireMetric.questionCount&apos;).asSequence()
 var res=null
-if(p.isNull().and(q.isNull()).not().value() &amp;&amp; 0!=q.sum()){
-  res=newValue(
-    &apos;{complete:&apos;+
-    Math.round(q.sum().minus(p.sum()).multiply(100).div(q.sum()).value())
-    +&apos;}&apos;,&apos;text&apos;)
+if(p.isNull().and(q.isNull()).not().value() &amp;&amp; 0!=q.sum()) {
+  var str=[]
+  str.push(
+    &apos;complete:&apos;+
+    Math.round(q.sum().minus(p.sum()).multiply(100).div(q.sum()).value()))
+
+var sections={
+&apos;GAD7&apos;:[
+&apos;GAD_NERV_COF2&apos;,
+&apos;GAD_STPWOR_COF2&apos;,
+&apos;GAD_WORRTO_COF2&apos;,
+&apos;GAD_RELAX_COF2&apos;,
+&apos;GAD_RESTLS_COF2&apos;,
+&apos;GAD_ANNOY_COF2&apos;,
+&apos;GAD_AFRAID_COF2&apos;,
+&apos;GAD_TOTAL2_COF2&apos;],
+&apos;SN&apos;:[
+&apos;SN_LIVHF2_NB_COF2&apos;,
+&apos;SN_LIVH_COF2&apos;,
+&apos;SN_LIVH_M2R_COF2&apos;,
+&apos;SN_LIVH_M2S_COF2&apos;,
+&apos;SN_LIVH_M2A_COF2&apos;,
+&apos;SN_LIVH_M3R_COF2&apos;,
+&apos;SN_LIVH_M3S_COF2&apos;,
+&apos;SN_LIVH_M3A_COF2&apos;,
+&apos;SN_LIVH_M4R_COF2&apos;,
+&apos;SN_LIVH_M4S_COF2&apos;,
+&apos;SN_LIVH_M4A_COF2&apos;,
+&apos;SN_LIVH_M5R_COF2&apos;,
+&apos;SN_LIVH_M5S_COF2&apos;,
+&apos;SN_LIVH_M5A_COF2&apos;,
+&apos;SN_LIVH_M6R_COF2&apos;,
+&apos;SN_LIVH_M6S_COF2&apos;,
+&apos;SN_LIVH_M6A_COF2&apos;,
+&apos;SN_LIVH_M7R_COF2&apos;,
+&apos;SN_LIVH_M7S_COF2&apos;,
+&apos;SN_LIVH_M7A_COF2&apos;,
+&apos;SN_LIVH_M8R_COF2&apos;,
+&apos;SN_LIVH_M8S_COF2&apos;,
+&apos;SN_LIVH_M8A_COF2&apos;,
+&apos;SN_LIVH_M9R_COF2&apos;,
+&apos;SN_LIVH_M9S_COF2&apos;,
+&apos;SN_LIVH_M9A_COF2&apos;,
+&apos;SN_LIVH_M10R_COF2&apos;,
+&apos;SN_LIVH_M10S_COF2&apos;,
+&apos;SN_LIVH_M10A_COF2&apos;,
+&apos;SN_CHILDSTP_COF2&apos;,
+&apos;SN_DGHTRLIV_COF2&apos;,
+&apos;SN_SONLIV_COF2&apos;,
+&apos;SN_SEECHILD_COF2&apos;,
+&apos;SN_SIBLIV_COF2&apos;,
+&apos;SN_SEESIB_COF2&apos;,
+&apos;SN_RELLIV_COF2&apos;,
+&apos;SN_SEEREL_COF2&apos;,
+&apos;SN_FRND_COF2&apos;,
+&apos;SN_SEEFRND_COF2&apos;,
+&apos;SN_SEENEIBR_COF2&apos;,
+&apos;SN_CHILDSTP2_COF2&apos;,
+&apos;SN_CHILDSTPNEW_COF2&apos;],
+&apos;SPA&apos;:[
+&apos;SPA_SOAC_COF2&apos;,
+&apos;SPA_OUTS_COF2&apos;,
+&apos;SPA_CHRCH_COF2&apos;,
+&apos;SPA_SPORT_COF2&apos;,
+&apos;SPA_EDUC_COF2&apos;,
+&apos;SPA_CLUB_COF2&apos;,
+&apos;SPA_NEIBR_COF2&apos;,
+&apos;SPA_VOLUN_COF2&apos;,
+&apos;SPA_OTACT_COF2&apos;,
+&apos;SPA_MORAC_COF2&apos;,
+&apos;SPA_PREVAC_COF2&apos;,
+&apos;SPA_COHES_COF2&apos;],
+&apos;SSA&apos;:[
+&apos;SSA_CONFBED_COF2&apos;,
+&apos;SSA_NDTLK_COF2&apos;,
+&apos;SSA_CRISIS_COF2&apos;,
+&apos;SSA_TYTDR_COF2&apos;,
+&apos;SSA_SHLOV_COF2&apos;,
+&apos;SSA_GOODT_COF2&apos;,
+&apos;SSA_INFO_COF2&apos;,
+&apos;SSA_CONFID_COF2&apos;,
+&apos;SSA_HUGS_COF2&apos;,
+&apos;SSA_RELAX_COF2&apos;,
+&apos;SSA_MEALS_COF2&apos;,
+&apos;SSA_ADVCE_COF2&apos;,
+&apos;SSA_MINDOFF_COF2&apos;,
+&apos;SSA_CHORES_COF2&apos;,
+&apos;SSA_SHFEAR_COF2&apos;,
+&apos;SSA_SUGG_COF2&apos;,
+&apos;SSA_ENJOY_COF2&apos;,
+&apos;SSA_PROBLM_COF2&apos;,
+&apos;SSA_LOVU_COF2&apos;,
+&apos;SSA_PET_COF2&apos;]
+}
+
+  var skip=[]
+  if($(stage+&apos;QuestionnaireRun.version&apos;).any(&apos;4.0&apos;).value()) {
+    skip.push(&apos;GAD7&apos;)
+  }
+
+  for(var key in sections) {
+    if(-1!=skip.indexOf(key)) {
+      str.push(key+&apos;:0&apos;)
+      continue
+    }
+    var rcount=0
+    var qcount=0
+    var arr=sections[key]
+    for(var i=0; i&lt;arr.length; i++ ) {
+      var j=$(stage+arr[i])
+      if(j.isNull().value()) continue
+      qcount++      
+      rcount+=j.any(&apos;REFUSED&apos;).value()?1:0
+    }
+    if(0==qcount) {
+      str.push(key+&apos;:100&apos;)
+    } else {
+      var perc=100.0*rcount/qcount      
+      if(0&lt;perc &amp;&amp; 100&gt;perc &amp;&amp; 0!=(perc-Math.floor(perc))) {        
+        perc=perc.toFixed(3)
+      }
+      str.push(key+&apos;:&apos;+perc)
+    }  
+  }
+
+  res=newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)
 }
 res</attribute>
         </attributes>
@@ -1997,14 +3176,106 @@ res</attribute>
       </variable>
       <variable name="data_qac_general_health" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">var p=$(&apos;clsa-dcs-f2.GenHealth:QuestionnaireMetric.missingCount&apos;).asSequence()
-var q=$(&apos;clsa-dcs-f2.GenHealth:QuestionnaireMetric.questionCount&apos;).asSequence()
+          <attribute name="script" valueType="text">var stage=&apos;clsa-dcs-f2.GenHealth:&apos;
+var p=$(stage+&apos;QuestionnaireMetric.missingCount&apos;).asSequence()
+var q=$(stage+&apos;QuestionnaireMetric.questionCount&apos;).asSequence()
 var res=null
-if(p.isNull().and(q.isNull()).not().value() &amp;&amp; 0!=q.sum()){
-  res=newValue(
-    &apos;{complete:&apos;+
-    Math.round(q.sum().minus(p.sum()).multiply(100).div(q.sum()).value())
-    +&apos;}&apos;,&apos;text&apos;)
+if(p.isNull().and(q.isNull()).not().value() &amp;&amp; 0!=q.sum()) {
+  var str=[]
+  str.push(
+    &apos;complete:&apos;+
+    Math.round(q.sum().minus(p.sum()).multiply(100).div(q.sum()).value()))
+
+var sections={
+&apos;HRG&apos;:[
+&apos;HRG_HRG_COF2&apos;,
+&apos;HRG_NOIS_COF2&apos;,
+&apos;HRG_AID_COF2&apos;,
+&apos;HRG_USE_COF2&apos;,
+&apos;HRG_PROB_EMBA_COF2&apos;,
+&apos;HRG_PROB_FRST_COF2&apos;,
+&apos;HRG_PROB_DIFF_COF2&apos;,
+&apos;HRG_PROB_HACP_COF2&apos;,
+&apos;HRG_PROB_VIST_COF2&apos;,
+&apos;HRG_PROB_MEET_COF2&apos;,
+&apos;HRG_PROB_ARGU_COF2&apos;,
+&apos;HRG_PROB_LSTN_COF2&apos;,
+&apos;HRG_PROB_LIFE_COF2&apos;,
+&apos;HRG_PROB_FRND_COF2&apos;],
+&apos;HUP&apos;:[
+&apos;HUP_FREE_COF2&apos;,
+&apos;HUP_INTNSTY_COF2&apos;,
+&apos;HUP_PRVACT_COF2&apos;],
+&apos;NUR&apos;:[
+&apos;NUR_GLSWT_COF2&apos;,
+&apos;NUR_WTGL_COF2&apos;,
+&apos;NUR_WTL_COF2&apos;,
+&apos;NUR_WTG_COF2&apos;,
+&apos;NUR_SKPMLS_COF2&apos;,
+&apos;NUR_APPTT_COF2&apos;,
+&apos;NUR_SWLLFD_COF2&apos;,
+&apos;NUR_FRTVEG_COF2&apos;,
+&apos;NUR_DRKFLD_COF2&apos;,
+&apos;NUR_MLSMN_COF2&apos;,
+&apos;NUR_CKMEALS_COF2&apos;,
+&apos;NUR_MLPREP_COF2&apos;,
+&apos;NUR_MLPREP_OTH_COF2&apos;,
+&apos;NUR_FASTFD_NB_COF2&apos;,
+&apos;NUR_NOTENFD_COF2&apos;,
+&apos;NUR_RCOFF_COF2&apos;,
+&apos;NUR_DCOFF_COF2&apos;,
+&apos;NUR_BTEA_COF2&apos;,
+&apos;NUR_GTEA_COF2&apos;,
+&apos;NUR_OTEA_COF2&apos;],
+&apos;RES&apos;:[
+&apos;RES_ABLE_COF2&apos;,
+&apos;RES_DEAL_COF2&apos;,
+&apos;RES_HUMR_COF2&apos;,
+&apos;RES_COPE_COF2&apos;,
+&apos;RES_BOUC_COF2&apos;,
+&apos;RES_GOAL_COF2&apos;,
+&apos;RES_PRESR_COF2&apos;,
+&apos;RES_FAIL_COF2&apos;,
+&apos;RES_STRONG_COF2&apos;,
+&apos;RES_UNPLES_COF2&apos;,
+&apos;RES_FAIL_ COF2&apos;],
+&apos;VIS&apos;:[
+&apos;VIS_SGHT_COF2&apos;,
+&apos;VIS_AID_COF2&apos;,
+&apos;VIS_USE_COF2&apos;]  
+}
+
+  var skip=[]
+  if($(stage+&apos;QuestionnaireRun.version&apos;).any(&apos;2.0&apos;,&apos;2.1&apos;).value()) {
+    skip.push(&apos;RES&apos;)
+  }
+
+  for(var key in sections) {
+    if(-1!=skip.indexOf(key)) {
+      str.push(key+&apos;:0&apos;)
+      continue
+    }
+    var rcount=0
+    var qcount=0
+    var arr=sections[key]
+    for(var i=0; i&lt;arr.length; i++ ) {
+      var j=$(stage+arr[i])
+      if(j.isNull().value()) continue
+      qcount++      
+      rcount+=j.any(&apos;REFUSED&apos;).value()?1:0
+    }
+    if(0==qcount) {
+      str.push(key+&apos;:100&apos;)
+    } else {
+      var perc=100.0*rcount/qcount      
+      if(0&lt;perc &amp;&amp; 100&gt;perc &amp;&amp; 0!=(perc-Math.floor(perc))) {        
+        perc=perc.toFixed(3)
+      }
+      str.push(key+&apos;:&apos;+perc)
+    }  
+  }
+
+  res=newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)
 }
 res</attribute>
         </attributes>
@@ -2044,14 +3315,126 @@ res</attribute>
       </variable>
       <variable name="data_qac_osipv" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">var p=$(&apos;clsa-dcs-f2.OSIPV:QuestionnaireMetric.missingCount&apos;).asSequence()
-var q=$(&apos;clsa-dcs-f2.OSIPV:QuestionnaireMetric.questionCount&apos;).asSequence()
+          <attribute name="script" valueType="text">var stage=&apos;clsa-dcs-f2.OSIPV:&apos;
+var p=$(stage+&apos;QuestionnaireMetric.missingCount&apos;).asSequence()
+var q=$(stage+&apos;QuestionnaireMetric.questionCount&apos;).asSequence()
 var res=null
-if(p.isNull().and(q.isNull()).not().value() &amp;&amp; 0!=q.sum()){
-  res=newValue(
-    &apos;{complete:&apos;+
-    Math.round(q.sum().minus(p.sum()).multiply(100).div(q.sum()).value())
-    +&apos;}&apos;,&apos;text&apos;)
+if(p.isNull().and(q.isNull()).not().value() &amp;&amp; 0!=q.sum()) {
+  var str=[]
+  str.push(
+    &apos;complete:&apos;+
+    Math.round(q.sum().minus(p.sum()).multiply(100).div(q.sum()).value()))
+
+var sections={
+&apos;IPV&apos;:[
+&apos;IPV_ADULTINT_COF2&apos;,
+&apos;IPV_RELATN_COF2&apos;,
+&apos;IPV_AFRAID_COF2&apos;,
+&apos;IPV_PASTFRAID_COF2&apos;,
+&apos;IPV_BLAME_COF2&apos;,
+&apos;IPV_BLAMEAMT_COF2&apos;,
+&apos;IPV_SHOOK_COF2&apos;,
+&apos;IPV_SHOOKAMT_COF2&apos;,
+&apos;IPV_CRAZY_COF2&apos;,
+&apos;IPV_CRAZYAMT_COF2&apos;,
+&apos;IPV_THREAT_COF2&apos;,
+&apos;IPV_THREATAMT_COF2&apos;,
+&apos;IPV_PERFORM_COF2&apos;,
+&apos;IPV_PERFORMAMT_COF2&apos;,
+&apos;IPV_FOLLOW_COF2&apos;,
+&apos;IPV_FOLLOWAMT_COF2&apos;,
+&apos;IPV_HARM_COF2&apos;,
+&apos;IPV_HARMAMT_COF2&apos;,
+&apos;IPV_CHOKE_COF2&apos;,
+&apos;IPV_CHOKEAMT_COF2&apos;,
+&apos;IPV_FORCE_COF2&apos;,
+&apos;IPV_FORCEAMT_COF2&apos;,
+&apos;IPV_HARASS_COF2&apos;,
+&apos;IPV_HARASSAMT_COF2&apos;,
+&apos;IPV_STUPID_COF2&apos;,
+&apos;IPV_STUPIDAMT_COF2&apos;,
+&apos;IPV_HIT_COF2&apos;,
+&apos;IPV_HITAMT_COF2&apos;,
+&apos;IPV_KEPT_COF2&apos;,
+&apos;IPV_KEPTAMT_COF2&apos;,
+&apos;IPV_LOCK_COF2&apos;,
+&apos;IPV_LOCKAMT_COF2&apos;,
+&apos;IPV_ACCESS_COF2&apos;,
+&apos;IPV_ACCESSAMT_COF2&apos;],
+&apos;ORH&apos;:[
+&apos;ORH_HLTH_COF2&apos;,
+&apos;ORH_TEETH_COF2&apos;,
+&apos;ORH_TEETHCHANGE_COF2&apos;,
+&apos;ORH_TETH20_COF2&apos;,
+&apos;ORH_DENT_COF2&apos;,
+&apos;ORH_DNUSE_COF2&apos;,
+&apos;ORH_UNCEAT_COF2&apos;,
+&apos;ORH_EXP_DNB_COF2&apos;,
+&apos;ORH_EXP_DNBTTH_COF2&apos;,
+&apos;ORH_DNVST_COF2&apos;,
+&apos;ORH_WYNDN_COF2&apos;,
+&apos;ORH_TYPINS_COF2&apos;,
+&apos;ORH_COST_COF2&apos;,
+&apos;ORH_PRBHT_COF2&apos;,
+&apos;ORH_BRUSDN_COF2&apos;,
+&apos;ORH_WHO_COF2&apos;,
+&apos;ORH_OFTN_COF2&apos;,
+&apos;ORH_FLSFQ_COF2&apos;],
+&apos;SLE&apos;:[
+&apos;SLE_QLTY_COF2&apos;,
+&apos;SLS_HOUR_COF2&apos;,
+&apos;SLE_30MIN_COF2&apos;,
+&apos;SLE_30DUR_COF2&apos;,
+&apos;SLE_30INTRF_COF2&apos;,
+&apos;SLE_MIDFQ_COF2&apos;,
+&apos;SLE_MIDDUR_COF2&apos;,
+&apos;SLE_MIDINTRF_COF2&apos;,
+&apos;SLE_STAYFQ_COF2&apos;,
+&apos;SLE_STAYDUR_COF2&apos;,
+&apos;SLE_STAYINTRF_COF2&apos;,
+&apos;SLE_DREAM_COF2&apos;,
+&apos;SLE_DRMDUR_COF2&apos;,
+&apos;SLE_LEGS_COF2&apos;,
+&apos;SLE_LGURG_COF2&apos;,
+&apos;SLE_LGDUR_COF2&apos;,
+&apos;SLE_LGFQ_COF2&apos;,
+&apos;SLE_LGIMPR_COF2&apos;,
+&apos;SLE_LGEVE_COF2&apos;,
+&apos;SNO_SNORE_COF2&apos;,
+&apos;SNO_STOPBREATH_COF2&apos;]  
+}
+
+  var skip=[]
+  if($(stage+&apos;QuestionnaireRun.version&apos;).eq(&apos;2.0&apos;).value()) {
+    skip.push(&apos;IPV&apos;)
+  }
+
+  for(var key in sections) {
+    if(-1!=skip.indexOf(key)) {
+      str.push(key+&apos;:0&apos;)
+      continue
+    }    
+    var rcount=0
+    var qcount=0
+    var arr=sections[key]
+    for(var i=0; i&lt;arr.length; i++ ) {
+      var j=$(stage+arr[i])
+      if(j.isNull().value()) continue
+      qcount++      
+      rcount+=j.any(&apos;REFUSED&apos;).value()?1:0
+    }
+    if(0==qcount) {
+      str.push(key+&apos;:100&apos;)
+    } else {
+      var perc=100.0*rcount/qcount      
+      if(0&lt;perc &amp;&amp; 100&gt;perc &amp;&amp; 0!=(perc-Math.floor(perc))) {        
+        perc=perc.toFixed(3)
+      }
+      str.push(key+&apos;:&apos;+perc)
+    }  
+  }
+
+  res=newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)
 }
 res</attribute>
         </attributes>
@@ -2091,14 +3474,51 @@ res</attribute>
       </variable>
       <variable name="data_qac_urine" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">var p=$(&apos;clsa-dcs-f2.Urine:QuestionnaireMetric.missingCount&apos;).asSequence()
-var q=$(&apos;clsa-dcs-f2.Urine:QuestionnaireMetric.questionCount&apos;).asSequence()
+          <attribute name="script" valueType="text">var stage=&apos;clsa-dcs-f2.Urine:&apos;
+var p=$(stage+&apos;QuestionnaireMetric.missingCount&apos;).asSequence()
+var q=$(stage+&apos;QuestionnaireMetric.questionCount&apos;).asSequence()
 var res=null
-if(p.isNull().and(q.isNull()).not().value() &amp;&amp; 0!=q.sum()){
-  res=newValue(
-    &apos;{complete:&apos;+
-    Math.round(q.sum().minus(p.sum()).multiply(100).div(q.sum()).value())
-    +&apos;}&apos;,&apos;text&apos;)
+if(p.isNull().and(q.isNull()).not().value() &amp;&amp; 0!=q.sum()) {
+  var str=[]
+  str.push(
+    &apos;complete:&apos;+
+    Math.round(q.sum().minus(p.sum()).multiply(100).div(q.sum()).value()))
+
+var sections={
+&apos;URINE&apos;:[
+&apos;FOOD_DRINK_24_U&apos;,
+&apos;CAFFEINE_24_U&apos;,
+&apos;TOBACCO_24_U&apos;,
+&apos;ALCOHOL_24_U&apos;,
+&apos;CURRENTLY_MENSTRUAL_U&apos;,
+&apos;AGREE_URINE_U&apos;,
+&apos;WHY_NOT_AGREE_URINE_U&apos;,
+&apos;PART_DECLINED_URINE_U&apos;,
+&apos;TECH_REASON_URINE_U&apos;]
+}
+
+  for(var key in sections) {
+    var rcount=0
+    var qcount=0
+    var arr=sections[key]
+    for(var i=0; i&lt;arr.length; i++ ) {
+      var j=$(stage+arr[i])
+      if(j.isNull().value()) continue
+      qcount++      
+      rcount+=j.any(&apos;REFUSED&apos;).value()?1:0
+    }
+    if(0==qcount) {
+      str.push(key+&apos;:100&apos;)
+    } else {
+      var perc=100.0*rcount/qcount      
+      if(0&lt;perc &amp;&amp; 100&gt;perc &amp;&amp; 0!=(perc-Math.floor(perc))) {        
+        perc=perc.toFixed(3)
+      }
+      str.push(key+&apos;:&apos;+perc)
+    }  
+  }
+
+  res=newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)
 }
 res</attribute>
         </attributes>
@@ -2145,14 +3565,68 @@ res</attribute>
           <attribute name="script" valueType="text">var stage=$this(&apos;group_blood&apos;)
 var res=null
 if(stage.isNull().not().value()) {
-  stage=stage.value()
-  var p=$(&apos;clsa-dcs-f2.&apos;+stage+&apos;:QuestionnaireMetric.missingCount&apos;).asSequence()
-  var q=$(&apos;clsa-dcs-f2.&apos;+stage+&apos;:QuestionnaireMetric.questionCount&apos;).asSequence()
-  if(p.isNull().and(q.isNull()).not().value() &amp;&amp; 0!=q.sum()){
-    res=newValue(
-      &apos;{complete:&apos;+
-      Math.round(q.sum().minus(p.sum()).multiply(100).div(q.sum()).value())
-      +&apos;}&apos;,&apos;text&apos;)
+  stage=&apos;clsa-dcs-f2.&apos;+stage.value()+&apos;:&apos;
+  var p=$(stage+&apos;QuestionnaireMetric.missingCount&apos;).asSequence()
+  var q=$(stage+&apos;QuestionnaireMetric.questionCount&apos;).asSequence()
+  if(p.isNull().and(q.isNull()).not().value() &amp;&amp; 0!=q.sum()) {
+    var str=[]
+    str.push(
+      &apos;complete:&apos;+
+      Math.round(q.sum().minus(p.sum()).multiply(100).div(q.sum()).value()))
+
+var sections={
+&apos;BLOOD&apos;:[
+&apos;AGREE_BS_B&apos;,
+&apos;ALCOHOL_24_B&apos;,
+&apos;BLOOD_COLLECTED_B&apos;,
+&apos;CAFFEINE_24_B&apos;,
+&apos;CURRENTLY_MENSTRUAL_B&apos;,
+&apos;DECLINE_POST_B&apos;,
+&apos;FIRST_ATTEMPT_B&apos;,
+&apos;FOOD_DRINK_24_B&apos;,
+&apos;NEEDLE_B&apos;,
+&apos;NOTE_DRAW_SITE_B.FIBROSED_INFLAMED&apos;,
+&apos;NOTE_DRAW_SITE_B.HEMATOMA&apos;,
+&apos;NOTE_DRAW_SITE_B.PARALYZED&apos;,
+&apos;NOTE_DRAW_SITE_B.PETECHIAE&apos;,
+&apos;NOTE_DRAW_SITE_B.PICC_LINE&apos;,
+&apos;NOTE_DRAW_SITE_B.RED_SWOLLEN&apos;,
+&apos;NOTE_DRAW_SITE_B.SCARRING&apos;,
+&apos;NOTE_DRAW_SITE_B.SCLEROTIC_HARDVEINS&apos;,
+&apos;NOTE_DRAW_SITE_B.SEVERE_PROBLEM&apos;,
+&apos;NOTE_DRAW_SITE_B.VASCULAR_GRAFT&apos;,
+&apos;NOTE_OTHER_B.OTHER&apos;,
+&apos;PART_DECLINED_B&apos;,
+&apos;PART_POSTPONED_B&apos;,
+&apos;SIT_RECLIN_B&apos;,
+&apos;TECH_REASON_B&apos;,
+&apos;TOBACCO_24_B&apos;,
+&apos;WHICH_ARM_CHOSEN_2_B&apos;,
+&apos;WHY_NOT_AGREE_BLOOD_B&apos;,
+&apos;WHY_NO_BLOOD_B&apos;]
+}
+
+    for(var key in sections) {
+      var rcount=0
+      var qcount=0
+      var arr=sections[key]
+      for(var i=0; i&lt;arr.length; i++ ) {
+        var j=$(stage+arr[i])
+        if(j.isNull().value()) continue
+        qcount++      
+        rcount+=j.any(&apos;REFUSED&apos;).value()?1:0
+      }
+      if(0==qcount) {
+        str.push(key+&apos;:100&apos;)
+      } else {
+        var perc=100.0*rcount/qcount      
+        if(0&lt;perc &amp;&amp; 100&gt;perc &amp;&amp; 0!=(perc-Math.floor(perc))) {        
+          perc=perc.toFixed(3)
+        }
+        str.push(key+&apos;:&apos;+perc)
+      }
+    }
+    res=newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)
   }
 }
 res</attribute>
@@ -2227,14 +3701,60 @@ res</attribute>
       </variable>
       <variable name="data_qac_deviation_aecrf" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">var p=$(&apos;clsa-dcs-f2.Deviation_AE_CRF:QuestionnaireMetric.missingCount&apos;).asSequence()
-var q=$(&apos;clsa-dcs-f2.Deviation_AE_CRF:QuestionnaireMetric.questionCount&apos;).asSequence()
+          <attribute name="script" valueType="text">var stage=&apos;clsa-dcs-f2.Deviation_AE_CRF:&apos;
+var p=$(stage+&apos;QuestionnaireMetric.missingCount&apos;).asSequence()
+var q=$(stage+&apos;QuestionnaireMetric.questionCount&apos;).asSequence()
 var res=null
-if(p.isNull().and(q.isNull()).not().value() &amp;&amp; 0!=q.sum()){
-  res=newValue(
-    &apos;{complete:&apos;+
-    Math.round(q.sum().minus(p.sum()).multiply(100).div(q.sum()).value())
-    +&apos;}&apos;,&apos;text&apos;)
+if(p.isNull().and(q.isNull()).not().value() &amp;&amp; 0!=q.sum()) {
+  var str=[]
+  str.push(
+    &apos;complete:&apos;+
+    Math.round(q.sum().minus(p.sum()).multiply(100).div(q.sum()).value()))
+
+var sections={
+&apos;Deviation&apos;:[
+&apos;DEV_DCS_COF2&apos;,
+&apos;DEV_WHAT_COF2&apos;,
+&apos;DEV_REAS_COF2&apos;,
+&apos;DEV_ORDR_COF2&apos;,
+&apos;DEV_ORDR2_COF2&apos;,
+&apos;DEV_ORDR3_COF2&apos;,
+&apos;DEV_ORDR4_COF2&apos;,
+&apos;DEV_ORDR5_COF2&apos;,
+&apos;DEV_BLWHEN_COF2&apos;,
+&apos;DAE_DCS_COF2&apos;,
+&apos;DAE_WHAT_COF2&apos;,
+&apos;DAE_FLWUP_COF2&apos;,
+&apos;DAE_COMM_COF2&apos;,
+&apos;CRF_DCS_COF2&apos;,
+&apos;CRF_NCC_COF2&apos;,
+&apos;CRF-REAS_COF2&apos;,
+&apos;DEV_ORDRTYP_COF2&apos;,
+&apos;DEV_ORDRRM_COF2&apos;]
+}
+
+  for(var key in sections) {
+    var rcount=0
+    var qcount=0
+    var arr=sections[key]
+    for(var i=0; i&lt;arr.length; i++ ) {
+      var j=$(stage+arr[i])
+      if(j.isNull().value()) continue
+      qcount++      
+      rcount+=j.any(&apos;REFUSED&apos;).value()?1:0
+    }
+    if(0==qcount) {
+      str.push(key+&apos;:100&apos;)
+    } else {
+      var perc=100.0*rcount/qcount      
+      if(0&lt;perc &amp;&amp; 100&gt;perc &amp;&amp; 0!=(perc-Math.floor(perc))) {        
+        perc=perc.toFixed(3)
+      }
+      str.push(key+&apos;:&apos;+perc)
+    }  
+  }
+
+  res=newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)
 }
 res</attribute>
         </attributes>
@@ -2274,14 +3794,58 @@ res</attribute>
       </variable>
       <variable name="data_qac_quality_assurance_inhome" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">var p=$(&apos;clsa-dcs-f2.QualityAssuranceIH:QuestionnaireMetric.missingCount&apos;).asSequence()
-var q=$(&apos;clsa-dcs-f2.QualityAssuranceIH:QuestionnaireMetric.questionCount&apos;).asSequence()
+          <attribute name="script" valueType="text">var stage=&apos;clsa-dcs-f2.QualityAssuranceIH:&apos;
+var p=$(stage+&apos;QuestionnaireMetric.missingCount&apos;).asSequence()
+var q=$(stage+&apos;QuestionnaireMetric.questionCount&apos;).asSequence()
 var res=null
-if(p.isNull().and(q.isNull()).not().value() &amp;&amp; 0!=q.sum()){
-  res=newValue(
-    &apos;{complete:&apos;+
-    Math.round(q.sum().minus(p.sum()).multiply(100).div(q.sum()).value())
-    +&apos;}&apos;,&apos;text&apos;)
+if(p.isNull().and(q.isNull()).not().value() &amp;&amp; 0!=q.sum()) {
+  var str=[]
+  str.push(
+    &apos;complete:&apos;+
+    Math.round(q.sum().minus(p.sum()).multiply(100).div(q.sum()).value()))
+
+var sections={
+&apos;QAH_COF2&apos;:[
+&apos;QAH_INTIME_COF2&apos;,
+&apos;QAH_FRIEND2_COF2&apos;,
+&apos;QAH_INKNO_COF2&apos;,
+&apos;QAH_INSAS_COF2&apos;,
+&apos;QAH_ININFO_COF2&apos;,
+&apos;QAH_INMED_COF2&apos;,
+&apos;QAH_INANY_COF2&apos;,
+&apos;QAH_EXPER_COF2&apos;,
+&apos;QAH_IMPRV_COF2&apos;,
+&apos;QAH_INTIME2_COF2&apos;,
+&apos;QAH_INACC_COF2&apos;,
+&apos;QAH_HIN_COF2&apos;,
+&apos;QAH_INMEM_COF2&apos;,
+&apos;QAH_18MO_COF2&apos;,
+&apos;QAH_COM_COF2&apos;,
+&apos;QAH_TWOVIS_COF2&apos;]  
+}
+
+  for(var key in sections) {
+    var rcount=0
+    var qcount=0
+    var arr=sections[key]
+    for(var i=0; i&lt;arr.length; i++ ) {
+      var j=$(stage+arr[i])
+      if(j.isNull().value()) continue
+      qcount++      
+      rcount+=j.any(&apos;REFUSED&apos;).value()?1:0
+    }
+    if(0==qcount) {
+      str.push(key+&apos;:100&apos;)
+    } else {
+      var perc=100.0*rcount/qcount      
+      if(0&lt;perc &amp;&amp; 100&gt;perc &amp;&amp; 0!=(perc-Math.floor(perc))) {        
+        perc=perc.toFixed(3)
+      }
+      str.push(key+&apos;:&apos;+perc)
+    }  
+  }
+
+  res=newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)
 }
 res</attribute>
         </attributes>
@@ -2341,8 +3905,53 @@ res</attribute>
 ).value() ? 1 : 0</attribute>
         </attributes>
       </variable>
+      <variable name="stage_technician_cognition_recording" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$this(&apos;stage_technician_stroop_fas&apos;)</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_contraindicated_cognition_recording" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$this(&apos;stage_contraindicated_stroop_fas&apos;)</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_skip_cognition_recording" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$this(&apos;stage_skip_stroop_fas&apos;)</attribute>
+        </attributes>
+      </variable>
+      <variable name="data_qac_cognition_recording" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var res=null
+var d=$(&apos;clsa-dcs-f2.StroopFAS:STP_DOTREC_COF2&apos;)
+var w=$(&apos;clsa-dcs-f2.StroopFAS:STP_WORREC_COF2&apos;)
+var c=$(&apos;clsa-dcs-f2.StroopFAS:STP_COLREC_COF2&apos;)
+var f=$(&apos;clsa-dcs-f2.StroopFAS:FAS_FREC_COF2&apos;)
+var a=$(&apos;clsa-dcs-f2.StroopFAS:FAS_AREC_COF2&apos;)
+var s=$(&apos;clsa-dcs-f2.StroopFAS:FAS_SREC_COF2&apos;)
+if(!d.isNull().and(w.isNull(),c.isNull,f.isNull(),a.isNull(),s.isNull()).value()) {
+  var str=[]
+  str.push(&apos;filesize_dot:&apos;+(d.isNull().value()?&apos;0&apos;:d.length().value()))
+  str.push(&apos;filesize_wor:&apos;+(w.isNull().value()?&apos;0&apos;:w.length().value()))
+  str.push(&apos;filesize_col:&apos;+(c.isNull().value()?&apos;0&apos;:c.length().value()))
+  str.push(&apos;filesize_f:&apos;+(f.isNull().value()?&apos;0&apos;:f.length().value()))
+  str.push(&apos;filesize_a:&apos;+(a.isNull().value()?&apos;0&apos;:a.length().value()))
+  str.push(&apos;filesize_s:&apos;+(s.isNull().value()?&apos;0&apos;:s.length().value()))    
+  res=newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="data_missing_cognition_recording" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$this(&apos;data_qac_cognition_recording&apos;).isNull().and(
+  $this(&apos;stage_contraindicated_cognition_recording&apos;).eq(0),
+  $this(&apos;stage_skip_cognition_recording&apos;).isNull()
+).value() ? 1 : 0</attribute>
+        </attributes>
+      </variable>
     </variables>
   </variables>
   <created valueType="datetime">2018-05-15T13:40:50.956-04</created>
-  <updated valueType="datetime">2018-09-26T12:01:35.147-04</updated>
+  <updated valueType="datetime">2018-10-10T14:54:27.321-04</updated>
 </org.obiba.magma.views.View>

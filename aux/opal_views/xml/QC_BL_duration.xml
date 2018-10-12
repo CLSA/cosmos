@@ -1188,22 +1188,46 @@ res</attribute>
       </variable>
       <variable name="module_list" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">$(&apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;).asSequence().filter(function(v,i){
+          <attribute name="script" valueType="text">var stage=&apos;clsa-dcs.NeuropsychologicalBattery:&apos;
+//if($(stage+&apos;QuestionnaireRun.version&apos;).eq(&apos;1.6&apos;).value()) {
+$(stage+&apos;QuestionnaireMetric.section&apos;).asSequence().filter(function(v,i){
   return this.indexOf(v)==i
-  }).sort().join(&apos;,&apos;)
-/*
-$(&apos;clsa-dcs.NeuropsychologicalBattery:QuestionnaireMetric.section&apos;).asSequence().filter(function(v,i){
-  return this.indexOf(v)==i
-  }).sort().join(&apos;,&apos;)
-*/  
+  }).sort().prepend(newValue(&apos;version:&apos;+$(stage+&apos;QuestionnaireRun.version&apos;).value(),&apos;text&apos;)).join(&apos;,&apos;)
+/*  
+} else {
+  null
+}
+*/
 //FunctionalStatus Fun
-//DiseaseSymptoms CAO,CCC_CANCER,CCC_CARDIAC,CCC_GASTRO,CCC_INFECTION,CCC_MENTAL,CCC_NEURO,CCC_OTHER,CCC_VISION,DEP,DIA
-// DPR,HBP,HYP,IHD,OAR,OSA,OSH,OSK,OST,PKD,ROS,STR,TBI
-//ContraIndications ICQ_COM,QAH_COM
-//NeuropsychologicalBattery FAS,SN,SPA,SSA,STP
+
+//DiseaseSymptoms
+//version:1.4
+//CAO,CCC_CANCER,CCC_CARDIAC,CCC_GASTRO,CCC_INFECTION,CCC_MENTAL,CCC_NEURO,CCC_OTHER,CCC_VISION,
+//DEP,DIA,DPR,HBP,HYP,IHD,OAR,OSA,OSH,OSK,OST,PKD,ROS,STR,TBI
+//version:1.5
+//CAO,CCC_CANCER,CCC_CARDIAC,CCC_GASTRO,CCC_INFECTION,CCC_MENTAL,CCC_NEURO,CCC_OTHER,CCC_VISION,
+//DEP,DIA,DPR,HBP,HYP,IHD,OAR,OSA,OSH,OSK,OST,PKD,ROS,STR,TBI
+//version:1.6
+//CAO,CCC_CANCER,CCC_CARDIAC,CCC_GASTRO,CCC_INFECTION,CCC_MENTAL,CCC_NEURO,CCC_OTHER,CCC_VISION,
+//DEP,DIA,DPR,HBP,HYP,IHD,OAR,OSA,OSH,OSK,OST,PKD,ROS,STR,TBI
+
+//ContraIndications
+//version:2.0,ICQ_COM
+//version:2.1,ICQ_COM
+//version:2.2,ICQ_COM
+//version:2.3,ICQ_COM,QAH_COM
+//version:2.4,ICQ_COM,QAH_COM
+
+//NeuropsychologicalBattery
+//version:1.2,FAS,SN,SPA,SSA,STP
+//version:1.3,FAS,SN,SPA,SSA,STP
+
 //EventPMT PMT
+
 //TimeBasedProspectiveMemoryTask TMT
+
 //Urine URINE
+
 //Blood BLOOD</attribute>
         </attributes>
       </variable>
@@ -1303,8 +1327,50 @@ $(&apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;).asSequence().filt
 })</attribute>
         </attributes>
       </variable>
+      <variable name="stage_technician_cognition_recording" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;Quality_Control.QC_BL:stage_technician_cognition_recording&apos;)</attribute>
+        </attributes>
+      </variable>
+      <variable name="&#x9; stage_duration_cognition_recording" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var res=null
+if($(&apos;Quality_Control.QC_BL:stage_contraindicated_neuropsychological_battery&apos;).eq(0).and(
+   $(&apos;Quality_Control.QC_BL:stage_skip_neuropsychological_battery&apos;).isNull()).value()) {
+  var post = $(&apos;clsa-dcs.NeuropsychologicalBattery:QuestionnaireRun.timeEnd&apos;)
+  var pre = $(&apos;clsa-dcs.NeuropsychologicalBattery:QuestionnaireRun.timeStart&apos;)
+  if(pre.before(post).value()) {
+    res=post.time().minus(pre.time()).div(60000)
+  }
+  if(null===res) {
+    res=$group(
+      &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
+      &apos;NeuropsychologicalBattery&apos;,
+      &apos;Admin.StageInstance.duration&apos;).asSequence().last().div(60)
+  }  
+}
+if(null!==res &amp;&amp; res.isNull().not().value()) {
+  var list=[&apos;FAS&apos;,&apos;STP&apos;]
+  var str=[(&apos;stage:&apos;+Math.round(res*1000)/1000)]
+  var section=$(&apos;clsa-dcs.NeuropsychologicalBattery:QuestionnaireMetric.section&apos;).asSequence()
+  var duration=$(&apos;clsa-dcs.NeuropsychologicalBattery:QuestionnaireMetric.duration&apos;).asSequence()
+  var u=0
+  for(var i=0;i&lt;list.length;i++) {
+    var m=list[i]
+    var t=duration.filter(function(v,k){
+      return section.valueAt(k).value()==m
+    }).asSequence().whenNull(0).sum().div(60)
+    u+=t
+    str.push(m+&apos;:&apos;+ Math.round(t*1000)/1000)
+  }
+  str.push(&apos;module:&apos;+Math.round(u*1000)/1000)
+  res=newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)  
+}
+res</attribute>
+        </attributes>
+      </variable>
     </variables>
   </variables>
   <created valueType="datetime">2018-06-18T09:52:50.447-04</created>
-  <updated valueType="datetime">2018-08-30T14:17:59.028-04</updated>
+  <updated valueType="datetime">2018-10-12T11:30:42.211-04</updated>
 </org.obiba.magma.views.View>

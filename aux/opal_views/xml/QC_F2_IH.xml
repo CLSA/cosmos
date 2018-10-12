@@ -35,7 +35,7 @@
       <variable name="stage_contraindicated_inhome_1" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">$group(&apos;clsa-inhome-f2.Participants:Admin.StageInstance.stage&apos;,&apos;InHome_1&apos;,
-&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value()
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
 ? 1 : 0</attribute>
         </attributes>
       </variable>
@@ -47,15 +47,16 @@ var res=$group(&apos;Admin.Action.stage&apos;,&apos;InHome_1&apos;,&apos;Admin.A
   return j==i
   }).last()
 if(res.isNull().not().value()) {
-  res=newValue(res.value().slice(14),&apos;text&apos;)
+  res=newValue(res.value().slice(14),&apos;text&apos;)  
 }
 res</attribute>
         </attributes>
       </variable>
       <variable name="data_qac_inhome_1" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">var p=$(&apos;clsa-inhome-f2.InHome_1:QuestionnaireMetric.missingCount&apos;).asSequence()
-var q=$(&apos;clsa-inhome-f2.InHome_1:QuestionnaireMetric.questionCount&apos;).asSequence()
+          <attribute name="script" valueType="text">var stage=&apos;clsa-inhome-f2.InHome_1:&apos;
+var p=$(stage+&apos;QuestionnaireMetric.missingCount&apos;).asSequence()
+var q=$(stage+&apos;QuestionnaireMetric.questionCount&apos;).asSequence()
 var res=null
 if(p.isNull().and(q.isNull()).not().value() &amp;&amp; 0!=q.sum()) {
   var str=[]
@@ -198,25 +199,34 @@ var sections={
 &apos;SMK_OTCURR_COF2&apos;]
 }
 
+  var skip=[]
+  if($(stage+&apos;QuestionnaireRun.version&apos;).eq(&apos;5.1&apos;).value()) {
+    skip.push(&apos;AGE&apos;)
+  }
+
   for(var key in sections) {
+    if(-1!=skip.indexOf(key)) {
+      str.push(key+&apos;:0&apos;)
+      continue
+    } 
     var rcount=0
     var qcount=0
     var arr=sections[key]
     for(var i=0; i&lt;arr.length; i++ ) {
-      var j=$(&apos;clsa-inhome-f2.InHome_1:&apos;+arr[i])
+      var j=$(stage+arr[i])
       if(j.isNull().value()) continue
-      qcount++
+      qcount++      
       rcount+=j.any(&apos;REFUSED&apos;).value()?1:0
     }
     if(0==qcount) {
       str.push(key+&apos;:100&apos;)
     } else {
-      var perc=100.0*rcount/qcount
-      if(0&lt;perc &amp;&amp; 100&gt;perc &amp;&amp; 0!=(perc-Math.floor(perc))) {
+      var perc=100.0*rcount/qcount      
+      if(0&lt;perc &amp;&amp; 100&gt;perc &amp;&amp; 0!=(perc-Math.floor(perc))) {        
         perc=perc.toFixed(3)
       }
       str.push(key+&apos;:&apos;+perc)
-    }
+    }  
   }
 
   res=newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)
@@ -241,7 +251,7 @@ res</attribute>
       <variable name="stage_contraindicated_inhome_2" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">$group(&apos;clsa-inhome-f2.Participants:Admin.StageInstance.stage&apos;,&apos;InHome_2&apos;,
-&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value()
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
 ? 1 : 0</attribute>
         </attributes>
       </variable>
@@ -253,15 +263,16 @@ var res=$group(&apos;Admin.Action.stage&apos;,&apos;InHome_2&apos;,&apos;Admin.A
   return j==i
   }).last()
 if(res.isNull().not().value()) {
-  res=newValue(res.value().slice(14),&apos;text&apos;)
+  res=newValue(res.value().slice(14),&apos;text&apos;)  
 }
 res</attribute>
         </attributes>
       </variable>
       <variable name="data_qac_inhome_2" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">var p=$(&apos;clsa-inhome-f2.InHome_2:QuestionnaireMetric.missingCount&apos;).asSequence()
-var q=$(&apos;clsa-inhome-f2.InHome_2:QuestionnaireMetric.questionCount&apos;).asSequence()
+          <attribute name="script" valueType="text">var stage=&apos;clsa-inhome-f2.InHome_2:&apos;
+var p=$(stage+&apos;QuestionnaireMetric.missingCount&apos;).asSequence()
+var q=$(stage+&apos;QuestionnaireMetric.questionCount&apos;).asSequence()
 var res=null
 if(p.isNull().and(q.isNull()).not().value() &amp;&amp; 0!=q.sum()) {
   var str=[]
@@ -443,25 +454,34 @@ var sections={
 &apos;WHO_HRTDR_COF2&apos;]
 }
 
+  var skip=[]
+  if($(stage+&apos;QuestionnaireRun.version&apos;).any(&apos;5.0&apos;).value()) {
+    skip.push(&apos;FUL&apos;)
+  }
+
   for(var key in sections) {
+    if(-1!=skip.indexOf(key)) {
+      str.push(key+&apos;:0&apos;)
+      continue
+    } 
     var rcount=0
     var qcount=0
     var arr=sections[key]
     for(var i=0; i&lt;arr.length; i++ ) {
-      var j=$(&apos;clsa-inhome-f2.InHome_2:&apos;+arr[i])
+      var j=$(stage+arr[i])
       if(j.isNull().value()) continue
-      qcount++
+      qcount++      
       rcount+=j.any(&apos;REFUSED&apos;).value()?1:0
     }
     if(0==qcount) {
       str.push(key+&apos;:100&apos;)
     } else {
-      var perc=100.0*rcount/qcount
-      if(0&lt;perc &amp;&amp; 100&gt;perc &amp;&amp; 0!=(perc-Math.floor(perc))) {
+      var perc=100.0*rcount/qcount      
+      if(0&lt;perc &amp;&amp; 100&gt;perc &amp;&amp; 0!=(perc-Math.floor(perc))) {        
         perc=perc.toFixed(3)
       }
       str.push(key+&apos;:&apos;+perc)
-    }
+    }  
   }
 
   res=newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)
@@ -486,7 +506,7 @@ res</attribute>
       <variable name="stage_contraindicated_inhome_3" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">$group(&apos;clsa-inhome-f2.Participants:Admin.StageInstance.stage&apos;,&apos;InHome_3&apos;,
-&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value()
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
 ? 1 : 0</attribute>
         </attributes>
       </variable>
@@ -498,15 +518,16 @@ var res=$group(&apos;Admin.Action.stage&apos;,&apos;InHome_3&apos;,&apos;Admin.A
   return j==i
   }).last()
 if(res.isNull().not().value()) {
-  res=newValue(res.value().slice(14),&apos;text&apos;)
+  res=newValue(res.value().slice(14),&apos;text&apos;)  
 }
 res</attribute>
         </attributes>
       </variable>
       <variable name="data_qac_inhome_3" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">var p=$(&apos;clsa-inhome-f2.InHome_3:QuestionnaireMetric.missingCount&apos;).asSequence()
-var q=$(&apos;clsa-inhome-f2.InHome_3:QuestionnaireMetric.questionCount&apos;).asSequence()
+          <attribute name="script" valueType="text">var stage=&apos;clsa-inhome-f2.InHome_3:&apos;
+var p=$(stage+&apos;QuestionnaireMetric.missingCount&apos;).asSequence()
+var q=$(stage+&apos;QuestionnaireMetric.questionCount&apos;).asSequence()
 var res=null
 if(p.isNull().and(q.isNull()).not().value() &amp;&amp; 0!=q.sum()) {
   var str=[]
@@ -893,25 +914,35 @@ var sections={
 &apos;WLQ_PHEMFIN_COF2&apos;]
 }
 
+  var skip=[]
+  if($(stage+&apos;QuestionnaireRun.version&apos;).any(&apos;5.3&apos;).value()) {
+    skip.push(&apos;CR1&apos;)
+    skip.push(&apos;FAL&apos;)
+  }
+
   for(var key in sections) {
+    if(-1!=skip.indexOf(key)) {
+      str.push(key+&apos;:0&apos;)
+      continue
+    } 
     var rcount=0
     var qcount=0
     var arr=sections[key]
     for(var i=0; i&lt;arr.length; i++ ) {
-      var j=$(&apos;clsa-inhome-f2.InHome_3:&apos;+arr[i])
+      var j=$(stage+arr[i])
       if(j.isNull().value()) continue
-      qcount++
+      qcount++      
       rcount+=j.any(&apos;REFUSED&apos;).value()?1:0
     }
     if(0==qcount) {
       str.push(key+&apos;:100&apos;)
     } else {
-      var perc=100.0*rcount/qcount
-      if(0&lt;perc &amp;&amp; 100&gt;perc &amp;&amp; 0!=(perc-Math.floor(perc))) {
+      var perc=100.0*rcount/qcount      
+      if(0&lt;perc &amp;&amp; 100&gt;perc &amp;&amp; 0!=(perc-Math.floor(perc))) {        
         perc=perc.toFixed(3)
       }
       str.push(key+&apos;:&apos;+perc)
-    }
+    }  
   }
 
   res=newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)
@@ -936,7 +967,7 @@ res</attribute>
       <variable name="stage_contraindicated_inhome_4" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">$group(&apos;clsa-inhome-f2.Participants:Admin.StageInstance.stage&apos;,&apos;InHome_4&apos;,
-&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value()
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
 ? 1 : 0</attribute>
         </attributes>
       </variable>
@@ -948,15 +979,16 @@ var res=$group(&apos;Admin.Action.stage&apos;,&apos;InHome_4&apos;,&apos;Admin.A
   return j==i
   }).last()
 if(res.isNull().not().value()) {
-  res=newValue(res.value().slice(14),&apos;text&apos;)
+  res=newValue(res.value().slice(14),&apos;text&apos;)  
 }
 res</attribute>
         </attributes>
       </variable>
       <variable name="data_qac_inhome_4" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">var p=$(&apos;clsa-inhome-f2.InHome_4:QuestionnaireMetric.missingCount&apos;).asSequence()
-var q=$(&apos;clsa-inhome-f2.InHome_4:QuestionnaireMetric.questionCount&apos;).asSequence()
+          <attribute name="script" valueType="text">var stage=&apos;clsa-inhome-f2.InHome_4:&apos;
+var p=$(stage+&apos;QuestionnaireMetric.missingCount&apos;).asSequence()
+var q=$(stage+&apos;QuestionnaireMetric.questionCount&apos;).asSequence()
 var res=null
 if(p.isNull().and(q.isNull()).not().value() &amp;&amp; 0!=q.sum()) {
   var str=[]
@@ -1087,25 +1119,35 @@ var sections={
 &apos;WTP_IMAGECUR_COF2&apos;]
 }
 
+  var skip=[]
+  if($(stage+&apos;QuestionnaireRun.version&apos;).any(&apos;5.0&apos;,&apos;5.1&apos;).value()) {
+    skip.push(&apos;PMH&apos;)
+    skip.push(&apos;WTP&apos;)
+  }
+
   for(var key in sections) {
+    if(-1!=skip.indexOf(key)) {
+      str.push(key+&apos;:0&apos;)
+      continue
+    } 
     var rcount=0
     var qcount=0
     var arr=sections[key]
     for(var i=0; i&lt;arr.length; i++ ) {
-      var j=$(&apos;clsa-inhome-f2.InHome_4:&apos;+arr[i])
+      var j=$(stage+arr[i])
       if(j.isNull().value()) continue
-      qcount++
+      qcount++      
       rcount+=j.any(&apos;REFUSED&apos;).value()?1:0
     }
     if(0==qcount) {
       str.push(key+&apos;:100&apos;)
     } else {
-      var perc=100.0*rcount/qcount
-      if(0&lt;perc &amp;&amp; 100&gt;perc &amp;&amp; 0!=(perc-Math.floor(perc))) {
+      var perc=100.0*rcount/qcount      
+      if(0&lt;perc &amp;&amp; 100&gt;perc &amp;&amp; 0!=(perc-Math.floor(perc))) {        
         perc=perc.toFixed(3)
       }
       str.push(key+&apos;:&apos;+perc)
-    }
+    }  
   }
 
   res=newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)
@@ -1157,7 +1199,7 @@ res</attribute>
       <variable name="stage_contraindicated_inhome_conclusion_questionnaire" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">$group(&apos;clsa-inhome-f2.Participants:Admin.StageInstance.stage&apos;,&apos;ConclusionQuestionnaire&apos;,
-&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value()
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
 ? 1 : 0</attribute>
         </attributes>
       </variable>
@@ -1169,7 +1211,7 @@ var res=$group(&apos;Admin.Action.stage&apos;,&apos;ConclusionQuestionnaire&apos
   return j==i
   }).last()
 if(res.isNull().not().value()) {
-  res=newValue(res.value().slice(14),&apos;text&apos;)
+  res=newValue(res.value().slice(14),&apos;text&apos;)  
 }
 res</attribute>
         </attributes>
@@ -1196,7 +1238,7 @@ var res=null
 if(p.isNull().or(q.isNull()).not().value()){
   var a=p.any(&apos;yes&apos;).value()
   var b=q.any(&apos;yes&apos;).value()
-  var n=0
+  var n=0 
   if(a) n++
   if(b) n++
   res=newValue(&apos;{checklist:&apos;+n+&apos;}&apos;,&apos;text&apos;)
@@ -1204,8 +1246,53 @@ if(p.isNull().or(q.isNull()).not().value()){
 res</attribute>
         </attributes>
       </variable>
+      <variable name="data_qac_inhome_cognition_recording" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var res=null
+var a=$(&apos;clsa-inhome-f2.InHome_2:COG_WRDLSTREC_COF2&apos;)
+var b=$(&apos;clsa-inhome-f2.InHome_2:COG_ANMLLLIST_REC_COF2&apos;)
+var c=$(&apos;clsa-inhome-f2.InHome_2:COG_CNTTMEREC_COF2&apos;)
+var d=$(&apos;clsa-inhome-f2.InHome_2:COG_ALPTME_REC2_COF2&apos;)
+var e=$(&apos;clsa-inhome-f2.InHome_2:COG_ALTTME_REC_COF2&apos;)
+var f=$(&apos;clsa-inhome-f2.InHome_2:COG_WRDLST2_REC_COF2&apos;)
+if(!a.isNull().and(b.isNull(),c.isNull,d.isNull(),e.isNull(),f.isNull()).value()) {
+  var str=[]
+  str.push(&apos;filesize_reyi:&apos;+(a.isNull().value()?&apos;0&apos;:a.length().value()))
+  str.push(&apos;filesize_anml:&apos;+(b.isNull().value()?&apos;0&apos;:b.length().value()))
+  str.push(&apos;filesize_coun:&apos;+(c.isNull().value()?&apos;0&apos;:c.length().value()))
+  str.push(&apos;filesize_alph:&apos;+(d.isNull().value()?&apos;0&apos;:d.length().value()))
+  str.push(&apos;filesize_altr:&apos;+(e.isNull().value()?&apos;0&apos;:e.length().value()))
+  str.push(&apos;filesize_reyii:&apos;+(f.isNull().value()?&apos;0&apos;:f.length().value()))    
+  res=newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="data_missing_inhome_cognition_recording" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$this(&apos;data_qac_inhome_cognition_recording&apos;).isNull().and(
+  $this(&apos;stage_contraindicated_inhome_cognition_recording&apos;).eq(0),
+  $this(&apos;stage_skip_inhome_cognition_recording&apos;).isNull()
+).value() ? 1 : 0</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_technician_inhome_cognition_recording" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$this(&apos;stage_technician_inhome_2&apos;)</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_contraindicated_inhome_cognition_recording" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$this(&apos;stage_contraindicated_inhome_2&apos;)</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_skip_inhome_cognition_recording" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$this(&apos;stage_skip_inhome_2&apos;)</attribute>
+        </attributes>
+      </variable>
     </variables>
   </variables>
   <created valueType="datetime">2018-08-13T11:15:48.900-04</created>
-  <updated valueType="datetime">2018-10-04T15:17:21.264-04</updated>
+  <updated valueType="datetime">2018-10-10T15:15:57.493-04</updated>
 </org.obiba.magma.views.View>

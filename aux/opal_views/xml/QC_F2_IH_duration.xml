@@ -193,7 +193,7 @@ if($(&apos;Quality_Control.QC_F2_IH:stage_contraindicated_inhome_4&apos;).eq(0).
   }  
 }
 if(null!==res &amp;&amp; res.isNull().not().value()) {
-  var list=[&apos;ENV&apos;,&apos;HCU1&apos;,&apos;INT&apos;,&apos;K10&apos;,&apos;MEM&apos;,&apos;MET&apos;,&apos;TRA&apos;,&apos;WEA&apos;]
+  var list=[&apos;ENV&apos;,&apos;HCU1&apos;,&apos;INT&apos;,&apos;K10&apos;,&apos;MEM&apos;,&apos;MET&apos;,&apos;PMH&apos;,&apos;TRA&apos;,&apos;WEA&apos;]
   var str=[&apos;stage:&apos;+res.round(3)]
   var section=$(&apos;clsa-inhome-f2.InHome_4:QuestionnaireMetric.section&apos;).asSequence()
   var duration=$(&apos;clsa-inhome-f2.InHome_4:QuestionnaireMetric.duration&apos;).asSequence()
@@ -214,13 +214,35 @@ res</attribute>
       </variable>
       <variable name="module_list" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">$(&apos;clsa-inhome-f2.InHome_4:QuestionnaireMetric.section&apos;).asSequence().filter(function(v,i){
+          <attribute name="script" valueType="text">var stage=&apos;clsa-inhome-f2.InHome_1:&apos;
+//if($(stage+&apos;QuestionnaireRun.version&apos;).eq(&apos;4.3&apos;).value()) {
+$(stage+&apos;QuestionnaireMetric.section&apos;).asSequence().filter(function(v,i){
   return this.indexOf(v)==i
-  }).sort().join(&apos;,&apos;)
-  // inhome1 AGE,ALC,ED,GED,GEN,NUT,OWN,PA2,PCM,SDC,SMK
-  // inhome2 ADL,COG,FUL,IAL,LONE,LSI,PSD,SLS,WHO
-  // inhome3 CAG,CR1,CR2,FAL,INC,INJ,LBF,LFP,MEDI,RET,RPL,WLQ
-  // inhome4 ACE,CEX,ENV,HCU1,INT,K10,MEM,MET,PER,PHB,SEQ,TRA,WEA</attribute>
+  }).sort().prepend(newValue(&apos;version:&apos;+$(stage+&apos;QuestionnaireRun.version&apos;).value(),&apos;text&apos;)).join(&apos;,&apos;)  
+/*  
+} else {
+  null
+}
+*/
+// inhome1 
+// AGE,ALC,ED,GED,GEN,NUT,OWN,PA2,PCM,SDC,SMK
+//version:5.0 AGE,ALC,ED,GED,GEN,NUT,OWN,PA2,PCM,SDC,SMK
+//version:5.1     ALC,ED,GED,GEN,NUT,OWN,PA2,PCM,SDC,SMK
+//version:5.2 AGE,ALC,ED,GED,GEN,NUT,OWN,PA2,PCM,SDC,SMK
+// inhome2
+// ADL,COG,FUL,IAL,LONE,LSI,PSD,SLS,WHO
+// version:5.0 ADL,COG,    IAL,LONE,LSI,PSD,SLS,WHO
+// version:5.1 ADL,COG,FUL,IAL,LONE,LSI,PSD,SLS,WHO
+// inhome3 
+//CAG,CR1,CR2,FAL,INC,INJ,LBF,LFP,MEDI,RET,RPL,WLQ
+//version:5.0 CAG,CR1,CR2,FAL,INC,INJ,LBF,LFP,MEDI,RET,RPL,WLQ
+//version:5.2 CAG,CR1,CR2,FAL,INC,INJ,LBF,LFP,MEDI,RET,RPL,WLQ
+//version:5.3 CAG,    CR2,    INC,INJ,LBF,LFP,MEDI,RET,RPL,WLQ
+// inhome4 
+// ACE,CEX,ENV,HCU1,INT,K10,MEM,MET,PER,PHB,SEQ,TRA,WEA 
+// version:5.0,ENV,HCU1,INT,K10,MEM,MET,    TRA,WEA
+// version:5.1,ENV,HCU1,INT,K10,MEM,MET,    TRA,WEA
+// version:5.2,ENV,HCU1,INT,K10,MEM,MET,PMH,TRA,WEA,WTP</attribute>
         </attributes>
       </variable>
       <variable name="stage_technician_inhome_conclusion_questionnaire" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
@@ -250,8 +272,50 @@ if($(&apos;Quality_Control.QC_F2_IH:stage_contraindicated_inhome_conclusion_ques
 res</attribute>
         </attributes>
       </variable>
+      <variable name="stage_duration_inhome_cognition_recording" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var res=null
+if($(&apos;Quality_Control.QC_F2_IH:stage_contraindicated_inhome_2&apos;).eq(0).and(
+   $(&apos;Quality_Control.QC_F2_IH:stage_skip_inhome_2&apos;).isNull()).value()) {
+  var post = $(&apos;clsa-inhome-f2.InHome_2:QuestionnaireRun.timeEnd&apos;)
+  var pre = $(&apos;clsa-inhome-f2.InHome_2:QuestionnaireRun.timeStart&apos;)
+  if(pre.before(post).value()) {
+    res=post.time().minus(pre.time()).div(60000)
+  }
+  if(null===res) {
+    res=$group(
+      &apos;clsa-inhome-f2.Participants:Admin.StageInstance.stage&apos;,
+      &apos;InHome_2&apos;,
+      &apos;Admin.StageInstance.duration&apos;).asSequence().last().div(60)
+  }  
+}
+if(null!==res &amp;&amp; res.isNull().not().value()) {
+  var list=[&apos;COG&apos;]
+  var str=[&apos;stage:&apos;+res.round(3)]
+  var section=$(&apos;clsa-inhome-f2.InHome_2:QuestionnaireMetric.section&apos;).asSequence()
+  var duration=$(&apos;clsa-inhome-f2.InHome_2:QuestionnaireMetric.duration&apos;).asSequence()
+  var u=0
+  for(var i=0;i&lt;list.length;i++) {
+    var m=list[i]
+    var t=duration.filter(function(v,k){
+      return section.valueAt(k).value()==m
+    }).asSequence().whenNull(0).sum().div(60)
+    u+=t
+    str.push(m+&apos;:&apos;+ Math.round(t*1000)/1000)
+  }
+  str.push(&apos;module:&apos;+Math.round(u*1000)/1000)
+  res=newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)  
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="&#x9; stage_technician_inhome_cognition_recording" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$this(&apos;stage_technician_inhome_2&apos;)</attribute>
+        </attributes>
+      </variable>
     </variables>
   </variables>
   <created valueType="datetime">2018-08-13T11:19:23.748-04</created>
-  <updated valueType="datetime">2018-09-26T15:39:11.426-04</updated>
+  <updated valueType="datetime">2018-10-11T15:08:50.699-04</updated>
 </org.obiba.magma.views.View>

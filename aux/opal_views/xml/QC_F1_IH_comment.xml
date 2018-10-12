@@ -31,26 +31,22 @@
     <variables class="linked-hash-set">
       <variable name="stage_technician_inhome_1" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">$(&apos;clsa-inhome-f1.InHome_1:QuestionnaireRun.user&apos;).whenNull(
-  $group(&apos;Admin.Action.stage&apos;,&apos;InHome_1&apos;,&apos;Admin.Action.user&apos;).asSequence().last()).lowerCase()</attribute>
+          <attribute name="script" valueType="text">$(&apos;Quality_Control.QC_F1_IH:stage_technician_inhome_1&apos;)</attribute>
         </attributes>
       </variable>
       <variable name="stage_technician_inhome_2" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">$(&apos;clsa-inhome-f1.InHome_2:QuestionnaireRun.user&apos;).whenNull(
-  $group(&apos;Admin.Action.stage&apos;,&apos;InHome_2&apos;,&apos;Admin.Action.user&apos;).asSequence().last()).lowerCase()</attribute>
+          <attribute name="script" valueType="text">$(&apos;Quality_Control.QC_F1_IH:stage_technician_inhome_2&apos;)</attribute>
         </attributes>
       </variable>
       <variable name="stage_technician_inhome_3" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">$(&apos;clsa-inhome-f1.InHome_3:QuestionnaireRun.user&apos;).whenNull(
-  $group(&apos;Admin.Action.stage&apos;,&apos;InHome_3&apos;,&apos;Admin.Action.user&apos;).asSequence().last()).lowerCase()</attribute>
+          <attribute name="script" valueType="text">$(&apos;Quality_Control.QC_F1_IH:stage_technician_inhome_3&apos;)</attribute>
         </attributes>
       </variable>
       <variable name="stage_technician_inhome_4" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">$(&apos;clsa-inhome-f1.InHome_4:QuestionnaireRun.user&apos;).whenNull(
-  $group(&apos;Admin.Action.stage&apos;,&apos;InHome_4&apos;,&apos;Admin.Action.user&apos;).asSequence().last()).lowerCase()</attribute>
+          <attribute name="script" valueType="text">$(&apos;Quality_Control.QC_F1_IH:stage_technician_inhome_4&apos;)</attribute>
         </attributes>
       </variable>
       <variable name="interview_start_date" valueType="date" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
@@ -346,8 +342,7 @@ res</attribute>
       </variable>
       <variable name="stage_technician_inhome_conclusion_questionnaire" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">$(&apos;clsa-inhome-f1.ConclusionQuestionnaire:QuestionnaireRun.user&apos;).whenNull(
-  $group(&apos;Admin.Action.stage&apos;,&apos;ConclusionQuestionnaire&apos;,&apos;Admin.Action.user&apos;).asSequence().last()).lowerCase()</attribute>
+          <attribute name="script" valueType="text">$(&apos;Quality_Control.QC_F1_IH:stage_technician_inhome_conclusion_questionnaire&apos;)</attribute>
         </attributes>
       </variable>
       <variable name="stage_comment_inhome_conclusion_questionnaire" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
@@ -419,8 +414,18 @@ if(0&lt;c_str.length) {
 res</attribute>
         </attributes>
       </variable>
+      <variable name="stage_technician_inhome_cognition_recording" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$this(&apos;stage_technician_inhome_2&apos;)</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_comment_inhome_cognition_recording" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$this(&apos;stage_comment_inhome_2&apos;)</attribute>
+        </attributes>
+      </variable>
     </variables>
   </variables>
   <created valueType="datetime">2018-08-13T13:40:58.565-04</created>
-  <updated valueType="datetime">2018-09-26T15:24:09.299-04</updated>
+  <updated valueType="datetime">2018-10-11T14:55:35.235-04</updated>
 </org.obiba.magma.views.View>

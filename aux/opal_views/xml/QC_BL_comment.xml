@@ -2851,8 +2851,18 @@ if(0&lt;c_str.length) {
 res</attribute>
         </attributes>
       </variable>
+      <variable name="&#x9; stage_comment_cognition_recording" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$this(&apos;stage_comment_neuropsychological_battery&apos;)</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_technician_cognition_recording" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$this(&apos;stage_technician_neuropsychological_battery&apos;)</attribute>
+        </attributes>
+      </variable>
     </variables>
   </variables>
   <created valueType="datetime">2018-05-28T09:56:58.265-04</created>
-  <updated valueType="datetime">2018-08-14T13:50:34.365-04</updated>
+  <updated valueType="datetime">2018-10-11T14:42:31.935-04</updated>
 </org.obiba.magma.views.View>

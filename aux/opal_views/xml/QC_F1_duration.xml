@@ -1019,24 +1019,71 @@ res</attribute>
       </variable>
       <variable name="module_list" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">$(&apos;clsa-dcs-f1.FunctionalStatus:QuestionnaireMetric.section&apos;).asSequence().filter(function(v,i){
+          <attribute name="script" valueType="text">var stage=&apos;clsa-dcs-f1.OSOnly:&apos;
+//if($(stage+&apos;QuestionnaireRun.version&apos;).eq(&apos;3.4&apos;).value()) {
+$(stage+&apos;QuestionnaireMetric.section&apos;).asSequence().filter(function(v,i){
   return this.indexOf(v)==i
-  }).sort().join(&apos;,&apos;)
-  
+  }).sort().prepend(newValue(&apos;version:&apos;+$(stage+&apos;QuestionnaireRun.version&apos;).value(),&apos;text&apos;)).join(&apos;,&apos;)
+/*  
+} else {
+  null
+}
+*/
 //FunctionalStatus Fun
+
 //BodyCompositionWeight S1
-//DiseaseSymptoms CAO,CCC_CANCER,CCC_CARDIAC,CCC_GASTRO,CCC_INFECTION,CCC_MENTAL,CCC_NEURO,CCC_OTHER,CCC_VISION,DEP,DIA,DPR,EPI,HBP,HYP,IHD,OAR,OSA,OSH,OSK,OST,PKD,ROS,STR,TBI
-//ContraIndications ICQ_COF1 becmes ICQ_COF2 in f2
-//NeuropsychologicalBattery FAS,SN,SPA,SSA,STP  BECOMES StroopFAS FAS,STP in F2
+
+//DiseaseSymptoms 
+// CAO,CCC_CANCER,CCC_CARDIAC,CCC_GASTRO,CCC_INFECTION,CCC_MENTAL,CCC_NEURO,CCC_OTHER,CCC_VISION,DEP,DIA,DPR,EPI,HBP,HYP,IHD,OAR,OSA,OSH,OSK,OST,PKD,ROS,STR,TBI
+//version:3.0
+//CAO,CCC_CANCER,CCC_CARDIAC,CCC_GASTRO,CCC_INFECTION,CCC_MENTAL,CCC_NEURO,CCC_OTHER,CCC_VISION,
+//DEP,DIA,DPR,EPI,HBP,HYP,IHD,OAR,OSA,OSH,OSK,OST,PKD,ROS,STR,TBI
+//version:3.1
+//CAO,CCC_CANCER,CCC_CARDIAC,CCC_GASTRO,CCC_INFECTION,CCC_MENTAL,CCC_NEURO,CCC_OTHER,CCC_VISION,
+//DEP,DIA,DPR,EPI,HBP,HYP,IHD,OAR,OSA,OSH,OSK,OST,PKD,ROS,STR,TBI
+//version:3.2
+//CAO,CCC_CANCER,CCC_CARDIAC,CCC_GASTRO,CCC_INFECTION,CCC_MENTAL,CCC_NEURO,CCC_OTHER,CCC_VISION,
+//DEP,DIA,DPR,EPI,HBP,HYP,IHD,OAR,OSA,OSH,OSK,OST,PKD,ROS,STR,TBI
+//version:3.4
+//CAO,CCC_CANCER,CCC_CARDIAC,CCC_GASTRO,CCC_INFECTION,CCC_MENTAL,CCC_NEURO,CCC_OTHER,CCC_VISION,
+//DEP,DIA,DPR,EPI,HBP,HYP,IHD,OAR,OSA,OSH,OSK,OST,PKD,ROS,STR,TBI
+
+//ContraIndications ICQ_COF1
+
+//NeuropsychologicalBattery FAS,SN,SPA,SSA,STP BECOMES StroopFAS FAS,STP in F2
+//version:3.0,FAS,SN,SPA,SSA,STP
+//version:3.1,FAS,SN,SPA,SSA,STP
+//version:4.0,FAS,SN,SPA,SSA
+
 //EventPMT PMT
+
 //TimeBasedProspectiveMemoryTask TMT
+
 //Urine URINE
+
 //Blood BLOOD
-//GenHealth  HRG,HUP,NUR,VIS
-//OSEA ORH,PSY_PHY_FIN,SLE
+
+//GenHealth
+//HRG,HUP,NUR,VIS
+//version:1.0,HRG,HUP,NUR,VIS
+//version:1.1,HRG,HUP,NUR,VIS
+//version:1.2,HRG,HUP,NUR,VIS
+
+//OSEA
+//ORH,PSY_PHY_FIN,SLE
+//version:1.0,ORH,PSY_PHY_FIN,SLE
+//version:1.1,ORH,PSY_PHY_FIN,SLE
+//version:1.2,ORH,PSY_PHY_FIN,SLE
+//version:2.0,ORH,PSY_PHY_FIN,SLE
+
 //OSOnly ORH,SLE  BECOMES STAGE OSIPV WITH IPV,ORH,SLE IN F2
-//Deviation_AE_CRF Deviation
-//QualityAssuranceIH QAH_COF1  BECOMES QAH_COF2 IN F2</attribute>
+//version:1.1,ORH,SLE
+
+//Deviation_AE_CRF
+//Deviation
+
+//QualityAssuranceIH QAH_COF1 BECOMES QAH_COF2 IN F2
+</attribute>
         </attributes>
       </variable>
       <variable name="stage_technician_spine_bone_density" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
@@ -1683,8 +1730,50 @@ $(&apos;clsa-dcs-f1.Participants:Admin.StageInstance.stage&apos;).asSequence().f
 })</attribute>
         </attributes>
       </variable>
+      <variable name="stage_technician_cognition_recording" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;Quality_Control.QC_F1:stage_technician_cognition_recording&apos;)</attribute>
+        </attributes>
+      </variable>
+      <variable name="&#x9; stage_duration_cognition_recording" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var res=null
+if($(&apos;Quality_Control.QC_F1:stage_contraindicated_neuropsychological_battery&apos;).eq(0).and(
+   $(&apos;Quality_Control.QC_F1:stage_skip_neuropsychological_battery&apos;).isNull()).value()) {
+  var post = $(&apos;clsa-dcs-f1.NeuropsychologicalBattery:QuestionnaireRun.timeEnd&apos;)
+  var pre = $(&apos;clsa-dcs-f1.NeuropsychologicalBattery:QuestionnaireRun.timeStart&apos;)
+  if(pre.before(post).value()) {
+    res=post.time().minus(pre.time()).div(60000)
+  }
+  if(null===res) {
+    res=$group(
+      &apos;clsa-dcs-f1.Participants:Admin.StageInstance.stage&apos;,
+      &apos;NeuropsychologicalBattery&apos;,
+      &apos;Admin.StageInstance.duration&apos;).asSequence().last().div(60)
+  }  
+}
+if(null!==res &amp;&amp; res.isNull().not().value()) {
+  var list=[&apos;FAS&apos;,&apos;STP&apos;]
+  var str=[(&apos;stage:&apos;+Math.round(res*1000)/1000)]
+  var section=$(&apos;clsa-dcs-f1.NeuropsychologicalBattery:QuestionnaireMetric.section&apos;).asSequence()
+  var duration=$(&apos;clsa-dcs-f1.NeuropsychologicalBattery:QuestionnaireMetric.duration&apos;).asSequence()
+  var u=0
+  for(var i=0;i&lt;list.length;i++) {
+    var m=list[i]
+    var t=duration.filter(function(v,k){
+      return section.valueAt(k).value()==m
+    }).asSequence().whenNull(0).sum().div(60)
+    u+=t
+    str.push(m+&apos;:&apos;+ Math.round(t*1000)/1000)
+  }
+  str.push(&apos;module:&apos;+Math.round(u*1000)/1000)
+  res=newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)  
+}
+res</attribute>
+        </attributes>
+      </variable>
     </variables>
   </variables>
   <created valueType="datetime">2018-08-23T14:12:03.737-04</created>
-  <updated valueType="datetime">2018-08-30T14:11:57.767-04</updated>
+  <updated valueType="datetime">2018-10-12T11:41:43.916-04</updated>
 </org.obiba.magma.views.View>
