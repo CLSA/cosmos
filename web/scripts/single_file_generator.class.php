@@ -13,14 +13,10 @@ class single_file_generator extends table_generator
     $this->file_scale = 1.0;
   }
 
-  public function set_statistic($_stat)
+  public function set_file_scale( $_scale )
   {
-    $this->statistic = $_stat;
-  }
-
-  public function set_standard_deviation_scale($_stdev)
-  {
-    $this->standard_deviation_scale = $_stdev;
+    if( 0 < $_scale )
+      $this->file_scale = $_scale;
   }
 
   protected function build_data()
@@ -157,16 +153,6 @@ class single_file_generator extends table_generator
       $this->page_explanation[]=sprintf('above par filesize: size > %d (mean + %s x SD)', $filesize_max, $this->standard_deviation_scale);
     }
   }
-
-  public function set_file_scale( $_scale )
-  {
-    if( 0 < $_scale )
-      $this->file_scale = $_scale;
-  }
-
-  private $statistic;
-
-  private $standard_deviation_scale;
 
   private $file_scale;
 }

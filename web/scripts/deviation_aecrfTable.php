@@ -12,6 +12,7 @@ if(array_key_exists('stat-option',$_POST))
 $deviation_aecrf = new qnaire_generator(
   'deviation_aecrf', $rank, $begin_date, $end_date);
 $deviation_aecrf->set_statistic($stat);
+$deviation_aecrf->set_module_refusal(true);
 $deviation_aecrf->set_page_stage('DEVIATION AE CRF');
 $deviation_aecrf->build_table_data();
 echo $deviation_aecrf->build_table_html();

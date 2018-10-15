@@ -12,5 +12,6 @@ if(array_key_exists('stat-option',$_POST))
 $osonly = new qnaire_generator(
   'osonly', $rank, $begin_date, $end_date);
 $osonly->set_statistic($stat);
+$osonly->set_module_refusal(true);
 $osonly->build_table_data();
 echo $osonly->build_table_html();

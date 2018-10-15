@@ -60,16 +60,6 @@ class carotid_intima_generator extends table_generator
     }
   }
 
-  public function set_statistic($_stat)
-  {
-    $this->statistic = $_stat;
-  }
-
-  public function set_standard_deviation_scale($_stdev)
-  {
-    $this->standard_deviation_scale = $_stdev;
-  }
-
   protected function build_data()
   {
     global $db;
@@ -251,10 +241,6 @@ class carotid_intima_generator extends table_generator
     $this->indicator_keys[] = sprintf('total_right_%s_only',$this->file_type);
     $this->indicator_keys[] = sprintf('total_both_%s',$this->file_type);
   }
-
-  private $statistic;
-
-  private $standard_deviation_scale;
 
   private $file_type;
 

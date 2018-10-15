@@ -12,5 +12,6 @@ if(array_key_exists('stat-option',$_POST))
 $neuropsychological_battery = new qnaire_generator(
   'neuropsychological_battery', $rank, $begin_date, $end_date);
 $neuropsychological_battery->set_statistic($stat);
+$neuropsychological_battery->set_module_refusal(true);
 $neuropsychological_battery->build_table_data();
 echo $neuropsychological_battery->build_table_html();

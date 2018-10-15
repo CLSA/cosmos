@@ -12,5 +12,6 @@ if(array_key_exists('stat-option',$_POST))
 $body_composition_weight = new qnaire_generator(
   'body_composition_weight', $rank, $begin_date, $end_date);
 $body_composition_weight->set_statistic($stat);
+$body_composition_weight->set_module_refusal(true);
 $body_composition_weight->build_table_data();
 echo $body_composition_weight->build_table_html();

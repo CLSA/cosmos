@@ -12,5 +12,6 @@ if(array_key_exists('stat-option',$_POST))
 $disease_symptoms = new qnaire_generator(
   'disease_symptoms', $rank, $begin_date, $end_date);
 $disease_symptoms->set_statistic($stat);
+$disease_symptoms->set_module_refusal(true);
 $disease_symptoms->build_table_data();
 echo $disease_symptoms->build_table_html();

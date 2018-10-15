@@ -12,5 +12,6 @@ if(array_key_exists('stat-option',$_POST))
 $inhome_id = new qnaire_generator(
   'inhome_id', $rank, $begin_date, $end_date);
 $inhome_id->set_statistic($stat);
+$inhome_id->set_module_refusal(true);
 $inhome_id->build_table_data();
 echo $inhome_id->build_table_html();

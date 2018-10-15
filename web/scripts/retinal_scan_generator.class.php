@@ -13,16 +13,6 @@ class retinal_scan_generator extends table_generator
     $this->file_scale = 1024.0;
   }
 
-  public function set_statistic($_stat)
-  {
-    $this->statistic = $_stat;
-  }
-
-  public function set_standard_deviation_scale($_stdev)
-  {
-    $this->standard_deviation_scale = $_stdev;
-  }
-
   public function set_file_scale( $_scale )
   {
     if( 0 < $_scale )
@@ -396,10 +386,6 @@ class retinal_scan_generator extends table_generator
     $this->indicator_keys[]='total_left_file';
     $this->indicator_keys[]='total_right_file';
   }
-
-  private $statistic;
-
-  private $standard_deviation_scale;
 
   private $file_scale;
 }

@@ -14,11 +14,6 @@ class standing_balance_generator extends table_generator
     $this->page_stage ='STANDING BALANCE';
   }
 
-  public function set_standard_deviation_scale($_stdev)
-  {
-    $this->standard_deviation_scale = $_stdev;
-  }
-
   protected function build_data()
   {
     global $db;
@@ -102,7 +97,4 @@ class standing_balance_generator extends table_generator
     $this->page_explanation[]=sprintf('par best time: %s <= time <= %s sec',$time_min,$time_max);
     $this->page_explanation[]=sprintf('above par best time: time > %s sec (mean + %s x SD)',$time_max, $this->standard_deviation_scale);
   }
-
-  private $standard_deviation_scale;
-
 }

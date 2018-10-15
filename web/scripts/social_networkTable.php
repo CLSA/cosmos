@@ -11,6 +11,7 @@ if(array_key_exists('stat-option',$_POST))
 
 $social_network = new qnaire_generator(
   'social_network', $rank, $begin_date, $end_date);
+$social_network->set_module_refusal(true);
 $social_network->set_statistic($stat);
 $social_network->build_table_data();
 echo $social_network->build_table_html();

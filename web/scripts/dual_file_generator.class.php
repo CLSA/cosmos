@@ -13,16 +13,6 @@ class dual_file_generator extends table_generator
     $this->file_scale = 1.0;
   }
 
-  public function set_statistic($_stat)
-  {
-    $this->statistic = $_stat;
-  }
-
-  public function set_standard_deviation_scale($_stdev)
-  {
-    $this->standard_deviation_scale = $_stdev;
-  }
-
   public function set_file_scale( $_scale )
   {
     if( 0 < $_scale )
@@ -267,10 +257,6 @@ class dual_file_generator extends table_generator
     $this->indicator_keys[]='total_right_file';
     $this->indicator_keys[]='total_both_file';
   }
-
-  private $statistic;
-
-  private $standard_deviation_scale;
 
   private $file_scale;
 }

@@ -13,11 +13,6 @@ class hips_waist_generator extends table_generator
     $this->page_stage = 'HIPS WAIST';
   }
 
-  public function set_standard_deviation_scale($_stdev)
-  {
-    $this->standard_deviation_scale = $_stdev;
-  }
-
   protected function build_data()
   {
     global $db;
@@ -99,7 +94,4 @@ class hips_waist_generator extends table_generator
     $this->page_explanation[]=sprintf('par ratio: %s <= ratio <= %s',$ratio_min,$ratio_max);
     $this->page_explanation[]=sprintf('above par ratio: ratio > %s (mean + %s x SD)',$ratio_max,$this->standard_deviation_scale);
   }
-
-  private $standard_deviation_scale;
-
 }

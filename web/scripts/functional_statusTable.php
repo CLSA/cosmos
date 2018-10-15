@@ -12,5 +12,6 @@ if(array_key_exists('stat-option',$_POST))
 $functional_status = new qnaire_generator(
   'functional_status', $rank, $begin_date, $end_date);
 $functional_status->set_statistic($stat);
+$functional_status->set_module_refusal(true);
 $functional_status->build_table_data();
 echo $functional_status->build_table_html();

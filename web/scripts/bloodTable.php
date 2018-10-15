@@ -11,7 +11,7 @@ if(array_key_exists('stat-option',$_POST))
 
 $blood = new qnaire_generator(
   'blood', $rank, $begin_date, $end_date);
-
 $blood->set_statistic($stat);
+$blood->set_module_refusal(true);
 $blood->build_table_data();
 echo $blood->build_table_html();

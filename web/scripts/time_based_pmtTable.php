@@ -12,5 +12,6 @@ if(array_key_exists('stat-option',$_POST))
 $time_based_pmt = new qnaire_generator(
   'time_based_pmt', $rank, $begin_date, $end_date);
 $time_based_pmt->set_statistic($stat);
+$time_based_pmt->set_module_refusal(true);
 $time_based_pmt->build_table_data();
 echo $time_based_pmt->build_table_html();

@@ -12,5 +12,6 @@ if(array_key_exists('stat-option',$_POST))
 $general_health = new qnaire_generator(
   'general_health', $rank, $begin_date, $end_date);
 $general_health->set_statistic($stat);
+$general_health->set_module_refusal(true);
 $general_health->build_table_data();
 echo $general_health->build_table_html();

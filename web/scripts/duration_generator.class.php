@@ -40,19 +40,8 @@ class duration_generator extends table_generator
     if($this->has_module)
     {
       $this->indicator_keys = array_merge($this->indicator_keys,
-        array('total_module_sub','total_module_par','total_module_sup',
-        'total_lag_sub','total_lag_par','total_lag_sup'));
+        array('total_module_sub','total_module_par','total_module_sup'));
     }
-  }
-
-  public function set_statistic($_stat)
-  {
-    $this->statistic = $_stat;
-  }
-
-  public function set_standard_deviation_scale($_stdev)
-  {
-    $this->standard_deviation_scale = $_stdev;
   }
 
   public function set_threshold($_thresh)
@@ -105,14 +94,23 @@ class duration_generator extends table_generator
       'if(cast(substring_index(substring_index(duration,",",1),":",-1) as decimal(10,3))>%s,1,0))) as total_time_sup, ',$stage_time_max);
 
     $this->page_explanation = array();
-    $this->page_explanation[]=sprintf('time [min, max] : [%s, %s] ',
+
+    $this->page_explanation[] = sprintf('time [min, max] : [%s, %s] ',
       util::time_to_label($stage_min), util::time_to_label($stage_max));
-    $this->page_explanation[]=sprintf('time [avg, stdev] : [%s, %s] ',
+
+    $this->page_explanation[] = sprintf('time [avg, stdev] : [%s, %s] ',
       util::time_to_label($stage_avg), util::time_to_label($stage_stdev));
-    $this->page_explanation[]=sprintf('time threshold : %s min', $this->threshold);
-    $this->page_explanation[]=sprintf('subpar time: time < %s (mean - %s x SD) min', $stage_time_min, $this->standard_deviation_scale);
-    $this->page_explanation[]=sprintf('par time: %s <= time <= %d min', $stage_time_min, $stage_time_max);
-    $this->page_explanation[]=sprintf('above par time: time > %s (mean + %s x SD) min', $stage_time_max, $this->standard_deviation_scale);
+
+    $this->page_explanation[] = sprintf('time threshold : %s min', $this->threshold);
+
+    $this->page_explanation[] = sprintf('subpar time: time < %s (mean - %s x SD) min',
+      util::time_to_label($stage_time_min), $this->standard_deviation_scale);
+
+    $this->page_explanation[] = sprintf('par time: %s <= time <= %d min',
+      util::time_to_label($stage_time_min), util::time_to_label($stage_time_max));
+
+    $this->page_explanation[] = sprintf('above par time: time > %s (mean + %s x SD) min',
+      util::time_to_label($stage_time_max), $this->standard_deviation_scale);
 
     if($this->has_module)
     {
@@ -150,57 +148,22 @@ class duration_generator extends table_generator
         'sum(if(duration is null, 0, '.
         'if(cast(trim("}" from substring_index(duration,":",-1)) as decimal(10,3))>%s,1,0))) as total_module_sup, ',$module_time_max);
 
-      $this->page_explanation[]=sprintf('module time [min,max] : [%s,%s] ', util::time_to_label($module_min), util::time_to_label($module_max));
-      $this->page_explanation[]=sprintf('module time [avg,stdev] : [%s,%s] ', util::time_to_label($module_avg), util::time_to_label($module_stdev));
-      $this->page_explanation[]=sprintf('module time threshold : %s min', $this->threshold);
-      $this->page_explanation[]=sprintf('subpar module time: time < %s (mean - %s x SD) min', $module_time_min, $this->standard_deviation_scale);
-      $this->page_explanation[]=sprintf('par module time: %s <= time <= %d min', $module_time_min, $module_time_max);
-      $this->page_explanation[]=sprintf('above par module time: time > %s (mean + %s x SD) min', $module_time_max, $this->standard_deviation_scale);
+      $this->page_explanation[] = sprintf('module time [min,max] : [%s,%s] ',
+        util::time_to_label($module_min), util::time_to_label($module_max));
 
-      $lag_sql = sprintf(
-        'select avg(d_time) as d_avg, stddev(d_time) as d_std, min(d_time) as d_min, max(d_time) as d_max '.
-        'from ( '.
-        '  select cast(substring_index(substring_index(duration,",",1),":",-1) as decimal(10,3)) - '.
-        '          cast(trim("}" from substring_index(duration,":",-1)) as decimal(10,3)) as d_time '.
-        '  from interview i '.
-        '  join stage s on i.id=s.interview_id '.
-        '  where rank=%d '.
-        '  and duration is not null '.
-        '  and s.name="%s" '.
-        ') as t '.
-        'where d_time>0.0 and d_time<=%s ', $this->rank, $this->name, $this->threshold);
+      $this->page_explanation[] = sprintf('module time [avg,stdev] : [%s,%s] ',
+        util::time_to_label($module_avg), util::time_to_label($module_stdev));
 
-      $res = $db->get_row( $lag_sql );
+      $this->page_explanation[] = sprintf('module time threshold : %s min', $this->threshold);
 
-      $lag_avg = $res['d_avg'];
-      $lag_stdev = $res['d_std'];
-      $lag_min = $res['d_min'];
-      $lag_max= $res['d_max'];
+      $this->page_explanation[] = sprintf('subpar module time: time < %s (mean - %s x SD) min',
+        util::time_to_label($module_time_min), $this->standard_deviation_scale);
 
-      $lag_time_min = max(($lag_avg - $this->standard_deviation_scale*$lag_stdev),0);
-      $lag_time_max = $lag_avg + $this->standard_deviation_scale*$lag_stdev;
+      $this->page_explanation[] = sprintf('par module time: %s <= time <= %d min',
+        util::time_to_label($module_time_min), util::time_to_label($module_time_max));
 
-      $sql .= sprintf(
-        'sum(if(duration is null, 0, '.
-        'if(abs(cast(substring_index(substring_index(duration,",",1),":",-1) as decimal(10,3)) - '.
-        '       cast(trim("}" from substring_index(duration,":",-1)) as decimal(10,3)))<%s,1,0))) as total_lag_sub, ',$lag_time_min);
-
-      $sql .= sprintf(
-        'sum(if(duration is null, 0, '.
-        'if(abs(cast(substring_index(substring_index(duration,",",1),":",-1) as decimal(10,3)) - '.
-        'cast(trim("}" from substring_index(duration,":",-1)) as decimal(10,3))) between %s and %s,1,0))) as total_lag_par, ',$lag_time_min,$lag_time_max);
-
-      $sql .= sprintf(
-        'sum(if(duration is null, 0, '.
-        'if(abs(cast(substring_index(substring_index(duration,",",1),":",-1) as decimal(10,3)) - '.
-        'cast(trim("}" from substring_index(duration,":",-1)) as decimal(10,3)))>%s,1,0))) as total_lag_sup, ',$lag_time_max);
-
-      $this->page_explanation[]=sprintf('lag time [min,max] : [%s,%s] ', util::time_to_label($lag_min), util::time_to_label($lag_max));
-      $this->page_explanation[]=sprintf('lag time [avg,stdev] : [%s,%s] ', util::time_to_label($lag_avg), util::time_to_label($lag_stdev));
-      $this->page_explanation[]=sprintf('lag time threshold : %s min', $this->threshold);
-      $this->page_explanation[]=sprintf('subpar lag time: time < %s (mean - %s x SD) min', $lag_time_min, $this->standard_deviation_scale);
-      $this->page_explanation[]=sprintf('par lag time: %s <= time <= %d min', $lag_time_min, $lag_time_max);
-      $this->page_explanation[]=sprintf('above par lag time: time > %s (mean + %s x SD) min', $lag_time_max, $this->standard_deviation_scale);
+      $this->page_explanation[] = sprintf('above par module time: time > %s (mean + %s x SD) min',
+        util::time_to_label($module_time_max), $this->standard_deviation_scale);
     }
 
     $sql .= $this->get_main_query();
@@ -214,10 +177,6 @@ class duration_generator extends table_generator
     }
     $this->data = $res;
   }
-
-  private $statistic;
-
-  private $standard_deviation_scale;
 
   private $threshold;
 

@@ -13,11 +13,6 @@ class timed_move_generator extends table_generator
     $this->congruency_threshold = 10; // default
   }
 
-  public function set_standard_deviation_scale($_stdev)
-  {
-    $this->standard_deviation_scale = $_stdev;
-  }
-
   public function set_congruency_threshold($_thresh)
   {
     if( 0 < $_thresh )
@@ -101,8 +96,6 @@ class timed_move_generator extends table_generator
 
     $this->indicator_keys[] = 'total_incongruency';
   }
-
-  private $standard_deviation_scale;
 
   private $congruency_threshold;
 }

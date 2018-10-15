@@ -36,6 +36,19 @@ abstract class table_generator
 
     $this->page_stage = str_replace('_',' ',strtoupper($this->name));
     $this->page_explanation = array();
+
+    $this->statistic=null;
+    $this->standard_deviation_scale=null;
+  }
+
+  public function set_statistic($_stat)
+  {
+    $this->statistic = $_stat;
+  }
+
+  public function set_standard_deviation_scale($_stdev)
+  {
+    $this->standard_deviation_scale = $_stdev;
   }
 
   abstract protected function build_data();
@@ -393,5 +406,9 @@ HTML;
   protected $end_date;
 
   protected $name;
+
+  private $statistic;
+
+  private $standard_deviation_scale;
 }
 ?>
