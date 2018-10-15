@@ -152,9 +152,9 @@ if($(&apos;Quality_Control.QC_F2:stage_contraindicated_spirometry&apos;).eq(0).a
     &apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,
     &apos;Spirometry&apos;,
     &apos;Admin.StageInstance.duration&apos;).asSequence().last()
-  if(v.isNull().not().value()) {    
+  if(v.isNull().not().value()) {
     res=newValue(&apos;{stage:&apos;+v.div(60).round(3)+&apos;}&apos;,&apos;text&apos;)
-  }  
+  }
 }
 res</attribute>
         </attributes>
@@ -168,9 +168,9 @@ if($(&apos;Quality_Control.QC_F2:stage_contraindicated_grip_strength&apos;).eq(0
     &apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,
     &apos;GripStrength&apos;,
     &apos;Admin.StageInstance.duration&apos;).asSequence().last()
-  if(v.isNull().not().value()) {    
+  if(v.isNull().not().value()) {
     res=newValue(&apos;{stage:&apos;+v.div(60).round(3)+&apos;}&apos;,&apos;text&apos;)
-  }  
+  }
 }
 res</attribute>
         </attributes>
@@ -184,7 +184,7 @@ if($(&apos;Quality_Control.QC_F2:stage_contraindicated_blood_pressure&apos;).eq(
     &apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,
     &apos;BloodPressure&apos;,
     &apos;Admin.StageInstance.duration&apos;).asSequence().last()
-  if(v.isNull().not().value()) {    
+  if(v.isNull().not().value()) {
     res=newValue(&apos;{stage:&apos;+v.div(60).round(3)+&apos;}&apos;,&apos;text&apos;)
   }
 }
@@ -220,7 +220,7 @@ if($(&apos;Quality_Control.QC_F2:stage_contraindicated_cognitive_test&apos;).eq(
     &apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,
     &apos;CognitiveTest&apos;,
     &apos;Admin.StageInstance.duration&apos;).asSequence().last()
-  if(v.isNull().not().value()) {    
+  if(v.isNull().not().value()) {
     res=newValue(&apos;{stage:&apos;+v.div(60).round(3)+&apos;}&apos;,&apos;text&apos;)
   }
 }
@@ -236,9 +236,9 @@ if($(&apos;Quality_Control.QC_F2:stage_contraindicated_hearing&apos;).eq(0).and(
     &apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,
     &apos;Hearing&apos;,
     &apos;Admin.StageInstance.duration&apos;).asSequence().last()
-  if(v.isNull().not().value()) {    
+  if(v.isNull().not().value()) {
     res=newValue(&apos;{stage:&apos;+v.div(60).round(3)+&apos;}&apos;,&apos;text&apos;)
-  }  
+  }
 }
 res</attribute>
         </attributes>
@@ -252,9 +252,9 @@ if($(&apos;Quality_Control.QC_F2:stage_contraindicated_weight&apos;).eq(0).and(
     &apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,
     &apos;Weight&apos;,
     &apos;Admin.StageInstance.duration&apos;).asSequence().last()
-  if(v.isNull().not().value()) {    
+  if(v.isNull().not().value()) {
     res=newValue(&apos;{stage:&apos;+v.div(60).round(3)+&apos;}&apos;,&apos;text&apos;)
-  }  
+  }
 }
 res  </attribute>
         </attributes>
@@ -268,9 +268,9 @@ if($(&apos;Quality_Control.QC_F2:stage_contraindicated_retinal_scan_left&apos;).
     &apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,
     &apos;RetinalScanLeft&apos;,
     &apos;Admin.StageInstance.duration&apos;).asSequence().last()
-  if(v.isNull().not().value()) {    
+  if(v.isNull().not().value()) {
     res=newValue(&apos;{stage:&apos;+v.div(60).round(3)+&apos;}&apos;,&apos;text&apos;)
-  }  
+  }
 }
 res</attribute>
         </attributes>
@@ -284,7 +284,7 @@ if($(&apos;Quality_Control.QC_F2:stage_contraindicated_retinal_scan_right&apos;)
     &apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,
     &apos;RetinalScanRight&apos;,
     &apos;Admin.StageInstance.duration&apos;).asSequence().last()
-  if(v.isNull().not().value()) {    
+  if(v.isNull().not().value()) {
     res=newValue(&apos;{stage:&apos;+v.div(60).round(3)+&apos;}&apos;,&apos;text&apos;)
   }
 }
@@ -307,7 +307,7 @@ if($this(&apos;group_duration_dexa&apos;).isNull().not().value()) {
   }
   if(has_dxa[types.indexOf(&apos;lateral&apos;)]) {
     res=newValue(&apos;{stage:&apos;+$this(&apos;group_duration_dexa&apos;).div(num).round(3)+&apos;}&apos;,&apos;text&apos;)
-  }  
+  }
 }
 res</attribute>
         </attributes>
@@ -321,9 +321,9 @@ if($(&apos;Quality_Control.QC_F2:stage_contraindicated_standing_height&apos;).eq
     &apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,
     &apos;StandingHeight&apos;,
     &apos;Admin.StageInstance.duration&apos;).asSequence().last()
-  if(v.isNull().not().value()) {    
+  if(v.isNull().not().value()) {
     res=newValue(&apos;{stage:&apos;+v.div(60).round(3)+&apos;}&apos;,&apos;text&apos;)
-  }  
+  }
 }
 res</attribute>
         </attributes>
@@ -344,7 +344,7 @@ if($this(&apos;group_duration_dexa&apos;).isNull().not().value()) {
   }
   if(has_dxa[types.indexOf(&apos;spine&apos;)]) {
     res=newValue(&apos;{stage:&apos;+$this(&apos;group_duration_dexa&apos;).div(num).round(3)+&apos;}&apos;,&apos;text&apos;)
-  }  
+  }
 }
 res</attribute>
         </attributes>
@@ -365,7 +365,7 @@ if($this(&apos;group_duration_dexa&apos;).isNull().not().value()) {
   }
   if(has_dxa[types.indexOf(&apos;forearm&apos;)]) {
     res=newValue(&apos;{stage:&apos;+$this(&apos;group_duration_dexa&apos;).div(num).round(3)+&apos;}&apos;,&apos;text&apos;)
-  }  
+  }
 }
 res</attribute>
         </attributes>
@@ -415,7 +415,7 @@ res</attribute>
       <variable name="stage_duration_carotid_intima" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">var res=null
-if($(&apos;Quality_Control.QC_F2:stage_contraindicated_carotid_intima&apos;).eq(0).and(  
+if($(&apos;Quality_Control.QC_F2:stage_contraindicated_carotid_intima&apos;).eq(0).and(
   $this(&apos;group_duration_ecg&apos;).isNull().not()).value()) {
   var stages=$(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;).asSequence()
   var preIndex=$this(&apos;group_duration_ecg&apos;).first().value()
@@ -442,7 +442,7 @@ if($(&apos;Quality_Control.QC_F2:stage_contraindicated_carotid_intima&apos;).eq(
       var isQ=-1!=$this(&apos;group_questionnaire&apos;).indexOf(stage)
       var isI=-1!=$this(&apos;group_instrument&apos;).indexOf(stage)
       if(!(isQ || isI)) continue
-      pre=isQ ? 
+      pre=isQ ?
         $(&apos;clsa-dcs-f2.&apos;+stage+&apos;:QuestionnaireRun.timeEnd&apos;) :
         $(&apos;clsa-dcs-f2.&apos;+stage+&apos;:InstrumentRun.timeEnd&apos;)
       break
@@ -453,17 +453,17 @@ if($(&apos;Quality_Control.QC_F2:stage_contraindicated_carotid_intima&apos;).eq(
       var isQ=-1!=$this(&apos;group_questionnaire&apos;).indexOf(stage)
       var isI=-1!=$this(&apos;group_instrument&apos;).indexOf(stage)
       if(!(isQ || isI)) continue
-      post=isQ ? 
+      post=isQ ?
         $(&apos;clsa-dcs-f2.&apos;+stage+&apos;:QuestionnaireRun.timeStart&apos;) :
         $(&apos;clsa-dcs-f2.&apos;+stage+&apos;:InstrumentRun.timeStart&apos;)
       break
-    }    
-    
+    }
+
     if(post.after(pre).value()) {
       res=newValue(&apos;{stage:&apos;+post.time().minus(pre.time()).div(60000).round(3)+&apos;}&apos;,&apos;text&apos;)
-    }  
+    }
   }
-}  
+}
 res</attribute>
         </attributes>
       </variable>
@@ -476,9 +476,9 @@ if($(&apos;Quality_Control.QC_F2:stage_contraindicated_tug&apos;).eq(0).and(
     &apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,
     &apos;TUG&apos;,
     &apos;Admin.StageInstance.duration&apos;).asSequence().last()
-  if(v.isNull().not().value()) {    
+  if(v.isNull().not().value()) {
     res=newValue(&apos;{stage:&apos;+v.div(60).round(3)+&apos;}&apos;,&apos;text&apos;)
-  }  
+  }
 }
 res</attribute>
         </attributes>
@@ -492,9 +492,9 @@ if($(&apos;Quality_Control.QC_F2:stage_contraindicated_chair_rise&apos;).eq(0).a
     &apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,
     &apos;ChairRise&apos;,
     &apos;Admin.StageInstance.duration&apos;).asSequence().last()
-  if(v.isNull().not().value()) {    
+  if(v.isNull().not().value()) {
     res=newValue(&apos;{stage:&apos;+ v.div(60).round(3) +&apos;}&apos;,&apos;text&apos;)
-  }  
+  }
 }
 res</attribute>
         </attributes>
@@ -508,9 +508,9 @@ if($(&apos;Quality_Control.QC_F2:stage_contraindicated_hips_waist&apos;).eq(0).a
     &apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,
     &apos;HipsWaist&apos;,
     &apos;Admin.StageInstance.duration&apos;).asSequence().last()
-  if(v.isNull().not().value()) {    
+  if(v.isNull().not().value()) {
     res=newValue(&apos;{stage:&apos;+ v.div(60).round(3) +&apos;}&apos;,&apos;text&apos;)
-  }  
+  }
 }
 res</attribute>
         </attributes>
@@ -524,9 +524,9 @@ if($(&apos;Quality_Control.QC_F2:stage_contraindicated_standing_balance&apos;).e
     &apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,
     &apos;StandingBalance&apos;,
     &apos;Admin.StageInstance.duration&apos;).asSequence().last()
-  if(v.isNull().not().value()) {    
+  if(v.isNull().not().value()) {
     res=newValue(&apos;{stage:&apos;+ v.div(60).round(3) +&apos;}&apos;,&apos;text&apos;)
-  }  
+  }
 }
 res</attribute>
         </attributes>
@@ -540,9 +540,9 @@ if($(&apos;Quality_Control.QC_F2:stage_contraindicated_four_metre_walk&apos;).eq
     &apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,
     &apos;4mWalk&apos;,
     &apos;Admin.StageInstance.duration&apos;).asSequence().last()
-  if(v.isNull().not().value()) {    
+  if(v.isNull().not().value()) {
     res=newValue(&apos;{stage:&apos;+ v.div(60).round(3) +&apos;}&apos;,&apos;text&apos;)
-  }  
+  }
 }
 res</attribute>
         </attributes>
@@ -556,9 +556,9 @@ if($(&apos;Quality_Control.QC_F2:stage_contraindicated_vision_acuity&apos;).eq(0
     &apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,
     &apos;VisionAcuity&apos;,
     &apos;Admin.StageInstance.duration&apos;).asSequence().last()
-  if(v.isNull().not().value()) {    
+  if(v.isNull().not().value()) {
     res=newValue(&apos;{stage:&apos;+ v.div(60).round(3) +&apos;}&apos;,&apos;text&apos;)
-  }  
+  }
 }
 res</attribute>
         </attributes>
@@ -578,9 +578,9 @@ if($(&apos;Quality_Control.QC_F2:stage_contraindicated_stroop_fas&apos;).eq(0).a
       &apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,
       &apos;StroopFAS&apos;,
       &apos;Admin.StageInstance.duration&apos;).asSequence().last().div(60)
-  }  
+  }
 }
-if(null!==res &amp;&amp; res.isNull().not().value()) {  
+if(null!==res &amp;&amp; res.isNull().not().value()) {
   var list=[&apos;FAS&apos;,&apos;STP&apos;]
   var str=[&apos;stage:&apos;+res.round(3)]
   var section=$(&apos;clsa-dcs-f2.StroopFAS:QuestionnaireMetric.section&apos;).asSequence()
@@ -595,7 +595,7 @@ if(null!==res &amp;&amp; res.isNull().not().value()) {
     str.push(m+&apos;:&apos;+ t.round(3))
   }
   str.push(&apos;module:&apos;+Math.round(u*1000)/1000)
-  res=newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)  
+  res=newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)
 }
 res</attribute>
         </attributes>
@@ -609,9 +609,9 @@ if($(&apos;Quality_Control.QC_F2:stage_contraindicated_tonometer&apos;).eq(0).an
     &apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,
     &apos;Tonometer&apos;,
     &apos;Admin.StageInstance.duration&apos;).asSequence().last()
-  if(v.isNull().not().value()) {    
+  if(v.isNull().not().value()) {
     res=newValue(&apos;{stage:&apos;+v.div(60).round(3)+&apos;}&apos;,&apos;text&apos;)
-  }  
+  }
 }
 res</attribute>
         </attributes>
@@ -625,9 +625,9 @@ if($(&apos;Quality_Control.QC_F2:stage_contraindicated_sitting_height&apos;).eq(
     &apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,
     &apos;SittingHeight&apos;,
     &apos;Admin.StageInstance.duration&apos;).asSequence().last()
-  if(v.isNull().not().value()) {    
+  if(v.isNull().not().value()) {
     res=newValue(&apos;{stage:&apos;+v.div(60).round(3)+&apos;}&apos;,&apos;text&apos;)
-  }  
+  }
 }
 res</attribute>
         </attributes>
@@ -641,9 +641,9 @@ if($(&apos;Quality_Control.QC_F2:stage_contraindicated_consent&apos;).eq(0).and(
     &apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,
     &apos;Consent&apos;,
     &apos;Admin.StageInstance.duration&apos;).asSequence().last()
-  if(v.isNull().not().value()) {    
+  if(v.isNull().not().value()) {
     res=newValue(&apos;{stage:&apos;+v.div(60).round(3)+&apos;}&apos;,&apos;text&apos;)
-  }  
+  }
 }
 res</attribute>
         </attributes>
@@ -663,7 +663,7 @@ if($(&apos;Quality_Control.QC_F2:stage_contraindicated_contraindications&apos;).
       &apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,
       &apos;ContraIndications&apos;,
       &apos;Admin.StageInstance.duration&apos;).asSequence().last().div(60)
-  }  
+  }
 }
 if(null!==res &amp;&amp; res.isNull().not().value()) {
   var list=[&apos;ICQ_COF2&apos;]
@@ -680,7 +680,7 @@ if(null!==res &amp;&amp; res.isNull().not().value()) {
     str.push(m+&apos;:&apos;+ t.round(3))
   }
   str.push(&apos;module:&apos;+Math.round(u*1000)/1000)
-  res=newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)  
+  res=newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)
 }
 res</attribute>
         </attributes>
@@ -700,7 +700,7 @@ if($(&apos;Quality_Control.QC_F2:stage_contraindicated_event_pmt&apos;).eq(0).an
       &apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,
       &apos;EventPMT&apos;,
       &apos;Admin.StageInstance.duration&apos;).asSequence().last().div(60)
-  }  
+  }
 }
 if(null!==res &amp;&amp; res.isNull().not().value()) {
   var list=[&apos;PMT&apos;]
@@ -717,7 +717,7 @@ if(null!==res &amp;&amp; res.isNull().not().value()) {
     str.push(m+&apos;:&apos;+t.round(3))
   }
   str.push(&apos;module:&apos;+Math.round(u*1000)/1000)
-  res=newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)  
+  res=newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)
 }
 res</attribute>
         </attributes>
@@ -737,7 +737,7 @@ if($(&apos;Quality_Control.QC_F2:stage_contraindicated_disease_symptoms&apos;).e
       &apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,
       &apos;DiseaseSymptoms&apos;,
       &apos;Admin.StageInstance.duration&apos;).asSequence().last().div(60)
-  }  
+  }
 }
 if(null!==res &amp;&amp; res.isNull().not().value()) {
   var list=[
@@ -758,7 +758,7 @@ if(null!==res &amp;&amp; res.isNull().not().value()) {
     str.push(m+&apos;:&apos;+t.round(3))
   }
   str.push(&apos;module:&apos;+Math.round(u*1000)/1000)
-  res=newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)  
+  res=newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)
 }
 res</attribute>
         </attributes>
@@ -778,7 +778,7 @@ if($(&apos;Quality_Control.QC_F2:stage_contraindicated_time_based_pmt&apos;).eq(
       &apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,
       &apos;TimeBasedProspectiveMemoryTask&apos;,
       &apos;Admin.StageInstance.duration&apos;).asSequence().last().div(60)
-  }  
+  }
 }
 if(null!==res &amp;&amp; res.isNull().not().value()) {
   var list=[&apos;TMT&apos;]
@@ -795,7 +795,7 @@ if(null!==res &amp;&amp; res.isNull().not().value()) {
     str.push(m+&apos;:&apos;+t.round(3))
   }
   str.push(&apos;module:&apos;+Math.round(u*1000)/1000)
-  res=newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)  
+  res=newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)
 }
 res</attribute>
         </attributes>
@@ -816,7 +816,7 @@ if($(&apos;Quality_Control.QC_F2:stage_contraindicated_hearing_questionnaire&apo
       &apos;Admin.StageInstance.duration&apos;).asSequence().last()
     if(v.isNull().not().value()) {
       res=newValue(&apos;{stage:&apos;+v.div(60).round(3)+&apos;}&apos;,&apos;text&apos;)
-    }      
+    }
   }
 }
 res</attribute>
@@ -838,7 +838,7 @@ if($(&apos;Quality_Control.QC_F2:stage_contraindicated_conclusion_questionnaire&
       &apos;Admin.StageInstance.duration&apos;).asSequence().last()
     if(v.isNull().not().value()) {
       res=newValue(&apos;{stage:&apos;+v.div(60).round(3)+&apos;}&apos;,&apos;text&apos;)
-    }      
+    }
   }
 }
 res</attribute>
@@ -860,7 +860,7 @@ if($(&apos;Quality_Control.QC_F2:stage_contraindicated_bone_density_questionnair
       &apos;Admin.StageInstance.duration&apos;).asSequence().last()
     if(v.isNull().not().value()) {
       res=newValue(&apos;{stage:&apos;+v.div(60).round(3)+&apos;}&apos;,&apos;text&apos;)
-    }      
+    }
   }
 }
 res</attribute>
@@ -875,23 +875,23 @@ var dexa=stages.filter(function(v) {
   })
 var res=null
 if(dexa.empty().not().value()) {
-  
+
   list=list.concat([&apos;QuestionnaireBoneDensity&apos;,&apos;Frax&apos;,&apos;EventPMT&apos;])
   var seq=stages.filter(function(v) {
     return -1!==list.indexOf(v.value())
   }).join(&apos;&apos;).value()
-  
+
   var stageAfter=seq.endsWith(&apos;FraxEventPMT&apos;)?&apos;Frax&apos;:&apos;EventPMT&apos;
   // bracket the actual bone density acquisitions
-  // 
-  var pre=$(&apos;clsa-dcs-f2.QuestionnaireBoneDensity:QuestionnaireRun.timeEnd&apos;)  
+  //
+  var pre=$(&apos;clsa-dcs-f2.QuestionnaireBoneDensity:QuestionnaireRun.timeEnd&apos;)
   var post=-1!=$this(&apos;group_questionnaire&apos;).indexOf(stageAfter) ?
     $(&apos;clsa-dcs-f2.&apos;+stageAfter+&apos;:QuestionnaireRun.timeStart&apos;) :
     $(&apos;clsa-dcs-f2.&apos;+stageAfter+&apos;:InstrumentRun.timeStart&apos;)
-  
-  if(pre.before(post).value()) {    
+
+  if(pre.before(post).value()) {
     res=post.time().minus(pre.time()).div(60000)
-  }  
+  }
 }
 res</attribute>
         </attributes>
@@ -1117,15 +1117,15 @@ res</attribute>
 //if(stage+$(&apos;QuestionnaireRun.version&apos;).eq(&apos;4.3&apos;).value()) {
 $(stage+&apos;QuestionnaireMetric.section&apos;).asSequence().filter(function(v,i){
   return this.indexOf(v)==i
-  }).sort().prepend(newValue(&apos;version:&apos;+$(stage+&apos;QuestionnaireRun.version&apos;).value(),&apos;text&apos;)).join(&apos;,&apos;)  
-/*  
+  }).sort().prepend(newValue(&apos;version:&apos;+$(stage+&apos;QuestionnaireRun.version&apos;).value(),&apos;text&apos;)).join(&apos;,&apos;)
+/*
 } else {
   null
 }
 */
-  
+
 //DiseaseSymptoms
-// version 4.0: 
+// version 4.0:
 //     CAO,CCC_CANCER,CCC_CARDIAC,CCC_GASTRO,CCC_INFECTION,CCC_MENTAL,CCC_NEURO,CCC_OTHER,CCC_VISION,DEP,DIA,DPR,EPI,HBP,HYP,IHD,OAR,OSA,OSH,OSK,OST,PKD,ROS,STR,TBI
 // version 4.1;
 // AOR,CAO,CCC_CANCER,CCC_CARDIAC,CCC_GASTRO,CCC_INFECTION,CCC_MENTAL,CCC_NEURO,CCC_OTHER,CCC_VISION,DEP,DIA,DPR,EPI,HBP,HYP,IHD,OAR,OSA,OSH,OSK,OST,PKD,ROS,STR,TBI
@@ -1140,7 +1140,7 @@ $(stage+&apos;QuestionnaireMetric.section&apos;).asSequence().filter(function(v,
 //TimeBasedProspectiveMemoryTask TMT
 //Urine URINE
 //Blood BLOOD
-//GenHealth 
+//GenHealth
 // version:2.0:HRG,HUP,NUR,    VIS
 // version:2.1:HRG,HUP,NUR,    VIS
 // version:2.2:HRG,HUP,NUR,RES,VIS
@@ -1192,7 +1192,7 @@ if($(&apos;Quality_Control.QC_F2:stage_contraindicated_general_health&apos;).eq(
       &apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,
       &apos;GenHealth&apos;,
       &apos;Admin.StageInstance.duration&apos;).asSequence().last().div(60)
-  }  
+  }
 }
 if(null!==res &amp;&amp; res.isNull().not().value()) {
   var list=[&apos;HRG&apos;,&apos;HUP&apos;,&apos;NUR&apos;,&apos;VIS&apos;]
@@ -1210,7 +1210,7 @@ if(null!==res &amp;&amp; res.isNull().not().value()) {
     str.push(m+&apos;:&apos;+ Math.round(t*1000)/1000)
   }
   str.push(&apos;module:&apos;+Math.round(u*1000)/1000)
-  res=newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)  
+  res=newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)
 }
 res</attribute>
         </attributes>
@@ -1230,7 +1230,7 @@ if($(&apos;Quality_Control.QC_F2:stage_contraindicated_osipv&apos;).eq(0).and(
       &apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,
       &apos;OSIPV&apos;,
       &apos;Admin.StageInstance.duration&apos;).asSequence().last().div(60)
-  }  
+  }
 }
 if(null!==res &amp;&amp; res.isNull().not().value()) {
   var list=[&apos;IPV&apos;,&apos;ORH&apos;,&apos;SLE&apos;]
@@ -1248,7 +1248,7 @@ if(null!==res &amp;&amp; res.isNull().not().value()) {
     str.push(m+&apos;:&apos;+ Math.round(t*1000)/1000)
   }
   str.push(&apos;module:&apos;+Math.round(u*1000)/1000)
-  res=newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)  
+  res=newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)
 }
 res</attribute>
         </attributes>
@@ -1268,7 +1268,7 @@ if($(&apos;Quality_Control.QC_F2:stage_contraindicated_social_network&apos;).eq(
       &apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,
       &apos;SocialNetwork&apos;,
       &apos;Admin.StageInstance.duration&apos;).asSequence().last().div(60)
-  }  
+  }
 }
 if(null!==res &amp;&amp; res.isNull().not().value()) {
   var list=[&apos;GAD7&apos;,&apos;SN&apos;,&apos;SPA&apos;,&apos;SSA&apos;]
@@ -1285,7 +1285,7 @@ if(null!==res &amp;&amp; res.isNull().not().value()) {
     str.push(m+&apos;:&apos;+ Math.round(t*1000)/1000)
   }
   str.push(&apos;module:&apos;+Math.round(u*1000)/1000)
-  res=newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)  
+  res=newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)
 }
 res</attribute>
         </attributes>
@@ -1305,7 +1305,7 @@ if($(&apos;Quality_Control.QC_F2:stage_contraindicated_urine&apos;).eq(0).and(
       &apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,
       &apos;Urine&apos;,
       &apos;Admin.StageInstance.duration&apos;).asSequence().last().div(60)
-  }  
+  }
 }
 if(null!==res &amp;&amp; res.isNull().not().value()) {
   var list=[&apos;URINE&apos;]
@@ -1322,7 +1322,7 @@ if(null!==res &amp;&amp; res.isNull().not().value()) {
     str.push(m+&apos;:&apos;+ Math.round(t*1000)/1000)
   }
   str.push(&apos;module:&apos;+Math.round(u*1000)/1000)
-  res=newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)  
+  res=newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)
 }
 res</attribute>
         </attributes>
@@ -1343,7 +1343,7 @@ if($(&apos;Quality_Control.QC_F2:stage_contraindicated_blood&apos;).eq(0).and(
       &apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,
       stage,
       &apos;Admin.StageInstance.duration&apos;).asSequence().last().div(60)
-  }  
+  }
 }
 if(null!==res &amp;&amp; res.isNull().not().value()) {
   var list=[&apos;BLOOD&apos;]
@@ -1360,7 +1360,7 @@ if(null!==res &amp;&amp; res.isNull().not().value()) {
     str.push(m+&apos;:&apos;+ Math.round(t*1000)/1000)
   }
   str.push(&apos;module:&apos;+Math.round(u*1000)/1000)
-  res=newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)  
+  res=newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)
 }
 res</attribute>
         </attributes>
@@ -1380,7 +1380,7 @@ if($(&apos;Quality_Control.QC_F2:stage_contraindicated_deviation_aecrf&apos;).eq
       &apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,
       &apos;Deviation_AE_CRF&apos;,
       &apos;Admin.StageInstance.duration&apos;).asSequence().last().div(60)
-  }  
+  }
 }
 if(null!==res &amp;&amp; res.isNull().not().value()) {
   var list=[&apos;Deviation&apos;]
@@ -1397,7 +1397,7 @@ if(null!==res &amp;&amp; res.isNull().not().value()) {
     str.push(m+&apos;:&apos;+ Math.round(t*1000)/1000)
   }
   str.push(&apos;module:&apos;+Math.round(u*1000)/1000)
-  res=newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)  
+  res=newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)
 }
 res</attribute>
         </attributes>
@@ -1417,7 +1417,7 @@ if($(&apos;Quality_Control.QC_F2:stage_contraindicated_quality_assurance_inhome&
       &apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,
       &apos;QualityAssuranceIH&apos;,
       &apos;Admin.StageInstance.duration&apos;).asSequence().last().div(60)
-  }  
+  }
 }
 if(null!==res &amp;&amp; res.isNull().not().value()) {
   var list=[&apos;QAH_COF2&apos;]
@@ -1434,7 +1434,7 @@ if(null!==res &amp;&amp; res.isNull().not().value()) {
     str.push(m+&apos;:&apos;+ Math.round(t*1000)/1000)
   }
   str.push(&apos;module:&apos;+Math.round(u*1000)/1000)
-  res=newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)  
+  res=newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)
 }
 res</attribute>
         </attributes>
@@ -1448,9 +1448,9 @@ if($(&apos;Quality_Control.QC_F2:stage_contraindicated_frax&apos;).eq(0).and(
     &apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,
     &apos;Frax&apos;,
     &apos;Admin.StageInstance.duration&apos;).asSequence().last()
-  if(v.isNull().not().value()) {    
+  if(v.isNull().not().value()) {
     res=newValue(&apos;{stage:&apos;+v.div(60).round(3)+&apos;}&apos;,&apos;text&apos;)
-  }  
+  }
 }
 res</attribute>
         </attributes>
@@ -1471,7 +1471,7 @@ if($(&apos;Quality_Control.QC_F2:stage_contraindicated_neuropsychological_batter
       &apos;Admin.StageInstance.duration&apos;).asSequence().last()
     if(v.isNull().not().value()) {
       res=newValue(&apos;{stage:&apos;+v.div(60).round(3)+&apos;}&apos;,&apos;text&apos;)
-    }      
+    }
   }
 }
 res</attribute>
@@ -1483,17 +1483,17 @@ res</attribute>
 if($(&apos;Quality_Control.QC_F2:stage_contraindicated_ecg&apos;).eq(0).and(
    $(&apos;clsa-dcs-f2.ECG:RES_XML_FILE&apos;).isNull().not()).value()) {
   var ecg=newValue(null,&apos;datetime&apos;)
-  try {   
+  try {
     ecg=newValue(
     $(&apos;clsa-dcs-f2.ECG:RES_MEASUREMENT_DATE&apos;).value() + &apos; &apos; +
-    $(&apos;clsa-dcs-f2.ECG:RES_MEASUREMENT_TIME&apos;).value(), &apos;datetime&apos;)  
-  } catch(e) {  
+    $(&apos;clsa-dcs-f2.ECG:RES_MEASUREMENT_TIME&apos;).value(), &apos;datetime&apos;)
+  } catch(e) {
   }
-    
+
   if(ecg.isNull().not().and(ecg.time().gt(0)).value()) {
     var ecgTime=ecg.time()
     var preIndex=-1
-    var postIndex=-1    
+    var postIndex=-1
     var pre=newValue(null,&apos;datetime&apos;)
     var post=newValue(null,&apos;datetime&apos;)
     var minPre=10000000000000000
@@ -1515,8 +1515,8 @@ if($(&apos;Quality_Control.QC_F2:stage_contraindicated_ecg&apos;).eq(0).and(
         if(p&lt;minPre) {
           minPre=p
           preIndex=i
-        }        
-      } else {  
+        }
+      } else {
         if(isQ) {
           post=$(&apos;clsa-dcs-f2.&apos;+stage+&apos;:QuestionnaireRun.timeStart&apos;)
         } else {
@@ -1533,8 +1533,8 @@ if($(&apos;Quality_Control.QC_F2:stage_contraindicated_ecg&apos;).eq(0).and(
     }// end for loop
     if(-1!=preIndex &amp;&amp; preIndex&lt;postIndex) {
       res=newSequence([preIndex,postIndex],&apos;integer&apos;)
-    }  
-  }  
+    }
+  }
 }
 res</attribute>
         </attributes>

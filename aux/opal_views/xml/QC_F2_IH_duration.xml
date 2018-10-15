@@ -79,7 +79,7 @@ if($(&apos;Quality_Control.QC_F2_IH:stage_contraindicated_inhome_1&apos;).eq(0).
       &apos;clsa-inhome-f2.Participants:Admin.StageInstance.stage&apos;,
       &apos;InHome_1&apos;,
       &apos;Admin.StageInstance.duration&apos;).asSequence().last().div(60)
-  }  
+  }
 }
 if(null!==res &amp;&amp; res.isNull().not().value()) {
   var list=[&apos;AGE&apos;,&apos;ALC&apos;,&apos;ED&apos;,&apos;GED&apos;,&apos;GEN&apos;,&apos;NUT&apos;,&apos;OWN&apos;,&apos;PA2&apos;,&apos;PCM&apos;,&apos;SDC&apos;,&apos;SMK&apos;]
@@ -96,7 +96,7 @@ if(null!==res &amp;&amp; res.isNull().not().value()) {
     str.push(m+&apos;:&apos;+ Math.round(t*1000)/1000)
   }
   str.push(&apos;module:&apos;+Math.round(u*1000)/1000)
-  res=newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)  
+  res=newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)
 }
 res</attribute>
         </attributes>
@@ -116,7 +116,7 @@ if($(&apos;Quality_Control.QC_F2_IH:stage_contraindicated_inhome_2&apos;).eq(0).
       &apos;clsa-inhome-f2.Participants:Admin.StageInstance.stage&apos;,
       &apos;InHome_2&apos;,
       &apos;Admin.StageInstance.duration&apos;).asSequence().last().div(60)
-  }  
+  }
 }
 if(null!==res &amp;&amp; res.isNull().not().value()) {
   var list=[&apos;ADL&apos;,&apos;COG&apos;,&apos;FUL&apos;,&apos;IAL&apos;,&apos;LONE&apos;,&apos;LSI&apos;,&apos;PSD&apos;,&apos;SLS&apos;,&apos;WHO&apos;]
@@ -133,7 +133,7 @@ if(null!==res &amp;&amp; res.isNull().not().value()) {
     str.push(m+&apos;:&apos;+ Math.round(t*1000)/1000)
   }
   str.push(&apos;module:&apos;+Math.round(u*1000)/1000)
-  res=newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)  
+  res=newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)
 }
 res</attribute>
         </attributes>
@@ -153,7 +153,7 @@ if($(&apos;Quality_Control.QC_F2_IH:stage_contraindicated_inhome_3&apos;).eq(0).
       &apos;clsa-inhome-f2.Participants:Admin.StageInstance.stage&apos;,
       &apos;InHome_3&apos;,
       &apos;Admin.StageInstance.duration&apos;).asSequence().last().div(60)
-  }  
+  }
 }
 if(null!==res &amp;&amp; res.isNull().not().value()) {
   var list=[&apos;CAG&apos;,&apos;CR1&apos;,&apos;CR2&apos;,&apos;FAL&apos;,&apos;INC&apos;,&apos;INJ&apos;,&apos;LBF&apos;,&apos;LFP&apos;,&apos;MEDI&apos;,&apos;RET&apos;,&apos;RPL&apos;,&apos;WLQ&apos;]
@@ -170,7 +170,7 @@ if(null!==res &amp;&amp; res.isNull().not().value()) {
     str.push(m+&apos;:&apos;+ Math.round(t*1000)/1000)
   }
   str.push(&apos;module:&apos;+Math.round(u*1000)/1000)
-  res=newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)  
+  res=newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)
 }
 res</attribute>
         </attributes>
@@ -190,7 +190,7 @@ if($(&apos;Quality_Control.QC_F2_IH:stage_contraindicated_inhome_4&apos;).eq(0).
       &apos;clsa-inhome-f2.Participants:Admin.StageInstance.stage&apos;,
       &apos;InHome_4&apos;,
       &apos;Admin.StageInstance.duration&apos;).asSequence().last().div(60)
-  }  
+  }
 }
 if(null!==res &amp;&amp; res.isNull().not().value()) {
   var list=[&apos;ENV&apos;,&apos;HCU1&apos;,&apos;INT&apos;,&apos;K10&apos;,&apos;MEM&apos;,&apos;MET&apos;,&apos;PMH&apos;,&apos;TRA&apos;,&apos;WEA&apos;]
@@ -207,7 +207,7 @@ if(null!==res &amp;&amp; res.isNull().not().value()) {
     str.push(m+&apos;:&apos;+ Math.round(t*1000)/1000)
   }
   str.push(&apos;module:&apos;+Math.round(u*1000)/1000)
-  res=newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)  
+  res=newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)
 }
 res</attribute>
         </attributes>
@@ -218,13 +218,13 @@ res</attribute>
 //if($(stage+&apos;QuestionnaireRun.version&apos;).eq(&apos;4.3&apos;).value()) {
 $(stage+&apos;QuestionnaireMetric.section&apos;).asSequence().filter(function(v,i){
   return this.indexOf(v)==i
-  }).sort().prepend(newValue(&apos;version:&apos;+$(stage+&apos;QuestionnaireRun.version&apos;).value(),&apos;text&apos;)).join(&apos;,&apos;)  
-/*  
+  }).sort().prepend(newValue(&apos;version:&apos;+$(stage+&apos;QuestionnaireRun.version&apos;).value(),&apos;text&apos;)).join(&apos;,&apos;)
+/*
 } else {
   null
 }
 */
-// inhome1 
+// inhome1
 // AGE,ALC,ED,GED,GEN,NUT,OWN,PA2,PCM,SDC,SMK
 //version:5.0 AGE,ALC,ED,GED,GEN,NUT,OWN,PA2,PCM,SDC,SMK
 //version:5.1     ALC,ED,GED,GEN,NUT,OWN,PA2,PCM,SDC,SMK
@@ -233,13 +233,13 @@ $(stage+&apos;QuestionnaireMetric.section&apos;).asSequence().filter(function(v,
 // ADL,COG,FUL,IAL,LONE,LSI,PSD,SLS,WHO
 // version:5.0 ADL,COG,    IAL,LONE,LSI,PSD,SLS,WHO
 // version:5.1 ADL,COG,FUL,IAL,LONE,LSI,PSD,SLS,WHO
-// inhome3 
+// inhome3
 //CAG,CR1,CR2,FAL,INC,INJ,LBF,LFP,MEDI,RET,RPL,WLQ
 //version:5.0 CAG,CR1,CR2,FAL,INC,INJ,LBF,LFP,MEDI,RET,RPL,WLQ
 //version:5.2 CAG,CR1,CR2,FAL,INC,INJ,LBF,LFP,MEDI,RET,RPL,WLQ
 //version:5.3 CAG,    CR2,    INC,INJ,LBF,LFP,MEDI,RET,RPL,WLQ
-// inhome4 
-// ACE,CEX,ENV,HCU1,INT,K10,MEM,MET,PER,PHB,SEQ,TRA,WEA 
+// inhome4
+// ACE,CEX,ENV,HCU1,INT,K10,MEM,MET,PER,PHB,SEQ,TRA,WEA
 // version:5.0,ENV,HCU1,INT,K10,MEM,MET,    TRA,WEA
 // version:5.1,ENV,HCU1,INT,K10,MEM,MET,    TRA,WEA
 // version:5.2,ENV,HCU1,INT,K10,MEM,MET,PMH,TRA,WEA,WTP</attribute>
@@ -266,7 +266,7 @@ if($(&apos;Quality_Control.QC_F2_IH:stage_contraindicated_inhome_conclusion_ques
       &apos;Admin.StageInstance.duration&apos;).asSequence().last()
     if(v.isNull().not().value()) {
       res=newValue(&apos;{stage:&apos;+v.div(60).round(3)+&apos;}&apos;,&apos;text&apos;)
-    }      
+    }
   }
 }
 res</attribute>
@@ -287,7 +287,7 @@ if($(&apos;Quality_Control.QC_F2_IH:stage_contraindicated_inhome_2&apos;).eq(0).
       &apos;clsa-inhome-f2.Participants:Admin.StageInstance.stage&apos;,
       &apos;InHome_2&apos;,
       &apos;Admin.StageInstance.duration&apos;).asSequence().last().div(60)
-  }  
+  }
 }
 if(null!==res &amp;&amp; res.isNull().not().value()) {
   var list=[&apos;COG&apos;]
@@ -304,12 +304,12 @@ if(null!==res &amp;&amp; res.isNull().not().value()) {
     str.push(m+&apos;:&apos;+ Math.round(t*1000)/1000)
   }
   str.push(&apos;module:&apos;+Math.round(u*1000)/1000)
-  res=newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)  
+  res=newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)
 }
 res</attribute>
         </attributes>
       </variable>
-      <variable name="&#x9; stage_technician_inhome_cognition_recording" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+      <variable name="stage_technician_inhome_cognition_recording" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">$this(&apos;stage_technician_inhome_2&apos;)</attribute>
         </attributes>
@@ -317,5 +317,5 @@ res</attribute>
     </variables>
   </variables>
   <created valueType="datetime">2018-08-13T11:19:23.748-04</created>
-  <updated valueType="datetime">2018-10-11T15:08:50.699-04</updated>
+  <updated valueType="datetime">2018-10-14T11:12:54.562-04</updated>
 </org.obiba.magma.views.View>

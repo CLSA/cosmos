@@ -185,7 +185,7 @@ var res=$group(&apos;Admin.Action.stage&apos;,&apos;Spirometry&apos;,&apos;Admin
   return action.indexOf(&apos;SKIP&apos;)==i
   }).last()
 if(res.isNull().not().value()) {
-  res=newValue(res.value().slice(14),&apos;text&apos;)  
+  res=newValue(res.value().slice(14),&apos;text&apos;)
 }
 res</attribute>
         </attributes>
@@ -193,7 +193,7 @@ res</attribute>
       <variable name="stage_contraindicated_spirometry" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,&apos;Spirometry&apos;,
-&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value()
 ? 1 : 0</attribute>
         </attributes>
       </variable>
@@ -228,7 +228,7 @@ res</attribute>
       <variable name="stage_contraindicated_grip_strength" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,&apos;GripStrength&apos;,
-&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value()
 ? 1 : 0</attribute>
         </attributes>
       </variable>
@@ -239,7 +239,7 @@ var res=$group(&apos;Admin.Action.stage&apos;,&apos;GripStrength&apos;,&apos;Adm
   return action.indexOf(&apos;SKIP&apos;)==i
   }).last()
 if(res.isNull().not().value()) {
-  res=newValue(res.value().slice(14),&apos;text&apos;)  
+  res=newValue(res.value().slice(14),&apos;text&apos;)
 }
 res</attribute>
         </attributes>
@@ -270,7 +270,7 @@ res</attribute>
       <variable name="stage_contraindicated_blood_pressure" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,&apos;BloodPressure&apos;,
-&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value()
 ? 1 : 0</attribute>
         </attributes>
       </variable>
@@ -281,7 +281,7 @@ var res=$group(&apos;Admin.Action.stage&apos;,&apos;BloodPressure&apos;,&apos;Ad
   return action.indexOf(&apos;SKIP&apos;)==i
   }).last()
 if(res.isNull().not().value()) {
-  res=newValue(res.value().slice(14),&apos;text&apos;)  
+  res=newValue(res.value().slice(14),&apos;text&apos;)
 }
 res</attribute>
         </attributes>
@@ -312,7 +312,7 @@ res</attribute>
       <variable name="stage_contraindicated_ecg" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,&apos;ECG&apos;,
-&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value()
 ? 1 : 0</attribute>
         </attributes>
       </variable>
@@ -323,7 +323,7 @@ var res=$group(&apos;Admin.Action.stage&apos;,&apos;ECG&apos;,&apos;Admin.Action
   return action.indexOf(&apos;SKIP&apos;)==i
   }).last()
 if(res.isNull().not().value()) {
-  res=newValue(res.value().slice(14),&apos;text&apos;)  
+  res=newValue(res.value().slice(14),&apos;text&apos;)
 }
 res</attribute>
         </attributes>
@@ -346,7 +346,7 @@ if(f.isNull().not().value()) {
   if(q.lowerCase().matches(/poor data quality/).value()) {
     str += &apos;0}&apos;
   } else {
-    str += &apos;1}&apos;  
+    str += &apos;1}&apos;
   }
   res = newValue(str,&apos;text&apos;)
 }
@@ -362,7 +362,7 @@ res</attribute>
       <variable name="stage_contraindicated_cognitive_test" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,&apos;CognitiveTest&apos;,
-&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value()
 ? 1 : 0</attribute>
         </attributes>
       </variable>
@@ -373,7 +373,7 @@ var res=$group(&apos;Admin.Action.stage&apos;,&apos;CognitiveTest&apos;,&apos;Ad
   return action.indexOf(&apos;SKIP&apos;)==i
   }).last()
 if(res.isNull().not().value()) {
-  res=newValue(res.value().slice(14),&apos;text&apos;)  
+  res=newValue(res.value().slice(14),&apos;text&apos;)
 }
 res</attribute>
         </attributes>
@@ -391,7 +391,7 @@ res</attribute>
           <attribute name="script" valueType="text">var res=$(&apos;clsa-dcs-f2.CognitiveTest:RES_RESULT_FILE&apos;)
 if(res.isNull().not().value()) {
   res = newValue(&apos;{filesize:&apos;+res.length()+&apos;}&apos;,&apos;text&apos;)
-}  
+}
 res</attribute>
         </attributes>
       </variable>
@@ -404,7 +404,7 @@ res</attribute>
       <variable name="stage_contraindicated_hearing" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,&apos;Hearing&apos;,
-&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value()
 ? 1 : 0</attribute>
         </attributes>
       </variable>
@@ -415,7 +415,7 @@ var res=$group(&apos;Admin.Action.stage&apos;,&apos;Hearing&apos;,&apos;Admin.Ac
   return action.indexOf(&apos;SKIP&apos;)==i
   }).last()
 if(res.isNull().not().value()) {
-  res=newValue(res.value().slice(14),&apos;text&apos;)  
+  res=newValue(res.value().slice(14),&apos;text&apos;)
 }
 res</attribute>
         </attributes>
@@ -445,7 +445,7 @@ for(var i=0;i&lt;side.length;i++) {
     if ($(f + &apos;_ERR&apos;).isNull().not().value()) counterr[s]++;
   }
 }
-res = (0 == count.RIGHT &amp;&amp; 0 == count.LEFT &amp;&amp; 
+res = (0 == count.RIGHT &amp;&amp; 0 == count.LEFT &amp;&amp;
   $(&apos;clsa-dcs-f2.Hearing:RES_TEST_ID&apos;).isNull().and(
     $(&apos;clsa-dcs-f2.Hearing:RES_TEST_DATETIME&apos;).isNull()).value()) ?
       null : newValue(
@@ -465,7 +465,7 @@ res = (0 == count.RIGHT &amp;&amp; 0 == count.LEFT &amp;&amp;
       <variable name="stage_contraindicated_tonometer" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,&apos;Tonometer&apos;,
-&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value()
 ? 1 : 0</attribute>
         </attributes>
       </variable>
@@ -476,7 +476,7 @@ var res=$group(&apos;Admin.Action.stage&apos;,&apos;Tonometer&apos;,&apos;Admin.
   return action.indexOf(&apos;SKIP&apos;)==i
   }).last()
 if(res.isNull().not().value()) {
-  res=newValue(res.value().slice(14),&apos;text&apos;)  
+  res=newValue(res.value().slice(14),&apos;text&apos;)
 }
 res</attribute>
         </attributes>
@@ -513,7 +513,7 @@ res</attribute>
   &apos;droite&apos;:&apos;R&apos;},null)
 
 // bare minimum useful data is IOPcc: Corneal Compensated Intraocular Pressure
-var iopcc=$(&apos;clsa-dcs-f2.Tonometer:Measure.TON_IOPCC&apos;).asSequence() 
+var iopcc=$(&apos;clsa-dcs-f2.Tonometer:Measure.TON_IOPCC&apos;).asSequence()
 
 // if there is raw applanation and pressure data there will be a quality index
 // for each set of measurements
@@ -557,8 +557,8 @@ if(eye.isNull().not().value()) {
         side[e].left_appl=q
       } else if(&apos;R&apos;==e) {
         side[e].right_appl=q
-      }      
-    }        
+      }
+    }
     if(has_pres) {
       var q=pres.valueAt(i).value().split(&apos;,&apos;).length
       if(&apos;L&apos;==e) {
@@ -584,7 +584,7 @@ res</attribute>
       <variable name="stage_contraindicated_weight" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,&apos;Weight&apos;,
-&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value()
 ? 1 : 0</attribute>
         </attributes>
       </variable>
@@ -595,7 +595,7 @@ var res=$group(&apos;Admin.Action.stage&apos;,&apos;Weight&apos;,&apos;Admin.Act
   return action.indexOf(&apos;SKIP&apos;)==i
   }).last()
 if(res.isNull().not().value()) {
-  res=newValue(res.value().slice(14),&apos;text&apos;)  
+  res=newValue(res.value().slice(14),&apos;text&apos;)
 }
 res</attribute>
         </attributes>
@@ -712,7 +712,7 @@ res</attribute>
       <variable name="stage_contraindicated_lateral_bone_density" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,&apos;LateralBoneDensity&apos;,
-&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value()
 ? 1 : 0</attribute>
         </attributes>
       </variable>
@@ -741,7 +741,7 @@ res</attribute>
           <attribute name="script" valueType="text">var res=$(&apos;clsa-dcs-images-f2.LateralBoneDensity:RES_SEL_DICOM_MEASURE&apos;)
 if(res.isNull().not().value()) {
   res = newValue(&apos;{filesize:&apos;+res.length()+&apos;}&apos;,&apos;text&apos;)
-}  
+}
 res</attribute>
         </attributes>
       </variable>
@@ -754,7 +754,7 @@ res</attribute>
       <variable name="stage_contraindicated_standing_height" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,&apos;StandingHeight&apos;,
-&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value()
 ? 1 : 0</attribute>
         </attributes>
       </variable>
@@ -785,7 +785,7 @@ if(res.size().gt(1).value()){
   res=newValue(&apos;{stddev:&apos;+res.stddev().round(6).value()+&apos;,size:&apos;+res.size().value()+&apos;}&apos;,&apos;text&apos;)
 } else if(res.size().eq(1).value()) {
   res=newValue(&apos;{stddev:0,size:1}&apos;,&apos;text&apos;)
-} 
+}
 res</attribute>
         </attributes>
       </variable>
@@ -809,7 +809,7 @@ var res=$group(&apos;Admin.Action.stage&apos;,&apos;SpineBoneDensity&apos;,&apos
   return action.indexOf(&apos;SKIP&apos;)==i
   }).last()
 if(res.isNull().not().value()) {
-  res=newValue(res.value().slice(14),&apos;text&apos;)  
+  res=newValue(res.value().slice(14),&apos;text&apos;)
 }
 res</attribute>
         </attributes>
@@ -840,7 +840,7 @@ res</attribute>
       <variable name="stage_contraindicated_forearm_bone_density" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,&apos;ForearmBoneDensity&apos;,
-&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value()
 ? 1 : 0</attribute>
         </attributes>
       </variable>
@@ -851,7 +851,7 @@ var res=$group(&apos;Admin.Action.stage&apos;,&apos;ForearmBoneDensity&apos;,&ap
   return action.indexOf(&apos;SKIP&apos;)==i
   }).last()
 if(res.isNull().not().value()) {
-  res=newValue(res.value().slice(14),&apos;text&apos;)  
+  res=newValue(res.value().slice(14),&apos;text&apos;)
 }
 res</attribute>
         </attributes>
@@ -883,7 +883,7 @@ res</attribute>
       <variable name="stage_contraindicated_whole_body_bone_density" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,&apos;WholeBodyBoneDensity&apos;,
-&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value()
 ? 1 : 0</attribute>
         </attributes>
       </variable>
@@ -894,7 +894,7 @@ var res=$group(&apos;Admin.Action.stage&apos;,&apos;WholeBodyBoneDensity&apos;,&
   return action.indexOf(&apos;SKIP&apos;)==i
   }).last()
 if(res.isNull().not().value()) {
-  res=newValue(res.value().slice(14),&apos;text&apos;)  
+  res=newValue(res.value().slice(14),&apos;text&apos;)
 }
 res</attribute>
         </attributes>
@@ -912,7 +912,7 @@ res</attribute>
           <attribute name="script" valueType="text">var res=$(&apos;clsa-dcs-images-f2.WholeBodyBoneDensity:RES_WB_DICOM_1&apos;)
 if(res.isNull().not().value()) {
   res = newValue(&apos;{filesize:&apos;+res.length()+&apos;}&apos;,&apos;text&apos;)
-}  
+}
 res</attribute>
         </attributes>
       </variable>
@@ -925,7 +925,7 @@ res</attribute>
       <variable name="stage_contraindicated_dual_hip_bone_density" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,&apos;DualHipBoneDensity&apos;,
-&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value()
 ? 1 : 0</attribute>
         </attributes>
       </variable>
@@ -936,7 +936,7 @@ var res=$group(&apos;Admin.Action.stage&apos;,&apos;DualHipBoneDensity&apos;,&ap
   return action.indexOf(&apos;SKIP&apos;)==i
   }).last()
 if(res.isNull().not().value()) {
-  res=newValue(res.value().slice(14),&apos;text&apos;)  
+  res=newValue(res.value().slice(14),&apos;text&apos;)
 }
 res</attribute>
         </attributes>
@@ -974,7 +974,7 @@ res</attribute>
       <variable name="stage_contraindicated_carotid_intima" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,&apos;CarotidIntima&apos;,
-&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value()
 ? 1 : 0</attribute>
         </attributes>
       </variable>
@@ -985,7 +985,7 @@ var res=$group(&apos;Admin.Action.stage&apos;,&apos;CarotidIntima&apos;,&apos;Ad
   return action.indexOf(&apos;SKIP&apos;)==i
   }).last()
 if(res.isNull().not().value()) {
-  res=newValue(res.value().slice(14),&apos;text&apos;)  
+  res=newValue(res.value().slice(14),&apos;text&apos;)
 }
 res</attribute>
         </attributes>
@@ -1013,7 +1013,7 @@ var ls3=$group(&apos;clsa-dcs-images-f2.CarotidIntima:Measure.SIDE&apos;,&apos;L
 var res=null
 if(!rc.isNull().and(rsr.isNull(),rs1.isNull(),rs2.isNull(),rs3.isNull(),
    lc.isNull(),lsr.isNull(),ls1.isNull(),ls2.isNull(),ls3.isNull()).value()) {
-  var str=[]   
+  var str=[]
   str.push(&apos;{filesize_left_cine:&apos;+(lc.isNull().value()?&apos;0&apos;:lc.length().value()))
   str.push(&apos;filesize_left_sr:&apos;+(lsr.isNull().value()?&apos;0&apos;:lsr.length().value()))
   str.push(&apos;filesize_left_still_1:&apos;+(ls1.isNull().value()?&apos;0&apos;:ls1.length().value()))
@@ -1038,7 +1038,7 @@ res</attribute>
       <variable name="stage_contraindicated_tug" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,&apos;TUG&apos;,
-&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value()
 ? 1 : 0</attribute>
         </attributes>
       </variable>
@@ -1049,7 +1049,7 @@ var res=$group(&apos;Admin.Action.stage&apos;,&apos;TUG&apos;,&apos;Admin.Action
   return action.indexOf(&apos;SKIP&apos;)==i
   }).last()
 if(res.isNull().not().value()) {
-  res=newValue(res.value().slice(14),&apos;text&apos;)  
+  res=newValue(res.value().slice(14),&apos;text&apos;)
 }
 res</attribute>
         </attributes>
@@ -1067,13 +1067,13 @@ res</attribute>
           <attribute name="script" valueType="text">var tt=$(&apos;clsa-dcs-f2.TUG:TUG_TIME&apos;).whenNull($(&apos;clsa-dcs-f2.TUG:TUG_TIME_2&apos;))
 var res=null
 if(tt.isNull().not().value()) {
-  var wt=$(&apos;clsa-dcs-f2.4mWalk:WLK_TIME&apos;).whenNull($(&apos;clsa-dcs-f2.4mWalk:WLK_TIME_2&apos;))  
-  var ct=$(&apos;clsa-dcs-f2.ChairRise:CR_TIME&apos;).whenNull($(&apos;clsa-dcs-f2.ChairRise:CR_TIME_2&apos;))  
+  var wt=$(&apos;clsa-dcs-f2.4mWalk:WLK_TIME&apos;).whenNull($(&apos;clsa-dcs-f2.4mWalk:WLK_TIME_2&apos;))
+  var ct=$(&apos;clsa-dcs-f2.ChairRise:CR_TIME&apos;).whenNull($(&apos;clsa-dcs-f2.ChairRise:CR_TIME_2&apos;))
   var str = &apos;0&apos;
   if(tt.isNull().not().and(ct.isNull().not()).value()) {
     var cv=ct.div($(&apos;clsa-dcs-f2.ChairRise:CR_NB&apos;).whenNull(1))
     str=Math.round(tt.minus(wt.multiply(1.5).plus(cv)).abs().value())
-  }  
+  }
   res=newValue(
     &apos;{time:&apos;+tt.round(3).value()+
     &apos;,congruency:&apos;+str+
@@ -1091,7 +1091,7 @@ res</attribute>
       <variable name="stage_contraindicated_chair_rise" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,&apos;ChairRise&apos;,
-&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value()
 ? 1 : 0</attribute>
         </attributes>
       </variable>
@@ -1102,7 +1102,7 @@ var res=$group(&apos;Admin.Action.stage&apos;,&apos;ChairRise&apos;,&apos;Admin.
   return action.indexOf(&apos;SKIP&apos;)==i
   }).last()
 if(res.isNull().not().value()) {
-  res=newValue(res.value().slice(14),&apos;text&apos;)  
+  res=newValue(res.value().slice(14),&apos;text&apos;)
 }
 res</attribute>
         </attributes>
@@ -1117,16 +1117,16 @@ res</attribute>
       </variable>
       <variable name="data_qac_chair_rise" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">var ct=$(&apos;clsa-dcs-f2.ChairRise:CR_TIME&apos;).whenNull($(&apos;clsa-dcs-f2.ChairRise:CR_TIME_2&apos;))  
+          <attribute name="script" valueType="text">var ct=$(&apos;clsa-dcs-f2.ChairRise:CR_TIME&apos;).whenNull($(&apos;clsa-dcs-f2.ChairRise:CR_TIME_2&apos;))
 var res=null
 if(ct.isNull().not().value()) {
-  var wt=$(&apos;clsa-dcs-f2.4mWalk:WLK_TIME&apos;).whenNull($(&apos;clsa-dcs-f2.4mWalk:WLK_TIME_2&apos;))  
-  var tt=$(&apos;clsa-dcs-f2.TUG:TUG_TIME&apos;).whenNull($(&apos;clsa-dcs-f2.TUG:TUG_TIME_2&apos;))  
+  var wt=$(&apos;clsa-dcs-f2.4mWalk:WLK_TIME&apos;).whenNull($(&apos;clsa-dcs-f2.4mWalk:WLK_TIME_2&apos;))
+  var tt=$(&apos;clsa-dcs-f2.TUG:TUG_TIME&apos;).whenNull($(&apos;clsa-dcs-f2.TUG:TUG_TIME_2&apos;))
   var str = &apos;0&apos;
   if(tt.isNull().not().and(ct.isNull().not()).value()) {
     var cv=ct.div($(&apos;clsa-dcs-f2.ChairRise:CR_NB&apos;).whenNull(1))
     str=Math.round(tt.minus(wt.multiply(1.5).plus(cv)).abs().value())
-  }  
+  }
   res=newValue(
     &apos;{time:&apos;+ct.round(3).value()+
     &apos;,congruency:&apos;+str+
@@ -1144,7 +1144,7 @@ res</attribute>
       <variable name="stage_contraindicated_hips_waist" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,&apos;HipsWaist&apos;,
-&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value()
 ? 1 : 0</attribute>
         </attributes>
       </variable>
@@ -1155,7 +1155,7 @@ var res=$group(&apos;Admin.Action.stage&apos;,&apos;HipsWaist&apos;,&apos;Admin.
   return action.indexOf(&apos;SKIP&apos;)==i
   }).last()
 if(res.isNull().not().value()) {
-  res=newValue(res.value().slice(14),&apos;text&apos;)  
+  res=newValue(res.value().slice(14),&apos;text&apos;)
 }
 res</attribute>
         </attributes>
@@ -1181,7 +1181,7 @@ if(!i.isNull().and(w.isNull(),h.isNull(),r.isNull()).value()) {
   str+=&apos;size_hips:&apos;+(h.isNull().value()?&apos;0&apos;:h.value())+&apos;,&apos;
   str+=&apos;ratio:&apos;+(r.isNull().value()?&apos;0&apos;:r.round(3).value())+&apos;}&apos;
   res=newValue(str,&apos;text&apos;)
-}  
+}
 res</attribute>
         </attributes>
       </variable>
@@ -1194,7 +1194,7 @@ res</attribute>
       <variable name="stage_contraindicated_standing_balance" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,&apos;StandingBalance&apos;,
-&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value()
 ? 1 : 0</attribute>
         </attributes>
       </variable>
@@ -1205,10 +1205,10 @@ var res=$group(&apos;Admin.Action.stage&apos;,&apos;StandingBalance&apos;,&apos;
   return action.indexOf(&apos;SKIP&apos;)==i
   }).last()
 if(res.isNull().not().value()) {
-  res=newValue(res.value().slice(14),&apos;text&apos;)  
+  res=newValue(res.value().slice(14),&apos;text&apos;)
 } else {
-  var l1=$(&apos;clsa-dcs-f2.StandingBalance:STAND_COMPLETION_LEFT&apos;)  
-  var r1=$(&apos;clsa-dcs-f2.StandingBalance:STAND_COMPLETION_RIGHT&apos;)  
+  var l1=$(&apos;clsa-dcs-f2.StandingBalance:STAND_COMPLETION_LEFT&apos;)
+  var r1=$(&apos;clsa-dcs-f2.StandingBalance:STAND_COMPLETION_RIGHT&apos;)
   if(l1.any(&apos;NO&apos;).value()) {
     var l2=$(&apos;clsa-dcs-f2.StandingBalance:STAND_UNCOMPLETE_LEFT&apos;).map({
       &apos;TECHNICAL&apos;:&apos;TechnicalProblem&apos;,
@@ -1217,8 +1217,8 @@ if(res.isNull().not().value()) {
       &apos;OTHER-SPEFICY&apos;:&apos;SeeComment&apos;},null)
     if(l2.isNull().not().value()) {
       res=l2
-    }  
-  } 
+    }
+  }
   if (null===res &amp;&amp; r1.any(&apos;NO&apos;).value()) {
     var r2=$(&apos;clsa-dcs-f2.StandingBalance:STAND_UNCOMPLETE_RIGHT&apos;).map({
       &apos;TECHNICAL&apos;:&apos;TechnicalProblem&apos;,
@@ -1268,7 +1268,7 @@ if(!b.isNull().and(lc.isNull(),rc.isNull()).value()) {
   } else  {
     str+=&apos;-1&apos;
   }
-  str+=&apos;}&apos;  
+  str+=&apos;}&apos;
   res=newValue(str,&apos;text&apos;)
 }
 res</attribute>
@@ -1283,7 +1283,7 @@ res</attribute>
       <variable name="stage_contraindicated_four_metre_walk" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,&apos;4mWalk&apos;,
-&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value()
 ? 1 : 0</attribute>
         </attributes>
       </variable>
@@ -1294,7 +1294,7 @@ var res=$group(&apos;Admin.Action.stage&apos;,&apos;4mWalk&apos;,&apos;Admin.Act
   return action.indexOf(&apos;SKIP&apos;)==i
   }).last()
 if(res.isNull().not().value()) {
-  res=newValue(res.value().slice(14),&apos;text&apos;)  
+  res=newValue(res.value().slice(14),&apos;text&apos;)
 }
 res</attribute>
         </attributes>
@@ -1313,12 +1313,12 @@ res</attribute>
 var res=null
 if(wt.isNull().not().value()) {
   var tt=$(&apos;clsa-dcs-f2.TUG:TUG_TIME&apos;).whenNull($(&apos;clsa-dcs-f2.TUG:TUG_TIME_2&apos;))
-  var ct=$(&apos;clsa-dcs-f2.ChairRise:CR_TIME&apos;).whenNull($(&apos;clsa-dcs-f2.ChairRise:CR_TIME_2&apos;))  
+  var ct=$(&apos;clsa-dcs-f2.ChairRise:CR_TIME&apos;).whenNull($(&apos;clsa-dcs-f2.ChairRise:CR_TIME_2&apos;))
   var str = &apos;0&apos;
   if(tt.isNull().not().and(ct.isNull().not()).value()) {
     var cv=ct.div($(&apos;clsa-dcs-f2.ChairRise:CR_NB&apos;).whenNull(1))
     str=Math.round(tt.minus(wt.multiply(1.5).plus(cv)).abs().value())
-  }  
+  }
   res=newValue(
     &apos;{time:&apos;+wt.round(3).value()+
     &apos;,congruency:&apos;+str+
@@ -1336,7 +1336,7 @@ res</attribute>
       <variable name="stage_contraindicated_sitting_height" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,&apos;SittingHeight&apos;,
-&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value()
 ? 1 : 0</attribute>
         </attributes>
       </variable>
@@ -1347,7 +1347,7 @@ var res=$group(&apos;Admin.Action.stage&apos;,&apos;SittingHeight&apos;,&apos;Ad
   return action.indexOf(&apos;SKIP&apos;)==i
   }).last()
 if(res.isNull().not().value()) {
-  res=newValue(res.value().slice(14),&apos;text&apos;)  
+  res=newValue(res.value().slice(14),&apos;text&apos;)
 }
 res</attribute>
         </attributes>
@@ -1367,7 +1367,7 @@ if(res.size().gt(1).value()){
   res=newValue(&apos;{stddev:&apos;+res.stddev().round(6).value()+&apos;,size:&apos;+res.size().value()+&apos;}&apos;,&apos;text&apos;)
 } else if(res.size().eq(1).value()) {
   res=newValue(&apos;{stddev:0,size:1}&apos;,&apos;text&apos;)
-} 
+}
 res</attribute>
         </attributes>
       </variable>
@@ -1380,7 +1380,7 @@ res</attribute>
       <variable name="stage_contraindicated_vision_acuity" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,&apos;VisionAcuity&apos;,
-&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value()
 ? 1 : 0</attribute>
         </attributes>
       </variable>
@@ -1391,7 +1391,7 @@ var res=$group(&apos;Admin.Action.stage&apos;,&apos;VisionAcuity&apos;,&apos;Adm
   return action.indexOf(&apos;SKIP&apos;)==i
   }).last()
 if(res.isNull().not().value()) {
-  res=newValue(res.value().slice(14),&apos;text&apos;)  
+  res=newValue(res.value().slice(14),&apos;text&apos;)
 } else {
   var tests=[&apos;DONE_VA&apos;,&apos;DONE_BOTH_VA&apos;,&apos;DONE_LEFT_VA&apos;,&apos;DONE_RIGHT_VA&apos;,&apos;DONE_LEFT_PO_VA&apos;,&apos;DONE_RIGHT_PO_VA&apos;]
   var reasons=[&apos;DONE_RSN_VA&apos;,&apos;DONE_RSN_BOTH_VA&apos;,&apos;DONE_RSN_LEFT_VA&apos;,&apos;DONE_RSN_RIGHT_VA&apos;,&apos;DONE_RSN_LEFT_PO_VA&apos;,&apos;DONE_RSN_RIGHT_PO_VA&apos;]
@@ -1408,7 +1408,7 @@ if(res.isNull().not().value()) {
         break
       }
     }
-  }  
+  }
 }
 res</attribute>
         </attributes>
@@ -1544,18 +1544,18 @@ var sections={
     for(var i=0; i&lt;arr.length; i++ ) {
       var j=$(stage+arr[i])
       if(j.isNull().value()) continue
-      qcount++      
+      qcount++
       rcount+=j.any(&apos;REFUSED&apos;).value()?1:0
     }
     if(0==qcount) {
       str.push(key+&apos;:100&apos;)
     } else {
-      var perc=100.0*rcount/qcount      
-      if(0&lt;perc &amp;&amp; 100&gt;perc &amp;&amp; 0!=(perc-Math.floor(perc))) {        
+      var perc=100.0*rcount/qcount
+      if(0&lt;perc &amp;&amp; 100&gt;perc &amp;&amp; 0!=(perc-Math.floor(perc))) {
         perc=perc.toFixed(3)
       }
       str.push(key+&apos;:&apos;+perc)
-    }  
+    }
   }
 
   res=newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)
@@ -1566,7 +1566,7 @@ res</attribute>
       <variable name="stage_contraindicated_consent" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,&apos;Consent&apos;,
-&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value()
 ? 1 : 0</attribute>
         </attributes>
       </variable>
@@ -1599,7 +1599,7 @@ var res=$group(&apos;Admin.Action.stage&apos;,&apos;Consent&apos;,&apos;Admin.Ac
   return action.indexOf(&apos;SKIP&apos;)==i
   }).last()
 if(res.isNull().not().value()) {
-  res=newValue(res.value().slice(14),&apos;text&apos;)  
+  res=newValue(res.value().slice(14),&apos;text&apos;)
 }
 res</attribute>
         </attributes>
@@ -1617,7 +1617,7 @@ var res=$group(&apos;Admin.Action.stage&apos;,&apos;ContraIndications&apos;,&apo
   return action.indexOf(&apos;SKIP&apos;)==i
   }).last()
 if(res.isNull().not().value()) {
-  res=newValue(res.value().slice(14),&apos;text&apos;)  
+  res=newValue(res.value().slice(14),&apos;text&apos;)
 }
 res</attribute>
         </attributes>
@@ -1625,7 +1625,7 @@ res</attribute>
       <variable name="stage_contraindicated_contraindications" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,&apos;ContraIndications&apos;,
-&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value()
 ? 1 : 0</attribute>
         </attributes>
       </variable>
@@ -1749,18 +1749,18 @@ var sections={
     for(var i=0; i&lt;arr.length; i++ ) {
       var j=$(stage+arr[i])
       if(j.isNull().value()) continue
-      qcount++      
+      qcount++
       rcount+=j.any(&apos;REFUSED&apos;).value()?1:0
     }
     if(0==qcount) {
       str.push(key+&apos;:100&apos;)
     } else {
-      var perc=100.0*rcount/qcount      
-      if(0&lt;perc &amp;&amp; 100&gt;perc &amp;&amp; 0!=(perc-Math.floor(perc))) {        
+      var perc=100.0*rcount/qcount
+      if(0&lt;perc &amp;&amp; 100&gt;perc &amp;&amp; 0!=(perc-Math.floor(perc))) {
         perc=perc.toFixed(3)
       }
       str.push(key+&apos;:&apos;+perc)
-    }  
+    }
   }
 
   res=newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)
@@ -1789,7 +1789,7 @@ var res=$group(&apos;Admin.Action.stage&apos;,&apos;EventPMT&apos;,&apos;Admin.A
   return action.indexOf(&apos;SKIP&apos;)==i
   }).last()
 if(res.isNull().not().value()) {
-  res=newValue(res.value().slice(14),&apos;text&apos;)  
+  res=newValue(res.value().slice(14),&apos;text&apos;)
 }
 res</attribute>
         </attributes>
@@ -1797,7 +1797,7 @@ res</attribute>
       <variable name="stage_contraindicated_event_pmt" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,&apos;EventPMT&apos;,
-&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value()
 ? 1 : 0</attribute>
         </attributes>
       </variable>
@@ -1835,18 +1835,18 @@ var sections={
     for(var i=0; i&lt;arr.length; i++ ) {
       var j=$(stage+arr[i])
       if(j.isNull().value()) continue
-      qcount++      
+      qcount++
       rcount+=j.any(&apos;REFUSED&apos;).value()?1:0
     }
     if(0==qcount) {
       str.push(key+&apos;:100&apos;)
     } else {
-      var perc=100.0*rcount/qcount      
-      if(0&lt;perc &amp;&amp; 100&gt;perc &amp;&amp; 0!=(perc-Math.floor(perc))) {        
+      var perc=100.0*rcount/qcount
+      if(0&lt;perc &amp;&amp; 100&gt;perc &amp;&amp; 0!=(perc-Math.floor(perc))) {
         perc=perc.toFixed(3)
       }
       str.push(key+&apos;:&apos;+perc)
-    }  
+    }
   }
 
   res=newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)
@@ -1875,7 +1875,7 @@ var res=$group(&apos;Admin.Action.stage&apos;,&apos;DiseaseSymptoms&apos;,&apos;
   return action.indexOf(&apos;SKIP&apos;)==i
   }).last()
 if(res.isNull().not().value()) {
-  res=newValue(res.value().slice(14),&apos;text&apos;)  
+  res=newValue(res.value().slice(14),&apos;text&apos;)
 }
 res</attribute>
         </attributes>
@@ -1883,7 +1883,7 @@ res</attribute>
       <variable name="stage_contraindicated_disease_symptoms" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,&apos;DiseaseSymptoms&apos;,
-&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value()
 ? 1 : 0</attribute>
         </attributes>
       </variable>
@@ -2682,18 +2682,18 @@ var sections={
     for(var i=0; i&lt;arr.length; i++ ) {
       var j=$(stage+arr[i])
       if(j.isNull().value()) continue
-      qcount++      
+      qcount++
       rcount+=j.any(&apos;REFUSED&apos;).value()?1:0
     }
     if(0==qcount) {
       str.push(key+&apos;:100&apos;)
     } else {
-      var perc=100.0*rcount/qcount      
-      if(0&lt;perc &amp;&amp; 100&gt;perc &amp;&amp; 0!=(perc-Math.floor(perc))) {        
+      var perc=100.0*rcount/qcount
+      if(0&lt;perc &amp;&amp; 100&gt;perc &amp;&amp; 0!=(perc-Math.floor(perc))) {
         perc=perc.toFixed(3)
       }
       str.push(key+&apos;:&apos;+perc)
-    }  
+    }
   }
 
   res=newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)
@@ -2722,7 +2722,7 @@ var res=$group(&apos;Admin.Action.stage&apos;,&apos;ConclusionQuestionnaire&apos
   return action.indexOf(&apos;SKIP&apos;)==i
   }).last()
 if(res.isNull().not().value()) {
-  res=newValue(res.value().slice(14),&apos;text&apos;)  
+  res=newValue(res.value().slice(14),&apos;text&apos;)
 }
 res</attribute>
         </attributes>
@@ -2730,7 +2730,7 @@ res</attribute>
       <variable name="stage_contraindicated_conclusion_questionnaire" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,&apos;ConclusionQuestionnaire&apos;,
-&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value()
 ? 1 : 0</attribute>
         </attributes>
       </variable>
@@ -2740,7 +2740,7 @@ res</attribute>
 if(res.isNull().not().value()) {
   var n=0
   if(res.any(&apos;consent_form&apos;).value()) n++
-  if(res.any(&apos;physical_measures_report&apos;).value()) n++  
+  if(res.any(&apos;physical_measures_report&apos;).value()) n++
   res=newValue(&apos;{documents:&apos;+n+&apos;}&apos;,&apos;text&apos;)
 }
 res</attribute>
@@ -2767,7 +2767,7 @@ var res=$group(&apos;Admin.Action.stage&apos;,&apos;QuestionnaireBoneDensity&apo
   return action.indexOf(&apos;SKIP&apos;)==i
   }).last()
 if(res.isNull().not().value()) {
-  res=newValue(res.value().slice(14),&apos;text&apos;)  
+  res=newValue(res.value().slice(14),&apos;text&apos;)
 }
 res</attribute>
         </attributes>
@@ -2775,7 +2775,7 @@ res</attribute>
       <variable name="stage_contraindicated_bone_density_questionnaire" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,&apos;QuestionnaireBoneDensity&apos;,
-&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value()
 ? 1 : 0</attribute>
         </attributes>
       </variable>
@@ -2814,7 +2814,7 @@ var res=$group(&apos;Admin.Action.stage&apos;,&apos;HearingQuestionnaire&apos;,&
   return action.indexOf(&apos;SKIP&apos;)==i
   }).last()
 if(res.isNull().not().value()) {
-  res=newValue(res.value().slice(14),&apos;text&apos;)  
+  res=newValue(res.value().slice(14),&apos;text&apos;)
 }
 res</attribute>
         </attributes>
@@ -2822,7 +2822,7 @@ res</attribute>
       <variable name="stage_contraindicated_hearing_questionnaire" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,&apos;HearingQuestionnaire&apos;,
-&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value()
 ? 1 : 0</attribute>
         </attributes>
       </variable>
@@ -2863,7 +2863,7 @@ var res=$group(&apos;Admin.Action.stage&apos;,&apos;TimeBasedProspectiveMemoryTa
   return action.indexOf(&apos;SKIP&apos;)==i
   }).last()
 if(res.isNull().not().value()) {
-  res=newValue(res.value().slice(14),&apos;text&apos;)  
+  res=newValue(res.value().slice(14),&apos;text&apos;)
 }
 res</attribute>
         </attributes>
@@ -2871,7 +2871,7 @@ res</attribute>
       <variable name="stage_contraindicated_time_based_pmt" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,&apos;TimeBasedProspectiveMemoryTask&apos;,
-&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value()
 ? 1 : 0</attribute>
         </attributes>
       </variable>
@@ -2911,18 +2911,18 @@ var sections={
     for(var i=0; i&lt;arr.length; i++ ) {
       var j=$(stage+arr[i])
       if(j.isNull().value()) continue
-      qcount++      
+      qcount++
       rcount+=j.any(&apos;REFUSED&apos;).value()?1:0
     }
     if(0==qcount) {
       str.push(key+&apos;:100&apos;)
     } else {
-      var perc=100.0*rcount/qcount      
-      if(0&lt;perc &amp;&amp; 100&gt;perc &amp;&amp; 0!=(perc-Math.floor(perc))) {        
+      var perc=100.0*rcount/qcount
+      if(0&lt;perc &amp;&amp; 100&gt;perc &amp;&amp; 0!=(perc-Math.floor(perc))) {
         perc=perc.toFixed(3)
       }
       str.push(key+&apos;:&apos;+perc)
-    }  
+    }
   }
 
   res=newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)
@@ -2947,7 +2947,7 @@ res</attribute>
       <variable name="stage_contraindicated_frax" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,&apos;Frax&apos;,
-&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value()
 ? 1 : 0</attribute>
         </attributes>
       </variable>
@@ -2975,7 +2975,7 @@ var res=$group(&apos;Admin.Action.stage&apos;,&apos;Frax&apos;,&apos;Admin.Actio
   return action.indexOf(&apos;SKIP&apos;)==i
   }).last()
 if(res.isNull().not().value()) {
-  res=newValue(res.value().slice(14),&apos;text&apos;)  
+  res=newValue(res.value().slice(14),&apos;text&apos;)
 }
 res</attribute>
         </attributes>
@@ -2993,7 +2993,7 @@ var res=$group(&apos;Admin.Action.stage&apos;,&apos;SocialNetwork&apos;,&apos;Ad
   return action.indexOf(&apos;SKIP&apos;)==i
   }).last()
 if(res.isNull().not().value()) {
-  res=newValue(res.value().slice(14),&apos;text&apos;)  
+  res=newValue(res.value().slice(14),&apos;text&apos;)
 }
 res</attribute>
         </attributes>
@@ -3001,7 +3001,7 @@ res</attribute>
       <variable name="stage_contraindicated_social_network" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,&apos;SocialNetwork&apos;,
-&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value()
 ? 1 : 0</attribute>
         </attributes>
       </variable>
@@ -3122,18 +3122,18 @@ var sections={
     for(var i=0; i&lt;arr.length; i++ ) {
       var j=$(stage+arr[i])
       if(j.isNull().value()) continue
-      qcount++      
+      qcount++
       rcount+=j.any(&apos;REFUSED&apos;).value()?1:0
     }
     if(0==qcount) {
       str.push(key+&apos;:100&apos;)
     } else {
-      var perc=100.0*rcount/qcount      
-      if(0&lt;perc &amp;&amp; 100&gt;perc &amp;&amp; 0!=(perc-Math.floor(perc))) {        
+      var perc=100.0*rcount/qcount
+      if(0&lt;perc &amp;&amp; 100&gt;perc &amp;&amp; 0!=(perc-Math.floor(perc))) {
         perc=perc.toFixed(3)
       }
       str.push(key+&apos;:&apos;+perc)
-    }  
+    }
   }
 
   res=newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)
@@ -3162,7 +3162,7 @@ var res=$group(&apos;Admin.Action.stage&apos;,&apos;GenHealth&apos;,&apos;Admin.
   return action.indexOf(&apos;SKIP&apos;)==i
   }).last()
 if(res.isNull().not().value()) {
-  res=newValue(res.value().slice(14),&apos;text&apos;)  
+  res=newValue(res.value().slice(14),&apos;text&apos;)
 }
 res</attribute>
         </attributes>
@@ -3170,7 +3170,7 @@ res</attribute>
       <variable name="stage_contraindicated_general_health" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,&apos;GenHealth&apos;,
-&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value()
 ? 1 : 0</attribute>
         </attributes>
       </variable>
@@ -3242,7 +3242,7 @@ var sections={
 &apos;VIS&apos;:[
 &apos;VIS_SGHT_COF2&apos;,
 &apos;VIS_AID_COF2&apos;,
-&apos;VIS_USE_COF2&apos;]  
+&apos;VIS_USE_COF2&apos;]
 }
 
   var skip=[]
@@ -3261,18 +3261,18 @@ var sections={
     for(var i=0; i&lt;arr.length; i++ ) {
       var j=$(stage+arr[i])
       if(j.isNull().value()) continue
-      qcount++      
+      qcount++
       rcount+=j.any(&apos;REFUSED&apos;).value()?1:0
     }
     if(0==qcount) {
       str.push(key+&apos;:100&apos;)
     } else {
-      var perc=100.0*rcount/qcount      
-      if(0&lt;perc &amp;&amp; 100&gt;perc &amp;&amp; 0!=(perc-Math.floor(perc))) {        
+      var perc=100.0*rcount/qcount
+      if(0&lt;perc &amp;&amp; 100&gt;perc &amp;&amp; 0!=(perc-Math.floor(perc))) {
         perc=perc.toFixed(3)
       }
       str.push(key+&apos;:&apos;+perc)
-    }  
+    }
   }
 
   res=newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)
@@ -3301,7 +3301,7 @@ var res=$group(&apos;Admin.Action.stage&apos;,&apos;OSIPV&apos;,&apos;Admin.Acti
   return action.indexOf(&apos;SKIP&apos;)==i
   }).last()
 if(res.isNull().not().value()) {
-  res=newValue(res.value().slice(14),&apos;text&apos;)  
+  res=newValue(res.value().slice(14),&apos;text&apos;)
 }
 res</attribute>
         </attributes>
@@ -3309,7 +3309,7 @@ res</attribute>
       <variable name="stage_contraindicated_osipv" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,&apos;OSIPV&apos;,
-&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value()
 ? 1 : 0</attribute>
         </attributes>
       </variable>
@@ -3401,7 +3401,7 @@ var sections={
 &apos;SLE_LGIMPR_COF2&apos;,
 &apos;SLE_LGEVE_COF2&apos;,
 &apos;SNO_SNORE_COF2&apos;,
-&apos;SNO_STOPBREATH_COF2&apos;]  
+&apos;SNO_STOPBREATH_COF2&apos;]
 }
 
   var skip=[]
@@ -3413,25 +3413,25 @@ var sections={
     if(-1!=skip.indexOf(key)) {
       str.push(key+&apos;:0&apos;)
       continue
-    }    
+    }
     var rcount=0
     var qcount=0
     var arr=sections[key]
     for(var i=0; i&lt;arr.length; i++ ) {
       var j=$(stage+arr[i])
       if(j.isNull().value()) continue
-      qcount++      
+      qcount++
       rcount+=j.any(&apos;REFUSED&apos;).value()?1:0
     }
     if(0==qcount) {
       str.push(key+&apos;:100&apos;)
     } else {
-      var perc=100.0*rcount/qcount      
-      if(0&lt;perc &amp;&amp; 100&gt;perc &amp;&amp; 0!=(perc-Math.floor(perc))) {        
+      var perc=100.0*rcount/qcount
+      if(0&lt;perc &amp;&amp; 100&gt;perc &amp;&amp; 0!=(perc-Math.floor(perc))) {
         perc=perc.toFixed(3)
       }
       str.push(key+&apos;:&apos;+perc)
-    }  
+    }
   }
 
   res=newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)
@@ -3460,7 +3460,7 @@ var res=$group(&apos;Admin.Action.stage&apos;,&apos;Urine&apos;,&apos;Admin.Acti
   return action.indexOf(&apos;SKIP&apos;)==i
   }).last()
 if(res.isNull().not().value()) {
-  res=newValue(res.value().slice(14),&apos;text&apos;)  
+  res=newValue(res.value().slice(14),&apos;text&apos;)
 }
 res</attribute>
         </attributes>
@@ -3468,7 +3468,7 @@ res</attribute>
       <variable name="stage_contraindicated_urine" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,&apos;Urine&apos;,
-&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value()
 ? 1 : 0</attribute>
         </attributes>
       </variable>
@@ -3504,18 +3504,18 @@ var sections={
     for(var i=0; i&lt;arr.length; i++ ) {
       var j=$(stage+arr[i])
       if(j.isNull().value()) continue
-      qcount++      
+      qcount++
       rcount+=j.any(&apos;REFUSED&apos;).value()?1:0
     }
     if(0==qcount) {
       str.push(key+&apos;:100&apos;)
     } else {
-      var perc=100.0*rcount/qcount      
-      if(0&lt;perc &amp;&amp; 100&gt;perc &amp;&amp; 0!=(perc-Math.floor(perc))) {        
+      var perc=100.0*rcount/qcount
+      if(0&lt;perc &amp;&amp; 100&gt;perc &amp;&amp; 0!=(perc-Math.floor(perc))) {
         perc=perc.toFixed(3)
       }
       str.push(key+&apos;:&apos;+perc)
-    }  
+    }
   }
 
   res=newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)
@@ -3556,7 +3556,7 @@ if(stage.isNull().not().value()) {
   if(res.isNull().not().value()) {
     res=newValue(res.value().slice(14),&apos;text&apos;)
   }
-}  
+}
 res</attribute>
         </attributes>
       </variable>
@@ -3613,14 +3613,14 @@ var sections={
       for(var i=0; i&lt;arr.length; i++ ) {
         var j=$(stage+arr[i])
         if(j.isNull().value()) continue
-        qcount++      
+        qcount++
         rcount+=j.any(&apos;REFUSED&apos;).value()?1:0
       }
       if(0==qcount) {
         str.push(key+&apos;:100&apos;)
       } else {
-        var perc=100.0*rcount/qcount      
-        if(0&lt;perc &amp;&amp; 100&gt;perc &amp;&amp; 0!=(perc-Math.floor(perc))) {        
+        var perc=100.0*rcount/qcount
+        if(0&lt;perc &amp;&amp; 100&gt;perc &amp;&amp; 0!=(perc-Math.floor(perc))) {
           perc=perc.toFixed(3)
         }
         str.push(key+&apos;:&apos;+perc)
@@ -3661,13 +3661,13 @@ var v=$group(&apos;Admin.StageInstance.stage&apos;,&apos;Blood2&apos;,&apos;Admi
 var p=$(&apos;Admin.StageInstance.stage&apos;).any(&apos;Blood&apos;).and(u.isNull().not()).value()
 var q=$(&apos;Admin.StageInstance.stage&apos;).any(&apos;Blood2&apos;).and(v.isNull().not()).value()
 if(p &amp;&amp; !q) {
-  res=newValue( &apos;Blood&apos;, &apos;text&apos;) 
+  res=newValue( &apos;Blood&apos;, &apos;text&apos;)
 } else if(q &amp;&amp; !p) {
-  res=newValue( &apos;Blood2&apos;, &apos;text&apos;) 
+  res=newValue( &apos;Blood2&apos;, &apos;text&apos;)
 } else if(p &amp;&amp; q) {
   if(v.any(&apos;NotApplicable&apos;).or(u.any(&apos;Completed&apos;)).value()) {
     res=newValue(&apos;Blood&apos;, &apos;text&apos;)
-  } else { 
+  } else {
     res=newValue(&apos;Blood2&apos;, &apos;text&apos;)
   }
 }
@@ -3687,7 +3687,7 @@ var res=$group(&apos;Admin.Action.stage&apos;,&apos;Deviation_AE_CRF&apos;,&apos
   return action.indexOf(&apos;SKIP&apos;)==i
   }).last()
 if(res.isNull().not().value()) {
-  res=newValue(res.value().slice(14),&apos;text&apos;)  
+  res=newValue(res.value().slice(14),&apos;text&apos;)
 }
 res</attribute>
         </attributes>
@@ -3695,7 +3695,7 @@ res</attribute>
       <variable name="stage_contraindicated_deviation_aecrf" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,&apos;Deviation_AE_CRF&apos;,
-&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value()
 ? 1 : 0</attribute>
         </attributes>
       </variable>
@@ -3740,18 +3740,18 @@ var sections={
     for(var i=0; i&lt;arr.length; i++ ) {
       var j=$(stage+arr[i])
       if(j.isNull().value()) continue
-      qcount++      
+      qcount++
       rcount+=j.any(&apos;REFUSED&apos;).value()?1:0
     }
     if(0==qcount) {
       str.push(key+&apos;:100&apos;)
     } else {
-      var perc=100.0*rcount/qcount      
-      if(0&lt;perc &amp;&amp; 100&gt;perc &amp;&amp; 0!=(perc-Math.floor(perc))) {        
+      var perc=100.0*rcount/qcount
+      if(0&lt;perc &amp;&amp; 100&gt;perc &amp;&amp; 0!=(perc-Math.floor(perc))) {
         perc=perc.toFixed(3)
       }
       str.push(key+&apos;:&apos;+perc)
-    }  
+    }
   }
 
   res=newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)
@@ -3780,7 +3780,7 @@ var res=$group(&apos;Admin.Action.stage&apos;,&apos;QualityAssuranceIH&apos;,&ap
   return action.indexOf(&apos;SKIP&apos;)==i
   }).last()
 if(res.isNull().not().value()) {
-  res=newValue(res.value().slice(14),&apos;text&apos;)  
+  res=newValue(res.value().slice(14),&apos;text&apos;)
 }
 res</attribute>
         </attributes>
@@ -3788,7 +3788,7 @@ res</attribute>
       <variable name="stage_contraindicated_quality_assurance_inhome" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,&apos;QualityAssuranceIH&apos;,
-&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value()
 ? 1 : 0</attribute>
         </attributes>
       </variable>
@@ -3821,7 +3821,7 @@ var sections={
 &apos;QAH_INMEM_COF2&apos;,
 &apos;QAH_18MO_COF2&apos;,
 &apos;QAH_COM_COF2&apos;,
-&apos;QAH_TWOVIS_COF2&apos;]  
+&apos;QAH_TWOVIS_COF2&apos;]
 }
 
   for(var key in sections) {
@@ -3831,18 +3831,18 @@ var sections={
     for(var i=0; i&lt;arr.length; i++ ) {
       var j=$(stage+arr[i])
       if(j.isNull().value()) continue
-      qcount++      
+      qcount++
       rcount+=j.any(&apos;REFUSED&apos;).value()?1:0
     }
     if(0==qcount) {
       str.push(key+&apos;:100&apos;)
     } else {
-      var perc=100.0*rcount/qcount      
-      if(0&lt;perc &amp;&amp; 100&gt;perc &amp;&amp; 0!=(perc-Math.floor(perc))) {        
+      var perc=100.0*rcount/qcount
+      if(0&lt;perc &amp;&amp; 100&gt;perc &amp;&amp; 0!=(perc-Math.floor(perc))) {
         perc=perc.toFixed(3)
       }
       str.push(key+&apos;:&apos;+perc)
-    }  
+    }
   }
 
   res=newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)
@@ -3871,7 +3871,7 @@ var res=$group(&apos;Admin.Action.stage&apos;,&apos;NeuropsychologicalBatterySco
   return action.indexOf(&apos;SKIP&apos;)==i
   }).last()
 if(res.isNull().not().value()) {
-  res=newValue(res.value().slice(14),&apos;text&apos;)  
+  res=newValue(res.value().slice(14),&apos;text&apos;)
 }
 res</attribute>
         </attributes>
@@ -3879,7 +3879,7 @@ res</attribute>
       <variable name="stage_contraindicated_neuropsychological_battery_scoring" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,&apos;NeuropsychologicalBatteryScoring&apos;,
-&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value()
 ? 1 : 0</attribute>
         </attributes>
       </variable>
@@ -3936,7 +3936,7 @@ if(!d.isNull().and(w.isNull(),c.isNull,f.isNull(),a.isNull(),s.isNull()).value()
   str.push(&apos;filesize_col:&apos;+(c.isNull().value()?&apos;0&apos;:c.length().value()))
   str.push(&apos;filesize_f:&apos;+(f.isNull().value()?&apos;0&apos;:f.length().value()))
   str.push(&apos;filesize_a:&apos;+(a.isNull().value()?&apos;0&apos;:a.length().value()))
-  str.push(&apos;filesize_s:&apos;+(s.isNull().value()?&apos;0&apos;:s.length().value()))    
+  str.push(&apos;filesize_s:&apos;+(s.isNull().value()?&apos;0&apos;:s.length().value()))
   res=newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)
 }
 res</attribute>
@@ -3953,5 +3953,5 @@ res</attribute>
     </variables>
   </variables>
   <created valueType="datetime">2018-05-15T13:40:50.956-04</created>
-  <updated valueType="datetime">2018-10-10T14:54:27.321-04</updated>
+  <updated valueType="datetime">2018-10-13T14:00:46.278-04</updated>
 </org.obiba.magma.views.View>

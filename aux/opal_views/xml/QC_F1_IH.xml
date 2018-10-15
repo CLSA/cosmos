@@ -35,7 +35,7 @@
       <variable name="stage_contraindicated_inhome_1" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">$group(&apos;clsa-inhome-f1.Participants:Admin.StageInstance.stage&apos;,&apos;InHome_1&apos;,
-&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value()
 ? 1 : 0</attribute>
         </attributes>
       </variable>
@@ -47,7 +47,7 @@ var res=$group(&apos;Admin.Action.stage&apos;,&apos;InHome_1&apos;,&apos;Admin.A
   return j==i
   }).last()
 if(res.isNull().not().value()) {
-  res=newValue(res.value().slice(14),&apos;text&apos;)  
+  res=newValue(res.value().slice(14),&apos;text&apos;)
 }
 res</attribute>
         </attributes>
@@ -210,18 +210,18 @@ var sections={
     for(var i=0; i&lt;arr.length; i++ ) {
       var j=$(stage+arr[i])
       if(j.isNull().value()) continue
-      qcount++      
+      qcount++
       rcount+=j.any(&apos;REFUSED&apos;).value()?1:0
     }
     if(0==qcount) {
       str.push(key+&apos;:100&apos;)
     } else {
-      var perc=100.0*rcount/qcount      
-      if(0&lt;perc &amp;&amp; 100&gt;perc &amp;&amp; 0!=(perc-Math.floor(perc))) {        
+      var perc=100.0*rcount/qcount
+      if(0&lt;perc &amp;&amp; 100&gt;perc &amp;&amp; 0!=(perc-Math.floor(perc))) {
         perc=perc.toFixed(3)
       }
       str.push(key+&apos;:&apos;+perc)
-    }  
+    }
   }
 
   res=newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)
@@ -246,7 +246,7 @@ res</attribute>
       <variable name="stage_contraindicated_inhome_2" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">$group(&apos;clsa-inhome-f1.Participants:Admin.StageInstance.stage&apos;,&apos;InHome_2&apos;,
-&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value()
 ? 1 : 0</attribute>
         </attributes>
       </variable>
@@ -258,7 +258,7 @@ var res=$group(&apos;Admin.Action.stage&apos;,&apos;InHome_2&apos;,&apos;Admin.A
   return j==i
   }).last()
 if(res.isNull().not().value()) {
-  res=newValue(res.value().slice(14),&apos;text&apos;)  
+  res=newValue(res.value().slice(14),&apos;text&apos;)
 }
 res</attribute>
         </attributes>
@@ -280,7 +280,7 @@ res</attribute>
       <variable name="stage_contraindicated_inhome_3" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">$group(&apos;clsa-inhome-f1.Participants:Admin.StageInstance.stage&apos;,&apos;InHome_3&apos;,
-&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value()
 ? 1 : 0</attribute>
         </attributes>
       </variable>
@@ -292,7 +292,7 @@ var res=$group(&apos;Admin.Action.stage&apos;,&apos;InHome_3&apos;,&apos;Admin.A
   return j==i
   }).last()
 if(res.isNull().not().value()) {
-  res=newValue(res.value().slice(14),&apos;text&apos;)  
+  res=newValue(res.value().slice(14),&apos;text&apos;)
 }
 res</attribute>
         </attributes>
@@ -314,7 +314,7 @@ res</attribute>
       <variable name="stage_contraindicated_inhome_4" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">$group(&apos;clsa-inhome-f1.Participants:Admin.StageInstance.stage&apos;,&apos;InHome_4&apos;,
-&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value()
 ? 1 : 0</attribute>
         </attributes>
       </variable>
@@ -326,7 +326,7 @@ var res=$group(&apos;Admin.Action.stage&apos;,&apos;InHome_4&apos;,&apos;Admin.A
   return j==i
   }).last()
 if(res.isNull().not().value()) {
-  res=newValue(res.value().slice(14),&apos;text&apos;)  
+  res=newValue(res.value().slice(14),&apos;text&apos;)
 }
 res</attribute>
         </attributes>
@@ -545,18 +545,18 @@ var sections={
     for(var i=0; i&lt;arr.length; i++ ) {
       var j=$(stage+arr[i])
       if(j.isNull().value()) continue
-      qcount++      
+      qcount++
       rcount+=j.any(&apos;REFUSED&apos;).value()?1:0
     }
     if(0==qcount) {
       str.push(key+&apos;:100&apos;)
     } else {
-      var perc=100.0*rcount/qcount      
-      if(0&lt;perc &amp;&amp; 100&gt;perc &amp;&amp; 0!=(perc-Math.floor(perc))) {        
+      var perc=100.0*rcount/qcount
+      if(0&lt;perc &amp;&amp; 100&gt;perc &amp;&amp; 0!=(perc-Math.floor(perc))) {
         perc=perc.toFixed(3)
       }
       str.push(key+&apos;:&apos;+perc)
-    }  
+    }
   }
 
   res=newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)
@@ -608,7 +608,7 @@ res</attribute>
       <variable name="stage_contraindicated_inhome_conclusion_questionnaire" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">$group(&apos;clsa-inhome-f1.Participants:Admin.StageInstance.stage&apos;,&apos;ConclusionQuestionnaire&apos;,
-&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value() 
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value()
 ? 1 : 0</attribute>
         </attributes>
       </variable>
@@ -620,7 +620,7 @@ var res=null
 if(p.isNull().or(q.isNull()).not().value()){
   var a=p.any(&apos;yes&apos;).value()
   var b=q.any(&apos;yes&apos;).value()
-  var n=0 
+  var n=0
   if(a) n++
   if(b) n++
   res=newValue(&apos;{checklist:&apos;+n+&apos;}&apos;,&apos;text&apos;)
@@ -650,7 +650,7 @@ var res=$group(&apos;Admin.Action.stage&apos;,&apos;ConclusionQuestionnaire&apos
   return j==i
   }).last()
 if(res.isNull().not().value()) {
-  res=newValue(res.value().slice(14),&apos;text&apos;)  
+  res=newValue(res.value().slice(14),&apos;text&apos;)
 }
 res</attribute>
         </attributes>
@@ -814,18 +814,18 @@ var sections={
     for(var i=0; i&lt;arr.length; i++ ) {
       var j=$(stage+arr[i])
       if(j.isNull().value()) continue
-      qcount++      
+      qcount++
       rcount+=j.any(&apos;REFUSED&apos;).value()?1:0
     }
     if(0==qcount) {
       str.push(key+&apos;:100&apos;)
     } else {
-      var perc=100.0*rcount/qcount      
-      if(0&lt;perc &amp;&amp; 100&gt;perc &amp;&amp; 0!=(perc-Math.floor(perc))) {        
+      var perc=100.0*rcount/qcount
+      if(0&lt;perc &amp;&amp; 100&gt;perc &amp;&amp; 0!=(perc-Math.floor(perc))) {
         perc=perc.toFixed(3)
       }
       str.push(key+&apos;:&apos;+perc)
-    }  
+    }
   }
 
   res=newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)
@@ -1270,18 +1270,18 @@ var sections={
     for(var i=0; i&lt;arr.length; i++ ) {
       var j=$(stage+arr[i])
       if(j.isNull().value()) continue
-      qcount++      
+      qcount++
       rcount+=j.any(&apos;REFUSED&apos;).value()?1:0
     }
     if(0==qcount) {
       str.push(key+&apos;:100&apos;)
     } else {
-      var perc=100.0*rcount/qcount      
-      if(0&lt;perc &amp;&amp; 100&gt;perc &amp;&amp; 0!=(perc-Math.floor(perc))) {        
+      var perc=100.0*rcount/qcount
+      if(0&lt;perc &amp;&amp; 100&gt;perc &amp;&amp; 0!=(perc-Math.floor(perc))) {
         perc=perc.toFixed(3)
       }
       str.push(key+&apos;:&apos;+perc)
-    }  
+    }
   }
 
   res=newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)
@@ -1323,7 +1323,7 @@ if(!a.isNull().and(b.isNull(),c.isNull,d.isNull(),e.isNull(),f.isNull()).value()
   str.push(&apos;filesize_coun:&apos;+(c.isNull().value()?&apos;0&apos;:c.length().value()))
   str.push(&apos;filesize_alph:&apos;+(d.isNull().value()?&apos;0&apos;:d.length().value()))
   str.push(&apos;filesize_altr:&apos;+(e.isNull().value()?&apos;0&apos;:e.length().value()))
-  str.push(&apos;filesize_reyii:&apos;+(f.isNull().value()?&apos;0&apos;:f.length().value()))    
+  str.push(&apos;filesize_reyii:&apos;+(f.isNull().value()?&apos;0&apos;:f.length().value()))
   res=newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)
 }
 res</attribute>

@@ -79,7 +79,7 @@ if($(&apos;Quality_Control.QC_F1_IH:stage_contraindicated_inhome_1&apos;).eq(0).
       &apos;clsa-inhome-f1.Participants:Admin.StageInstance.stage&apos;,
       &apos;InHome_1&apos;,
       &apos;Admin.StageInstance.duration&apos;).asSequence().last().div(60)
-  }  
+  }
 }
 if(null!==res &amp;&amp; res.isNull().not().value()) {
   var list=[&apos;AGE&apos;,&apos;ALC&apos;,&apos;ED&apos;,&apos;GEN&apos;,&apos;NUT&apos;,&apos;OWN&apos;,&apos;PA2&apos;,&apos;PCM&apos;,&apos;SDC&apos;,&apos;SMK&apos;]
@@ -96,7 +96,7 @@ if(null!==res &amp;&amp; res.isNull().not().value()) {
     str.push(m+&apos;:&apos;+ Math.round(t*1000)/1000)
   }
   str.push(&apos;module:&apos;+Math.round(u*1000)/1000)
-  res=newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)  
+  res=newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)
 }
 res</attribute>
         </attributes>
@@ -116,7 +116,7 @@ if($(&apos;Quality_Control.QC_F1_IH:stage_contraindicated_inhome_2&apos;).eq(0).
       &apos;clsa-inhome-f1.Participants:Admin.StageInstance.stage&apos;,
       &apos;InHome_2&apos;,
       &apos;Admin.StageInstance.duration&apos;).asSequence().last().div(60)
-  }  
+  }
 }
 if(null!==res &amp;&amp; res.isNull().not().value()) {
   var list=[&apos;ADL&apos;,&apos;COG&apos;,&apos;IAL&apos;,&apos;LONE&apos;,&apos;LSI&apos;,&apos;SLS&apos;,&apos;WHO&apos;]
@@ -133,7 +133,7 @@ if(null!==res &amp;&amp; res.isNull().not().value()) {
     str.push(m+&apos;:&apos;+ Math.round(t*1000)/1000)
   }
   str.push(&apos;module:&apos;+Math.round(u*1000)/1000)
-  res=newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)  
+  res=newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)
 }
 res</attribute>
         </attributes>
@@ -153,7 +153,7 @@ if($(&apos;Quality_Control.QC_F1_IH:stage_contraindicated_inhome_3&apos;).eq(0).
       &apos;clsa-inhome-f1.Participants:Admin.StageInstance.stage&apos;,
       &apos;InHome_3&apos;,
       &apos;Admin.StageInstance.duration&apos;).asSequence().last().div(60)
-  }  
+  }
 }
 if(null!==res &amp;&amp; res.isNull().not().value()) {
   var list=[&apos;CAG&apos;,&apos;CR1&apos;,&apos;CR2&apos;,&apos;FAL&apos;,&apos;INC&apos;,&apos;INJ&apos;,&apos;LBF&apos;,&apos;LFP&apos;,&apos;MEDI&apos;,&apos;RET&apos;,&apos;RPL&apos;,&apos;WLQ&apos;]
@@ -170,7 +170,7 @@ if(null!==res &amp;&amp; res.isNull().not().value()) {
     str.push(m+&apos;:&apos;+ Math.round(t*1000)/1000)
   }
   str.push(&apos;module:&apos;+Math.round(u*1000)/1000)
-  res=newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)  
+  res=newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)
 }
 res</attribute>
         </attributes>
@@ -190,7 +190,7 @@ if($(&apos;Quality_Control.QC_F1_IH:stage_contraindicated_inhome_4&apos;).eq(0).
       &apos;clsa-inhome-f1.Participants:Admin.StageInstance.stage&apos;,
       &apos;InHome_4&apos;,
       &apos;Admin.StageInstance.duration&apos;).asSequence().last().div(60)
-  }  
+  }
 }
 if(null!==res &amp;&amp; res.isNull().not().value()) {
   var list=[&apos;ACE&apos;,&apos;CEX&apos;,&apos;ENV&apos;,&apos;HCU1&apos;,&apos;INT&apos;,&apos;K10&apos;,&apos;MEM&apos;,&apos;MET&apos;,&apos;PER&apos;,&apos;PHB&apos;,&apos;SEQ&apos;,&apos;TRA&apos;,&apos;WEA&apos;]
@@ -207,7 +207,7 @@ if(null!==res &amp;&amp; res.isNull().not().value()) {
     str.push(m+&apos;:&apos;+ Math.round(t*1000)/1000)
   }
   str.push(&apos;module:&apos;+Math.round(u*1000)/1000)
-  res=newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)  
+  res=newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)
 }
 res</attribute>
         </attributes>
@@ -228,7 +228,7 @@ if($(&apos;Quality_Control.QC_F1_IH:stage_contraindicated_inhome_conclusion_ques
       &apos;Admin.StageInstance.duration&apos;).asSequence().last()
     if(v.isNull().not().value()) {
       res=newValue(&apos;{stage:&apos;+v.div(60).round(3)+&apos;}&apos;,&apos;text&apos;)
-    }      
+    }
   }
 }
 res</attribute>
@@ -245,8 +245,8 @@ res</attribute>
 if($(stage+&apos;QuestionnaireRun.version&apos;).eq(&apos;1.2&apos;).value()) {
 $(stage+&apos;QuestionnaireMetric.section&apos;).asSequence().filter(function(v,i){
   return this.indexOf(v)==i
-  }).sort().prepend(newValue(&apos;version:&apos;+$(stage+&apos;QuestionnaireRun.version&apos;).value(),&apos;text&apos;)).join(&apos;,&apos;)  
-  
+  }).sort().prepend(newValue(&apos;version:&apos;+$(stage+&apos;QuestionnaireRun.version&apos;).value(),&apos;text&apos;)).join(&apos;,&apos;)
+
 } else {
   null
 }
@@ -308,7 +308,7 @@ if($(&apos;Quality_Control.QC_F1_IH:stage_contraindicated_inhome_2&apos;).eq(0).
       &apos;clsa-inhome-f1.Participants:Admin.StageInstance.stage&apos;,
       &apos;InHome_2&apos;,
       &apos;Admin.StageInstance.duration&apos;).asSequence().last().div(60)
-  }  
+  }
 }
 if(null!==res &amp;&amp; res.isNull().not().value()) {
   var list=[&apos;COG&apos;]
@@ -325,7 +325,7 @@ if(null!==res &amp;&amp; res.isNull().not().value()) {
     str.push(m+&apos;:&apos;+ Math.round(t*1000)/1000)
   }
   str.push(&apos;module:&apos;+Math.round(u*1000)/1000)
-  res=newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)  
+  res=newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)
 }
 res</attribute>
         </attributes>

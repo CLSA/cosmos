@@ -82,7 +82,7 @@ if($(&apos;Quality_Control.QC_BL_IH:stage_contraindicated_inhome_1&apos;).eq(0).
       &apos;clsa-inhome.Participants:Admin.StageInstance.stage&apos;,
       &apos;InHome_1&apos;,
       &apos;Admin.StageInstance.duration&apos;).asSequence().last().div(60)
-  }  
+  }
 }
 if(null!==res &amp;&amp; res.isNull().not().value()) {
   var list=[&apos;ALC&apos;,&apos;ED&apos;,&apos;GEN&apos;,&apos;NUT&apos;,&apos;OWN&apos;,&apos;SDC&apos;,&apos;SMK&apos;,&apos;VET&apos;]
@@ -99,7 +99,7 @@ if(null!==res &amp;&amp; res.isNull().not().value()) {
     str.push(m+&apos;:&apos;+ Math.round(t*1000)/1000)
   }
   str.push(&apos;module:&apos;+Math.round(u*1000)/1000)
-  res=newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)  
+  res=newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)
 }
 res</attribute>
         </attributes>
@@ -119,7 +119,7 @@ if($(&apos;Quality_Control.QC_BL_IH:stage_contraindicated_inhome_2&apos;).eq(0).
       &apos;clsa-inhome.Participants:Admin.StageInstance.stage&apos;,
       &apos;InHome_2&apos;,
       &apos;Admin.StageInstance.duration&apos;).asSequence().last().div(60)
-  }  
+  }
 }
 if(null!==res  &amp;&amp; res.isNull().not().value()) {
   var list=[&apos;ADL&apos;,&apos;COG&apos;,&apos;HRG&apos;,&apos;IAL&apos;,&apos;LSI&apos;,&apos;PSD&apos;,&apos;SLE&apos;,&apos;SLS&apos;,&apos;VIS&apos;,&apos;WHO&apos;]
@@ -131,12 +131,12 @@ if(null!==res  &amp;&amp; res.isNull().not().value()) {
     var m=list[i]
     var t=duration.filter(function(v,k){
       return section.valueAt(k).value()==m
-    }).asSequence().whenNull(0).sum().div(60)    
+    }).asSequence().whenNull(0).sum().div(60)
     u+=t
     str.push(m+&apos;:&apos;+ Math.round(t*1000)/1000)
   }
   str.push(&apos;module:&apos;+Math.round(u*1000)/1000)
-  res=newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)  
+  res=newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)
 }
 res</attribute>
         </attributes>
@@ -156,7 +156,7 @@ if($(&apos;Quality_Control.QC_BL_IH:stage_contraindicated_inhome_3&apos;).eq(0).
       &apos;clsa-inhome.Participants:Admin.StageInstance.stage&apos;,
       &apos;InHome_3&apos;,
       &apos;Admin.StageInstance.duration&apos;).asSequence().last().div(60)
-  }  
+  }
 }
 if(null!==res &amp;&amp; res.isNull().not().value()) {
   var list=[&apos;ADM&apos;,&apos;CAG&apos;,&apos;CR1&apos;,&apos;CR2&apos;,&apos;FAL&apos;,&apos;INC&apos;,&apos;INJ&apos;,&apos;LBF&apos;,&apos;LFP&apos;,&apos;MEDI&apos;,&apos;RET&apos;,&apos;RPL&apos;]
@@ -173,7 +173,7 @@ if(null!==res &amp;&amp; res.isNull().not().value()) {
     str.push(m+&apos;:&apos;+ Math.round(t*1000)/1000)
   }
   str.push(&apos;module:&apos;+Math.round(u*1000)/1000)
-  res=newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)  
+  res=newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)
 }
 res</attribute>
         </attributes>
@@ -193,7 +193,7 @@ if($(&apos;Quality_Control.QC_BL_IH:stage_contraindicated_inhome_id&apos;).eq(0)
       &apos;clsa-inhome.Participants:Admin.StageInstance.stage&apos;,
       &apos;InHome_Id&apos;,
       &apos;Admin.StageInstance.duration&apos;).asSequence().last().div(60)
-  }  
+  }
 }
 if(null!==res &amp;&amp; res.isNull().not().value()) {
   var list=[&apos;AGE&apos;,&apos;SEX&apos;]
@@ -210,7 +210,7 @@ if(null!==res &amp;&amp; res.isNull().not().value()) {
     str.push(m+&apos;:&apos;+ Math.round(t*1000)/1000)
   }
   str.push(&apos;module:&apos;+Math.round(u*1000)/1000)
-  res=newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)  
+  res=newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)
 }
 res</attribute>
         </attributes>
@@ -226,7 +226,7 @@ res</attribute>
 var v=$group(
       &apos;clsa-inhome.Participants:Admin.StageInstance.stage&apos;,
       &apos;Consent&apos;,
-      &apos;Admin.StageInstance.duration&apos;).asSequence().last()      
+      &apos;Admin.StageInstance.duration&apos;).asSequence().last()
 if(v.isNull().not().value()) {
   res=newValue(&apos;{stage:&apos;+v.div(60).round(3)+&apos;}&apos;,&apos;text&apos;)
 }
@@ -254,7 +254,7 @@ if($(&apos;Quality_Control.QC_BL_IH:stage_contraindicated_inhome_conclusion_ques
       &apos;Admin.StageInstance.duration&apos;).asSequence().last()
     if(v.isNull().not().value()) {
       res=newValue(&apos;{stage:&apos;+v.div(60).round(3)+&apos;}&apos;,&apos;text&apos;)
-    }      
+    }
   }
 }
 res</attribute>
@@ -266,7 +266,7 @@ res</attribute>
 if($(stage+&apos;QuestionnaireRun.version&apos;).eq(&apos;3.5&apos;).value()) {
 $(stage+&apos;QuestionnaireMetric.section&apos;).asSequence().filter(function(v,i){
   return this.indexOf(v)==i
-  }).sort().prepend(newValue(&apos;version:&apos;+$(stage+&apos;QuestionnaireRun.version&apos;).value(),&apos;text&apos;)).join(&apos;,&apos;)  
+  }).sort().prepend(newValue(&apos;version:&apos;+$(stage+&apos;QuestionnaireRun.version&apos;).value(),&apos;text&apos;)).join(&apos;,&apos;)
 
 } else {
   null
@@ -300,11 +300,6 @@ ADM,CAG,CR1,CR2,FAL,INC,INJ,LBF,LFP,MEDI,RET,RPL
 */</attribute>
         </attributes>
       </variable>
-      <variable name="&#x9; stage_technician_inhome_cognition_recording" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
-        <attributes>
-          <attribute name="script" valueType="text">$this(&apos;stage_technician_inhome_2&apos;)</attribute>
-        </attributes>
-      </variable>
       <variable name="stage_duration_inhome_cognition_recording" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">var res=null
@@ -320,7 +315,7 @@ if($(&apos;Quality_Control.QC_BL_IH:stage_contraindicated_inhome_2&apos;).eq(0).
       &apos;clsa-inhome.Participants:Admin.StageInstance.stage&apos;,
       &apos;InHome_2&apos;,
       &apos;Admin.StageInstance.duration&apos;).asSequence().last().div(60)
-  }  
+  }
 }
 if(null!==res &amp;&amp; res.isNull().not().value()) {
   var list=[&apos;COG&apos;]
@@ -337,13 +332,18 @@ if(null!==res &amp;&amp; res.isNull().not().value()) {
     str.push(m+&apos;:&apos;+ Math.round(t*1000)/1000)
   }
   str.push(&apos;module:&apos;+Math.round(u*1000)/1000)
-  res=newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)  
+  res=newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)
 }
 res</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_technician_inhome_cognition_recording" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$this(&apos;stage_technician_inhome_2&apos;)</attribute>
         </attributes>
       </variable>
     </variables>
   </variables>
   <created valueType="datetime">2018-08-13T14:00:37.361-04</created>
-  <updated valueType="datetime">2018-10-11T15:14:54.706-04</updated>
+  <updated valueType="datetime">2018-10-14T11:11:36.943-04</updated>
 </org.obiba.magma.views.View>
