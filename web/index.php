@@ -32,6 +32,7 @@ $date_ranges = json_encode($db->get_all( $sql ));
         'scripts/carotid_intima_srTable.php',
         'scripts/carotid_intima_stillTable.php',
         'scripts/cognitive_testTable.php',
+        'scripts/cognition_recordingTable.php',
         'scripts/contraindicationsTable.php',
         'scripts/dual_hip_bone_densityTable.php',
         'scripts/deviation_aecrfTable.php',
@@ -42,6 +43,7 @@ $date_ranges = json_encode($db->get_all( $sql ));
         'scripts/fraxTable.php',
         'scripts/functional_statusTable.php',
         'scripts/general_healthTable.php',
+        'scripts/inhome_cognition_recordingTable.php',
         'scripts/lateral_bone_densityTable.php',
         'scripts/osipvTable.php',
         'scripts/quality_assurance_inhomeTable.php',
@@ -255,6 +257,7 @@ $date_ranges = json_encode($db->get_all( $sql ));
             <option value="scripts/blood_pressureTable.php">Blood Pressure</option>
             <option value="scripts/body_composition_weightTable.php">Body Composition Weight</option>
             <option value="scripts/chair_riseTable.php">Chair Rise</option>
+            <option value="scripts/cognition_recordingTable.php">Cognition Recording</option>
             <option value="scripts/cognitive_testTable.php">Cognitive Test</option>
             <option value="scripts/conclusion_questionnaireTable.php">Conclusion Qnaire</option>
             <option value="scripts/contraindicationsTable.php">ContraIndications Qnaire</option>
@@ -284,6 +287,7 @@ $date_ranges = json_encode($db->get_all( $sql ));
             <option value="scripts/inhome_2Table.php">Inhome 2 Qnaire</option>
             <option value="scripts/inhome_3Table.php">Inhome 3 Qnaire</option>
             <option value="scripts/inhome_4Table.php">Inhome 4 Qnaire</option>
+            <option value="scripts/inhome_cognition_recordingTable.php">InHome Cognition Recording</option>
             <option value="scripts/oseaTable.php">OSEA Qnaire</option>
             <option value="scripts/osipvTable.php">OSIPV Qnaire</option>
             <option value="scripts/osonlyTable.php">OSOnly Qnaire</option>
@@ -321,6 +325,7 @@ $date_ranges = json_encode($db->get_all( $sql ));
             <option value="scripts/blood_pressureDuration.php">Blood Pressure</option>
             <option value="scripts/body_composition_weightDuration.php">Body Composition Weight</option>
             <option value="scripts/chair_riseDuration.php">Chair Rise</option>
+            <option value="scripts/cognition_recordingDuration.php">Cognition Recording</option>
             <option value="scripts/cognitive_testDuration.php">Cognitive Test</option>
             <option value="scripts/conclusion_questionnaireDuration.php">Conclusion Qnaire</option>
             <option value="scripts/contraindicationsDuration.php">ContraIndications Qnaire</option>
@@ -347,6 +352,7 @@ $date_ranges = json_encode($db->get_all( $sql ));
             <option value="scripts/inhome_2Duration.php">InHome 2 Qnaire</option>
             <option value="scripts/inhome_3Duration.php">InHome 3 Qnaire</option>
             <option value="scripts/inhome_4Duration.php">InHome 4 Qnaire</option>
+            <option value="scripts/inhome_cognition_recordingDuration.php">InHome Cognition Recording</option>
             <option value="scripts/neuropsychological_batteryDuration.php">Neuropsychological Battery</option>
             <option value="scripts/oseaDuration.php">OSEA Qnaire</option>
             <option value="scripts/osipvDuration.php">OSIPV Qnaire</option>
