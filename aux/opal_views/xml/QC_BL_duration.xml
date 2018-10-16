@@ -1123,7 +1123,11 @@ if(null!==res &amp;&amp; res.isNull().not().value()) {
 res</attribute>
         </attributes>
       </variable>
-      <variable name="stage_technician_blood" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0"/>
+      <variable name="stage_technician_blood" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;Quality_Control.QC_BL:stage_technician_blood&apos;)</attribute>
+        </attributes>
+      </variable>
       <variable name="group_duration_ecg" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0" repeatable="true" occurrenceGroup="">
         <attributes>
           <attribute name="script" valueType="text">var res=null
@@ -1372,5 +1376,5 @@ res</attribute>
     </variables>
   </variables>
   <created valueType="datetime">2018-06-18T09:52:50.447-04</created>
-  <updated valueType="datetime">2018-10-14T00:30:35.669-04</updated>
+  <updated valueType="datetime">2018-10-16T11:45:26.994-04</updated>
 </org.obiba.magma.views.View>

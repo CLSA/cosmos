@@ -1187,10 +1187,9 @@ res</attribute>
       </variable>
       <variable name="stage_contraindicated_neuropsychological_battery" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">$(&apos;clsa-dcs-f1.Participants:DCS_PHONE&apos;).isNull().and(
-  $group(&apos;clsa-dcs-f1.Participants:Admin.StageInstance.stage&apos;,&apos;NeuropsychologicalBattery&apos;,
-&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;)).value()
-? 1 : null</attribute>
+          <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f1.Participants:Admin.StageInstance.stage&apos;,&apos;NeuropsychologicalBattery&apos;,
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value()
+? 1 : 0</attribute>
         </attributes>
       </variable>
       <variable name="stage_skip_neuropsychological_battery" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
@@ -4353,5 +4352,5 @@ res</attribute>
     </variables>
   </variables>
   <created valueType="datetime">2018-05-03T13:40:11.946-04</created>
-  <updated valueType="datetime">2018-10-12T14:16:14.408-04</updated>
+  <updated valueType="datetime">2018-10-16T12:03:51.370-04</updated>
 </org.obiba.magma.views.View>
