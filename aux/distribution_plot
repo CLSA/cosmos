@@ -1,0 +1,525 @@
+#!/usr/bin/php
+<?php
+require_once '../settings.ini.php';
+require_once $SETTINGS['path']['PHP_UTIL'].'/database.class.php';
+require_once $SETTINGS['path']['PHP_UTIL'].'/util.class.php';
+require_once $SETTINGS['path']['PHP_UTIL'].'/phplot-6.2.0/phplot.php';
+
+define( 'MIN_RANK', 1 );
+define( 'MAX_RANK', 3 );
+
+$ttf_path = $SETTINGS['path']['PHP_UTIL'].'/fonts/msttcorefonts';
+
+function fmt_label($value,$arg,$row)
+{
+  return sprintf('%s (%s)',$arg[$row][0],$arg[$row][1]);
+}
+
+
+function plot_histogram($title, $plotdata, $plotpoints, $filename, $xtitle)
+{
+    global $ttf_path;
+
+    $plot = new PHPlot(800, 600);
+    //$plot->SetTTFPath($ttf_path);
+    //$plot->SetFontTTF('y_label','Arial_Bold.ttf',10);
+    $plot->SetImageBorderType('plain');
+    $plot->SetOutputFile($filename);
+    $plot->SetPrintImage(0);
+    $plot->SetIsInline(true);
+    $plot->SetDataColors('navy');
+
+    $plot->SetPlotType('lines');
+    $plot->SetDataType('data-data');
+    $plot->SetDataValues($plotdata);
+    $plot->SetTitle($title);
+    $plot->SetXTitle($xtitle);
+    $plot->SetYTitle('Frequency');
+    $plot->SetXLabelType('data');
+    $plot->SetNumXTicks(10);
+    $plot->SetXTickLabelPos('plotdown');
+    $plot->SetYLabelType('data');
+    $plot->SetPrecisionY(0);
+    $plot->SetDrawXGrid(true);
+    $plot->SetDrawYGrid(true);
+    $plot->DrawGraph();
+
+    $plot->SetXTickLabelPos('none');
+    $plot->SetXTickPos('none');
+    $plot->SetDrawXGrid(false);
+    $plot->SetDrawYGrid(false);
+    $plot->SetTitle('');
+    $plot->SetYTitle('');
+    $plot->SetXTitle('');
+    $plot->SetPlotType('points');
+    $plot->SetDataType('data-data');
+    $plot->SetDataValues($plotpoints);
+    $plot->SetYDataLabelPos('plotin');
+    $plot->SetYDataLabelType('custom','fmt_label',$plotpoints);
+    $plot->SetDataColors('red');
+    $plot->DrawGraph();
+
+    $plot->PrintImage();
+}
+
+function get_stage_from_type( $_file_type )
+{
+  // short form names to stage table names lookup
+  //
+  $type_list= array(
+    'cine'=>'carotid_intima',
+    'still'=>'carotid_intima',
+    'sr'=>'carotid_intima',
+    'ecg'=>'ecg',
+    'retinal'=>'retinal_scan',
+    'hip'=>'dual_hip_bone_density',
+    'wbody'=>'whole_body_bone_density',
+    'arm'=>'forearm_bone_density',
+    'lateral'=>'lateral_bone_density',
+    'spine'=>'spine_bone_density',
+    'cog'=>'cognitive_test',
+    'dot'=>'cognition_recording',
+    'wor'=>'cognition_recording',
+    'col'=>'cognition_recording',
+    'fas'=>'cognition_recording',
+    'reyi'=>'inhome_cognition_recording',
+    'reyii'=>'inhome_cognition_recording',
+    'anml'=>'inhome_cognition_recording',
+    'coun'=>'inhome_cognition_recording',
+    'alph'=>'inhome_cognition_recording',
+    'altr'=>'inhome_cognition_recording'
+  );
+  if(!array_key_exists($_file_type,$type_list))
+  {
+    util::out('ERROR: failed to find type '. $_file_type);
+    die();
+  }
+  $stage = $type_list[$_file_type];
+  return $stage;
+}
+
+function get_index_from_type( $_file_type )
+{
+  $type_list=array(
+    'cine'=>array(
+        1=>array(3,4,5,8,9,10),2=>array(1,6),3=>array(1,6)),
+    'sr'=>array(
+        1=>array(2,7),2=>array(2,7),3=>array(2,7)),
+    'still'=>array(
+        1=>array(1,6),2=>array(3,4,5,8,9,10),3=>array(3,4,5,8,9,10)),
+    'lateral'=>array(
+        1=>array(1),2=>array(1),3=>array(1)),
+    'arm'=>array(
+        1=>array(1),2=>array(1),3=>array(1)),
+    'hip'=>array(
+        1=>array(1,2),2=>array(1,2),3=>array(1,2)),
+    'spine'=>array(
+        1=>null,2=>array(1),3=>array(1)),
+    'wbody'=>array(
+        1=>array(1),2=>array(1),3=>array(1)),
+    'retinal'=>array(
+        1=>array(1,2),2=>array(1),3=>array(1)),
+    'ecg'=>array(
+        1=>array(1),2=>array(1),3=>array(1)),
+    'cog'=>array(
+        1=>array(1),2=>array(1),3=>array(1)),
+    'dot'=>array(
+      1=>array(1),2=>array(1),3=>array(1)),
+    'wor'=>array(
+      1=>array(2),2=>array(2),3=>array(2)),
+    'col'=>array(
+      1=>array(3),2=>array(3),3=>array(3)),
+    'fas'=>array(
+      1=>array(4,5,6),2=>array(4,5,6),3=>array(4,5,6)),
+    'reyi'=>array(
+      1=>array(1),2=>array(1),3=>array(1)),
+    'reyii'=>array(
+      1=>array(6),2=>array(6),3=>array(6)),
+    'anml'=>array(
+      1=>array(2),2=>array(2),3=>array(2)),
+    'coun'=>array(
+      1=>array(3),2=>array(3),3=>array(3)),
+    'alph'=>array(
+      1=>array(4),2=>array(4),3=>array(4)),
+    'altr'=>array(
+      1=>array(5),2=>array(5),3=>array(5)),
+  );
+  if(!array_key_exists($_file_type,$type_list))
+  {
+    util::out('ERROR: failed to find type '. $_file_type);
+    die();
+  }
+  $index = $type_list[$_file_type];
+  return $index;
+}
+
+function get_bin_size_from_type( $_file_type )
+{
+  $bin=1000;
+  $type_list=array(
+    'cine'=>50000,
+    'sr'=>10,
+    'still'=>100,
+    'ecg'=>100,
+    'arm'=>100,
+  );
+  if(array_key_exists($_file_type,$type_list))
+  {
+    $bin=$type_list[$_file_type];
+  }
+  return $bin;
+}
+
+function get_scale_factor( $_min )
+{
+  $fac = array(1.0,1024.0,1048576.0,1073741824.0);
+  // get min len where val > 0
+  $minlen=10000000000;
+  $minscale=1.0;
+  foreach($fac as $scale)
+  {
+     $val = floor($_min / $scale);
+     $len = strlen( (string)$val );
+     $x = ceil(log10($_min/$scale));
+
+     util::out(sprintf('%s %s %s %s %s',$_min, $scale, $val, $len, $x));
+     //if($len<$minlen && 0<$val)
+     if($val>0 && $x>1)
+     {
+       //$minlen=$len;
+       $minlen=$x;
+       $minscale=$scale;
+     }
+  }
+  return $minscale;
+}
+
+$rank = 1; // set default
+$type = 'still';
+$user_bin=null;
+if( 3 == $argc )
+{
+  $rank = $argv[1];
+  $type = $argv[2];
+}
+else if( 4 == $argc )
+{
+  $rank = $argv[1];
+  $type = $argv[2];
+  $user_bin = $argv[3];  
+}
+else
+{
+  util::out(
+    'usage: distribution_plot rank [1,2,3,0]\n'.
+    'type [cine,still,sr,ecg,retinal,hip,wbody,arm,lateral,spine,cog,dot,wor,col,fas,reyi,reyii,anml,coun,alph,altr] <bin_size>' );
+  die();
+}
+
+$no_rank=false;
+if($rank < MIN_RANK || $rank > MAX_RANK )
+{
+  util::out('ignoring rank: all ranks will be used');
+  $no_rank=true;
+}
+
+$db = new database(
+  $SETTINGS['db']['DB_SERV'],
+  $SETTINGS['db']['DB_USER'],
+  $SETTINGS['db']['DB_PASS'],
+  $SETTINGS['db']['DB_NAME'] );
+/*
+$after_date = null;
+$before_date = null;
+$active_ranks = array(1,2,3);
+
+if(in_array($rank,$active_ranks))
+{
+    $sql = sprintf(
+      'select '.
+      'min(start_date) as min_date, '.
+      'max(start_date) as max_date, '.
+      'rank '.
+      'from interview '.
+      'where rank=%d', $rank);
+
+    $res = $db->get_all( $sql );
+    if( array_key_exists('min_date',$res) &&
+        array_key_exists('max_date',$res))
+    {
+      $a_date = DateTime::createFromFormat('Y-m-d', $res['min_date']);
+      $b_date = DateTime::createFromFormat('Y-m-d', $res['max_date']);
+
+      // ensure dates make sense
+      $input_a_date = DateTime::createFromFormat('Y-m-d', $after_date);
+      $input_b_date = DateTime::createFromFormat('Y-m-d', $before_date);
+
+      if($input_a_date < $a_date)
+        $after_date = $a_date->format('Y-m-d');
+      if($input_b_date > $b_date)
+        $before_date = $b_date->format('Y-m-d');
+    }
+}
+
+util::out( sprintf('rank %d, range: %s => %s', $rank, $after_date, $before_date));
+*/
+
+$stage = get_stage_from_type($type);
+$index_list = get_index_from_type($type);
+if(false == $no_rank && null==$index_list[$rank])
+{
+  util::out(sprintf('data does not exist for type %s for rank %d',$type,$rank));
+  die();
+}
+
+$union_sql=array();
+$rank_list=null;
+if($no_rank)
+{
+  $rank_list=range(MIN_RANK,MAX_RANK);
+}
+else
+{
+  $rank_list=array($rank);
+}
+
+foreach($rank_list as $rank_item)
+{
+  foreach($index_list[$rank_item] as $item)
+  {
+    $union_sql[]=sprintf(
+      ' ( '.
+      '  select cast(trim("}" from substring_index(substring_index(qcdata,",",%d),":",-1)) as unsigned) as filesize, '.
+      '  start_date, '.
+      '  concat(ifnull(t.name,"NA"),"(",site.name,")") as tech, '.
+      '  site.name as site, '.
+      '  s.id as stage_id '.
+      '  from interview i'.
+      '  join stage s on i.id=s.interview_id'.
+      '  join site on site.id=i.site_id '.
+      '  left join technician t on t.id=s.technician_id and t.site_id=site.id '.
+      '  where rank=%d '.
+      '  and qcdata is not null '.
+      '  and s.name like "%s%%" '.
+      ' ) ', $item, $rank_item, $stage );
+  }
+}
+
+$sql = 'create temporary table tmp as select ';
+if(1<count($union_sql))
+{
+  $sql = $sql .
+    ' filesize, start_date, tech, site, stage_id from ( '.
+    implode(' union all ', $union_sql ) .
+    ') as t where filesize > 0 order by start_date, stage_id';
+}
+else
+{
+  $sql = $sql .
+    ' filesize, start_date, tech, site, stage_id from ( '.
+    $union_sql[0] .
+    ') as t where filesize > 0 order by start_date, stage_id';
+}
+
+util::out($sql);
+
+$db->execute($sql);
+
+$sql =
+  'select min(filesize) as fmin, max(filesize) as fmax, stddev(filesize) as fstd, avg(filesize) as fave '.
+  'from tmp';
+
+$res = $db->get_row($sql);
+
+$fmin = $res['fmin'];
+$fmax = $res['fmax'];
+$fave = $res['fave'];
+$fstd = $res['fstd'];
+
+$sql =
+  'select filesize, count(filesize) as freq '.
+  'from tmp '.
+  'group by filesize '.
+  'order by freq desc '.
+  'limit 1';
+
+$res = $db->get_row($sql);
+$mode = $res['filesize'];
+
+$scale = get_scale_factor( $fmin );
+
+$fsmin = floor($fmin/$scale);
+$fsmax = ceil($fmax/$scale);
+
+$bin=1;
+if(null == $user_bin)
+{
+  $bin=ceil(log10($fsmax-$fsmin));
+}
+else
+{
+  $bin = $user_bin;
+}
+
+$bmin=max(0,$bin*floor($fsmin/$bin)-$bin);
+$bmax=$bin*(floor($fsmax/$bin)+1);
+$bin_range=range($bmin,$bmax,$bin);
+$bin_count=count($bin_range);
+
+// if the range in scaled file sizes is < 1000
+
+util::out(sprintf('file ave std: %s %s',$fave, $fstd));
+util::out('scale factor: ' . $scale);
+util::out(sprintf('filesize [min max range]: [%d %d %d]',$fmin,$fmax, $fmax-$fmin));
+util::out(sprintf('scaled   [min max range]: [%d %d %d]',$fsmin,$fsmax, $fsmax-$fsmin));
+util::out(sprintf('bin size [range]: %d [%d %d]',$bin,$bmin,$bmax));
+
+$set=range(-3,3);
+$std=array();
+foreach($set as $num)
+{
+  $std[]=$bin*floor((($fave+$num*$fstd)/$scale)/$bin);
+}
+
+util::out('std deviations: '. implode(',',$std));
+
+$histo = array_combine($bin_range,array_fill(0,count($bin_range),0));
+
+util::out('number of bins: ' . count($bin_range));
+/*
+$res = $db->get_all('select distinct tech from tmp order by tech');
+$tech_keys=array();
+foreach($res as $value) $tech_keys[$value['tech']]=array();
+
+$res = $db->get_all('select distinct site from tmp order by site');
+$site_keys=array();
+foreach($res as $value) $site_keys[$value['site']]=array();
+
+$res = $db->get_all('select distinct start_date from tmp order by start_date');
+$date_keys=array();
+foreach($res as $value) $date_keys[]=$value['start_date'];
+*/
+$data = $db->get_all('select * from tmp order by start_date');
+
+$db->execute('drop table tmp');
+
+foreach($data as $items)
+{
+  $fsz = $items['filesize']/$scale;
+  $curr=$bin*floor($fsz/$bin);
+
+  if(in_array($curr,$bin_range))
+    $histo[$curr]++;
+  /*
+  $date=$items['start_date'];
+  $tech=$items['tech'];
+  $site=$items['site'];
+
+  if(!array_key_exists($date, $site_keys[$site]))
+  {
+    $site_keys[$site][$date]=array();
+  }
+  if(!array_key_exists($date, $tech_keys[$tech]))
+  {
+    $tech_keys[$tech][$date]=array();
+  }
+  $site_keys[$site][$date][]=$fsz;
+  $tech_keys[$tech][$date][]=$fsz;
+  */
+}
+
+$freqmax = max(array_values($histo));
+$modebin=array_search($freqmax,$histo);
+
+$mode=intval(round($mode/$scale));
+util::out(sprintf('mode: %s, histo max freq: %s , mode bin: %s', $mode, $freqmax, $modebin));
+
+$plotdata=array();
+$plotpoints=array();
+$label_list = array();
+foreach($histo as $filesize_bin=>$frequency)
+{
+  $plotdata[]=array('',$filesize_bin,$frequency);
+  if(in_array($filesize_bin,$std))
+  {
+    $index=array_search($filesize_bin,$std);
+    $height = $index%2 == 0 ? $freqmax : 0.975*$freqmax;
+    $label=($index<3?((-3+$index).'SD'):($index>3?('+'.(-3+$index).'SD'):'AVG'));
+    if(!in_array($label,$label_list))
+    {
+      $plotpoints[]=array($label,$filesize_bin,$height);
+      $label_list[]=$label;
+    }
+  }
+  else if($filesize_bin==$modebin)
+  {
+    $label='MOD';
+    if(!in_array($label,$label_list))
+    {
+      $plotpoints[]=array($label,$mode,1.025*$freqmax);
+      $label_list[]=$label;
+    }
+  }
+}
+
+/*
+foreach($site_keys as $site=>$date_data)
+{
+  foreach($date_data as $date=>$sizes)
+    $site_keys[$site][$date]=intval(round(array_sum($sizes)/count($sizes)));
+}
+foreach($tech_keys as $tech=>$date_data)
+{
+  foreach($date_data as $date=>$sizes)
+    $tech_keys[$tech][$date]=intval(round(array_sum($sizes)/count($sizes)));
+}
+*/
+
+$filename = sprintf('histogram_%s_%s.csv', ($no_rank ? 'ALL' : $rank), $type);
+util::out('writing to ' . $filename);
+$file = fopen($filename,'w');
+
+$header = sprintf('"filesize","frequency"') . PHP_EOL;
+fwrite($file,$header);
+foreach($histo as $bin=>$value)
+{
+  fwrite($file, sprintf('"%d","%d"',$bin,$value) . PHP_EOL);
+}
+fclose($file);
+
+$filename = str_replace('.csv','.jpg',$filename);
+$title= sprintf( '%s %s distribution', $type, $rank);
+$xtitle='Scale (' . (1.0==$scale?'bytes':(1024.0==$scale?'Kb':'Mb')).')';
+plot_histogram($title, $plotdata, $plotpoints, $filename, $xtitle);
+
+/*
+util::out(sprintf('number of dates in rank: %d', count($date_keys)));
+
+$filename = sprintf('history_%d_%s.csv', $rank, $type);
+$file = fopen($filename,'w');
+
+$header = '"item","' . implode('","',$date_keys) . '"' . PHP_EOL;
+fwrite($file,$header);
+
+foreach($site_keys as $site=>$date_data)
+{
+  $output=array_combine($date_keys,array_fill(0,count($date_keys),''));
+  foreach($date_data as $date=>$value)
+  {
+    $output[$date]=$value;
+  }
+  fwrite($file, sprintf('"%s","%s"',$site,implode('","',array_values($output))) . PHP_EOL);
+}
+
+foreach($tech_keys as $tech=>$date_data)
+{
+  $output=array_combine($date_keys,array_fill(0,count($date_keys),''));
+  foreach($date_data as $date=>$value)
+  {
+    $output[$date]=$value;
+  }
+  fwrite($file, sprintf('"%s","%s"',$tech,implode('","',array_values($output))) . PHP_EOL);
+}
+
+fclose($file);
+*/

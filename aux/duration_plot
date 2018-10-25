@@ -1,0 +1,911 @@
+#!/usr/bin/php
+<?php
+require_once '../settings.ini.php';
+require_once $SETTINGS['path']['PHP_UTIL'].'/database.class.php';
+require_once $SETTINGS['path']['PHP_UTIL'].'/util.class.php';
+require_once $SETTINGS['path']['PHP_UTIL'].'/phplot-6.2.0/phplot.php';
+
+define( 'MIN_RANK', 1 );
+define( 'MAX_RANK', 3 );
+
+function fmt_label($value,$arg,$row)
+{
+  return sprintf('%s (%s)',$arg[$row][0],$arg[$row][1]);
+}
+
+function pick_color($img, $arg, $row, $col = null)
+{
+  $d = intval($arg[$row][2]) % 2;
+  if(0 == $d) return 0;
+  return 1;
+}
+
+function plot_histogram($filename,$title,$xtitle,$plotdata, $plotpoints,$plotareas=null)
+{
+    //global $ttf_path;
+    $plot = new PHPlot(800, 600);
+    //$plot->SetTTFPath($ttf_path);
+    //$plot->SetFontTTF('y_label','Arial_Bold.ttf',10);
+    $plot->SetImageBorderType('plain');
+    $plot->SetOutputFile($filename);
+    $plot->SetPrintImage(0);
+    $plot->SetIsInline(true);
+
+    $plot->SetTitle($title);
+    $plot->SetYTitle('Frequency');
+    $plot->SetXTitle($xtitle);
+    $plot->SetDrawXGrid(true);
+    $plot->SetDrawYGrid(true);
+/*
+    $plot->SetPlotType('squaredarea');
+    $plot->SetDataType('data-data');
+    $plot->SetDataValues($plotareas);
+    $plot->DrawGraph();  
+*/
+
+    $plot->SetDataColors('navy');
+    $plot->SetPlotType('lines');
+    $plot->SetDataType('data-data');
+    $plot->SetDataValues($plotdata);
+    
+    $plot->SetXLabelType('data');
+    $plot->SetNumXTicks(10);
+    $plot->SetXTickLabelPos('plotdown');
+    $plot->SetPrecisionX(0);
+    $plot->SetYLabelType('data');
+    $plot->SetPrecisionY(0);
+    $plot->DrawGraph();
+
+    if(null!=$plotareas)
+    {
+    $plot->SetPlotType('squaredarea');
+    $plot->SetDataType('data-data');
+    $plot->SetDataValues($plotareas);
+    $num_col = count($plotareas);
+    $colors=array();
+    for($i=0;$i<$num_col;$i++)
+    {
+      if($i%2==0)$colors[]='yellow';
+      else $colors[]='green';
+    }
+ 
+    $plot->SetDataColors(
+      $colors );
+    $plot->DrawGraph();
+    var_dump($plotareas);
+
+    $plot->SetDataColors('navy');
+    $plot->SetPlotType('lines');
+    $plot->SetDataType('data-data');
+    $plot->SetDataValues($plotdata);
+    $plot->DrawGraph();
+    }
+
+    $plot->SetXTickLabelPos('none');
+    $plot->SetXTickPos('none');
+    $plot->SetDrawXGrid(false);
+    $plot->SetDrawYGrid(false);
+    $plot->SetTitle('');
+    $plot->SetYTitle('');
+    $plot->SetXTitle('');
+    $plot->SetPlotType('points');
+    $plot->SetDataType('data-data');
+    $plot->SetDataValues($plotpoints);
+    $plot->SetYDataLabelPos('plotin');
+    $plot->SetYDataLabelType('custom','fmt_label',$plotpoints);
+    $plot->SetDataColors('red');
+    $plot->DrawGraph();
+
+    $plot->PrintImage();
+}
+
+
+// stages with module times
+/*
+| blood                      |    1,2,3 |
+| body_composition_weight    |    2 |
+| contraindications          |    1,2,3 |
+| deviation_aecrf            |    2,3 |
+| disease_symptoms           |    1,2,3 |
+| event_pmt                  |    1,2,3 |
+| functional_status          |    1,2 |
+| general_health             |    2,3 |
+| inhome_id                  |    1 |
+| inhome_1                   |    1,2,3 |
+| inhome_2                   |    1,2,3 |
+| inhome_3                   |    1,2,3 |
+| inhome_4                   |    2,3 |
+| neuropsychological_battery |    1 |
+| osea                       |    2 |
+| osipv                      |    3 |
+| osonly                     |    2 |
+| quality_assurance_inhome   |    2,3 |
+| social_network             |    3 |
+| stroop_fas                 |    3 |
+| time_based_pmt             |    1,2,3 |
+| urine                      |    1,2,3 |
+*/
+
+// stages with no modules
+/*
+| blood_pressure                     |    1,2,3 |
+| bone_density_questionnaire         |    1,2,3 |
+| carotid_intima                     |    1,2,3 |
+| chair_rise                         |    1,2,3 |
+| cognitive_test                     |    1,2,3 |
+| conclusion_questionnaire           |    1,2,3 |
+| consent                            |    1,2 |
+| dual_hip_bone_density              |    1,2,3 |
+| ecg                                |    1,2,3 |
+| forearm_bone_density               |    1,2,3 |
+| four_metre_walk                    |    1,2,3 |
+| frax                               |    2,3 |
+| grip_strength                      |    1,2,3 |
+| hearing                            |    1,2,3 |
+| hearing_questionnaire              |    1,2,3 |
+| height_weight                      |    2 |
+| hips_waist                         |    1,2,3 |
+| lateral_bone_density               |    1,2,3 |
+| neuropsychological_battery_scoring |    1,2,3 |
+| retinal_scan                       |    1 |
+| retinal_scan_left                  |    2,3 |
+| retinal_scan_right                 |    2,3 |
+| sitting_height                     |    1,3 |
+| spine_bone_density                 |    2,3 |
+| spirometry                         |    1,2,3 |
+| standing_balance                   |    1,2,3 |
+| standing_height                    |    1,2,3 |
+| tonometer                          |    1,2,3 |
+| tug                                |    1,2,3 |
+| vision_acuity                      |    1,2,3 |
+| weight                             |    1,2,3 |
+| whole_body_bone_density            |    1,2,3 |
+*/
+$module_list=array(
+'blood',
+'body_composition_weight',
+'contraindications',
+'deviation_aecrf',
+'disease_symptoms',
+'event_pmt',
+'functional_status',
+'general_health',
+'inhome_id',
+'inhome_1',
+'inhome_2',
+'inhome_3',
+'inhome_4',
+'neuropsychological_battery',
+'osea',
+'osipv',
+'osonly',
+'quality_assurance_inhome',
+'social_network',
+'stroop_fas',
+'time_based_pmt',
+'urine');
+
+function get_stage_index_from_type( $_type )
+{
+  $index = array(1,1,1);
+  switch($_type)
+  {
+    case 'body_composition_weight':
+      $index=array(null,1,null);
+      break;
+    case 'consent':
+      $index = array(1,1,null);
+      break;
+    case 'deviation_aecrf':
+      $index = array(null,1,1);
+      break;
+    case 'frax':
+      $index = array(null,1,1);
+      break;
+    case 'height_weight':
+      $index = array(null,1,null);
+      break;
+    case 'inhome_id':
+      $index = array(1,null,null);
+      break;
+    case 'inhome_4':
+      $index = array(null,1,1);
+      break;
+    case 'neuropsychological_battery':
+      $index = array(1,null,null);
+      break;
+    case 'osea':
+      $index = array(null,1,null);
+      break;
+    case 'osonly':
+      $index = array(null,1,null);
+      break;
+    case 'osipv':
+      $index = array(null,null,1);
+      break;
+    case 'quality_assurance_inhome':
+      $index = array(null,1,1);
+      break;
+    case 'social_network':
+      $index = array(null,null,1);
+      break;
+    case 'stroop_fas':
+      $index = array(null,null,1);
+      break;
+    case 'retinal_scan':
+      $index=array(1,null,null);
+      break;
+    case 'retinal_scan_left':
+      $index=array(null,1,1);
+      break;
+    case 'retinal_scan_right':
+      $index=array(null,1,1);
+      break;
+    case 'spine_bone_density':
+      $index=array(null,1,1);
+      break;
+    case 'sitting_height':
+      $index=array(1,null,1);
+      break;
+    default:
+      break;
+  }
+  return $index;
+}
+
+function get_cutoff_from_type( $_type )
+{
+  $cut=3600;
+  switch($_type)
+  {
+    case 'blood':
+      $cut=3600;
+      break;
+    case 'blood_pressure':
+      $cut=1800;
+      break;
+    case 'body_composition_weight':
+      $cut=600;
+      break;
+    case 'bone_density_questionnaire':
+      $cut=3600;
+      break;
+    case 'contraindications':
+      $cut=1800;
+      break;
+    case 'carotid_intima':
+      $cut=3600;
+      break;
+    case 'chair_rise':
+      $cut=900;
+      break;
+    case 'cognitive_test':
+      $cut=900;
+      break;
+    case 'conclusion_questionnaire':
+      $cut=1800;
+      break;
+    case 'consent':
+      $cut=1800;
+      break;
+    case 'deviation_aecrf':
+      $cut=1800;
+      break;
+    case 'disease_symptoms':
+      $cut=3600;
+      break;
+    case 'dual_hip_bone_density':
+      $cut=1800;
+      break;
+    case 'ecg':
+      $cut=3600;
+      break;
+    case 'event_pmt':
+      $cut=3600;
+      break;
+    case 'forearm_bone_density':
+      $cut=1800;
+      break;
+    case 'four_metre_walk':
+      $cut=900;
+      break;
+    case 'frax':
+      $cut=300;
+      break;
+    case 'functional_status':
+      $cut=1200;
+      break;
+    case 'general_health':
+      $cut=1800;
+      break;
+    case 'grip_strength':
+      $cut=900;
+      break;
+    case 'hearing':
+      $cut=1800;
+      break;
+    case 'hearing_questionnaire':
+      $cut=300;
+      break;
+    case 'height_weight':
+      $cut=1200;
+      break;
+    case 'hips_waist':
+      $cut=1200;
+      break;
+    case 'inhome_id':
+      $cut=300;
+      break;
+    case 'inhome_1':
+      $cut=6000;
+      break;
+    case 'inhome_2':
+      $cut=6000;
+      break;
+    case 'inhome_3':
+      $cut=6000;
+      break;
+    case 'inhome_4':
+      $cut=6000;
+      break;
+    case 'lateral_bone_density':
+      $cut=1800;
+      break;
+    case 'neuropsychological_battery':
+      $cut=3600;
+      break;
+    case 'neuropsychological_battery_scoring':
+      $cut=10800;
+      break;
+    case 'osea':
+      $cut=1800;
+      break;
+    case 'osonly':
+      $cut=1800;
+      break;
+    case 'osipv':
+      $cut=1800;
+      break;
+    case 'quality_assurance_inhome':
+      $cut=1200;
+      break;
+    case 'retinal_scan':
+      $cut=1800;
+      break;
+    case 'retinal_scan_left':
+      $cut=1800;
+      break;
+    case 'retinal_scan_right':
+      $cut=1800;
+      break;
+    case 'sitting_height':
+      $cut=1200;
+      break;
+    case 'spine_bone_density':
+      $cut=1800;
+      break;
+    case 'social_network':
+      $cut=1800;
+      break;
+    case 'spirometry':
+      $cut=3600;
+      break;
+    case 'standing_balance':
+      $cut=1200;
+      break;
+    case 'standing_height':
+      $cut=1200;
+      break;
+    case 'stroop_fas':
+      $cut=1200;
+      break;
+    case 'time_based_pmt':
+      $cut=1800;
+      break;
+    case 'tonometer':
+      $cut=1800;
+      break;
+    case 'tug':
+      $cut=600;
+      break;
+    case 'urine':
+      $cut=1800;
+      break;
+    case 'vision_acuity':
+      $cut=1800;
+      break;
+    case 'whole_body_bone_density':
+      $cut=1800;
+      break;
+    case 'weight':
+      $cut=600;
+      break;
+    default:
+      break;
+  }
+  return $cut;
+}
+
+function get_bin_size_from_type( $_type )
+{
+  $bin=10;
+  switch($_type)
+  {
+    case 'frax':
+      $bin=1;
+      break;
+    case 'hearing_questionnaire':
+      $bin=1;
+      break;
+    case 'inhome_id':
+      $bin=1;
+      break;
+    case 'inhome_1':
+      $bin=5;
+      break;
+    case 'inhome_2':
+      $bin=5;
+      break;
+    case 'inhome_3':
+      $bin=5;
+      break;
+    case 'inhome_4':
+      $bin=5;
+      break;
+    case 'tug':
+      $bin=5;
+      break;
+    case 'weight':
+      $bin=5;
+      break;
+    default:
+      break;
+  }
+  return $bin;
+}
+
+
+$rank = 1; // set default
+$type = 'tug';
+$user_bin = null;
+if( 3 == $argc )
+{
+  $rank = $argv[1];
+  $type = $argv[2];
+}
+else if( 4 == $argc )
+{
+  $rank = $argv[1];
+  $type = $argv[2];
+  $user_bin = $argv[3];
+}
+
+
+if($rank < MIN_RANK || $rank > MAX_RANK )
+{
+  util::out('invalid rank');
+  die();
+}
+
+$db = new database(
+  $SETTINGS['db']['DB_SERV'],
+  $SETTINGS['db']['DB_USER'],
+  $SETTINGS['db']['DB_PASS'],
+  $SETTINGS['db']['DB_NAME'] );
+
+
+$index_list = get_stage_index_from_type($type);
+if(null==$index_list[$rank-1])
+{
+  util::out(sprintf('data does not exist for type %s for rank %d',$type,$rank));
+  die();
+}
+
+// convert to seconds
+  $sql =
+    'create temporary table tmp as '.
+    'select '.
+    'cast( '.
+    '  cast( '.
+    '    substring_index( '.
+    '      substring_index(duration,",",1),":",-1) as decimal(15,3))*60 as unsigned) as duration, ';
+
+  if(in_array($type,$module_list))
+  {
+    $sql .=
+    'cast( '.
+    '  cast(trim("}" from substring_index(duration,":",-1)) as decimal(15,3))*60 as unsigned) as module, ';
+  }
+
+  $sql .= sprintf(
+    'start_date, '.
+    'concat(ifnull(t.name,"NA"),"(",site.name,")") as tech, '.
+    'site.name as site, '.
+    's.id as stage_id '.
+    'from interview i '.
+    'join stage s on i.id=s.interview_id '.
+    'join site on site.id=i.site_id '.
+    'left join technician t on t.id=s.technician_id and t.site_id=site.id '.
+    'where rank=%d '.
+    'and duration is not null '.
+    'and s.name="%s"', $rank, $type);
+
+$db->execute($sql);
+
+util::out($sql);
+//die();
+
+$cut = get_cutoff_from_type($type);
+
+$sql = sprintf(
+  'select min(duration) as dmin, max(duration) as dmax, '.
+   'stddev(duration) as dstd, avg(duration) as dave '.
+  'from tmp where duration between 0 and %d', $cut);
+
+$res = $db->get_row($sql);
+
+$dmin = $res['dmin'];
+$dmax = $res['dmax'];
+$dstd = $res['dstd'];
+$dave = $res['dave'];
+
+$sql =
+  'select duration, count(duration) as freq '.
+  'from tmp '.
+  'group by duration '.
+  'order by freq desc '.
+  'limit 1';
+
+$res = $db->get_row($sql);
+$mode = $res['duration'];
+
+$scale = 1.0;//60.0;
+$dsmin = floor($dmin/$scale);
+$dsmax= ceil($dmax/$scale);
+
+$bin=1;
+if(null == $user_bin)
+{
+  //$bin=get_bin_size_from_type($type);
+  $bin=ceil(log10($dsmax-$dsmin));
+}
+else
+{
+  $bin=$user_bin;
+}
+
+$bmin=max(0,$bin*floor($dsmin/$bin)-$bin);
+$bmax=$bin*(floor($dsmax/$bin)+1);
+$bin_range=range($bmin,$bmax,$bin);
+$bin_count=count($bin_range);
+
+util::out(sprintf('duration ave std: %s %s',$dave, $dstd));
+util::out(sprintf('duration [min max range]: [%d %d %d]',$dmin,$dmax, $dmax-$dmin));
+util::out(sprintf('scaled   [min max range]: [%d %d %d]',$dsmin,$dsmax, $dsmax-$dsmin));
+util::out(sprintf('bin size [range]: %d [%d %d]',$bin,$bmin,$bmax));
+
+$set=range(-3,3);
+$std=array();
+foreach($set as $num)
+{
+  $std[]=$bin*floor((($dave+$num*$dstd)/$scale)/$bin);
+}
+
+util::out('std deviations: '. implode(',',$std));
+
+$histo = array_combine($bin_range,array_fill(0,count($bin_range),0));
+
+util::out('number of bins: ' . count($bin_range));
+$data = $db->get_all('select * from tmp order by start_date');
+
+foreach($data as $items)
+{
+  $d = $items['duration'];
+  $curr=$bin*floor($d/$scale/$bin);
+  if(in_array($curr,$bin_range))
+    $histo[$curr]++;
+}
+
+$freqmax = max(array_values($histo));
+$modebin=array_search($freqmax,$histo);
+
+$mode=intval(round($mode/$scale));
+util::out(sprintf('mode: %s, histo max freq: %s , mode bin: %s', $mode, $freqmax, $modebin));
+
+$round_to=10;
+$half_round_to = $round_to*0.5;
+
+
+$plotdata=array();
+$plotpoints=array();
+$label_list = array();
+$area = array_sum(array_values($histo));
+$cum_sum=0;
+$last_bin = 0;
+$last_decile = 0;
+$decile_array=array();
+foreach($histo as $time_bin=>$frequency)
+{
+  //$plotdata[]=array('',$time_bin,$frequency);
+  $cum_sum += $frequency;
+  $perc = intval(round(100.0*$cum_sum/$area));
+  $mod = $perc % $round_to;
+  $decile = $perc + ($mod < $half_round_to ? -$mod : $round_to-$mod);
+  $decile = $decile*$freqmax/100.0;
+  $plotdata[]=array('',$time_bin,$frequency, $decile);
+  if($last_decile!=$decile)
+  {
+    $decile_array[$decile]=$time_bin;
+  }
+  
+  if(in_array($time_bin,$std))
+  {
+    $index=array_search($time_bin,$std);
+    $height = $index%2 == 0 ? $freqmax : 0.975*$freqmax;
+    $label=($index<3?((-3+$index).'SD'):($index>3?('+'.(-3+$index).'SD'):'AVG'));
+    if(!in_array($label,$label_list))
+    {
+      $plotpoints[]=array($label,$time_bin,$height);
+      $label_list[]=$label;
+    }
+  }
+  else if($time_bin==$modebin)
+  {
+    $label='MOD';
+    if(!in_array($label,$label_list))
+    {
+      $plotpoints[]=array($label,$mode,1.025*$freqmax);
+      $label_list[]=$label;
+    }
+  }
+  $last_bin=$time_bin;
+  $last_decile=$decile;
+}
+
+$num_decile = count($decile_array);
+$decile_values = array_keys($decile_array);
+$decile_values[] = $last_decile;
+$decile_keys = array_values($decile_array);
+$decile_keys[] = $last_bin;
+
+$decile_array = array_combine($decile_keys,$decile_values);
+$default_row = array_fill(0,count($decile_values),0);
+
+$plotareas=array();
+$id_decile = 0;
+foreach($decile_array as $time_bin=>$decile)
+{
+  $row = $default_row;
+  $row[$id_decile] = $decile;
+  $plotareas[]=array_merge(array('',$time_bin),$row);
+  $id_decile++;
+}
+
+$filename = sprintf('histogram_%d_%s.csv', $rank, $type);
+util::out('writing to ' . $filename);
+$file = fopen($filename,'w');
+
+$header = sprintf('"duration","frequency"') . PHP_EOL;
+fwrite($file,$header);
+foreach($histo as $bin=>$value)
+{
+  fwrite($file, sprintf('"%d","%d"',$bin,$value) . PHP_EOL);
+}
+fclose($file);
+
+$filename = str_replace('.csv','.jpg',$filename);
+$title= sprintf( '%s %s duration', $type, $rank);
+$xtitle='Scale (' . (1.0==$scale?'sec':(60.0==$scale?'min':'hr')).')';
+plot_histogram($filename,$title,$xtitle,$plotdata, $plotpoints, $plotareas);
+
+//die();
+// module histograms
+if(in_array($type,$module_list))
+{
+  $cut = get_cutoff_from_type($type);
+  $sql = sprintf(
+    'select min(module) as dmin, max(module) as dmax, '.
+     'stddev(module) as dstd, avg(module) as dave '.
+    'from tmp where module between 0 and %d', $cut);
+
+  $res = $db->get_row($sql);
+
+  $dmin = $res['dmin'];
+  $dmax = $res['dmax'];
+  $dstd = $res['dstd'];
+  $dave = $res['dave'];
+
+  $sql =
+    'select module, count(module) as freq '.
+    'from tmp '.
+    'group by module '.
+    'order by freq desc '.
+    'limit 1';
+
+  $res = $db->get_row($sql);
+  $mode = $res['module'];
+
+  $scale = 1.0;//60.0;
+  $dsmin = floor($dmin/$scale);
+  $dsmax= ceil($dmax/$scale);
+
+  $bin=1;
+  if(null == $user_bin)
+  {
+    //$bin=get_bin_size_from_type($type);
+    $bin=ceil(log10($dsmax-$dsmin));
+  }
+  else
+  {
+    $bin = $user_bin;
+  }
+
+  $bmin=max(0,$bin*floor($dsmin/$bin)-$bin);
+  $bmax=$bin*(floor($dsmax/$bin)+1);
+  $bin_range=range($bmin,$bmax,$bin);
+  $bin_count=count($bin_range);
+
+  util::out(sprintf('module ave std: %s %s',$dave, $dstd));
+  util::out(sprintf('module [min max range]: [%d %d %d]',$dmin,$dmax, $dmax-$dmin));
+  util::out(sprintf('scaled   [min max range]: [%d %d %d]',$dsmin,$dsmax, $dsmax-$dsmin));
+  util::out(sprintf('bin size [range]: %d [%d %d]',$bin,$bmin,$bmax));
+
+  $set=range(-3,3);
+  $std=array();
+  foreach($set as $num)
+  {
+    $std[]=$bin*floor((($dave+$num*$dstd)/$scale)/$bin);
+  }
+
+  util::out('std deviations: '. implode(',',$std));
+
+  $histo = array_combine($bin_range,array_fill(0,count($bin_range),0));
+
+  util::out('number of bins: ' . count($bin_range));
+  $data = $db->get_all('select * from tmp order by start_date');
+
+  foreach($data as $items)
+  {
+    $d = $items['module'];
+    $curr=$bin*floor($d/$scale/$bin);
+    if(in_array($curr,$bin_range))
+      $histo[$curr]++;
+  }
+
+  $freqmax = max(array_values($histo));
+  $modebin=array_search($freqmax,$histo);
+
+  $mode=intval(round($mode/$scale));
+  util::out(sprintf('mode: %s, histo max freq: %s , mode bin: %s', $mode, $freqmax, $modebin));
+
+  $plotdata=array();
+  $plotpoints=array();
+  $label_list=array();
+  $area = array_sum(array_values($histo));
+  $cum_sum=0;
+  $last_bin = 0;
+  $last_decile = 0;
+  $decile_array=array();
+  foreach($histo as $time_bin=>$frequency)
+  {
+    $cum_sum += $frequency;
+    $perc = intval(round(100.0*$cum_sum/$area));
+    $mod = $perc % $round_to;
+    $decile = $perc + ($mod < $half_round_to ? -$mod : $round_to-$mod);
+    $decile = $decile*$freqmax/100.0;
+    $plotdata[]=array('',$time_bin,$frequency, $decile);
+    if($last_decile!=$decile)
+    {
+      $decile_array[$decile]=$time_bin;
+    }
+    if(in_array($time_bin,$std))
+    {
+      $index=array_search($time_bin,$std);
+      $height = $index%2 == 0 ? $freqmax : 0.975*$freqmax;
+      $label=($index<3?((-3+$index).'SD'):($index>3?('+'.(-3+$index).'SD'):'AVG'));
+      if(!in_array($label,$label_list))
+      {
+        $plotpoints[]=array($label,$time_bin,$height);
+        $label_list[]=$label;
+      }
+    }
+    else if($time_bin==$modebin)
+    {
+      $label='MOD';
+      if(!in_array($label,$label_list))
+      {
+        $plotpoints[]=array($label,$mode, 1.025*$freqmax);
+        $label_list[]=$label;
+      }
+    }
+    $last_bin=$time_bin;
+    $last_decile=$decile;
+  }
+  $num_decile = count($decile_array);
+  $decile_values = array_keys($decile_array);
+  $decile_values[] = $last_decile;
+  $decile_keys = array_values($decile_array);
+  $decile_keys[] = $last_bin;
+
+  $decile_array = array_combine($decile_keys,$decile_values);
+  $default_row = array_fill(0,count($decile_values),0);
+
+  $plotareas=array();
+  $id_decile = 0;
+  foreach($decile_array as $time_bin=>$decile)
+  {
+    $row = $default_row;
+    $row[$id_decile] = $decile;
+    $plotareas[]=array_merge(array('',$time_bin),$row);
+    $id_decile++;
+  }
+
+  $filename = sprintf('histogram_%d_%s_module.csv', $rank, $type);
+  util::out('writing to ' . $filename);
+  $file = fopen($filename,'w');
+
+  $header = sprintf('"module","frequency"') . PHP_EOL;
+  fwrite($file,$header);
+  foreach($histo as $bin=>$value)
+  {
+    fwrite($file, sprintf('"%d","%d"',$bin,$value) . PHP_EOL);
+  }
+  fclose($file);
+
+  $filename = str_replace('.csv','.jpg',$filename);
+  $title= sprintf( '%s %s module', $type, $rank);
+  $xtitle='Scale (' . (1.0==$scale?'sec':(60.0==$scale?'min':'hr')).')';
+  plot_histogram($filename,$title,$xtitle,$plotdata, $plotpoints, $plotareas);
+}
+
+$db->execute('drop table tmp');
+
+/*
+
+  $sql = sprintf('select min(module) as dmin, max(module) as dmax from tmp where module between 0 and %d', $cut);
+
+  $res = $db->get_row($sql);
+
+  $dmin = $res['dmin'];
+  $dmax = $res['dmax'];
+
+  $bin=get_bin_size_from_type($type);
+
+  $bmin=max(0,$bin*floor($dmin/$bin)-$bin);
+  $bmax=$bin*(floor($dmax/$bin)+1);
+
+  util::out(sprintf('module range (sec): %d %d => %d, bin size/range: %d [%d,%d]',$dmin,$dmax, $dmax-$dmin,$bin,$bmin,$bmax));
+
+  $bin_range=range($bmin,$bmax,$bin);
+  $histo = array_combine($bin_range,array_fill(0,count($bin_range),0));
+
+  util::out('number of bins: ' . count($bin_range));
+  $data = $db->get_all('select * from tmp order by start_date');
+
+  foreach($data as $items)
+  {
+    $d = $items['module'];
+    $curr=$bin*floor($d/$bin);
+    if(in_array($curr,$bin_range))
+      $histo[$curr]++;
+  }
+
+  $filename = sprintf('histogram_%d_%s_module.csv', $rank, $type);
+  $file = fopen($filename,'w');
+
+  $header = sprintf('"module_duration","frequency"') . PHP_EOL;
+  fwrite($file,$header);
+  foreach($histo as $bin=>$value)
+  {
+    fwrite($file, sprintf('"%d","%d"',$bin,$value) . PHP_EOL);
+  }
+  fclose($file);
+
+  $filename = str_replace('.csv','.jpg',$filename);
+  $title= sprintf( '%s %s module duration', $type, $rank);
+  plot_histogram($title, $histo, $filename, $bin);
+
+}
+
+$db->execute('drop table tmp');
+*/
