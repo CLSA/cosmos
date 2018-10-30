@@ -216,8 +216,22 @@ while($offset < $max_limit)
 
       foreach($stage_list as $stage)
       {
+        $key='stage_technician_'.$stage;
+        if(!array_key_exists($key, $row))
+        {
+          util::out('ERROR: missing technician row key: ' . $key);
+          var_dump($row);
+          die();
+        }
         $tech=$row['stage_technician_'.$stage];
         $site=$row['interview_site'];
+        $key='stage_comment_'.$stage;
+        if(!array_key_exists($key, $row))
+        {
+          util::out('ERROR: missing comment row key: ' . $key);
+          var_dump($row);
+          die();
+        }  
         $comment=$row['stage_comment_'.$stage];
 
         if( '' == $row['interview_start_date'] || '' == $row['interview_barcode'] ||
