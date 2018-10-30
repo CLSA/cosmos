@@ -22,42 +22,33 @@ function pick_color($img, $arg, $row, $col = null)
 
 function plot_histogram($filename,$title,$xtitle,$plotdata, $plotpoints,$plotareas=null)
 {
-    //global $ttf_path;
-    $plot = new PHPlot(800, 600);
-    //$plot->SetTTFPath($ttf_path);
-    //$plot->SetFontTTF('y_label','Arial_Bold.ttf',10);
-    $plot->SetImageBorderType('plain');
-    $plot->SetOutputFile($filename);
-    $plot->SetPrintImage(0);
-    $plot->SetIsInline(true);
+  $plot = new PHPlot(800, 600);
+  $plot->SetImageBorderType('plain');
+  $plot->SetOutputFile($filename);
+  $plot->SetPrintImage(0);
+  $plot->SetIsInline(true);
 
-    $plot->SetTitle($title);
-    $plot->SetYTitle('Frequency');
-    $plot->SetXTitle($xtitle);
-    $plot->SetDrawXGrid(true);
-    $plot->SetDrawYGrid(true);
-/*
-    $plot->SetPlotType('squaredarea');
-    $plot->SetDataType('data-data');
-    $plot->SetDataValues($plotareas);
-    $plot->DrawGraph();  
-*/
+  $plot->SetTitle($title);
+  $plot->SetYTitle('Frequency');
+  $plot->SetXTitle($xtitle);
+  $plot->SetDrawXGrid(true);
+  $plot->SetDrawYGrid(true);
 
-    $plot->SetDataColors('navy');
-    $plot->SetPlotType('lines');
-    $plot->SetDataType('data-data');
-    $plot->SetDataValues($plotdata);
-    
-    $plot->SetXLabelType('data');
-    $plot->SetNumXTicks(10);
-    $plot->SetXTickLabelPos('plotdown');
-    $plot->SetPrecisionX(0);
-    $plot->SetYLabelType('data');
-    $plot->SetPrecisionY(0);
-    $plot->DrawGraph();
+  $plot->SetDataColors('navy');
+  $plot->SetPlotType('lines');
+  $plot->SetDataType('data-data');
+  $plot->SetDataValues($plotdata);
 
-    if(null!=$plotareas)
-    {
+  $plot->SetXLabelType('data');
+  $plot->SetNumXTicks(10);
+  $plot->SetXTickLabelPos('plotdown');
+  $plot->SetPrecisionX(0);
+  $plot->SetYLabelType('data');
+  $plot->SetPrecisionY(0);
+  $plot->DrawGraph();
+
+  if(null!=$plotareas)
+  {
     $plot->SetPlotType('squaredarea');
     $plot->SetDataType('data-data');
     $plot->SetDataValues($plotareas);
@@ -68,35 +59,34 @@ function plot_histogram($filename,$title,$xtitle,$plotdata, $plotpoints,$plotare
       if($i%2==0)$colors[]='yellow';
       else $colors[]='green';
     }
- 
+
     $plot->SetDataColors(
       $colors );
     $plot->DrawGraph();
-    var_dump($plotareas);
 
     $plot->SetDataColors('navy');
     $plot->SetPlotType('lines');
     $plot->SetDataType('data-data');
     $plot->SetDataValues($plotdata);
     $plot->DrawGraph();
-    }
+  }
 
-    $plot->SetXTickLabelPos('none');
-    $plot->SetXTickPos('none');
-    $plot->SetDrawXGrid(false);
-    $plot->SetDrawYGrid(false);
-    $plot->SetTitle('');
-    $plot->SetYTitle('');
-    $plot->SetXTitle('');
-    $plot->SetPlotType('points');
-    $plot->SetDataType('data-data');
-    $plot->SetDataValues($plotpoints);
-    $plot->SetYDataLabelPos('plotin');
-    $plot->SetYDataLabelType('custom','fmt_label',$plotpoints);
-    $plot->SetDataColors('red');
-    $plot->DrawGraph();
+  $plot->SetXTickLabelPos('none');
+  $plot->SetXTickPos('none');
+  $plot->SetDrawXGrid(false);
+  $plot->SetDrawYGrid(false);
+  $plot->SetTitle('');
+  $plot->SetYTitle('');
+  $plot->SetXTitle('');
+  $plot->SetPlotType('points');
+  $plot->SetDataType('data-data');
+  $plot->SetDataValues($plotpoints);
+  $plot->SetYDataLabelPos('plotin');
+  $plot->SetYDataLabelType('custom','fmt_label',$plotpoints);
+  $plot->SetDataColors('red');
+  $plot->DrawGraph();
 
-    $plot->PrintImage();
+  $plot->PrintImage();
 }
 
 
@@ -162,28 +152,28 @@ function plot_histogram($filename,$title,$xtitle,$plotdata, $plotpoints,$plotare
 | whole_body_bone_density            |    1,2,3 |
 */
 $module_list=array(
-'blood',
-'body_composition_weight',
-'contraindications',
-'deviation_aecrf',
-'disease_symptoms',
-'event_pmt',
-'functional_status',
-'general_health',
-'inhome_id',
-'inhome_1',
-'inhome_2',
-'inhome_3',
-'inhome_4',
-'neuropsychological_battery',
-'osea',
-'osipv',
-'osonly',
-'quality_assurance_inhome',
-'social_network',
-'stroop_fas',
-'time_based_pmt',
-'urine');
+  'blood',
+  'body_composition_weight',
+  'contraindications',
+  'deviation_aecrf',
+  'disease_symptoms',
+  'event_pmt',
+  'functional_status',
+  'general_health',
+  'inhome_id',
+  'inhome_1',
+  'inhome_2',
+  'inhome_3',
+  'inhome_4',
+  'neuropsychological_battery',
+  'osea',
+  'osipv',
+  'osonly',
+  'quality_assurance_inhome',
+  'social_network',
+  'stroop_fas',
+  'time_based_pmt',
+  'urine');
 
 function get_stage_index_from_type( $_type )
 {
@@ -464,10 +454,228 @@ function get_bin_size_from_type( $_type )
   return $bin;
 }
 
+function plot_qac_field($field, $input_rank, $input_type, $input_bin, $input_percentile_bin)
+{
+  global $db, $module_list;
+
+  $cut = get_cutoff_from_type($input_type);
+
+  $sql = sprintf(
+    'select min(%s) as tmin, max(%s) as tmax, '.
+    'stddev(%s) as tstd, avg(%s) as tave '.
+    'from tmp '.
+    'where %s between 0 and %d', $field, $field, $field, $field, $field, $cut);
+
+  $res = $db->get_row($sql);
+
+  $tmin = $res['tmin'];
+  $tmax = $res['tmax'];
+  $tstd = $res['tstd'];
+  $tave = $res['tave'];
+
+  $sql = sprintf(
+    'select %s, count(%s) as freq '.
+    'from tmp '.
+    'group by %s '.
+    'order by freq desc '.
+    'limit 1', $field, $field, $field);
+
+  $res = $db->get_row($sql);
+  $mode = $res[$field];
+
+  $scale = 1.0;//60.0;
+  $tsmin = floor($tmin/$scale);
+  $tsmax = ceil($tmax/$scale);
+
+  $bin = 1;
+  if(null == $input_bin)
+  {
+    //$bin=get_bin_size_from_type($type);
+    $bin = ceil(log10($tsmax-$tsmin));
+  }
+  else
+  {
+    $bin = $input_bin;
+  }
+
+  $bmin = max(0,$bin*floor($tsmin/$bin)-$bin);
+  $bmax = $bin*(floor($tsmax/$bin)+1);
+  $bin_range = range($bmin,$bmax,$bin);
+  $bin_count = count($bin_range);
+
+  util::out(sprintf('%s ave std: %s %s',$field,$tave, $tstd));
+  util::out(sprintf('%s [min max range]: [%d %d %d]',$field,$tmin,$tmax, $tmax-$tmin));
+  util::out(sprintf('scaled   [min max range]: [%d %d %d]',$tsmin,$tsmax, $tsmax-$tsmin));
+  util::out(sprintf('bin size [range]: %d [%d %d]',$bin,$bmin,$bmax));
+  util::out('number of bins: ' . $bin_count);
+
+  $set = range(-3,3);
+  $std = array();
+  foreach($set as $num)
+  {
+    $std[] = $bin*floor((($tave+$num*$tstd)/$scale)/$bin);
+  }
+
+  util::out('std deviations: '. implode(',',$std));
+
+  $histo = array_combine($bin_range,array_fill(0,$bin_count,0));
+
+  $data = $db->get_all('select * from tmp order by start_date');
+
+  foreach($data as $items)
+  {
+    $d = $items[$field];
+    $curr = $bin*floor($d/$scale/$bin);
+    if(in_array($curr,$bin_range))
+      $histo[$curr]++;
+  }
+
+  $freqmax = max(array_values($histo));
+  $mode_bin = array_search($freqmax,$histo);
+
+  util::out(sprintf('mode: %s, freq: %s, bin: %s', $mode, $freqmax, $mode_bin));
+
+  $plotdata = array();
+  $plotpoints = array();
+  $label_list = array();
+  $area = array_sum(array_values($histo));
+  $cum_sum = 0;
+  $last_bin = 0;
+  $percentile_bin = 10;
+  if(null != $input_percentile_bin && $input_percentile_bin>0 && $input_percentile_bin<100)
+  {
+    $percentile_bin = $input_percentile_bin;
+  }
+  $last_percentile = $percentile_bin;
+  $current_percentile_bin = $percentile_bin;
+  $percentile_list[$current_percentile_bin] = array(
+    'freq'=>array(),
+    'ord'=>0,
+    'endord'=>null,
+    'endpercentile'=>null,
+    'perc'=>array());
+
+  foreach($histo as $time_bin=>$frequency)
+  {
+    // compute the percentile for the current bin
+    $cum_sum += $frequency;
+    $percent = 100.0*$cum_sum/$area;
+    $percentile = intval(round($percent));
+
+    // scale the percentile for line plotting
+    $plotdata[] = array('',$time_bin,$frequency $percentile*$freqmax/100.0);
+
+    if($percentile > $current_percentile_bin)
+    {
+      $percentile_list[$current_percentile_bin]['endord']=$time_bin;
+      $percentile_list[$current_percentile_bin]['endpercentile']=$percentile;
+      $next_percentile_bin = min($current_percentile_bin+$percentile_bin,100-$percentile_bin);
+      if($next_percentile_bin != $current_percentile_bin)
+      {
+        $current_percentile_bin = $next_percentile_bin;
+        $percentile_list[$current_percentile_bin] = array(
+          'freq'=>array(),
+          'ord'=>$time_bin,
+          'endord'=>null,
+          'endpercentile'=>null,
+          'perc'=>array());
+      }
+    }
+    $percentile_list[$current_percentile_bin]['freq'][] = $frequency;
+    $percentile_list[$current_percentile_bin]['perc'][] = $percent;
+
+    if(in_array($time_bin,$std))
+    {
+      $index = array_search($time_bin,$std);
+      $height = $index%2 == 0 ? $freqmax : 0.975*$freqmax;
+      $label = ($index<3?((-3+$index).'SD'):($index>3?('+'.(-3+$index).'SD'):'AVG'));
+      if(!in_array($label,$label_list))
+      {
+        $plotpoints[] = array($label,$time_bin,$height);
+        $label_list[] = $label;
+      }
+    }
+    elseif($time_bin == $mode_bin)
+    {
+      $label = 'MOD';
+      if(!in_array($label,$label_list))
+      {
+        $plotpoints[] = array($label,$mode,1.025*$freqmax);
+        $label_list[] = $label;
+      }
+    }
+    $last_bin = $time_bin;
+    $last_percentile = $percentile;
+  }
+  $percentile_list[$current_percentile_bin]['endord'] = $last_bin;
+  $percentile_list[$current_percentile_bin]['endpercentile'] = $last_percentile;
+
+  util::out('cumulative freq: ' . $cum_sum);
+  $cum_sum = 0;
+  $plotareas=array();
+  $percentile_values = array_keys($percentile_list);
+  $default_row = array_fill(0,count($percentile_values),0);
+  $last_row;
+  foreach($percentile_list as $percentile=>$data)
+  {
+    util::out(sprintf('percentile: %s -> %s [%s -> %s] n: %d  perc range: [%7.3lf => %7.3lf]',
+      $percentile,
+      $data['endpercentile'],
+      util::time_to_label($data['ord']/60.0),
+      util::time_to_label($data['endord']/60.0),
+      count($data['freq']),
+      min($data['perc']),
+      max($data['perc'])));
+    $cum_sum+=array_sum($data['freq']);
+
+    $row = $default_row;
+    $time_bin = $data['ord'];
+    $id = array_search($percentile,$percentile_values);
+    $row[$id] = $percentile * $freqmax/100.0;
+    $plotareas[] = array_merge(array('',$data['ord']),$row);
+    $last_row = array_merge(array('',$data['endord']),$row);
+    $label_x = '';
+    $label_y = $row[$id];
+    /*
+    if($id == 0)
+      $label_x = $data['endord'];
+    else
+      $label_x = $data['ord'];
+    */
+    if($id != 0)
+    {
+      $label_x = $data['ord'];
+      $label = util::time_to_label($label_x/60.0);
+      $plotpoints[] = array($label,$label_x,$label_y);
+    }
+  }
+  $plotareas[] = $last_row;
+  util::out('CHECK cumulative freq: ' . $cum_sum);
+
+  $filename = sprintf('histogram_%d_%d_%d_%s_%s.csv', $input_rank, $bin, $percentile_bin,$input_type, $field);
+  util::out('writing to ' . $filename);
+  $file = fopen($filename,'w');
+
+  $header = sprintf('"%s","frequency"', $field) . PHP_EOL;
+  fwrite($file,$header);
+  foreach($histo as $bin=>$value)
+  {
+    fwrite($file, sprintf('"%d","%d"',$bin,$value) . PHP_EOL);
+  }
+  fclose($file);
+
+  $filename = str_replace('.csv','.jpg',$filename);
+  $title= sprintf( '%s %s %s', $input_type, $input_rank, $field);
+  $xtitle='Scale (' . (1.0==$scale?'sec':(60.0==$scale?'min':'hr')).')';
+  plot_histogram($filename,$title,$xtitle,$plotdata, $plotpoints, $plotareas);
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////
 
 $rank = 1; // set default
 $type = 'tug';
 $user_bin = null;
+$user_perc_bin = null;
 if( 3 == $argc )
 {
   $rank = $argv[1];
@@ -479,7 +687,13 @@ else if( 4 == $argc )
   $type = $argv[2];
   $user_bin = $argv[3];
 }
-
+else if( 5 == $argc )
+{
+  $rank = $argv[1];
+  $type = $argv[2];
+  $user_bin = $argv[3];
+  $user_perc_bin = $argv[4];
+}
 
 if($rank < MIN_RANK || $rank > MAX_RANK )
 {
@@ -493,7 +707,6 @@ $db = new database(
   $SETTINGS['db']['DB_PASS'],
   $SETTINGS['db']['DB_NAME'] );
 
-
 $index_list = get_stage_index_from_type($type);
 if(null==$index_list[$rank-1])
 {
@@ -502,410 +715,43 @@ if(null==$index_list[$rank-1])
 }
 
 // convert to seconds
-  $sql =
-    'create temporary table tmp as '.
-    'select '.
-    'cast( '.
-    '  cast( '.
-    '    substring_index( '.
-    '      substring_index(duration,",",1),":",-1) as decimal(15,3))*60 as unsigned) as duration, ';
+$sql =
+  'create temporary table tmp as '.
+  'select '.
+  'cast( '.
+  '  cast( '.
+  '    substring_index( '.
+  '      substring_index(duration,",",1),":",-1) as decimal(15,3))*60 as unsigned) as duration, ';
 
-  if(in_array($type,$module_list))
-  {
-    $sql .=
-    'cast( '.
-    '  cast(trim("}" from substring_index(duration,":",-1)) as decimal(15,3))*60 as unsigned) as module, ';
-  }
+if(in_array($type,$module_list))
+{
+  $sql .=
+  'cast( '.
+  '  cast(trim("}" from substring_index(duration,":",-1)) as decimal(15,3))*60 as unsigned) as module, ';
+}
 
-  $sql .= sprintf(
-    'start_date, '.
-    'concat(ifnull(t.name,"NA"),"(",site.name,")") as tech, '.
-    'site.name as site, '.
-    's.id as stage_id '.
-    'from interview i '.
-    'join stage s on i.id=s.interview_id '.
-    'join site on site.id=i.site_id '.
-    'left join technician t on t.id=s.technician_id and t.site_id=site.id '.
-    'where rank=%d '.
-    'and duration is not null '.
-    'and s.name="%s"', $rank, $type);
+$sql .= sprintf(
+  'start_date, '.
+  'concat(ifnull(t.name,"NA"),"(",site.name,")") as tech, '.
+  'site.name as site, '.
+  's.id as stage_id '.
+  'from interview i '.
+  'join stage s on i.id=s.interview_id '.
+  'join site on site.id=i.site_id '.
+  'left join technician t on t.id=s.technician_id and t.site_id=site.id '.
+  'where rank=%d '.
+  'and duration is not null '.
+  'and s.name="%s"', $rank, $type);
 
 $db->execute($sql);
 
 util::out($sql);
-//die();
 
-$cut = get_cutoff_from_type($type);
+plot_qac_field('duration', $rank, $type, $user_bin, $user_perc_bin);
 
-$sql = sprintf(
-  'select min(duration) as dmin, max(duration) as dmax, '.
-   'stddev(duration) as dstd, avg(duration) as dave '.
-  'from tmp where duration between 0 and %d', $cut);
-
-$res = $db->get_row($sql);
-
-$dmin = $res['dmin'];
-$dmax = $res['dmax'];
-$dstd = $res['dstd'];
-$dave = $res['dave'];
-
-$sql =
-  'select duration, count(duration) as freq '.
-  'from tmp '.
-  'group by duration '.
-  'order by freq desc '.
-  'limit 1';
-
-$res = $db->get_row($sql);
-$mode = $res['duration'];
-
-$scale = 1.0;//60.0;
-$dsmin = floor($dmin/$scale);
-$dsmax= ceil($dmax/$scale);
-
-$bin=1;
-if(null == $user_bin)
-{
-  //$bin=get_bin_size_from_type($type);
-  $bin=ceil(log10($dsmax-$dsmin));
-}
-else
-{
-  $bin=$user_bin;
-}
-
-$bmin=max(0,$bin*floor($dsmin/$bin)-$bin);
-$bmax=$bin*(floor($dsmax/$bin)+1);
-$bin_range=range($bmin,$bmax,$bin);
-$bin_count=count($bin_range);
-
-util::out(sprintf('duration ave std: %s %s',$dave, $dstd));
-util::out(sprintf('duration [min max range]: [%d %d %d]',$dmin,$dmax, $dmax-$dmin));
-util::out(sprintf('scaled   [min max range]: [%d %d %d]',$dsmin,$dsmax, $dsmax-$dsmin));
-util::out(sprintf('bin size [range]: %d [%d %d]',$bin,$bmin,$bmax));
-
-$set=range(-3,3);
-$std=array();
-foreach($set as $num)
-{
-  $std[]=$bin*floor((($dave+$num*$dstd)/$scale)/$bin);
-}
-
-util::out('std deviations: '. implode(',',$std));
-
-$histo = array_combine($bin_range,array_fill(0,count($bin_range),0));
-
-util::out('number of bins: ' . count($bin_range));
-$data = $db->get_all('select * from tmp order by start_date');
-
-foreach($data as $items)
-{
-  $d = $items['duration'];
-  $curr=$bin*floor($d/$scale/$bin);
-  if(in_array($curr,$bin_range))
-    $histo[$curr]++;
-}
-
-$freqmax = max(array_values($histo));
-$modebin=array_search($freqmax,$histo);
-
-$mode=intval(round($mode/$scale));
-util::out(sprintf('mode: %s, histo max freq: %s , mode bin: %s', $mode, $freqmax, $modebin));
-
-$round_to=10;
-$half_round_to = $round_to*0.5;
-
-
-$plotdata=array();
-$plotpoints=array();
-$label_list = array();
-$area = array_sum(array_values($histo));
-$cum_sum=0;
-$last_bin = 0;
-$last_decile = 0;
-$decile_array=array();
-foreach($histo as $time_bin=>$frequency)
-{
-  //$plotdata[]=array('',$time_bin,$frequency);
-  $cum_sum += $frequency;
-  $perc = intval(round(100.0*$cum_sum/$area));
-  $mod = $perc % $round_to;
-  $decile = $perc + ($mod < $half_round_to ? -$mod : $round_to-$mod);
-  $decile = $decile*$freqmax/100.0;
-  $plotdata[]=array('',$time_bin,$frequency, $decile);
-  if($last_decile!=$decile)
-  {
-    $decile_array[$decile]=$time_bin;
-  }
-  
-  if(in_array($time_bin,$std))
-  {
-    $index=array_search($time_bin,$std);
-    $height = $index%2 == 0 ? $freqmax : 0.975*$freqmax;
-    $label=($index<3?((-3+$index).'SD'):($index>3?('+'.(-3+$index).'SD'):'AVG'));
-    if(!in_array($label,$label_list))
-    {
-      $plotpoints[]=array($label,$time_bin,$height);
-      $label_list[]=$label;
-    }
-  }
-  else if($time_bin==$modebin)
-  {
-    $label='MOD';
-    if(!in_array($label,$label_list))
-    {
-      $plotpoints[]=array($label,$mode,1.025*$freqmax);
-      $label_list[]=$label;
-    }
-  }
-  $last_bin=$time_bin;
-  $last_decile=$decile;
-}
-
-$num_decile = count($decile_array);
-$decile_values = array_keys($decile_array);
-$decile_values[] = $last_decile;
-$decile_keys = array_values($decile_array);
-$decile_keys[] = $last_bin;
-
-$decile_array = array_combine($decile_keys,$decile_values);
-$default_row = array_fill(0,count($decile_values),0);
-
-$plotareas=array();
-$id_decile = 0;
-foreach($decile_array as $time_bin=>$decile)
-{
-  $row = $default_row;
-  $row[$id_decile] = $decile;
-  $plotareas[]=array_merge(array('',$time_bin),$row);
-  $id_decile++;
-}
-
-$filename = sprintf('histogram_%d_%s.csv', $rank, $type);
-util::out('writing to ' . $filename);
-$file = fopen($filename,'w');
-
-$header = sprintf('"duration","frequency"') . PHP_EOL;
-fwrite($file,$header);
-foreach($histo as $bin=>$value)
-{
-  fwrite($file, sprintf('"%d","%d"',$bin,$value) . PHP_EOL);
-}
-fclose($file);
-
-$filename = str_replace('.csv','.jpg',$filename);
-$title= sprintf( '%s %s duration', $type, $rank);
-$xtitle='Scale (' . (1.0==$scale?'sec':(60.0==$scale?'min':'hr')).')';
-plot_histogram($filename,$title,$xtitle,$plotdata, $plotpoints, $plotareas);
-
-//die();
-// module histograms
 if(in_array($type,$module_list))
 {
-  $cut = get_cutoff_from_type($type);
-  $sql = sprintf(
-    'select min(module) as dmin, max(module) as dmax, '.
-     'stddev(module) as dstd, avg(module) as dave '.
-    'from tmp where module between 0 and %d', $cut);
-
-  $res = $db->get_row($sql);
-
-  $dmin = $res['dmin'];
-  $dmax = $res['dmax'];
-  $dstd = $res['dstd'];
-  $dave = $res['dave'];
-
-  $sql =
-    'select module, count(module) as freq '.
-    'from tmp '.
-    'group by module '.
-    'order by freq desc '.
-    'limit 1';
-
-  $res = $db->get_row($sql);
-  $mode = $res['module'];
-
-  $scale = 1.0;//60.0;
-  $dsmin = floor($dmin/$scale);
-  $dsmax= ceil($dmax/$scale);
-
-  $bin=1;
-  if(null == $user_bin)
-  {
-    //$bin=get_bin_size_from_type($type);
-    $bin=ceil(log10($dsmax-$dsmin));
-  }
-  else
-  {
-    $bin = $user_bin;
-  }
-
-  $bmin=max(0,$bin*floor($dsmin/$bin)-$bin);
-  $bmax=$bin*(floor($dsmax/$bin)+1);
-  $bin_range=range($bmin,$bmax,$bin);
-  $bin_count=count($bin_range);
-
-  util::out(sprintf('module ave std: %s %s',$dave, $dstd));
-  util::out(sprintf('module [min max range]: [%d %d %d]',$dmin,$dmax, $dmax-$dmin));
-  util::out(sprintf('scaled   [min max range]: [%d %d %d]',$dsmin,$dsmax, $dsmax-$dsmin));
-  util::out(sprintf('bin size [range]: %d [%d %d]',$bin,$bmin,$bmax));
-
-  $set=range(-3,3);
-  $std=array();
-  foreach($set as $num)
-  {
-    $std[]=$bin*floor((($dave+$num*$dstd)/$scale)/$bin);
-  }
-
-  util::out('std deviations: '. implode(',',$std));
-
-  $histo = array_combine($bin_range,array_fill(0,count($bin_range),0));
-
-  util::out('number of bins: ' . count($bin_range));
-  $data = $db->get_all('select * from tmp order by start_date');
-
-  foreach($data as $items)
-  {
-    $d = $items['module'];
-    $curr=$bin*floor($d/$scale/$bin);
-    if(in_array($curr,$bin_range))
-      $histo[$curr]++;
-  }
-
-  $freqmax = max(array_values($histo));
-  $modebin=array_search($freqmax,$histo);
-
-  $mode=intval(round($mode/$scale));
-  util::out(sprintf('mode: %s, histo max freq: %s , mode bin: %s', $mode, $freqmax, $modebin));
-
-  $plotdata=array();
-  $plotpoints=array();
-  $label_list=array();
-  $area = array_sum(array_values($histo));
-  $cum_sum=0;
-  $last_bin = 0;
-  $last_decile = 0;
-  $decile_array=array();
-  foreach($histo as $time_bin=>$frequency)
-  {
-    $cum_sum += $frequency;
-    $perc = intval(round(100.0*$cum_sum/$area));
-    $mod = $perc % $round_to;
-    $decile = $perc + ($mod < $half_round_to ? -$mod : $round_to-$mod);
-    $decile = $decile*$freqmax/100.0;
-    $plotdata[]=array('',$time_bin,$frequency, $decile);
-    if($last_decile!=$decile)
-    {
-      $decile_array[$decile]=$time_bin;
-    }
-    if(in_array($time_bin,$std))
-    {
-      $index=array_search($time_bin,$std);
-      $height = $index%2 == 0 ? $freqmax : 0.975*$freqmax;
-      $label=($index<3?((-3+$index).'SD'):($index>3?('+'.(-3+$index).'SD'):'AVG'));
-      if(!in_array($label,$label_list))
-      {
-        $plotpoints[]=array($label,$time_bin,$height);
-        $label_list[]=$label;
-      }
-    }
-    else if($time_bin==$modebin)
-    {
-      $label='MOD';
-      if(!in_array($label,$label_list))
-      {
-        $plotpoints[]=array($label,$mode, 1.025*$freqmax);
-        $label_list[]=$label;
-      }
-    }
-    $last_bin=$time_bin;
-    $last_decile=$decile;
-  }
-  $num_decile = count($decile_array);
-  $decile_values = array_keys($decile_array);
-  $decile_values[] = $last_decile;
-  $decile_keys = array_values($decile_array);
-  $decile_keys[] = $last_bin;
-
-  $decile_array = array_combine($decile_keys,$decile_values);
-  $default_row = array_fill(0,count($decile_values),0);
-
-  $plotareas=array();
-  $id_decile = 0;
-  foreach($decile_array as $time_bin=>$decile)
-  {
-    $row = $default_row;
-    $row[$id_decile] = $decile;
-    $plotareas[]=array_merge(array('',$time_bin),$row);
-    $id_decile++;
-  }
-
-  $filename = sprintf('histogram_%d_%s_module.csv', $rank, $type);
-  util::out('writing to ' . $filename);
-  $file = fopen($filename,'w');
-
-  $header = sprintf('"module","frequency"') . PHP_EOL;
-  fwrite($file,$header);
-  foreach($histo as $bin=>$value)
-  {
-    fwrite($file, sprintf('"%d","%d"',$bin,$value) . PHP_EOL);
-  }
-  fclose($file);
-
-  $filename = str_replace('.csv','.jpg',$filename);
-  $title= sprintf( '%s %s module', $type, $rank);
-  $xtitle='Scale (' . (1.0==$scale?'sec':(60.0==$scale?'min':'hr')).')';
-  plot_histogram($filename,$title,$xtitle,$plotdata, $plotpoints, $plotareas);
+  plot_qac_field('module', $rank, $type, $user_bin, $user_perc_bin);
 }
 
 $db->execute('drop table tmp');
-
-/*
-
-  $sql = sprintf('select min(module) as dmin, max(module) as dmax from tmp where module between 0 and %d', $cut);
-
-  $res = $db->get_row($sql);
-
-  $dmin = $res['dmin'];
-  $dmax = $res['dmax'];
-
-  $bin=get_bin_size_from_type($type);
-
-  $bmin=max(0,$bin*floor($dmin/$bin)-$bin);
-  $bmax=$bin*(floor($dmax/$bin)+1);
-
-  util::out(sprintf('module range (sec): %d %d => %d, bin size/range: %d [%d,%d]',$dmin,$dmax, $dmax-$dmin,$bin,$bmin,$bmax));
-
-  $bin_range=range($bmin,$bmax,$bin);
-  $histo = array_combine($bin_range,array_fill(0,count($bin_range),0));
-
-  util::out('number of bins: ' . count($bin_range));
-  $data = $db->get_all('select * from tmp order by start_date');
-
-  foreach($data as $items)
-  {
-    $d = $items['module'];
-    $curr=$bin*floor($d/$bin);
-    if(in_array($curr,$bin_range))
-      $histo[$curr]++;
-  }
-
-  $filename = sprintf('histogram_%d_%s_module.csv', $rank, $type);
-  $file = fopen($filename,'w');
-
-  $header = sprintf('"module_duration","frequency"') . PHP_EOL;
-  fwrite($file,$header);
-  foreach($histo as $bin=>$value)
-  {
-    fwrite($file, sprintf('"%d","%d"',$bin,$value) . PHP_EOL);
-  }
-  fclose($file);
-
-  $filename = str_replace('.csv','.jpg',$filename);
-  $title= sprintf( '%s %s module duration', $type, $rank);
-  plot_histogram($title, $histo, $filename, $bin);
-
-}
-
-$db->execute('drop table tmp');
-*/
