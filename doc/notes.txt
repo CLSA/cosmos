@@ -1,0 +1,5 @@
+- download a view in json format:
+opal rest /datasource/Quality_Control/view/QC_X --opal https://opal-ro.clsa-elcv.ca:8443 --user XX --password XX --json > QC_X.json
+
+- view restricted to before and after date
+"where": "$lastupdate().before(newValue('BEFORE_DATE','date')).and($lastupdate().after(newValue('AFTER_DATE','date')))"
