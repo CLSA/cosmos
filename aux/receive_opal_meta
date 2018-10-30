@@ -114,12 +114,13 @@ foreach( $res as $item )
 util::out( 'getting opal data...' );
 if( in_array($rank,$active_ranks) && null != $before_date && null != $after_date )
 {
-  $opal->set_date_range( $before_date, $after_date, true );
-  util::out('setting date range...');
+  //$opal->set_date_range( $before_date, $after_date, true );
+  //util::out('setting date range...');
 }
 $identifier_list = $opal->get_identifiers();
 
 $max_limit = count($identifier_list);
+util::out('number of identifiers: ' . $max_limit);
 $offset = 0;
 $limit = 500;
 while($offset < $max_limit)
@@ -287,4 +288,6 @@ while($offset < $max_limit)
     $offset = $max_limit;
   }
 }
+
+util::out('final offset: ' . $offset);
 ?>
