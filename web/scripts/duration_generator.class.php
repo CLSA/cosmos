@@ -85,6 +85,8 @@ class duration_generator extends table_generator
     $stage_min = $res['d_min'];
     $stage_max= $res['d_max'];
 
+    $source = 'statistic';
+
     if(null==$this->par_time_range)
     {
       $stage_time_min = max(($stage_avg - $this->standard_deviation_scale*$stage_stdev),0);
@@ -94,6 +96,7 @@ class duration_generator extends table_generator
     {
       $stage_time_min = $this->par_time_range[0]/60.0;
       $stage_time_max = $this->par_time_range[1]/60.0;
+      $source = 'specified';
     }
 
     // build the main query
@@ -124,14 +127,18 @@ class duration_generator extends table_generator
 
     $this->page_explanation[] = sprintf('time threshold : %s min', $this->threshold);
 
-    $this->page_explanation[] = sprintf('subpar time: time < %s (mean - %s x SD) min',
-      util::time_to_label($stage_time_min), $this->standard_deviation_scale);
+    $this->page_explanation[] = '';
+
+    $this->page_explanation[] = sprintf('subpar time: time < %s (%s)',
+      util::time_to_label($stage_time_min),
+      ( $source == 'statistic' ? sprintf('mean - %s x SD',$this->standard_deviation_scale) : 'specified' ));
 
     $this->page_explanation[] = sprintf('par time: %s <= time <= %d min',
       util::time_to_label($stage_time_min), util::time_to_label($stage_time_max));
 
-    $this->page_explanation[] = sprintf('above par time: time > %s (mean + %s x SD) min',
-      util::time_to_label($stage_time_max), $this->standard_deviation_scale);
+    $this->page_explanation[] = sprintf('above par time: time > %s (%s)',
+      util::time_to_label($stage_time_max),
+      ( $source == 'statistic' ? sprintf('mean + %s x SD',$this->standard_deviation_scale):'specified'));
 
     if($this->has_module)
     {
@@ -177,6 +184,8 @@ class duration_generator extends table_generator
         'sum(if(duration is null, 0, '.
         'if(cast(trim("}" from substring_index(duration,":",-1)) as decimal(10,3))>%s,1,0))) as total_module_sup, ',$module_time_max);
 
+      $this->page_explanation[] = '';
+
       $this->page_explanation[] = sprintf('module time [min,max] : [%s,%s] ',
         util::time_to_label($module_min), util::time_to_label($module_max));
 
@@ -185,14 +194,18 @@ class duration_generator extends table_generator
 
       $this->page_explanation[] = sprintf('module time threshold : %s min', $this->threshold);
 
-      $this->page_explanation[] = sprintf('subpar module time: time < %s (mean - %s x SD) min',
-        util::time_to_label($module_time_min), $this->standard_deviation_scale);
+      $this->page_explanation[] = '';
+
+      $this->page_explanation[] = sprintf('subpar module time: time < %s (%s)',
+        util::time_to_label($module_time_min),
+        ( $source == 'statistic' ? sprintf('mean - %s x SD',$this->standard_deviation_scale) : 'specified' ));
 
       $this->page_explanation[] = sprintf('par module time: %s <= time <= %d min',
         util::time_to_label($module_time_min), util::time_to_label($module_time_max));
 
-      $this->page_explanation[] = sprintf('above par module time: time > %s (mean + %s x SD) min',
-        util::time_to_label($module_time_max), $this->standard_deviation_scale);
+      $this->page_explanation[] = sprintf('above par module time: time > %s (%s)',
+        util::time_to_label($module_time_max),
+        ( $source == 'statistic' ? sprintf('mean + %s x SD',$this->standard_deviation_scale):'specified'));
     }
 
     $sql .= $this->get_main_query();
