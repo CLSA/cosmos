@@ -6,6 +6,18 @@ $end_date = htmlspecialchars($_POST['to']);
 $rank = htmlspecialchars($_POST['rank']);
 
 $spine_bone_density = new duration_generator('spine_bone_density', $rank, $begin_date, $end_date);
+
+$smin = htmlspecialchars($_POST['stage-dur-min']);
+$smax = htmlspecialchars($_POST['stage-dur-max']);
+
+if(
+  is_numeric($smin) &&
+  is_numeric($smax)
+  $smax>$smin)
+{
+  $spine_bone_density->set_par_time_range(array($smin,$smax,$mmin,$mmax));
+}
+
 $spine_bone_density->set_threshold(20);
 $spine_bone_density->set_standard_deviation_scale(1);
 $spine_bone_density->build_table_data();

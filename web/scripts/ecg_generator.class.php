@@ -13,6 +13,7 @@ class ecg_generator extends table_generator
     $this->standard_deviation_scale= 2;  // default
     $this->file_scale = 1024.0;
     $this->page_stage ='ECG';
+    $this->group_indicator_keys=array('filesize'=>$this->indicator_keys);
   }
 
   protected function build_data()
@@ -21,6 +22,8 @@ class ecg_generator extends table_generator
 
     $filesize_min=0;
     $filesize_max=0;
+    $filesize_min_all=0;
+    $filesize_max_all=0;
     if('mode' == $this->statistic)
     {
       $minsz=0;
@@ -31,7 +34,7 @@ class ecg_generator extends table_generator
         'from ( '.
         '  select round( '.
         '    cast(substring_index( '.
-        '      substring_index(qcdata, ",", 1 ), ":", -1) as decimal)/%s,0) as fsz '.
+        '      substring_index(qcdata, ",", 1 ), ":", -1) as unsigned)/%s,0) as fsz '.
         '  from interview i '.
         '  join stage s on i.id=s.interview_id '.
         '  where rank=%d '.
@@ -50,7 +53,7 @@ class ecg_generator extends table_generator
         'from ( '.
         '  select round('.
         '    cast(substring_index( '.
-        '      substring_index(qcdata, ",", 1), ":", -1) as decimal)/%s) as fsz '.
+        '      substring_index(qcdata, ",", 1), ":", -1) as unsigned)/%s) as fsz '.
         '  from interview i '.
         '  join stage s on i.id=s.interview_id '.
         '  where rank=%d '.
@@ -64,17 +67,19 @@ class ecg_generator extends table_generator
       $maxsz = $res['maxsz'];
       $filesize_min = max(intval(($minsz + 0.5*($mode-$minsz))*$this->file_scale),0);
       $filesize_max = intval(($mode + 0.5*($maxsz-$mode))*$this->file_scale);
+      $filesize_min_all = intval($res['minsz']*$this->file_scale);
+      $filesize_max_all = intval($res['maxsz']*$this->file_scale);
     }
     else
     {
       $avg=0;
       $stdev=0;
       $sql = sprintf(
-        'select avg(fsz) as favg, stddev(fsz) as fstd  '.
+        'select avg(fsz) as favg, stddev(fsz) as fstd, min(fsz) as minsz, max(fsz) as maxsz '.
         'from ( '.
         '  select round( '.
         '    cast(substring_index( '.
-        '      substring_index(qcdata, ",", 1 ), ":", -1) as decimal)/%s,0) as fsz '.
+        '      substring_index(qcdata, ",", 1 ), ":", -1) as unsigned)/%s,0) as fsz '.
         '  from interview i '.
         '  join stage s on i.id=s.interview_id '.
         '  where rank=%d '.
@@ -94,9 +99,10 @@ class ecg_generator extends table_generator
 
       $avg = $res['favg'];
       $stdev = $res['fstd'];
-
       $filesize_min = max(intval(($avg - $this->standard_deviation_scale*$stdev)*$this->file_scale),0);
       $filesize_max = intval(($avg + $this->standard_deviation_scale*$stdev)*$this->file_scale);
+      $filesize_min_all = intval($res['minsz']*$this->file_scale);
+      $filesize_max_all = intval($res['maxsz']*$this->file_scale);
     }
 
     // build the main query
@@ -107,17 +113,17 @@ class ecg_generator extends table_generator
 
     $sql .= sprintf(
       'sum(if(qcdata is null, 0, '.
-      'if(cast(substring_index(substring_index(qcdata,",",1),":",-1) as signed)<%d,1,0))) as total_filesize_sub, ',$filesize_min);
+      'if(cast(substring_index(substring_index(qcdata,",",1),":",-1) as unsigned) between 1 and %d,1,0))) as total_filesize_sub, ',$filesize_min);
 
     $sql .= sprintf(
       'sum(if(qcdata is null, 0, '.
-      'if(cast(substring_index(substring_index(qcdata,",",1),":",-1) as signed) between %d and %d,1,0))) as total_filesize_par, ',$filesize_min,$filesize_max);
+      'if(cast(substring_index(substring_index(qcdata,",",1),":",-1) as unsigned) between %d and %d,1,0))) as total_filesize_par, ',$filesize_min,$filesize_max);
 
     $sql .= sprintf(
       'sum(if(qcdata is null, 0, '.
-      'if(cast(substring_index(substring_index(qcdata,",",1),":",-1) as signed)>%d,1,0))) as total_filesize_sup, ',$filesize_max);
+      'if(cast(substring_index(substring_index(qcdata,",",1),":",-1) as unsigned)>%d,1,0))) as total_filesize_sup, ',$filesize_max);
 
-    $sql .= 'sum(if(qcdata is null, 0, 1-cast(trim("}" from substring_index(qcdata,":",-1)) as signed))) as total_poor_quality, ';
+    $sql .= 'sum(if(qcdata is null, 0, 1-cast(trim("}" from substring_index(qcdata,":",-1)) as unsigned))) as total_poor_quality, ';
 
     $sql .= $this->get_main_query();
 
@@ -131,6 +137,8 @@ class ecg_generator extends table_generator
     $this->data = $res;
 
     $this->page_explanation = array();
+    $this->page_explanation[]=sprintf('minimum filesize: %d', $filesize_min_all);
+    $this->page_explanation[]=sprintf('maximum filesize: %d', $filesize_max_all);
     if('mode'==$this->statistic)
     {
       $this->page_explanation[]=sprintf('subpar filesize: size < %d (min + 0.5 x (mode - min))', $filesize_min);

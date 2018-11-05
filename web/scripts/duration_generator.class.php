@@ -13,6 +13,7 @@ class duration_generator extends table_generator
     $this->standard_deviation_scale = 1;
     $this->statistic = 'mean';            // default
     $this->threshold = 60; // default 60 minutes
+    $this->par_time_range = null;
 
     // what type of duration data is here?
     $sql = sprintf(
@@ -39,6 +40,10 @@ class duration_generator extends table_generator
     $this->has_module=1<count($this->module_keys);
     if($this->has_module)
     {
+      $this->group_indicator_keys = array(
+        'time'=>$this->indicator_keys,
+        'module'=>array('total_module_sub','total_module_par','total_module_sup')
+      );
       $this->indicator_keys = array_merge($this->indicator_keys,
         array('total_module_sub','total_module_par','total_module_sup'));
     }
@@ -47,6 +52,14 @@ class duration_generator extends table_generator
   public function set_threshold($_thresh)
   {
     $this->threshold = $_thresh;
+  }
+
+  public function set_par_time_range($_range)
+  {
+    if(is_array($_range) && (2 == count($_range)  || 4 == count($_range)))
+    {
+      $this->par_time_range = $_range;
+    }
   }
 
   protected function build_data()
@@ -72,8 +85,16 @@ class duration_generator extends table_generator
     $stage_min = $res['d_min'];
     $stage_max= $res['d_max'];
 
-    $stage_time_min = max(($stage_avg - $this->standard_deviation_scale*$stage_stdev),0);
-    $stage_time_max = $stage_avg + $this->standard_deviation_scale*$stage_stdev;
+    if(null==$this->par_time_range)
+    {
+      $stage_time_min = max(($stage_avg - $this->standard_deviation_scale*$stage_stdev),0);
+      $stage_time_max = $stage_avg + $this->standard_deviation_scale*$stage_stdev;
+    }
+    else
+    {
+      $stage_time_min = $this->par_time_range[0]/60.0;
+      $stage_time_max = $this->par_time_range[1]/60.0;
+    }
 
     // build the main query
     $sql =
@@ -133,8 +154,16 @@ class duration_generator extends table_generator
       $module_min = $res['d_min'];
       $module_max= $res['d_max'];
 
-      $module_time_min = max(($module_avg - $this->standard_deviation_scale*$module_stdev),0);
-      $module_time_max = $module_avg + $this->standard_deviation_scale*$module_stdev;
+      if(null==$this->par_time_range)
+      {
+        $module_time_min = max(($module_avg - $this->standard_deviation_scale*$module_stdev),0);
+        $module_time_max = $module_avg + $this->standard_deviation_scale*$module_stdev;
+      }
+      else
+      {
+        $module_time_min = $this->par_time_range[2]/60.0;
+        $module_time_max = $this->par_time_range[3]/60.0;
+      }
 
       $sql .= sprintf(
         'sum(if(duration is null, 0, '.
@@ -183,4 +212,6 @@ class duration_generator extends table_generator
   private $has_module;
 
   private $module_keys;
+
+  private $par_time_range;
 }

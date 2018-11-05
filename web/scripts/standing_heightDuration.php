@@ -6,6 +6,18 @@ $end_date = htmlspecialchars($_POST['to']);
 $rank = htmlspecialchars($_POST['rank']);
 
 $standing_height = new duration_generator('standing_height', $rank, $begin_date, $end_date);
+
+$smin = htmlspecialchars($_POST['stage-dur-min']);
+$smax = htmlspecialchars($_POST['stage-dur-max']);
+
+if(
+  is_numeric($smin) &&
+  is_numeric($smax)
+  $smax>$smin)
+{
+  $standing_height->set_par_time_range(array($smin,$smax,$mmin,$mmax));
+}
+
 $standing_height->set_threshold(10);
 $standing_height->set_standard_deviation_scale(1);
 $standing_height->build_table_data();

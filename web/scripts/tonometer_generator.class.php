@@ -10,8 +10,16 @@ class tonometer_generator extends table_generator
     $this->indicator_keys=array(
       'total_quality_low_left','total_quality_medium_left','total_quality_high_left',
       'total_quality_low_right','total_quality_medium_right','total_quality_high_right');
+    $this->indicator_keys[]='total_curve_left';
+    $this->indicator_keys[]='total_curve_right';
 
-    $this->percent_keys = array('total_curve_left','total_curve_right') + $this->percent_keys;
+    //$this->percent_keys = array('total_curve_left','total_curve_right') + $this->percent_keys;
+
+    $this->group_indicator_keys=array(
+      'left'=>array('total_quality_low_left','total_quality_medium_left','total_quality_high_left'),
+      'right'=>array('total_quality_low_right','total_quality_medium_right','total_quality_high_right'),
+      'both'=>array('total_curve_left','total_curve_right')
+      );
   }
 
   protected function build_data()
@@ -76,7 +84,7 @@ class tonometer_generator extends table_generator
     $this->page_explanation[]='above par quality: q > 7.5';
     $this->page_explanation[]='curve availability if both pressure and applanation data are present';
   }
-
+/*
   public function build_table_data()
   {
     parent::build_table_data();
@@ -84,4 +92,5 @@ class tonometer_generator extends table_generator
     $this->indicator_keys[]='total_curve_left';
     $this->indicator_keys[]='total_curve_right';
   }
+*/  
 }

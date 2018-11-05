@@ -6,6 +6,18 @@ $end_date = htmlspecialchars($_POST['to']);
 $rank = htmlspecialchars($_POST['rank']);
 
 $chair_rise = new duration_generator('chair_rise', $rank, $begin_date, $end_date);
+
+$smin = htmlspecialchars($_POST['stage-dur-min']);
+$smax = htmlspecialchars($_POST['stage-dur-max']);
+
+if(
+  is_numeric($smin) &&
+  is_numeric($smax)
+  $smax>$smin)
+{
+  $chair_rise->set_par_time_range(array($smin,$smax,$mmin,$mmax));
+}
+
 $chair_rise->set_threshold(10);
 $chair_rise->set_standard_deviation_scale(1);
 $chair_rise->build_table_data();

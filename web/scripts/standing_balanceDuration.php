@@ -6,6 +6,18 @@ $end_date = htmlspecialchars($_POST['to']);
 $rank = htmlspecialchars($_POST['rank']);
 
 $standing_balance = new duration_generator('standing_balance', $rank, $begin_date, $end_date);
+
+$smin = htmlspecialchars($_POST['stage-dur-min']);
+$smax = htmlspecialchars($_POST['stage-dur-max']);
+
+if(
+  is_numeric($smin) &&
+  is_numeric($smax)
+  $smax>$smin)
+{
+  $standing_balance->set_par_time_range(array($smin,$smax,$mmin,$mmax));
+}
+
 $standing_balance->set_threshold(10);
 $standing_balance->set_standard_deviation_scale(1);
 $standing_balance->build_table_data();

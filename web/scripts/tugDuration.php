@@ -6,6 +6,18 @@ $end_date = htmlspecialchars($_POST['to']);
 $rank = htmlspecialchars($_POST['rank']);
 
 $tug = new duration_generator('tug', $rank, $begin_date, $end_date);
+
+$smin = htmlspecialchars($_POST['stage-dur-min']);
+$smax = htmlspecialchars($_POST['stage-dur-max']);
+
+if(
+  is_numeric($smin) &&
+  is_numeric($smax)
+  $smax>$smin)
+{
+  $tug->set_par_time_range(array($smin,$smax,$mmin,$mmax));
+}
+
 $tug->set_threshold(5);
 $tug->set_standard_deviation_scale(1);
 $tug->build_table_data();

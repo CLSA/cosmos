@@ -31,6 +31,7 @@ $date_ranges = json_encode($db->get_all( $sql ));
         'scripts/carotid_intima_cineloopTable.php',
         'scripts/carotid_intima_srTable.php',
         'scripts/carotid_intima_stillTable.php',
+        'scripts/cdttTable.php',
         'scripts/cognitive_testTable.php',
         'scripts/cognition_recordingTable.php',
         'scripts/contraindicationsTable.php',
@@ -109,113 +110,124 @@ $date_ranges = json_encode($db->get_all( $sql ));
           $('#stage').val('scripts/bloodTable.php');
           $('#duration').val('scripts/bloodDuration.php');
           if(3==num) {
-            $('#stage option[value="scripts/functional_statusTable.php"]').hide();
-            $('#stage option[value="scripts/social_networkTable.php"]').show();
-            $('#stage option[value="scripts/general_healthTable.php"]').show();
-            $('#stage option[value="scripts/spine_bone_densityTable.php"]').show();
-            $('#stage option[value="scripts/sitting_heightTable.php"]').show();
-            $('#stage option[value="scripts/osipvTable.php"]').show();
+
+            $('#stage option[value="scripts/cdttTable.php"]').show();
             $('#stage option[value="scripts/deviation_aecrfTable.php"]').show();
+            $('#stage option[value="scripts/fraxTable.php"]').show();
+            $('#stage option[value="scripts/functional_statusTable.php"]').hide();
+            $('#stage option[value="scripts/general_healthTable.php"]').show();
+            $('#stage option[value="scripts/inhome_idTable.php"]').hide();
+            $('#stage option[value="scripts/inhome_4Table.php"]').show();
+            $('#stage option[value="scripts/oseaTable.php"]').hide();
             $('#stage option[value="scripts/oseaTable.php"]').hide();
             $('#stage option[value="scripts/osonlyTable.php"]').hide();
             $('#stage option[value="scripts/quality_assurance_inhomeTable.php"]').show();
-            $('#stage option[value="scripts/fraxTable.php"]').show();
             $('#stage option[value="scripts/retinal_scan_leftTable.php"]').show();
             $('#stage option[value="scripts/retinal_scan_rightTable.php"]').show();
             $('#stage option[value="scripts/retinal_scanTable.php"]').hide();
-            $('#stage option[value="scripts/inhome_idTable.php"]').hide();
-            $('#stage option[value="scripts/inhome_4Table.php"]').show();
-            $('#duration option[value="scripts/functional_statusDuration.php"]').hide();
-            $('#duration option[value="scripts/social_networkDuration.php"]').show();
-            $('#duration option[value="scripts/general_healthDuration.php"]').show();
-            $('#duration option[value="scripts/spine_bone_densityDuration.php"]').show();
-            $('#duration option[value="scripts/sitting_heightDuration.php"]').show();
-            $('#duration option[value="scripts/osipvDuration.php"]').show();
+            $('#stage option[value="scripts/sitting_heightTable.php"]').show();
+            $('#stage option[value="scripts/social_networkTable.php"]').show();
+            $('#stage option[value="scripts/spine_bone_densityTable.php"]').show();
+
+            $('#duration option[value="scripts/body_composition_weightDuration.php"]').hide();
+            $('#duration option[value="scripts/cdttDuration.php"]').show();
             $('#duration option[value="scripts/deviation_aecrfDuration.php"]').show();
+            $('#duration option[value="scripts/fraxDuration.php"]').show();
+            $('#duration option[value="scripts/functional_statusDuration.php"]').hide();
+            $('#duration option[value="scripts/general_healthDuration.php"]').show();
+            $('#duration option[value="scripts/inhome_idDuration.php"]').hide();
+            $('#duration option[value="scripts/inhome_4Duration.php"]').show();
+            $('#duration option[value="scripts/neuropsychological_batteryDuration.php"]').hide();
             $('#duration option[value="scripts/oseaDuration.php"]').hide();
+            $('#duration option[value="scripts/osipvDuration.php"]').show();
             $('#duration option[value="scripts/osonlyDuration.php"]').hide();
             $('#duration option[value="scripts/quality_assurance_inhomeDuration.php"]').show();
-            $('#duration option[value="scripts/neuropsychological_batteryDuration.php"]').hide();
-            $('#duration option[value="scripts/stroop_fasDuration.php"]').show();
-            $('#duration option[value="scripts/body_composition_weightDuration.php"]').hide();
-            $('#duration option[value="scripts/fraxDuration.php"]').show();
             $('#duration option[value="scripts/retinal_scan_leftDuration.php"]').show();
             $('#duration option[value="scripts/retinal_scan_rightDuration.php"]').show();
             $('#duration option[value="scripts/retinal_scanDuration.php"]').hide();
-            $('#duration option[value="scripts/inhome_idDuration.php"]').hide();
-            $('#duration option[value="scripts/inhome_4Duration.php"]').show();
+            $('#duration option[value="scripts/sitting_heightDuration.php"]').show();
+            $('#duration option[value="scripts/social_networkDuration.php"]').show();
+            $('#duration option[value="scripts/spine_bone_densityDuration.php"]').show();
+            $('#duration option[value="scripts/stroop_fasDuration.php"]').show();
           } else if(2==num) {
-            $('#stage option[value="scripts/functional_statusTable.php"]').show();
-            $('#stage option[value="scripts/social_networkTable.php"]').hide();
-            $('#stage option[value="scripts/spine_bone_densityTable.php"]').show();
-            $('#stage option[value="scripts/general_healthTable.php"]').show();
-            $('#stage option[value="scripts/sitting_heightTable.php"]').hide();
-            $('#stage option[value="scripts/osipvTable.php"]').hide();
+
+            $('#stage option[value="scripts/cdttTable.php"]').hide();
             $('#stage option[value="scripts/deviation_aecrfTable.php"]').hide();
-            $('#stage option[value="scripts/oseaTable.php"]').show();
-            $('#stage option[value="scripts/osonlyTable.php"]').show();
             $('#stage option[value="scripts/fraxTable.php"]').show();
+            $('#stage option[value="scripts/functional_statusTable.php"]').show();
+            $('#stage option[value="scripts/general_healthTable.php"]').show();
+            $('#stage option[value="scripts/inhome_idTable.php"]').hide();
+            $('#stage option[value="scripts/inhome_4Table.php"]').show();
+            $('#stage option[value="scripts/oseaTable.php"]').show();
+            $('#stage option[value="scripts/osipvTable.php"]').hide();
+            $('#stage option[value="scripts/osonlyTable.php"]').show();
             $('#stage option[value="scripts/quality_assurance_inhomeTable.php"]').show();
             $('#stage option[value="scripts/retinal_scan_leftTable.php"]').show();
             $('#stage option[value="scripts/retinal_scan_rightTable.php"]').show();
             $('#stage option[value="scripts/retinal_scanTable.php"]').hide();
-            $('#stage option[value="scripts/inhome_idTable.php"]').hide();
-            $('#stage option[value="scripts/inhome_4Table.php"]').show();
-            $('#duration option[value="scripts/functional_statusDuration.php"]').show();
-            $('#duration option[value="scripts/social_networkDuration.php"]').hide();
-            $('#duration option[value="scripts/spine_bone_densityDuration.php"]').show();
-            $('#duration option[value="scripts/general_healthDuration.php"]').show();
-            $('#duration option[value="scripts/sitting_heightDuration.php"]').hide();
-            $('#duration option[value="scripts/osipvDuration.php"]').hide();
+            $('#stage option[value="scripts/sitting_heightTable.php"]').hide();
+            $('#stage option[value="scripts/social_networkTable.php"]').hide();
+            $('#stage option[value="scripts/spine_bone_densityTable.php"]').show();
+
+            $('#duration option[value="scripts/body_composition_weightDuration.php"]').show();
+            $('#duration option[value="scripts/cdttDuration.php"]').hide();
             $('#duration option[value="scripts/deviation_aecrfDuration.php"]').hide();
+            $('#duration option[value="scripts/fraxDuration.php"]').show();
+            $('#duration option[value="scripts/functional_statusDuration.php"]').show();
+            $('#duration option[value="scripts/general_healthDuration.php"]').show();
+            $('#duration option[value="scripts/inhome_idDuration.php"]').hide();
+            $('#duration option[value="scripts/inhome_4Duration.php"]').show();
+            $('#duration option[value="scripts/neuropsychological_batteryDuration.php"]').show();
+            $('#duration option[value="scripts/osipvDuration.php"]').hide();
             $('#duration option[value="scripts/oseaDuration.php"]').show();
             $('#duration option[value="scripts/osonlyDuration.php"]').show();
             $('#duration option[value="scripts/quality_assurance_inhomeDuration.php"]').show();
-            $('#duration option[value="scripts/neuropsychological_batteryDuration.php"]').show();
-            $('#duration option[value="scripts/stroop_fasDuration.php"]').hide();
-            $('#duration option[value="scripts/body_composition_weightDuration.php"]').show();
-            $('#duration option[value="scripts/fraxDuration.php"]').show();
             $('#duration option[value="scripts/retinal_scan_leftDuration.php"]').show();
             $('#duration option[value="scripts/retinal_scan_rightDuration.php"]').show();
             $('#duration option[value="scripts/retinal_scanDuration.php"]').hide();
-            $('#duration option[value="scripts/inhome_idDuration.php"]').hide();
-            $('#duration option[value="scripts/inhome_4Duration.php"]').show();
+            $('#duration option[value="scripts/sitting_heightDuration.php"]').hide();
+            $('#duration option[value="scripts/social_networkDuration.php"]').hide();
+            $('#duration option[value="scripts/spine_bone_densityDuration.php"]').show();
+            $('#duration option[value="scripts/stroop_fasDuration.php"]').hide();
           } else if(1==num) {
-            $('#stage option[value="scripts/sitting_heightTable.php"]').hide();
-            $('#stage option[value="scripts/general_healthTable.php"]').hide();
-            $('#stage option[value="scripts/social_networkTable.php"]').hide();
-            $('#stage option[value="scripts/spine_bone_densityTable.php"]').hide();
-            $('#stage option[value="scripts/sitting_heightTable.php"]').show();
-            $('#stage option[value="scripts/osipvTable.php"]').hide();
+
+            $('#stage option[value="scripts/cdttTable.php"]').hide();
             $('#stage option[value="scripts/deviation_aecrfTable.php"]').hide();
-            $('#stage option[value="scripts/oseaTable.php"]').hide();
-            $('#stage option[value="scripts/osonlyTable.php"]').hide();
             $('#stage option[value="scripts/fraxTable.php"]').hide();
+            $('#stage option[value="scripts/general_healthTable.php"]').hide();
+            $('#stage option[value="scripts/inhome_idTable.php"]').show();
+            $('#stage option[value="scripts/inhome_4Table.php"]').hide();
+            $('#stage option[value="scripts/osipvTable.php"]').hide();
+            $('#stage option[value="scripts/oseaTable.php"]').hide();
+            $('#stage option[value="scripts/osipvTable.php"]').hide();
+            $('#stage option[value="scripts/osonlyTable.php"]').hide();
             $('#stage option[value="scripts/quality_assurance_inhomeTable.php"]').hide();
             $('#stage option[value="scripts/retinal_scan_leftTable.php"]').hide();
             $('#stage option[value="scripts/retinal_scan_rightTable.php"]').hide();
             $('#stage option[value="scripts/retinal_scanTable.php"]').show();
-            $('#stage option[value="scripts/inhome_idTable.php"]').show();
-            $('#stage option[value="scripts/inhome_4Table.php"]').hide();
-            $('#duration option[value="scripts/sitting_heightDuration.php"]').hide();
-            $('#duration option[value="scripts/general_healthDuration.php"]').hide();
-            $('#duration option[value="scripts/social_networkDuration.php"]').hide();
-            $('#duration option[value="scripts/spine_bone_densityDuration.php"]').hide();
-            $('#duration option[value="scripts/sitting_heightDuration.php"]').show();
-            $('#duration option[value="scripts/osipvDuration.php"]').hide();
+            $('#stage option[value="scripts/sitting_heightTable.php"]').hide();
+            $('#stage option[value="scripts/social_networkTable.php"]').hide();
+            $('#stage option[value="scripts/spine_bone_densityTable.php"]').hide();
+
+            $('#duration option[value="scripts/body_composition_weightDuration.php"]').hide();
+            $('#duration option[value="scripts/cdttDuration.php"]').hide();
             $('#duration option[value="scripts/deviation_aecrfDuration.php"]').hide();
+            $('#duration option[value="scripts/fraxDuration.php"]').hide();
+            $('#duration option[value="scripts/general_healthDuration.php"]').hide();
+            $('#duration option[value="scripts/inhome_idDuration.php"]').show();
+            $('#duration option[value="scripts/inhome_4Duration.php"]').hide();
+            $('#duration option[value="scripts/neuropsychological_batteryDuration.php"]').show();
+            $('#duration option[value="scripts/osipvDuration.php"]').hide();
             $('#duration option[value="scripts/oseaDuration.php"]').hide();
             $('#duration option[value="scripts/osonlyDuration.php"]').hide();
             $('#duration option[value="scripts/quality_assurance_inhomeDuration.php"]').hide();
-            $('#duration option[value="scripts/neuropsychological_batteryDuration.php"]').show();
-            $('#duration option[value="scripts/stroop_fasDuration.php"]').hide();
-            $('#duration option[value="scripts/body_composition_weightDuration.php"]').hide();
-            $('#duration option[value="scripts/fraxDuration.php"]').hide();
             $('#duration option[value="scripts/retinal_scan_leftDuration.php"]').hide();
             $('#duration option[value="scripts/retinal_scan_rightDuration.php"]').hide();
             $('#duration option[value="scripts/retinal_scanDuration.php"]').show();
-            $('#duration option[value="scripts/inhome_idDuration.php"]').show();
-            $('#duration option[value="scripts/inhome_4Duration.php"]').hide();
+            $('#duration option[value="scripts/sitting_heightDuration.php"]').show();
+            $('#duration option[value="scripts/social_networkDuration.php"]').hide();
+            $('#duration option[value="scripts/spine_bone_densityDuration.php"]').hide();
+            $('#duration option[value="scripts/stroop_fasDuration.php"]').hide();
           }
           $('#from').val(date_ranges[num].min_date);
           $('#to').val(date_ranges[num].max_date);
@@ -236,7 +248,7 @@ $date_ranges = json_encode($db->get_all( $sql ));
           <li>Select an interview stage</li>
         </ul>
       </span>
-      <form id="qacform" action="scripts/grip_strengthTable.php" method="POST">
+      <form id="qacform" action="scripts/bloodTable.php" method="POST">
         <div>
           <label for="rank">Wave:</label>
           <input type="number" id="rank" name="rank"
@@ -256,6 +268,7 @@ $date_ranges = json_encode($db->get_all( $sql ));
             <option value="scripts/bloodTable.php">Blood Qnaire</option>
             <option value="scripts/blood_pressureTable.php">Blood Pressure</option>
             <option value="scripts/body_composition_weightTable.php">Body Composition Weight</option>
+            <option value="scripts/cdttTable.php">CDTT</option>
             <option value="scripts/chair_riseTable.php">Chair Rise</option>
             <option value="scripts/cognition_recordingTable.php">Cognition Recording</option>
             <option value="scripts/cognitive_testTable.php">Cognitive Test</option>
@@ -315,6 +328,12 @@ $date_ranges = json_encode($db->get_all( $sql ));
             <option value="mean">Mean Calculation</option>
           </select>
         </div>
+        <div>
+          <label for="par-qac-min">Par min:</label>
+          <input type="text" id="par-qac-min" name="par-qac-min"><br>
+          <label for="par-qac-max">Par max:</label>
+          <input type="text" id="par-qac-max" name="par-qac-max"><br>
+        </div>
         <div class="button">
           <button type="submit" name="button_stage" value="stage">Request Data</button>
         </div>
@@ -324,6 +343,7 @@ $date_ranges = json_encode($db->get_all( $sql ));
             <option value="scripts/bloodDuration.php">Blood Qnaire</option>
             <option value="scripts/blood_pressureDuration.php">Blood Pressure</option>
             <option value="scripts/body_composition_weightDuration.php">Body Composition Weight</option>
+            <option value="scripts/cdttDuration.php">CDTT</option>
             <option value="scripts/chair_riseDuration.php">Chair Rise</option>
             <option value="scripts/cognition_recordingDuration.php">Cognition Recording</option>
             <option value="scripts/cognitive_testDuration.php">Cognitive Test</option>
@@ -374,6 +394,16 @@ $date_ranges = json_encode($db->get_all( $sql ));
             <option value="scripts/vision_acuityDuration.php">Vision Acuity</option>
             <option value="scripts/weightDuration.php">Weight</option>
           </select>
+        </div>
+        <div>
+          <label for="stage-dur-min">Stage par min:</label>
+          <input type="text" id="stage-dur-min" name="stage-dur-min"><br>
+          <label for="stage-dur-max">Stage par max:</label>
+          <input type="text" id="stage-dur-max" name="stage-dur-max"><br>
+          <label for="module-dur-min">Module par min:</label>
+          <input type="text" id="module-dur-min" name="module-dur-min"><br>
+          <label for="module-dur-max">Module par max:</label>
+          <input type="text" id="module-dur-max" name="module-dur-max"><br>
         </div>
         <div class="button">
           <button type="submit" name="button_duration" value="duration">Request Data</button>

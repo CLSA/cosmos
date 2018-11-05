@@ -11,6 +11,7 @@ class carotid_intima_generator extends table_generator
     $this->statistic = 'mean'; // default
     $this->standard_deviation_scale= 2;  // default
     $this->set_file_type( 'cineloop' );
+    $this->group_indicator_keys=array('filesize'=>$this->indicator_keys);
   }
 
   public function set_file_type( $_file_type )
@@ -139,7 +140,7 @@ class carotid_intima_generator extends table_generator
     {
       $sum_sql[] = sprintf(
         'sum(if(qcdata is null, 0, '.
-        'if(cast(trim("}" from substring_index(substring_index(qcdata,",",%d),":",-1)) as unsigned)<%d,1,0))) ', $item, $filesize_min);
+        'if(cast(trim("}" from substring_index(substring_index(qcdata,",",%d),":",-1)) as unsigned) between 1 and %d,1,0))) ', $item, $filesize_min);
     }
     $sql .= implode( '+', $sum_sql ) . ' as total_filesize_sub, ';
 
@@ -168,11 +169,11 @@ class carotid_intima_generator extends table_generator
     $and_sql = array();
     foreach($file_left as $index)
     {
-      $and_sql[] = sprintf('cast(trim("}" from substring_index(substring_index(qcdata,",",%d),":",-1)) as signed)>0', $index);
+      $and_sql[] = sprintf('cast(trim("}" from substring_index(substring_index(qcdata,",",%d),":",-1)) as unsigned)>0', $index);
     }
     foreach($file_right as $index)
     {
-      $and_sql[] = sprintf('cast(trim("}" from substring_index(substring_index(qcdata,",",%d),":",-1)) as signed)=0', $index);
+      $and_sql[] = sprintf('cast(trim("}" from substring_index(substring_index(qcdata,",",%d),":",-1)) as unsigned)=0', $index);
     }
     $sql .= 'sum(if(qcdata is null, 0, if( ' .
              implode( ' and ', $and_sql ) . ',1,0))) as total_left_' . $this->file_type . '_only, ';
@@ -180,11 +181,11 @@ class carotid_intima_generator extends table_generator
     $and_sql = array();
     foreach($file_right as $index)
     {
-      $and_sql[] = sprintf('cast(trim("}" from substring_index(substring_index(qcdata,",",%d),":",-1)) as signed)>0', $index);
+      $and_sql[] = sprintf('cast(trim("}" from substring_index(substring_index(qcdata,",",%d),":",-1)) as unsigned)>0', $index);
     }
     foreach($file_left as $index)
     {
-      $and_sql[] = sprintf('cast(trim("}" from substring_index(substring_index(qcdata,",",%d),":",-1)) as signed)=0', $index);
+      $and_sql[] = sprintf('cast(trim("}" from substring_index(substring_index(qcdata,",",%d),":",-1)) as unsigned)=0', $index);
     }
     $sql .= 'sum(if(qcdata is null, 0, if( ' .
              implode( ' and ', $and_sql ) . ',1,0))) as total_right_' . $this->file_type . '_only, ';
@@ -192,11 +193,11 @@ class carotid_intima_generator extends table_generator
     $and_sql = array();
     foreach($file_right as $index)
     {
-      $and_sql[] = sprintf('cast(trim("}" from substring_index(substring_index(qcdata,",",%d),":",-1)) as signed)>0', $index);
+      $and_sql[] = sprintf('cast(trim("}" from substring_index(substring_index(qcdata,",",%d),":",-1)) as unsigned)>0', $index);
     }
     foreach($file_left as $index)
     {
-      $and_sql[] = sprintf('cast(trim("}" from substring_index(substring_index(qcdata,",",%d),":",-1)) as signed)>0', $index);
+      $and_sql[] = sprintf('cast(trim("}" from substring_index(substring_index(qcdata,",",%d),":",-1)) as unsigned)>0', $index);
     }
     $sql .= 'sum(if(qcdata is null, 0, if( ' .
              implode( ' and ', $and_sql ) . ',1,0))) as total_both_' . $this->file_type . ', ';
