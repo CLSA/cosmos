@@ -30,6 +30,7 @@ abstract class table_generator
 
     $this->data = array();
     $this->indicator_keys = array();
+    $this->group_indicator_keys = null;
     $this->percent_keys = array('total_skip','total_unexplained_missing','total_contraindicated');
     $this->total_keys = array();
     $this->site_list = array();
@@ -37,8 +38,8 @@ abstract class table_generator
     $this->page_stage = str_replace('_',' ',strtoupper($this->name));
     $this->page_explanation = array();
 
-    $this->statistic=null;
-    $this->standard_deviation_scale=null;
+    $this->statistic = null;
+    $this->standard_deviation_scale = null;
   }
 
   public function set_statistic($_stat)
@@ -145,20 +146,48 @@ abstract class table_generator
     $all_total = $this->site_data_list['ALL']['totals']['total_interview'];
     foreach( $this->site_data_list as $site=>$site_data )
     {
-      $qc_total = 0;
-      foreach( $this->indicator_keys as $key )
-        $qc_total += $site_data['totals'][$key];
-      if( 0 < $qc_total )
+      $site_total = $site_data['totals']['total_interview'];
+      if(null !== $this->group_indicator_keys)
       {
-        foreach( $this->indicator_keys as $key )
+        $qc_total =
+         array_combine(
+           array_keys($this->group_indicator_keys),
+           array_fill(0,count($this->group_indicator_keys),0));
+        foreach($this->group_indicator_keys as $group=>$indicator_keys)
         {
-          $value = $this->site_data_list[$site]['totals'][$key] ;
-          if( 0 < $value )
-            $this->site_data_list[$site]['totals'][$key] = sprintf( '%d</br>(%d)',
-              $value, round( 100.0 * $value / $qc_total ) );
+
+          foreach( $indicator_keys as $key )
+            $qc_total[$group] += $site_data['totals'][$key];
+          if( 0 < $qc_total[$group] && 0 < $site_total )
+          {
+            foreach( $indicator_keys as $key )
+            {
+              $value = $this->site_data_list[$site]['totals'][$key] ;
+              if( 0 < $value )
+                $this->site_data_list[$site]['totals'][$key] = sprintf( '%d</br>(%d)',
+                  //$value, round( 100.0 * $value / $site_total ) );
+                  $value, round( 100.0 * $value / $qc_total[$group] ) );
+            }
+          }
         }
       }
-      $site_total = $site_data['totals']['total_interview'];
+      else
+      {
+        $qc_total = 0;
+        foreach( $this->indicator_keys as $key )
+          $qc_total += $site_data['totals'][$key];
+        if( 0 < $qc_total && 0 < $site_total )
+        {
+          foreach( $this->indicator_keys as $key )
+          {
+            $value = $this->site_data_list[$site]['totals'][$key] ;
+            if( 0 < $value )
+              $this->site_data_list[$site]['totals'][$key] = sprintf( '%d</br>(%d)',
+                $value, round( 100.0 * $value / $site_total ) );
+                //$value, round( 100.0 * $value / $qc_total ) );
+          }
+        }
+      }
       if( 0 < $site_total )
       {
         foreach( $this->percent_keys as $key )
@@ -178,17 +207,44 @@ abstract class table_generator
 
       foreach( $site_data['technicians'] as $tech => $row )
       {
-        $qc_total = 0;
-        foreach( $this->indicator_keys as $key )
-          $qc_total += $row[$key];
-        if( 0 < $qc_total )
+        if(null !== $this->group_indicator_keys)
         {
-          foreach( $this->indicator_keys as $key )
+          $qc_total =
+           array_combine(
+             array_keys($this->group_indicator_keys),
+             array_fill(0,count($this->group_indicator_keys),0));
+          foreach($this->group_indicator_keys as $group=>$indicator_keys)
           {
-            $value = $row[$key];
-            if( 0 < $value )
-              $this->site_data_list[$site]['technicians'][$tech][$key] = sprintf( '%d</br>(%d)',
-                $value, round( 100.0 * $value / $qc_total ) );
+            foreach( $indicator_keys as $key )
+              $qc_total[$group] += $site_data['totals'][$key];
+            if( 0 < $qc_total[$group] && 0 < $site_total )
+            {
+              foreach( $indicator_keys as $key )
+              {
+                $value = $row[$key];
+                if( 0 < $value )
+                  $this->site_data_list[$site]['technicians'][$tech][$key] = sprintf( '%d</br>(%d)',
+                    $value, round( 100.0 * $value / $site_total ) );
+                    //$value, round( 100.0 * $value / $qc_total[$group] ) );
+              }
+            }
+          }
+        }
+        else
+        {
+          $qc_total = 0;
+          foreach( $this->indicator_keys as $key )
+            $qc_total += $row[$key];
+          if( 0 < $qc_total && 0 < $site_total )
+          {
+            foreach( $this->indicator_keys as $key )
+            {
+              $value = $row[$key];
+              if( 0 < $value )
+                $this->site_data_list[$site]['technicians'][$tech][$key] = sprintf( '%d</br>(%d)',
+                  $value, round( 100.0 * $value / $site_total ) );
+                  //$value, round( 100.0 * $value / $qc_total ) );
+            }
           }
         }
         $total = $row['total_interview'];
@@ -384,6 +440,8 @@ return <<< HTML
     </html>
 HTML;
   }
+
+  protected $group_indicator_keys;
 
   protected $data;
 
