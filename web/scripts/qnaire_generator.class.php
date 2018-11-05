@@ -142,6 +142,8 @@ class qnaire_generator extends table_generator
         'if(cast(substring_index(substring_index(qcdata,",",1),":",-1) as signed)>%d,1,0))) as total_complete_sup, ',$complete_perc_max);
       $this->indicator_keys[] = 'total_complete_sup';
     }
+    $this->group_indicator_keys = array('complete'=>$this->indicator_keys);
+   
     if($this->module_refusal)
     {
       // get the names of the modules
@@ -160,9 +162,15 @@ class qnaire_generator extends table_generator
       }
       preg_match_all('/,(.*?):/',$res,$module_name_list);
       $module_name_list = array_pop($module_name_list);
-      for($i=0;$i<count($module_name_list);$i++)
+
+      $this->group_indicator_keys['module'] = array();
+
+      for( $i = 0; $i < count($module_name_list); $i++ )
       {
-        $this->indicator_keys []='total_refusal_'.$module_name_list[$i];
+        $refusal_key = 'total_refusal_'.$module_name_list[$i];
+        $this->indicator_keys[] = $refusal_key;
+        $this->group_indicator_keys['module'][] = $refusal_key;
+
         $sql .= sprintf(
           'sum(if(qcdata is null, 0, '.
           'if(cast(substring_index(substring_index(qcdata,",",%d),":",-1) as decimal(6,3))>%s,1,0))) as total_refusal_%s, ',
