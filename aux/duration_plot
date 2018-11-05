@@ -563,7 +563,7 @@ function plot_qac_field($field, $input_rank, $input_type, $input_bin, $input_per
     $percentile = intval(round($percent));
 
     // scale the percentile for line plotting
-    $plotdata[] = array('',$time_bin,$frequency $percentile*$freqmax/100.0);
+    $plotdata[] = array('',$time_bin,$frequency, $percentile*$freqmax/100.0);
 
     if($percentile > $current_percentile_bin)
     {
