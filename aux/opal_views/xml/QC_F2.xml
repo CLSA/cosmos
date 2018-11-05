@@ -134,6 +134,9 @@
       <table inner="false" class="org.obiba.magma.support.ValueTableReference">
         <reference>clsa-dcs-f2.QualityAssuranceIH</reference>
       </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs-f2.CDTT</reference>
+      </table>
     </list>
   </from>
   <select class="org.obiba.magma.views.support.NoneClause"/>
@@ -3950,8 +3953,51 @@ res</attribute>
 ).value() ? 1 : 0</attribute>
         </attributes>
       </variable>
+      <variable name="stage_technician_cdtt" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;clsa-dcs-f2.CDTT:InstrumentRun.user&apos;).whenNull(
+  $group(&apos;Admin.Action.stage&apos;,&apos;CDTT&apos;,&apos;Admin.Action.user&apos;).asSequence().last()).lowerCase()</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_skip_cdtt" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var action=$group(&apos;Admin.Action.stage&apos;,&apos;CDTT&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
+var res=$group(&apos;Admin.Action.stage&apos;,&apos;CDTT&apos;,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
+  return action.indexOf(&apos;SKIP&apos;)==i
+  }).last()
+if(res.isNull().not().value()) {
+  res=newValue(res.value().slice(14),&apos;text&apos;)
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_contraindicated_cdtt" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,&apos;CDTT&apos;,
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;).value()
+? 1 : 0</attribute>
+        </attributes>
+      </variable>
+      <variable name="data_qac_cdtt" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var f=$(&apos;clsa-dcs-f2.CDTT:RESULT_FILE&apos;)
+var res=null
+if(f.isNull().not().value()) {
+  res = newValue(&apos;{filesize:&apos;+f.length()+&apos;}&apos;,&apos;text&apos;)
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="data_missing_cdtt" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$this(&apos;data_qac_cdtt&apos;).isNull().and(
+  $this(&apos;stage_contraindicated_cdtt&apos;).eq(0),
+  $this(&apos;stage_skip_cdtt&apos;).isNull()
+).value() ? 1 : 0</attribute>
+        </attributes>
+      </variable>
     </variables>
   </variables>
   <created valueType="datetime">2018-05-15T13:40:50.956-04</created>
-  <updated valueType="datetime">2018-10-13T14:00:46.278-04</updated>
+  <updated valueType="datetime">2018-11-05T11:09:14.861-05</updated>
 </org.obiba.magma.views.View>
