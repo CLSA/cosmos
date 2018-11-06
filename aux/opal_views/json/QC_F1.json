@@ -17,6 +17,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_technician_spirometry", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -33,6 +34,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "interview_site", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -49,6 +51,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_missing_spirometry", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -65,6 +68,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_skip_spirometry", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -81,6 +85,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_contraindicated_spirometry", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -102,6 +107,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "interview_start_date", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "date"
@@ -127,6 +133,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "interview_barcode", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -143,6 +150,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_spirometry", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -159,6 +167,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_technician_grip_strength", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -175,6 +184,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_contraindicated_grip_strength", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -191,6 +201,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_skip_grip_strength", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -207,6 +218,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_missing_grip_strength", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -223,6 +235,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_grip_strength", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -239,6 +252,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_technician_blood_pressure", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -255,6 +269,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_contraindicated_blood_pressure", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -271,6 +286,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_skip_blood_pressure", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -287,6 +303,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_missing_blood_pressure", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -303,6 +320,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_blood_pressure", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -319,6 +337,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_technician_ecg", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -335,6 +354,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_contraindicated_ecg", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -351,6 +371,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_skip_ecg", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -367,6 +388,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_missing_ecg", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -383,6 +405,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_ecg", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -399,6 +422,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_technician_cognitive_test", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -415,6 +439,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_contraindicated_cognitive_test", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -431,6 +456,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_skip_cognitive_test", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -447,6 +473,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_missing_cognitive_test", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -463,6 +490,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_cognitive_test", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -479,6 +507,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_technician_hearing", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -495,6 +524,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_contraindicated_hearing", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -511,6 +541,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_skip_hearing", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -527,6 +558,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_missing_hearing", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -543,6 +575,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_hearing", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -559,6 +592,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_technician_tonometer", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -575,6 +609,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_contraindicated_tonometer", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -591,6 +626,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_skip_tonometer", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -607,6 +643,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_missing_tonometer", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -623,6 +660,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_tonometer", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -639,6 +677,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_technician_weight", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -655,6 +694,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_contraindicated_weight", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -671,6 +711,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_skip_weight", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -687,6 +728,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_missing_weight", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -703,6 +745,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_weight", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -719,6 +762,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_technician_retinal_scan_left", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -735,6 +779,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_contraindicated_retinal_scan_left", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -751,6 +796,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_skip_retinal_scan_left", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -767,6 +813,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_missing_retinal_scan_left", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -783,6 +830,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_retinal_scan_left", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -799,6 +847,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_technician_retinal_scan_right", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -815,6 +864,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_contraindicated_retinal_scan_right", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -831,6 +881,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_skip_retinal_scan_right", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -847,6 +898,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_missing_retinal_scan_right", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -863,6 +915,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_retinal_scan_right", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -879,6 +932,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_technician_lateral_bone_density", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -895,6 +949,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_contraindicated_lateral_bone_density", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -911,6 +966,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_skip_lateral_bone_density", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -927,6 +983,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_missing_lateral_bone_density", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -943,6 +1000,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_lateral_bone_density", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -959,6 +1017,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_technician_standing_height", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -975,6 +1034,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_contraindicated_standing_height", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -991,6 +1051,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_skip_standing_height", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1007,6 +1068,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_missing_standing_height", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -1023,6 +1085,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_standing_height", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1039,6 +1102,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_technician_spine_bone_density", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1055,6 +1119,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_contraindicated_spine_bone_density", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -1071,6 +1136,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_skip_spine_bone_density", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1087,6 +1153,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_missing_spine_bone_density", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -1103,6 +1170,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_spine_bone_density", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1119,6 +1187,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_technician_forearm_bone_density", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1135,6 +1204,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_contraindicated_forearm_bone_density", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -1151,6 +1221,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_skip_forearm_bone_density", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1167,6 +1238,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_missing_forearm_bone_density", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -1183,6 +1255,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_forearm_bone_density", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1199,6 +1272,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_technician_whole_body_bone_density", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1215,6 +1289,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_contraindicated_whole_body_bone_density", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -1231,6 +1306,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_skip_whole_body_bone_density", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1247,6 +1323,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_missing_whole_body_bone_density", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -1263,6 +1340,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_whole_body_bone_density", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1279,6 +1357,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_technician_dual_hip_bone_density", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1295,6 +1374,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_contraindicated_dual_hip_bone_density", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -1311,6 +1391,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_skip_dual_hip_bone_density", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1327,6 +1408,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_missing_dual_hip_bone_density", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -1343,6 +1425,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_dual_hip_bone_density", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1359,6 +1442,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_technician_carotid_intima", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1375,6 +1459,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_contraindicated_carotid_intima", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -1391,6 +1476,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_skip_carotid_intima", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1407,6 +1493,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_missing_carotid_intima", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -1423,6 +1510,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_carotid_intima", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1439,6 +1527,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_technician_tug", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1455,6 +1544,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_contraindicated_tug", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -1471,6 +1561,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_skip_tug", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1487,6 +1578,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_missing_tug", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -1503,6 +1595,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_tug", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1519,6 +1612,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_technician_chair_rise", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1535,6 +1629,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_contraindicated_chair_rise", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -1551,6 +1646,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_skip_chair_rise", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1567,6 +1663,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_missing_chair_rise", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -1583,6 +1680,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_chair_rise", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1599,6 +1697,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_technician_hips_waist", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1615,6 +1714,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_contraindicated_hips_waist", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -1631,6 +1731,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_skip_hips_waist", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1647,6 +1748,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_missing_hips_waist", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -1663,6 +1765,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_hips_waist", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1679,6 +1782,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_technician_neuropsychological_battery", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1695,6 +1799,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_contraindicated_neuropsychological_battery", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -1711,6 +1816,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_skip_neuropsychological_battery", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1727,6 +1833,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_missing_neuropsychological_battery", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -1743,6 +1850,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_neuropsychological_battery", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1759,6 +1867,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_technician_standing_balance", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1775,6 +1884,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_contraindicated_standing_balance", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -1791,6 +1901,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_skip_standing_balance", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1807,6 +1918,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_missing_standing_balance", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -1823,6 +1935,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_standing_balance", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1839,6 +1952,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_technician_four_metre_walk", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1855,6 +1969,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_contraindicated_four_metre_walk", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -1871,6 +1986,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_skip_four_metre_walk", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1887,6 +2003,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_missing_four_metre_walk", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -1903,6 +2020,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_four_metre_walk", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1919,6 +2037,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_technician_vision_acuity", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1935,6 +2054,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_contraindicated_vision_acuity", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -1951,6 +2071,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_skip_vision_acuity", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1967,6 +2088,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_missing_vision_acuity", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -1983,6 +2105,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_vision_acuity", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -1999,6 +2122,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_technician_event_pmt", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -2015,6 +2139,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_skip_event_pmt", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -2031,6 +2156,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_contraindicated_event_pmt", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -2047,6 +2173,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_event_pmt", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -2063,6 +2190,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_missing_event_pmt", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -2079,6 +2207,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_technician_disease_symptoms", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -2095,6 +2224,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_skip_disease_symptoms", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -2111,6 +2241,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_contraindicated_disease_symptoms", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -2127,6 +2258,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_disease_symptoms", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -2143,6 +2275,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_missing_disease_symptoms", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -2159,6 +2292,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_technician_conclusion_questionnaire", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -2175,6 +2309,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_skip_conclusion_questionnaire", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -2191,6 +2326,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_contraindicated_conclusion_questionnaire", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -2207,6 +2343,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_conclusion_questionnaire", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -2223,6 +2360,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_missing_conclusion_questionnaire", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -2239,6 +2377,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_technician_bone_density_questionnaire", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -2255,6 +2394,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_skip_bone_density_questionnaire", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -2271,6 +2411,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_contraindicated_bone_density_questionnaire", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -2287,6 +2428,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_bone_density_questionnaire", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -2303,6 +2445,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_missing_bone_density_questionnaire", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -2319,6 +2462,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_technician_hearing_questionnaire", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -2335,6 +2479,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_skip_hearing_questionnaire", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -2351,6 +2496,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_contraindicated_hearing_questionnaire", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -2367,6 +2513,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_hearing_questionnaire", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -2383,6 +2530,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_missing_hearing_questionnaire", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -2399,6 +2547,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_technician_functional_status", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -2415,6 +2564,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_skip_functional_status", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -2431,6 +2581,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_contraindicated_functional_status", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -2447,6 +2598,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_functional_status", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -2463,6 +2615,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_missing_functional_status", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -2479,6 +2632,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_technician_time_based_pmt", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -2495,6 +2649,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_skip_time_based_pmt", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -2511,6 +2666,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_contraindicated_time_based_pmt", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -2527,6 +2683,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_time_based_pmt", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -2543,6 +2700,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_missing_time_based_pmt", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -2559,6 +2717,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_contraindicated_consent", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -2575,6 +2734,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_missing_consent", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -2591,6 +2751,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_consent", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -2607,6 +2768,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_technician_consent", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -2623,6 +2785,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_skip_consent", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -2639,6 +2802,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_technician_contraindications", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -2655,6 +2819,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_skip_contraindications", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -2671,6 +2836,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_contraindicated_contraindications", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -2687,6 +2853,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_contraindications", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -2703,6 +2870,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_missing_contraindications", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -2719,6 +2887,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_technician_frax", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -2735,6 +2904,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_contraindicated_frax", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -2751,6 +2921,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_frax", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -2767,6 +2938,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_missing_frax", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -2783,6 +2955,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_skip_frax", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -2799,6 +2972,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_technician_general_health", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -2815,6 +2989,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_skip_general_health", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -2831,6 +3006,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_contraindicated_general_health", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -2847,6 +3023,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_general_health", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -2863,6 +3040,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_missing_general_health", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -2879,6 +3057,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_technician_urine", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -2895,6 +3074,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_skip_urine", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -2911,6 +3091,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_contraindicated_urine", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -2927,6 +3108,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_urine", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -2943,6 +3125,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_missing_urine", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -2959,6 +3142,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_technician_blood", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -2975,6 +3159,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_skip_blood", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -2991,6 +3176,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_blood", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -3007,6 +3193,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_missing_blood", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -3023,6 +3210,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_contraindicated_blood", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -3039,6 +3227,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "group_blood", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -3055,6 +3244,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_technician_deviation_aecrf", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -3071,6 +3261,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_skip_deviation_aecrf", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -3087,6 +3278,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_contraindicated_deviation_aecrf", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -3103,6 +3295,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_deviation_aecrf", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -3119,6 +3312,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_missing_deviation_aecrf", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -3135,6 +3329,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_technician_body_composition_weight", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -3151,6 +3346,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_skip_body_composition_weight", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -3167,6 +3363,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_contraindicated_body_composition_weight", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -3183,6 +3380,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_body_composition_weight", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -3199,6 +3397,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_missing_body_composition_weight", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -3215,6 +3414,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_technician_quality_assurance_inhome", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -3231,6 +3431,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_skip_quality_assurance_inhome", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -3247,6 +3448,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_contraindicated_quality_assurance_inhome", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -3263,6 +3465,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_quality_assurance_inhome", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -3279,6 +3482,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_missing_quality_assurance_inhome", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -3295,6 +3499,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_contraindicated_height_weight", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -3311,6 +3516,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_height_weight", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -3327,6 +3533,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_missing_height_weight", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -3343,6 +3550,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_technician_neuropsychological_battery_scoring", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -3359,6 +3567,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_skip_neuropsychological_battery_scoring", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -3375,6 +3584,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_contraindicated_neuropsychological_battery_scoring", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -3391,6 +3601,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_neuropsychological_battery_scoring", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -3407,6 +3618,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_missing_neuropsychological_battery_scoring", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -3423,6 +3635,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_technician_osea", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -3439,6 +3652,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_skip_osea", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -3455,6 +3669,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_contraindicated_osea", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -3471,6 +3686,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_osea", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -3487,6 +3703,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_missing_osea", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -3503,6 +3720,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_technician_osonly", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -3519,6 +3737,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_skip_osonly", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -3535,6 +3754,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_contraindicated_osonly", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -3551,6 +3771,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_osonly", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -3567,6 +3788,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_missing_osonly", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -3583,6 +3805,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_technician_height_weight", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -3599,6 +3822,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_skip_height_weight", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -3615,6 +3839,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_qac_cognition_recording", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -3631,6 +3856,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "data_missing_cognition_recording", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -3647,6 +3873,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_technician_cognition_recording", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -3663,6 +3890,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_contraindicated_cognition_recording", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
@@ -3679,6 +3907,7 @@
         "isRepeatable": false, 
         "mimeType": "", 
         "name": "stage_skip_cognition_recording", 
+        "occurrenceGroup": "", 
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "text"
@@ -3728,7 +3957,11 @@
     "clsa-dcs-f1.OSOnly", 
     "clsa-dcs-f1.QualityAssuranceIH", 
     "clsa-dcs-f1.NeuropsychologicalBatteryScoring", 
-    "clsa-dcs-f1.HeightWeight"
+    "clsa-dcs-f1.HeightWeight", 
+    "clsa-dcs-f1.TimeBasedProspectiveMemoryTask", 
+    "clsa-dcs-f1.Frax", 
+    "clsa-dcs-f1.ConclusionQuestionnaire", 
+    "clsa-dcs-f1.EventPMT"
   ], 
   "name": "QC_F1"
 }

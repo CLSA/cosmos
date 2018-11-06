@@ -125,6 +125,24 @@
       <table inner="false" class="org.obiba.magma.support.ValueTableReference">
         <reference>clsa-dcs-f1.OSOnly</reference>
       </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs-f1.StandingBalance</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs-f1.FunctionalStatus</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs-f1.HeightWeight</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs-f1.ConclusionQuestionnaire</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs-f1.Blood</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs-f1.Blood2</reference>
+      </table>
     </list>
   </from>
   <select class="org.obiba.magma.views.support.NoneClause"/>
@@ -3489,5 +3507,5 @@ res</attribute>
     </variables>
   </variables>
   <created valueType="datetime">2018-05-28T10:04:41.326-04</created>
-  <updated valueType="datetime">2018-10-11T14:39:29.144-04</updated>
+  <updated valueType="datetime">2018-11-06T14:21:11.933-05</updated>
 </org.obiba.magma.views.View>
