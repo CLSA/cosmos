@@ -286,7 +286,6 @@ $date_ranges = json_encode($db->get_all( $sql ));
             <option value="scripts/spine_bone_densityTable.php">DEXA Spine</option>
             <option value="scripts/whole_body_bone_densityTable.php">DEXA Whole Body</option>
             <option value="scripts/fraxTable.php">DEXA Frax</option>
-            <option value="scripts/event_pmtTable.php">Event PMT Qnaire</option>
             <option value="scripts/ecgTable.php">ECG</option>
             <option value="scripts/event_pmtTable.php">Event PMT Qnaire</option>
             <option value="scripts/four_metre_walkTable.php">4 m Walk</option>
