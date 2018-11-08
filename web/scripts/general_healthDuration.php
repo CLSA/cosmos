@@ -7,10 +7,25 @@ $rank = htmlspecialchars($_POST['rank']);
 
 $general_health = new duration_generator('general_health', $rank, $begin_date, $end_date);
 
-$smin = htmlspecialchars($_POST['stage-dur-min']);
-$smax = htmlspecialchars($_POST['stage-dur-max']);
-$mmin = htmlspecialchars($_POST['module-dur-min']);
-$mmax = htmlspecialchars($_POST['module-dur-max']);
+$smin=null;
+$smax=null;
+$mmin=null;
+$mmax=null;
+$durations=array(
+  'smin'=>'stage-dur-min',
+  'smax'=>'stage-dur-max',
+  'mmin'=>'module-dur-min',
+  'mmax'=>'module-dur-max');
+foreach($durations as $key=>$value)
+{
+  $data = explode(',',htmlspecialchars($_POST[$value]));
+  if(is_array($data))
+  {
+    $data = str_replace(array(' h',' m',' s'),'',$data);
+    if(3==count($data) && 0<array_sum($data))
+      $$key = $data[0]*3600 + $data[1]*60 + $data[2];
+  }
+}
 
 if(
   is_numeric($smin) &&

@@ -20,9 +20,11 @@ $date_ranges = json_encode($db->get_all( $sql ));
     <meta charset="utf-8">
     <title>CLSA-&Eacute;LCV QAC</title>
     <link rel="stylesheet" type="text/css" href="css/qac.css">
+    <link rel="stylesheet" type="text/css" href="css/duration-picker.min.css">
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="scripts/duration-picker.min.js"></script>
     <script>
       var stat_stages =[
         'scripts/bloodTable.php',
@@ -62,6 +64,11 @@ $date_ranges = json_encode($db->get_all( $sql ));
         date_ranges[obj.rank]={'min_date':obj.min_date,'max_date':obj.max_date};
       });
       $(function(){
+        var dp1 = $('#stage-dur-min').durationPicker();
+        var dp2 = $('#stage-dur-max').durationPicker();
+        var dp3 = $('#module-dur-min').durationPicker();
+        var dp4 = $('#module-dur-max').durationPicker();
+
         $('#stage').change( function() {
           $('#qacform').attr('action', $(this).val());
           console.log('changing qac action to : '+$(this).val());
@@ -75,6 +82,11 @@ $date_ranges = json_encode($db->get_all( $sql ));
         $('#duration').change( function() {
           $('#qacform').attr('action', $(this).val());
           console.log('changing duration action to : '+$(this).val());
+          var defdur = {hours: 0, minutes: 0, seconds: 0};
+          dp1.setvalues(defdur);
+          dp2.setvalues(defdur);
+          dp3.setvalues(defdur);
+          dp4.setvalues(defdur);
         }).change();
 
         $('#from').datepicker({
@@ -109,6 +121,7 @@ $date_ranges = json_encode($db->get_all( $sql ));
           $('#to').datepicker('option','defaultDate',date_ranges[num].max_date);
           $('#stage').val('scripts/bloodTable.php');
           $('#duration').val('scripts/bloodDuration.php');
+
           if(3==num) {
 
             $('#stage option[value="scripts/cdttTable.php"]').show();
