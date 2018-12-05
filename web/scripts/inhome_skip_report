@@ -1,0 +1,197 @@
+#!/usr/bin/php
+<?php
+require_once 'duration_generator.class.php';
+
+define( 'MIN_RANK', 1 );
+define( 'MAX_RANK', 3 );
+
+// require an input rank, begin date, end date, site
+$rank=2;
+$begin_date='2011-12-11';
+$end_date='2018-10-09';
+/*
+$begin_date='2018-11-01';
+$end_date='2018-11-30';
+*/
+$inhome_1 = new duration_generator('inhome_1', $rank, $begin_date, $end_date);
+$inhome_2 = new duration_generator('inhome_2', $rank, $begin_date, $end_date);
+$inhome_3 = new duration_generator('inhome_3', $rank, $begin_date, $end_date);
+$inhome_4 = new duration_generator('inhome_4', $rank, $begin_date, $end_date);
+
+$durations=array(
+  'inhome_1'=>array(
+    'ranges'=>array(14*60+15,31*60+55,13*60+55,31*60),
+    'data'=>null),
+  'inhome_2'=>array(
+    'ranges'=>array(12*60,24*60+10,11*60+5,22*60+55),
+    'data'=>null),
+  'inhome_3'=>array(
+    'ranges'=>array(7*60+5,27*60+35,6*60+45,27*60+5),
+    'data'=>null),
+  'inhome_4'=>array(
+    'ranges'=>array(19*60+50,40*60+50,17*60+30,38*60),
+    'data'=>null)
+);
+
+$common_header_str = array();
+$common_header_str[]=sprintf('"DATES","%s - %s"',$begin_date, $end_date);
+$str = array();
+
+// get all available sites that have the data for all four inhome interview stages
+$site_keys=array();
+$site_key_counts=array();
+foreach($durations as $key=>$value)
+{
+  $$key->set_par_time_range($value['ranges']);
+  $$key->set_threshold(60);
+  $$key->set_standard_deviation_scale(1);
+  $$key->build_table_data();
+  $data = $$key->get_site_data_list();
+  unset($data['ALL']);
+  $durations[$key]['data']=$data;
+  $keys = array_keys($data);
+  $site_keys[] = $keys;
+  $site_key_counts[] = count($keys);
+}
+
+$idx = array_search(min($site_key_counts),$site_key_counts);
+$site_keys = $site_keys[$idx];
+
+$stage_key_list = array_keys($durations);
+$total_key_list = array('total_skip','total_unexplained_missing');
+
+$file_str_sites = array();
+$all_site_total = array(
+'inhome_1'=>array_combine($total_key_list,array_fill(0,2,0)),
+'inhome_2'=>array_combine($total_key_list,array_fill(0,2,0)),
+'inhome_3'=>array_combine($total_key_list,array_fill(0,2,0)),
+'inhome_4'=>array_combine($total_key_list,array_fill(0,2,0)),
+'total_interview'=>0
+);
+
+foreach($site_keys as $site)
+{
+  $tech_data = array();
+  $site_data = array();
+  $site_data['total_interview'] = 0;
+  $file_str = array();
+  $file_str[] = sprintf('"SITE","%s"',$site);
+  $file_str = array_merge($file_str,$common_header_str);
+  $header_str = array();
+  foreach($durations as $stage_key=>$value)
+  {
+    // for the current stage, get the number of skips, missing for each tech
+    $data = $value['data'][$site]['technicians'];
+    $site_stage_total = array_combine($total_key_list,array_fill(0,2,0));
+    foreach($data as $tech_key=>$tech_totals)
+    {
+      if('NA' == $tech_key) continue;
+      if(!array_key_exists($tech_key,$tech_data))
+      {
+        $tech_data[$tech_key] = array();
+        $tech_data[$tech_key]['total_interview']=$tech_totals['total_tech'];
+        $site_data['total_interview'] += $tech_totals['total_tech'];
+      }
+      $total_list = array();
+      foreach($total_key_list as $total_key)
+      {
+        $total_val = intval($tech_totals[$total_key]);
+        $all_site_total[$stage_key][$total_key] += $total_val;
+        $site_stage_total[$total_key] += $total_val;
+        $total_list[] = $total_val;
+      }      
+      $tech_data[$tech_key][$stage_key]['total_list'] = $total_list;
+    }
+
+    // current site level stage totals
+    $site_data[$stage_key]['total_list'] = array_values($site_stage_total);
+  }
+
+  //var_dump($tech_data);
+  //var_dump($site_data);
+  //die();
+
+  $file_str[] = '""'; // row separator
+
+  $file_str[]='"NUMBER OF SKIPS, MISSING"';
+
+  // headings of stage names
+  $file_str[] =
+    str_replace('_', ' ',strtoupper(
+    '"","' .
+    implode('","","',array_keys($durations)) .
+    '"'));
+
+  // sub-headings
+  $file_str[] =
+    '"Tech",'.
+    implode(',',array_fill(0,4,'"Total Skips","Total Missing"')) .
+    ',"Total Interviews (%)"';
+
+  $total_site_interview = $site_data['total_interview'];
+  $all_site_total['total_interview'] += $total_site_interview;
+  foreach($tech_data as $tech=>$values)
+  {
+    $str = array();
+    $str[] = $tech;
+    // append the stage category totals and percentage of interviews
+    foreach($stage_key_list as $stage)
+    {
+      if(!array_key_exists($stage,$values) || !array_key_exists('total_list',$values[$stage]))
+      {
+        util::out(sprintf('WARNING: site %s tech %s has no data on %s',$site,$tech,$stage));
+        //var_dump($values);
+        //die();
+        $str = array_merge($str,array(0,0));
+      }
+      else
+        $str = array_merge($str,$values[$stage]['total_list']);
+    }
+    $str[] = sprintf('%s (%s)',
+      $values['total_interview'],
+      (0 == $total_site_interview ? 0 : round(100.0*$values['total_interview']/$total_site_interview)));
+    $file_str[] = '"'.implode('","',$str).'"';
+  }
+
+  $str = array('TOTAL');
+  foreach($stage_key_list as $stage)
+  {
+    $str = array_merge($str,$site_data[$stage]['total_list']);
+  }
+
+  $str[] = sprintf('%s (100)', $total_site_interview);
+  $file_str[] = '"'.implode('","', $str).'"';
+
+  //var_dump($site_data);
+  $file_str_sites[$site] = $file_str;
+  util::out($site);
+}
+
+$str = array('OVERALL');
+foreach($stage_key_list as $stage)
+{
+  $total_stage = array_sum(array_values($all_site_total[$stage]));
+  foreach($all_site_total[$stage] as $key=>$value)
+  {
+    $str[] = sprintf('%s (%s)',$value,
+    (0 == $total_stage ? 0 : round(100.0*$value/$total_stage)));
+  }
+}
+
+$str[] = sprintf('%s (100)', $all_site_total['total_interview']);
+$str = '"'.implode('","', $str).'"';
+
+$filename = sprintf('/home/dean/files/webapps/qac/aux/inhome_skip_report_wave_%d_%s_%s.csv',
+ $rank,
+ str_replace('-','',$begin_date),
+ str_replace('-','',$end_date));
+
+$file = fopen($filename,'w');
+foreach($file_str_sites as $site=>$file_str)
+{
+  foreach($file_str as $item_str)
+    fwrite($file, $item_str . PHP_EOL );
+  fwrite($file, $str . PHP_EOL );
+  fwrite($file, '""' . PHP_EOL );
+}
+fclose($file);

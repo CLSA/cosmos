@@ -52,6 +52,11 @@ abstract class table_generator
     $this->standard_deviation_scale = $_stdev;
   }
 
+  public function get_site_data_list()
+  {
+    return $this->site_data_list;
+  }
+
   abstract protected function build_data();
 
   protected function get_main_query()
