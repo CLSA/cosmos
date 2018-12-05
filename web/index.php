@@ -55,6 +55,7 @@ $date_ranges = json_encode($db->get_all( $sql ));
         'scripts/retinal_scanTable.php',
         'scripts/social_networkTable.php',
         'scripts/spine_bone_densityTable.php',
+        'scripts/stroop_fasTable.php',
         'scripts/time_based_pmtTable.php',
         'scripts/urineTable.php',
         'scripts/whole_body_bone_densityTable.php'];
@@ -141,6 +142,7 @@ $date_ranges = json_encode($db->get_all( $sql ));
             $('#stage option[value="scripts/sitting_heightTable.php"]').show();
             $('#stage option[value="scripts/social_networkTable.php"]').show();
             $('#stage option[value="scripts/spine_bone_densityTable.php"]').show();
+            $('#stage option[value="scripts/stroop_fasTable.php"]').show();
 
             $('#duration option[value="scripts/body_composition_weightDuration.php"]').hide();
             $('#duration option[value="scripts/cdttDuration.php"]').show();
@@ -181,6 +183,7 @@ $date_ranges = json_encode($db->get_all( $sql ));
             $('#stage option[value="scripts/sitting_heightTable.php"]').hide();
             $('#stage option[value="scripts/social_networkTable.php"]').hide();
             $('#stage option[value="scripts/spine_bone_densityTable.php"]').show();
+            $('#stage option[value="scripts/stroop_fasTable.php"]').hide();
 
             $('#duration option[value="scripts/body_composition_weightDuration.php"]').show();
             $('#duration option[value="scripts/cdttDuration.php"]').hide();
@@ -221,6 +224,7 @@ $date_ranges = json_encode($db->get_all( $sql ));
             $('#stage option[value="scripts/sitting_heightTable.php"]').hide();
             $('#stage option[value="scripts/social_networkTable.php"]').hide();
             $('#stage option[value="scripts/spine_bone_densityTable.php"]').hide();
+            $('#stage option[value="scripts/stroop_fasTable.php"]').hide();
 
             $('#duration option[value="scripts/body_composition_weightDuration.php"]').hide();
             $('#duration option[value="scripts/cdttDuration.php"]').hide();
@@ -325,6 +329,7 @@ $date_ranges = json_encode($db->get_all( $sql ));
             <option value="scripts/spirometryTable.php">Spirometry</option>
             <option value="scripts/standing_balanceTable.php">Standing Balance</option>
             <option value="scripts/standing_heightTable.php">Standing Height</option>
+            <option value="scripts/stroop_fasTable.php">Stroop FAS</option>
             <option value="scripts/time_based_pmtTable.php">Time Based PMT Qnaire</option>
             <option value="scripts/tonometerTable.php">Tonometer</option>
             <option value="scripts/tugTable.php">TUG</option>
