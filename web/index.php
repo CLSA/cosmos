@@ -133,7 +133,7 @@ $date_ranges = json_encode($db->get_all( $sql ));
             $('#stage option[value="scripts/inhome_idTable.php"]').hide();
             $('#stage option[value="scripts/inhome_4Table.php"]').show();
             $('#stage option[value="scripts/oseaTable.php"]').hide();
-            $('#stage option[value="scripts/oseaTable.php"]').hide();
+            $('#stage option[value="scripts/osipvTable.php"]').show();
             $('#stage option[value="scripts/osonlyTable.php"]').hide();
             $('#stage option[value="scripts/quality_assurance_inhomeTable.php"]').show();
             $('#stage option[value="scripts/retinal_scan_leftTable.php"]').show();
@@ -164,6 +164,8 @@ $date_ranges = json_encode($db->get_all( $sql ));
             $('#duration option[value="scripts/social_networkDuration.php"]').show();
             $('#duration option[value="scripts/spine_bone_densityDuration.php"]').show();
             $('#duration option[value="scripts/stroop_fasDuration.php"]').show();
+            $('#duration option[value="scripts/stroopDuration.php"]').show();
+            $('#duration option[value="scripts/fasDuration.php"]').show();
           } else if(2==num) {
 
             $('#stage option[value="scripts/cdttTable.php"]').hide();
@@ -205,6 +207,8 @@ $date_ranges = json_encode($db->get_all( $sql ));
             $('#duration option[value="scripts/social_networkDuration.php"]').hide();
             $('#duration option[value="scripts/spine_bone_densityDuration.php"]').show();
             $('#duration option[value="scripts/stroop_fasDuration.php"]').hide();
+            $('#duration option[value="scripts/stroopDuration.php"]').hide();
+            $('#duration option[value="scripts/fasDuration.php"]').hide();
           } else if(1==num) {
 
             $('#stage option[value="scripts/cdttTable.php"]').hide();
@@ -245,6 +249,8 @@ $date_ranges = json_encode($db->get_all( $sql ));
             $('#duration option[value="scripts/social_networkDuration.php"]').hide();
             $('#duration option[value="scripts/spine_bone_densityDuration.php"]').hide();
             $('#duration option[value="scripts/stroop_fasDuration.php"]').hide();
+            $('#duration option[value="scripts/stroopDuration.php"]').hide();
+            $('#duration option[value="scripts/fasDuration.php"]').hide();
           }
           $('#from').val(date_ranges[num].min_date);
           $('#to').val(date_ranges[num].max_date);
@@ -404,6 +410,8 @@ $date_ranges = json_encode($db->get_all( $sql ));
             <option value="scripts/standing_balanceDuration.php">Standing Balance</option>
             <option value="scripts/standing_heightDuration.php">Standing Height</option>
             <option value="scripts/stroop_fasDuration.php">Stroop FAS</option>
+            <option value="scripts/stroopDuration.php">Stroop FAS (Stroop)</option>
+            <option value="scripts/fasDuration.php">Stroop FAS (FAS)</option>
             <option value="scripts/time_based_pmtDuration.php">Time Based PMT Qnaire</option>
             <option value="scripts/tonometerDuration.php">Tonometer</option>
             <option value="scripts/tugDuration.php">TUG</option>
