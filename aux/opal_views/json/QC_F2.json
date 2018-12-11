@@ -3522,6 +3522,246 @@
         "referencedEntityType": "", 
         "unit": "", 
         "valueType": "integer"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$('clsa-dcs-f2.CDTT:InstrumentRun.user').whenNull(\n  $group('Admin.Action.stage','CDTT','Admin.Action.user').asSequence().last()).lowerCase()"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_technician_cdtt", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "var action=$group('Admin.Action.stage','CDTT','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','CDTT','Admin.Action.eventReason').asSequence().filter(function(v,i){\n  return action.indexOf('SKIP')==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')  \n}\nres"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_skip_cdtt", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$group('clsa-dcs-f2.Participants:Admin.StageInstance.stage','CDTT',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable').value()\n? 1 : 0"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_contraindicated_cdtt", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "integer"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "var f=$('clsa-dcs-f2.CDTT:RESULT_FILE')\nvar res=null\nif(f.isNull().not().value()) {\n  res = newValue('{filesize:'+f.length()+'}','text')\n}\nres"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "data_qac_cdtt", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$this('data_qac_cdtt').isNull().and(\n  $this('stage_contraindicated_cdtt').eq(0),\n  $this('stage_skip_cdtt').isNull()\n).value() ? 1 : 0"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "data_missing_cdtt", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "integer"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$('clsa-dcs-f2.StroopFAS:QuestionnaireRun.user').whenNull(\n  $group('Admin.Action.stage','StroopFAS','Admin.Action.user').asSequence().last()).lowerCase()"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_technician_stroop", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$group('clsa-dcs-f2.Participants:Admin.StageInstance.stage','StroopFAS',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable').value()\n? 1 : 0"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_contraindicated_stroop", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "integer"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "var action=$group('Admin.Action.stage','StroopFAS','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','StroopFAS','Admin.Action.eventReason').asSequence().filter(function(v,i){\n    return action.indexOf('SKIP')==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')\n}\nres"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_skip_stroop", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$this('data_qac_stroop').isNull().and(\n  $this('stage_contraindicated_stroop').eq(0),\n  $this('stage_skip_stroop').isNull()\n).value() ? 1 : 0"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "data_missing_stroop", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "integer"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "var stage='clsa-dcs-f2.StroopFAS:'\nvar p=$(stage+'QuestionnaireMetric.missingCount').asSequence()\nvar q=$(stage+'QuestionnaireMetric.questionCount').asSequence()\nvar res=null\nif(p.isNull().and(q.isNull()).not().value() && 0!=q.sum()) {\n  var str=[]\n  str.push(\n    'complete:'+\n    Math.round(q.sum().minus(p.sum()).multiply(100).div(q.sum()).value()))\n\nvar sections={\n'STP':[\n'NEUR_CONSREC_COF2',\n'STP_DOT_COF2',\n'STP_DOTRPT_COF2',\n'STP_DOTFCTR_COF2',\n'STP_DOTLST_COF2',\n'STP_DOTRECR_COF2',\n'STP_DOTABLE_COF2',\n'STP_DOTTIMEN_COF2',\n'STP_WOR_COF2',\n'STP_WORRPT_COF2',\n'STP_WORFCTR_COF2',\n'STP_WORLST_COF2',\n'STP_WORRECR_COF2',\n'STP_WORABLE_COF2',\n'STP_WORTIMEN_COF2',\n'STP_COL_COF2',\n'STP_COLRPT_COF2',\n'STP_COLFCTR_COF2',\n'STP_COLLST_COF2',\n'STP_COLRECR_COF2',\n'STP_COLABLE_COF2',\n'STP_COLTIMEN_COF2',\n'STP_COLCOMM_COF2']\n}\n\n  for(var key in sections) {\n    var rcount=0\n    var qcount=0\n    var arr=sections[key]\n    for(var i=0; i<arr.length; i++ ) {\n      var j=$(stage+arr[i])\n      if(j.isNull().value()) continue\n      qcount++      \n      rcount+=j.any('REFUSED').value()?1:0\n    }\n    if(0==qcount) {\n      str.push(key+':100')\n    } else {\n      var perc=100.0*rcount/qcount      \n      if(0<perc && 100>perc && 0!=(perc-Math.floor(perc))) {        \n        perc=perc.toFixed(3)\n      }\n      str.push(key+':'+perc)\n    }  \n  }\n\n  res=newValue('{'+str.join(',')+'}','text')\n}\nres"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "data_qac_stroop", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$('clsa-dcs-f2.StroopFAS:QuestionnaireRun.user').whenNull(\n  $group('Admin.Action.stage','StroopFAS','Admin.Action.user').asSequence().last()).lowerCase()"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_technician_fas", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$group('clsa-dcs-f2.Participants:Admin.StageInstance.stage','StroopFAS',\n'Admin.StageInstance.lastState').any('Contraindicated','NotApplicable').value()\n? 1 : 0"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_contraindicated_fas", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "integer"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "var action=$group('Admin.Action.stage','StroopFAS','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','StroopFAS','Admin.Action.eventReason').asSequence().filter(function(v,i){\n    return action.indexOf('SKIP')==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')\n}\nres"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "stage_skip_fas", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "$this('data_qac_fas').isNull().and(\n  $this('stage_contraindicated_fas').eq(0),\n  $this('stage_skip_fas').isNull()\n).value() ? 1 : 0"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "data_missing_fas", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "integer"
+      }, 
+      {
+        "attributes": [
+          {
+            "name": "script", 
+            "value": "var stage='clsa-dcs-f2.StroopFAS:'\nvar p=$(stage+'QuestionnaireMetric.missingCount').asSequence()\nvar q=$(stage+'QuestionnaireMetric.questionCount').asSequence()\nvar res=null\nif(p.isNull().and(q.isNull()).not().value() && 0!=q.sum()) {\n  var str=[]\n  str.push(\n    'complete:'+\n    Math.round(q.sum().minus(p.sum()).multiply(100).div(q.sum()).value()))\n\nvar sections={\n'FAS':[\n'FAS_INSTRDY_COF2',\n'FAS_INSTRPT_COF2',\n'FAS_INSTFCTR_COF2',\n'FAS_INSTLST_COF2',\n'FAS_FRECR_COF2',\n'FAS_FCOMP_COF2',\n'FAS_FCOMP_COMM_COF2',\n'FAS_ARECR_COF2',\n'FAS_ACOMP_COF2',\n'FAS_ACOMP_COMM_COF2',\n'FAS_SRECR_COF2',\n'FAS_SCOMP_COF2',\n'FAS_SCOMP_COMM_COF2']\n}\n\n  for(var key in sections) {\n    var rcount=0\n    var qcount=0\n    var arr=sections[key]\n    for(var i=0; i<arr.length; i++ ) {\n      var j=$(stage+arr[i])\n      if(j.isNull().value()) continue\n      qcount++      \n      rcount+=j.any('REFUSED').value()?1:0\n    }\n    if(0==qcount) {\n      str.push(key+':100')\n    } else {\n      var perc=100.0*rcount/qcount      \n      if(0<perc && 100>perc && 0!=(perc-Math.floor(perc))) {        \n        perc=perc.toFixed(3)\n      }\n      str.push(key+':'+perc)\n    }  \n  }\n\n  res=newValue('{'+str.join(',')+'}','text')\n}\nres"
+          }
+        ], 
+        "entityType": "Participant", 
+        "index": 0, 
+        "isRepeatable": false, 
+        "mimeType": "", 
+        "name": "data_qac_fas", 
+        "referencedEntityType": "", 
+        "unit": "", 
+        "valueType": "text"
       }
     ]
   }, 
@@ -3570,7 +3810,8 @@
     "clsa-dcs-f2.Blood2", 
     "clsa-dcs-f2.Deviation_AE_CRF", 
     "clsa-dcs-f2.NeuropsychologicalBatteryScoring", 
-    "clsa-dcs-f2.QualityAssuranceIH"
+    "clsa-dcs-f2.QualityAssuranceIH", 
+    "clsa-dcs-f2.CDTT"
   ], 
   "name": "QC_F2"
 }
