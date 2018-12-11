@@ -22,9 +22,10 @@ foreach($durations as $key=>$value)
       $$key = $data[0]*3600 + $data[1]*60 + $data[2];
   }
 }
+
 if(
   is_numeric($smin) &&
-  is_numeric($smax)
+  is_numeric($smax) &&
   $smax>$smin)
 {
   $spirometry->set_par_time_range(array($smin,$smax));

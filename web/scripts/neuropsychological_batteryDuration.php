@@ -27,7 +27,6 @@ foreach($durations as $key=>$value)
   }
 }
 
-
 if(
   is_numeric($smin) &&
   is_numeric($smax) &&

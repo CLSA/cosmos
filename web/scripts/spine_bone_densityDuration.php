@@ -25,7 +25,7 @@ foreach($durations as $key=>$value)
 
 if(
   is_numeric($smin) &&
-  is_numeric($smax)
+  is_numeric($smax) &&
   $smax>$smin)
 {
   $spine_bone_density->set_par_time_range(array($smin,$smax));
