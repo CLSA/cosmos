@@ -222,6 +222,12 @@ function get_stage_index_from_type( $_type )
     case 'stroop_fas':
       $index = array(null,null,1);
       break;
+    case 'stroop':
+      $index = array(null,null,1);
+      break;
+    case 'fas':
+      $index = array(null,null,1);
+      break;
     case 'retinal_scan':
       $index=array(1,null,null);
       break;
@@ -388,6 +394,12 @@ function get_cutoff_from_type( $_type )
       break;
     case 'stroop_fas':
       $cut=1200;
+      break;
+    case 'stroop':
+      $cut=900;
+      break;
+    case 'fas':
+      $cut=900;
       break;
     case 'time_based_pmt':
       $cut=1800;
@@ -740,6 +752,7 @@ $sql .= sprintf(
   'join site on site.id=i.site_id '.
   'left join technician t on t.id=s.technician_id and t.site_id=site.id '.
   'where rank=%d '.
+  //'and start_date>"2018-08-25" '.
   'and duration is not null '.
   'and s.name="%s"', $rank, $type);
 
