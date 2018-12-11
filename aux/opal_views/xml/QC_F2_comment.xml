@@ -125,6 +125,12 @@
       <table inner="false" class="org.obiba.magma.support.ValueTableReference">
         <reference>clsa-dcs-f2.CDTT</reference>
       </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs-f2.Blood</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs-f2.Blood2</reference>
+      </table>
     </list>
   </from>
   <select class="org.obiba.magma.views.support.NoneClause"/>
@@ -135,7 +141,7 @@
         <attributes>
           <attribute name="script" valueType="text">// this script compounds repeated comments by using lowercase comment strings as array keys
 // and further compounds events within actions
-//
+// 
 var v1=$group(&apos;Admin.Action.stage&apos;,&apos;Spirometry&apos;,&apos;Admin.Action.comment&apos;).asSequence()
 var v2=$group(&apos;Admin.Action.stage&apos;,&apos;Spirometry&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
 var v3=$group(&apos;Admin.Action.stage&apos;,&apos;Spirometry&apos;,&apos;Admin.Action.eventReason&apos;).asSequence()
@@ -143,7 +149,7 @@ var res=null
 var c_str=[]  // string array of comments
 var e_str=[]  // string array of events
 var a_str=[]  // string array of actions
-for(var i=0; i&lt;v1.size(); i++) {
+for(var i=0; i&lt;v1.size(); i++) {  
   if(v1.valueAt(i).isNull().or(v2.valueAt(i).isNull(),v2.valueAt(i).matches(/EXECUTE/)).value()) continue
   c_str.push(v1.valueAt(i).value())
   a_str.push(v2.valueAt(i).value())
@@ -160,7 +166,7 @@ if(0&lt;c_str.length) {
   var key_orig=[]
   for(var i=0;i&lt;c_str.length;i++) {
     var key=c_str[i].replace(/[^a-zA-Z0-9 àâäèéêëîïôœùûüÿçÀÂÄÈÉÊËÎÏÔŒÙÛÜŸÇ]/g,&quot;&quot;)
-    var key_lower = key.toLowerCase()
+    var key_lower = key.toLowerCase()    
     // retain the first encountered instance of the comment
     if(undefined===key_orig[key_lower])
       key_orig[key_lower]=key
@@ -172,17 +178,17 @@ if(0&lt;c_str.length) {
     if(-1===arr[key_lower].indexOf(str))
       arr[key_lower].push(str)
   }
-
+  
   var str=[]
   for(var key in arr) {
-    // compound repeated events
+    // compound repeated events 
     var subarr=[]
     for(var i=0;i&lt;arr[key].length;i++) {
       var t=arr[key][i].split(&apos;:&apos;)
       var t_key=t[1]
       if(undefined===subarr[t_key])
         subarr[t_key]=[]
-      if(-1===subarr[t_key].indexOf(t[0]))
+      if(-1===subarr[t_key].indexOf(t[0]))  
         subarr[t_key].push(t[0])
     }
     var substr=[]
@@ -196,7 +202,7 @@ if(0&lt;c_str.length) {
     }
     str.push(&apos;[&apos;+((1&lt;substr.length)?substr.join(&apos;/&apos;):substr[0])+&apos;]:&apos;+key_orig[key])
   }
-
+  
   if(1&lt;str.length) {
     res=newValue(str.join(&apos;,&apos;),&apos;text&apos;)
   } else if(1==str.length) {
@@ -210,7 +216,7 @@ res</attribute>
         <attributes>
           <attribute name="script" valueType="text">// this script compounds repeated comments by using lowercase comment strings as array keys
 // and further compounds events within actions
-//
+// 
 var v1=$group(&apos;Admin.Action.stage&apos;,&apos;GripStrength&apos;,&apos;Admin.Action.comment&apos;).asSequence()
 var v2=$group(&apos;Admin.Action.stage&apos;,&apos;GripStrength&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
 var v3=$group(&apos;Admin.Action.stage&apos;,&apos;GripStrength&apos;,&apos;Admin.Action.eventReason&apos;).asSequence()
@@ -218,7 +224,7 @@ var res=null
 var c_str=[]  // string array of comments
 var e_str=[]  // string array of events
 var a_str=[]  // string array of actions
-for(var i=0; i&lt;v1.size(); i++) {
+for(var i=0; i&lt;v1.size(); i++) {  
   if(v1.valueAt(i).isNull().or(v2.valueAt(i).isNull(),v2.valueAt(i).matches(/EXECUTE/)).value()) continue
   c_str.push(v1.valueAt(i).value())
   a_str.push(v2.valueAt(i).value())
@@ -235,7 +241,7 @@ if(0&lt;c_str.length) {
   var key_orig=[]
   for(var i=0;i&lt;c_str.length;i++) {
     var key=c_str[i].replace(/[^a-zA-Z0-9 àâäèéêëîïôœùûüÿçÀÂÄÈÉÊËÎÏÔŒÙÛÜŸÇ]/g,&quot;&quot;)
-    var key_lower = key.toLowerCase()
+    var key_lower = key.toLowerCase()    
     // retain the first encountered instance of the comment
     if(undefined===key_orig[key_lower])
       key_orig[key_lower]=key
@@ -247,17 +253,17 @@ if(0&lt;c_str.length) {
     if(-1===arr[key_lower].indexOf(str))
       arr[key_lower].push(str)
   }
-
+  
   var str=[]
   for(var key in arr) {
-    // compound repeated events
+    // compound repeated events 
     var subarr=[]
     for(var i=0;i&lt;arr[key].length;i++) {
       var t=arr[key][i].split(&apos;:&apos;)
       var t_key=t[1]
       if(undefined===subarr[t_key])
         subarr[t_key]=[]
-      if(-1===subarr[t_key].indexOf(t[0]))
+      if(-1===subarr[t_key].indexOf(t[0]))  
         subarr[t_key].push(t[0])
     }
     var substr=[]
@@ -271,7 +277,7 @@ if(0&lt;c_str.length) {
     }
     str.push(&apos;[&apos;+((1&lt;substr.length)?substr.join(&apos;/&apos;):substr[0])+&apos;]:&apos;+key_orig[key])
   }
-
+  
   if(1&lt;str.length) {
     res=newValue(str.join(&apos;,&apos;),&apos;text&apos;)
   } else if(1==str.length) {
@@ -285,7 +291,7 @@ res</attribute>
         <attributes>
           <attribute name="script" valueType="text">// this script compounds repeated comments by using lowercase comment strings as array keys
 // and further compounds events within actions
-//
+// 
 var v1=$group(&apos;Admin.Action.stage&apos;,&apos;BloodPressure&apos;,&apos;Admin.Action.comment&apos;).asSequence()
 var v2=$group(&apos;Admin.Action.stage&apos;,&apos;BloodPressure&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
 var v3=$group(&apos;Admin.Action.stage&apos;,&apos;BloodPressure&apos;,&apos;Admin.Action.eventReason&apos;).asSequence()
@@ -293,7 +299,7 @@ var res=null
 var c_str=[]  // string array of comments
 var e_str=[]  // string array of events
 var a_str=[]  // string array of actions
-for(var i=0; i&lt;v1.size(); i++) {
+for(var i=0; i&lt;v1.size(); i++) {  
   if(v1.valueAt(i).isNull().or(v2.valueAt(i).isNull(),v2.valueAt(i).matches(/EXECUTE/)).value()) continue
   c_str.push(v1.valueAt(i).value())
   a_str.push(v2.valueAt(i).value())
@@ -310,7 +316,7 @@ if(0&lt;c_str.length) {
   var key_orig=[]
   for(var i=0;i&lt;c_str.length;i++) {
     var key=c_str[i].replace(/[^a-zA-Z0-9 àâäèéêëîïôœùûüÿçÀÂÄÈÉÊËÎÏÔŒÙÛÜŸÇ]/g,&quot;&quot;)
-    var key_lower = key.toLowerCase()
+    var key_lower = key.toLowerCase()    
     // retain the first encountered instance of the comment
     if(undefined===key_orig[key_lower])
       key_orig[key_lower]=key
@@ -322,17 +328,17 @@ if(0&lt;c_str.length) {
     if(-1===arr[key_lower].indexOf(str))
       arr[key_lower].push(str)
   }
-
+  
   var str=[]
   for(var key in arr) {
-    // compound repeated events
+    // compound repeated events 
     var subarr=[]
     for(var i=0;i&lt;arr[key].length;i++) {
       var t=arr[key][i].split(&apos;:&apos;)
       var t_key=t[1]
       if(undefined===subarr[t_key])
         subarr[t_key]=[]
-      if(-1===subarr[t_key].indexOf(t[0]))
+      if(-1===subarr[t_key].indexOf(t[0]))  
         subarr[t_key].push(t[0])
     }
     var substr=[]
@@ -346,7 +352,7 @@ if(0&lt;c_str.length) {
     }
     str.push(&apos;[&apos;+((1&lt;substr.length)?substr.join(&apos;/&apos;):substr[0])+&apos;]:&apos;+key_orig[key])
   }
-
+  
   if(1&lt;str.length) {
     res=newValue(str.join(&apos;,&apos;),&apos;text&apos;)
   } else if(1==str.length) {
@@ -360,7 +366,7 @@ res</attribute>
         <attributes>
           <attribute name="script" valueType="text">// this script compounds repeated comments by using lowercase comment strings as array keys
 // and further compounds events within actions
-//
+// 
 var v1=$group(&apos;Admin.Action.stage&apos;,&apos;ECG&apos;,&apos;Admin.Action.comment&apos;).asSequence()
 var v2=$group(&apos;Admin.Action.stage&apos;,&apos;ECG&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
 var v3=$group(&apos;Admin.Action.stage&apos;,&apos;ECG&apos;,&apos;Admin.Action.eventReason&apos;).asSequence()
@@ -368,7 +374,7 @@ var res=null
 var c_str=[]  // string array of comments
 var e_str=[]  // string array of events
 var a_str=[]  // string array of actions
-for(var i=0; i&lt;v1.size(); i++) {
+for(var i=0; i&lt;v1.size(); i++) {  
   if(v1.valueAt(i).isNull().or(v2.valueAt(i).isNull(),v2.valueAt(i).matches(/EXECUTE/)).value()) continue
   c_str.push(v1.valueAt(i).value())
   a_str.push(v2.valueAt(i).value())
@@ -385,7 +391,7 @@ if(0&lt;c_str.length) {
   var key_orig=[]
   for(var i=0;i&lt;c_str.length;i++) {
     var key=c_str[i].replace(/[^a-zA-Z0-9 àâäèéêëîïôœùûüÿçÀÂÄÈÉÊËÎÏÔŒÙÛÜŸÇ]/g,&quot;&quot;)
-    var key_lower = key.toLowerCase()
+    var key_lower = key.toLowerCase()    
     // retain the first encountered instance of the comment
     if(undefined===key_orig[key_lower])
       key_orig[key_lower]=key
@@ -397,17 +403,17 @@ if(0&lt;c_str.length) {
     if(-1===arr[key_lower].indexOf(str))
       arr[key_lower].push(str)
   }
-
+  
   var str=[]
   for(var key in arr) {
-    // compound repeated events
+    // compound repeated events 
     var subarr=[]
     for(var i=0;i&lt;arr[key].length;i++) {
       var t=arr[key][i].split(&apos;:&apos;)
       var t_key=t[1]
       if(undefined===subarr[t_key])
         subarr[t_key]=[]
-      if(-1===subarr[t_key].indexOf(t[0]))
+      if(-1===subarr[t_key].indexOf(t[0]))  
         subarr[t_key].push(t[0])
     }
     var substr=[]
@@ -421,7 +427,7 @@ if(0&lt;c_str.length) {
     }
     str.push(&apos;[&apos;+((1&lt;substr.length)?substr.join(&apos;/&apos;):substr[0])+&apos;]:&apos;+key_orig[key])
   }
-
+  
   if(1&lt;str.length) {
     res=newValue(str.join(&apos;,&apos;),&apos;text&apos;)
   } else if(1==str.length) {
@@ -435,7 +441,7 @@ res</attribute>
         <attributes>
           <attribute name="script" valueType="text">// this script compounds repeated comments by using lowercase comment strings as array keys
 // and further compounds events within actions
-//
+// 
 var v1=$group(&apos;Admin.Action.stage&apos;,&apos;CognitiveTest&apos;,&apos;Admin.Action.comment&apos;).asSequence()
 var v2=$group(&apos;Admin.Action.stage&apos;,&apos;CognitiveTest&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
 var v3=$group(&apos;Admin.Action.stage&apos;,&apos;CognitiveTest&apos;,&apos;Admin.Action.eventReason&apos;).asSequence()
@@ -443,7 +449,7 @@ var res=null
 var c_str=[]  // string array of comments
 var e_str=[]  // string array of events
 var a_str=[]  // string array of actions
-for(var i=0; i&lt;v1.size(); i++) {
+for(var i=0; i&lt;v1.size(); i++) {  
   if(v1.valueAt(i).isNull().or(v2.valueAt(i).isNull(),v2.valueAt(i).matches(/EXECUTE/)).value()) continue
   c_str.push(v1.valueAt(i).value())
   a_str.push(v2.valueAt(i).value())
@@ -460,7 +466,7 @@ if(0&lt;c_str.length) {
   var key_orig=[]
   for(var i=0;i&lt;c_str.length;i++) {
     var key=c_str[i].replace(/[^a-zA-Z0-9 àâäèéêëîïôœùûüÿçÀÂÄÈÉÊËÎÏÔŒÙÛÜŸÇ]/g,&quot;&quot;)
-    var key_lower = key.toLowerCase()
+    var key_lower = key.toLowerCase()    
     // retain the first encountered instance of the comment
     if(undefined===key_orig[key_lower])
       key_orig[key_lower]=key
@@ -472,17 +478,17 @@ if(0&lt;c_str.length) {
     if(-1===arr[key_lower].indexOf(str))
       arr[key_lower].push(str)
   }
-
+  
   var str=[]
   for(var key in arr) {
-    // compound repeated events
+    // compound repeated events 
     var subarr=[]
     for(var i=0;i&lt;arr[key].length;i++) {
       var t=arr[key][i].split(&apos;:&apos;)
       var t_key=t[1]
       if(undefined===subarr[t_key])
         subarr[t_key]=[]
-      if(-1===subarr[t_key].indexOf(t[0]))
+      if(-1===subarr[t_key].indexOf(t[0]))  
         subarr[t_key].push(t[0])
     }
     var substr=[]
@@ -496,7 +502,7 @@ if(0&lt;c_str.length) {
     }
     str.push(&apos;[&apos;+((1&lt;substr.length)?substr.join(&apos;/&apos;):substr[0])+&apos;]:&apos;+key_orig[key])
   }
-
+  
   if(1&lt;str.length) {
     res=newValue(str.join(&apos;,&apos;),&apos;text&apos;)
   } else if(1==str.length) {
@@ -510,7 +516,7 @@ res</attribute>
         <attributes>
           <attribute name="script" valueType="text">// this script compounds repeated comments by using lowercase comment strings as array keys
 // and further compounds events within actions
-//
+// 
 var v1=$group(&apos;Admin.Action.stage&apos;,&apos;Hearing&apos;,&apos;Admin.Action.comment&apos;).asSequence()
 var v2=$group(&apos;Admin.Action.stage&apos;,&apos;Hearing&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
 var v3=$group(&apos;Admin.Action.stage&apos;,&apos;Hearing&apos;,&apos;Admin.Action.eventReason&apos;).asSequence()
@@ -518,7 +524,7 @@ var res=null
 var c_str=[]  // string array of comments
 var e_str=[]  // string array of events
 var a_str=[]  // string array of actions
-for(var i=0; i&lt;v1.size(); i++) {
+for(var i=0; i&lt;v1.size(); i++) {  
   if(v1.valueAt(i).isNull().or(v2.valueAt(i).isNull(),v2.valueAt(i).matches(/EXECUTE/)).value()) continue
   c_str.push(v1.valueAt(i).value())
   a_str.push(v2.valueAt(i).value())
@@ -535,7 +541,7 @@ if(0&lt;c_str.length) {
   var key_orig=[]
   for(var i=0;i&lt;c_str.length;i++) {
     var key=c_str[i].replace(/[^a-zA-Z0-9 àâäèéêëîïôœùûüÿçÀÂÄÈÉÊËÎÏÔŒÙÛÜŸÇ]/g,&quot;&quot;)
-    var key_lower = key.toLowerCase()
+    var key_lower = key.toLowerCase()    
     // retain the first encountered instance of the comment
     if(undefined===key_orig[key_lower])
       key_orig[key_lower]=key
@@ -547,17 +553,17 @@ if(0&lt;c_str.length) {
     if(-1===arr[key_lower].indexOf(str))
       arr[key_lower].push(str)
   }
-
+  
   var str=[]
   for(var key in arr) {
-    // compound repeated events
+    // compound repeated events 
     var subarr=[]
     for(var i=0;i&lt;arr[key].length;i++) {
       var t=arr[key][i].split(&apos;:&apos;)
       var t_key=t[1]
       if(undefined===subarr[t_key])
         subarr[t_key]=[]
-      if(-1===subarr[t_key].indexOf(t[0]))
+      if(-1===subarr[t_key].indexOf(t[0]))  
         subarr[t_key].push(t[0])
     }
     var substr=[]
@@ -571,7 +577,7 @@ if(0&lt;c_str.length) {
     }
     str.push(&apos;[&apos;+((1&lt;substr.length)?substr.join(&apos;/&apos;):substr[0])+&apos;]:&apos;+key_orig[key])
   }
-
+  
   if(1&lt;str.length) {
     res=newValue(str.join(&apos;,&apos;),&apos;text&apos;)
   } else if(1==str.length) {
@@ -585,7 +591,7 @@ res</attribute>
         <attributes>
           <attribute name="script" valueType="text">// this script compounds repeated comments by using lowercase comment strings as array keys
 // and further compounds events within actions
-//
+// 
 var v1=$group(&apos;Admin.Action.stage&apos;,&apos;Tonometer&apos;,&apos;Admin.Action.comment&apos;).asSequence()
 var v2=$group(&apos;Admin.Action.stage&apos;,&apos;Tonometer&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
 var v3=$group(&apos;Admin.Action.stage&apos;,&apos;Tonometer&apos;,&apos;Admin.Action.eventReason&apos;).asSequence()
@@ -593,7 +599,7 @@ var res=null
 var c_str=[]  // string array of comments
 var e_str=[]  // string array of events
 var a_str=[]  // string array of actions
-for(var i=0; i&lt;v1.size(); i++) {
+for(var i=0; i&lt;v1.size(); i++) {  
   if(v1.valueAt(i).isNull().or(v2.valueAt(i).isNull(),v2.valueAt(i).matches(/EXECUTE/)).value()) continue
   c_str.push(v1.valueAt(i).value())
   a_str.push(v2.valueAt(i).value())
@@ -610,7 +616,7 @@ if(0&lt;c_str.length) {
   var key_orig=[]
   for(var i=0;i&lt;c_str.length;i++) {
     var key=c_str[i].replace(/[^a-zA-Z0-9 àâäèéêëîïôœùûüÿçÀÂÄÈÉÊËÎÏÔŒÙÛÜŸÇ]/g,&quot;&quot;)
-    var key_lower = key.toLowerCase()
+    var key_lower = key.toLowerCase()    
     // retain the first encountered instance of the comment
     if(undefined===key_orig[key_lower])
       key_orig[key_lower]=key
@@ -622,17 +628,17 @@ if(0&lt;c_str.length) {
     if(-1===arr[key_lower].indexOf(str))
       arr[key_lower].push(str)
   }
-
+  
   var str=[]
   for(var key in arr) {
-    // compound repeated events
+    // compound repeated events 
     var subarr=[]
     for(var i=0;i&lt;arr[key].length;i++) {
       var t=arr[key][i].split(&apos;:&apos;)
       var t_key=t[1]
       if(undefined===subarr[t_key])
         subarr[t_key]=[]
-      if(-1===subarr[t_key].indexOf(t[0]))
+      if(-1===subarr[t_key].indexOf(t[0]))  
         subarr[t_key].push(t[0])
     }
     var substr=[]
@@ -646,7 +652,7 @@ if(0&lt;c_str.length) {
     }
     str.push(&apos;[&apos;+((1&lt;substr.length)?substr.join(&apos;/&apos;):substr[0])+&apos;]:&apos;+key_orig[key])
   }
-
+  
   if(1&lt;str.length) {
     res=newValue(str.join(&apos;,&apos;),&apos;text&apos;)
   } else if(1==str.length) {
@@ -660,7 +666,7 @@ res</attribute>
         <attributes>
           <attribute name="script" valueType="text">// this script compounds repeated comments by using lowercase comment strings as array keys
 // and further compounds events within actions
-//
+// 
 var v1=$group(&apos;Admin.Action.stage&apos;,&apos;Weight&apos;,&apos;Admin.Action.comment&apos;).asSequence()
 var v2=$group(&apos;Admin.Action.stage&apos;,&apos;Weight&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
 var v3=$group(&apos;Admin.Action.stage&apos;,&apos;Weight&apos;,&apos;Admin.Action.eventReason&apos;).asSequence()
@@ -668,7 +674,7 @@ var res=null
 var c_str=[]  // string array of comments
 var e_str=[]  // string array of events
 var a_str=[]  // string array of actions
-for(var i=0; i&lt;v1.size(); i++) {
+for(var i=0; i&lt;v1.size(); i++) {  
   if(v1.valueAt(i).isNull().or(v2.valueAt(i).isNull(),v2.valueAt(i).matches(/EXECUTE/)).value()) continue
   c_str.push(v1.valueAt(i).value())
   a_str.push(v2.valueAt(i).value())
@@ -685,7 +691,7 @@ if(0&lt;c_str.length) {
   var key_orig=[]
   for(var i=0;i&lt;c_str.length;i++) {
     var key=c_str[i].replace(/[^a-zA-Z0-9 àâäèéêëîïôœùûüÿçÀÂÄÈÉÊËÎÏÔŒÙÛÜŸÇ]/g,&quot;&quot;)
-    var key_lower = key.toLowerCase()
+    var key_lower = key.toLowerCase()    
     // retain the first encountered instance of the comment
     if(undefined===key_orig[key_lower])
       key_orig[key_lower]=key
@@ -697,17 +703,17 @@ if(0&lt;c_str.length) {
     if(-1===arr[key_lower].indexOf(str))
       arr[key_lower].push(str)
   }
-
+  
   var str=[]
   for(var key in arr) {
-    // compound repeated events
+    // compound repeated events 
     var subarr=[]
     for(var i=0;i&lt;arr[key].length;i++) {
       var t=arr[key][i].split(&apos;:&apos;)
       var t_key=t[1]
       if(undefined===subarr[t_key])
         subarr[t_key]=[]
-      if(-1===subarr[t_key].indexOf(t[0]))
+      if(-1===subarr[t_key].indexOf(t[0]))  
         subarr[t_key].push(t[0])
     }
     var substr=[]
@@ -721,7 +727,7 @@ if(0&lt;c_str.length) {
     }
     str.push(&apos;[&apos;+((1&lt;substr.length)?substr.join(&apos;/&apos;):substr[0])+&apos;]:&apos;+key_orig[key])
   }
-
+  
   if(1&lt;str.length) {
     res=newValue(str.join(&apos;,&apos;),&apos;text&apos;)
   } else if(1==str.length) {
@@ -735,7 +741,7 @@ res</attribute>
         <attributes>
           <attribute name="script" valueType="text">// this script compounds repeated comments by using lowercase comment strings as array keys
 // and further compounds events within actions
-//
+// 
 var v1=$group(&apos;Admin.Action.stage&apos;,&apos;StandingHeight&apos;,&apos;Admin.Action.comment&apos;).asSequence()
 var v2=$group(&apos;Admin.Action.stage&apos;,&apos;StandingHeight&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
 var v3=$group(&apos;Admin.Action.stage&apos;,&apos;StandingHeight&apos;,&apos;Admin.Action.eventReason&apos;).asSequence()
@@ -743,7 +749,7 @@ var res=null
 var c_str=[]  // string array of comments
 var e_str=[]  // string array of events
 var a_str=[]  // string array of actions
-for(var i=0; i&lt;v1.size(); i++) {
+for(var i=0; i&lt;v1.size(); i++) {  
   if(v1.valueAt(i).isNull().or(v2.valueAt(i).isNull(),v2.valueAt(i).matches(/EXECUTE/)).value()) continue
   c_str.push(v1.valueAt(i).value())
   a_str.push(v2.valueAt(i).value())
@@ -760,7 +766,7 @@ if(0&lt;c_str.length) {
   var key_orig=[]
   for(var i=0;i&lt;c_str.length;i++) {
     var key=c_str[i].replace(/[^a-zA-Z0-9 àâäèéêëîïôœùûüÿçÀÂÄÈÉÊËÎÏÔŒÙÛÜŸÇ]/g,&quot;&quot;)
-    var key_lower = key.toLowerCase()
+    var key_lower = key.toLowerCase()    
     // retain the first encountered instance of the comment
     if(undefined===key_orig[key_lower])
       key_orig[key_lower]=key
@@ -772,17 +778,17 @@ if(0&lt;c_str.length) {
     if(-1===arr[key_lower].indexOf(str))
       arr[key_lower].push(str)
   }
-
+  
   var str=[]
   for(var key in arr) {
-    // compound repeated events
+    // compound repeated events 
     var subarr=[]
     for(var i=0;i&lt;arr[key].length;i++) {
       var t=arr[key][i].split(&apos;:&apos;)
       var t_key=t[1]
       if(undefined===subarr[t_key])
         subarr[t_key]=[]
-      if(-1===subarr[t_key].indexOf(t[0]))
+      if(-1===subarr[t_key].indexOf(t[0]))  
         subarr[t_key].push(t[0])
     }
     var substr=[]
@@ -796,7 +802,7 @@ if(0&lt;c_str.length) {
     }
     str.push(&apos;[&apos;+((1&lt;substr.length)?substr.join(&apos;/&apos;):substr[0])+&apos;]:&apos;+key_orig[key])
   }
-
+  
   if(1&lt;str.length) {
     res=newValue(str.join(&apos;,&apos;),&apos;text&apos;)
   } else if(1==str.length) {
@@ -810,7 +816,7 @@ res</attribute>
         <attributes>
           <attribute name="script" valueType="text">// this script compounds repeated comments by using lowercase comment strings as array keys
 // and further compounds events within actions
-//
+// 
 var v1=$group(&apos;Admin.Action.stage&apos;,&apos;LateralBoneDensity&apos;,&apos;Admin.Action.comment&apos;).asSequence()
 var v2=$group(&apos;Admin.Action.stage&apos;,&apos;LateralBoneDensity&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
 var v3=$group(&apos;Admin.Action.stage&apos;,&apos;LateralBoneDensity&apos;,&apos;Admin.Action.eventReason&apos;).asSequence()
@@ -818,7 +824,7 @@ var res=null
 var c_str=[]  // string array of comments
 var e_str=[]  // string array of events
 var a_str=[]  // string array of actions
-for(var i=0; i&lt;v1.size(); i++) {
+for(var i=0; i&lt;v1.size(); i++) {  
   if(v1.valueAt(i).isNull().or(v2.valueAt(i).isNull(),v2.valueAt(i).matches(/EXECUTE/)).value()) continue
   c_str.push(v1.valueAt(i).value())
   a_str.push(v2.valueAt(i).value())
@@ -835,7 +841,7 @@ if(0&lt;c_str.length) {
   var key_orig=[]
   for(var i=0;i&lt;c_str.length;i++) {
     var key=c_str[i].replace(/[^a-zA-Z0-9 àâäèéêëîïôœùûüÿçÀÂÄÈÉÊËÎÏÔŒÙÛÜŸÇ]/g,&quot;&quot;)
-    var key_lower = key.toLowerCase()
+    var key_lower = key.toLowerCase()    
     // retain the first encountered instance of the comment
     if(undefined===key_orig[key_lower])
       key_orig[key_lower]=key
@@ -847,17 +853,17 @@ if(0&lt;c_str.length) {
     if(-1===arr[key_lower].indexOf(str))
       arr[key_lower].push(str)
   }
-
+  
   var str=[]
   for(var key in arr) {
-    // compound repeated events
+    // compound repeated events 
     var subarr=[]
     for(var i=0;i&lt;arr[key].length;i++) {
       var t=arr[key][i].split(&apos;:&apos;)
       var t_key=t[1]
       if(undefined===subarr[t_key])
         subarr[t_key]=[]
-      if(-1===subarr[t_key].indexOf(t[0]))
+      if(-1===subarr[t_key].indexOf(t[0]))  
         subarr[t_key].push(t[0])
     }
     var substr=[]
@@ -871,7 +877,7 @@ if(0&lt;c_str.length) {
     }
     str.push(&apos;[&apos;+((1&lt;substr.length)?substr.join(&apos;/&apos;):substr[0])+&apos;]:&apos;+key_orig[key])
   }
-
+  
   if(1&lt;str.length) {
     res=newValue(str.join(&apos;,&apos;),&apos;text&apos;)
   } else if(1==str.length) {
@@ -885,7 +891,7 @@ res</attribute>
         <attributes>
           <attribute name="script" valueType="text">// this script compounds repeated comments by using lowercase comment strings as array keys
 // and further compounds events within actions
-//
+// 
 var v1=$group(&apos;Admin.Action.stage&apos;,&apos;SpineBoneDensity&apos;,&apos;Admin.Action.comment&apos;).asSequence()
 var v2=$group(&apos;Admin.Action.stage&apos;,&apos;SpineBoneDensity&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
 var v3=$group(&apos;Admin.Action.stage&apos;,&apos;SpineBoneDensity&apos;,&apos;Admin.Action.eventReason&apos;).asSequence()
@@ -893,7 +899,7 @@ var res=null
 var c_str=[]  // string array of comments
 var e_str=[]  // string array of events
 var a_str=[]  // string array of actions
-for(var i=0; i&lt;v1.size(); i++) {
+for(var i=0; i&lt;v1.size(); i++) {  
   if(v1.valueAt(i).isNull().or(v2.valueAt(i).isNull(),v2.valueAt(i).matches(/EXECUTE/)).value()) continue
   c_str.push(v1.valueAt(i).value())
   a_str.push(v2.valueAt(i).value())
@@ -910,7 +916,7 @@ if(0&lt;c_str.length) {
   var key_orig=[]
   for(var i=0;i&lt;c_str.length;i++) {
     var key=c_str[i].replace(/[^a-zA-Z0-9 àâäèéêëîïôœùûüÿçÀÂÄÈÉÊËÎÏÔŒÙÛÜŸÇ]/g,&quot;&quot;)
-    var key_lower = key.toLowerCase()
+    var key_lower = key.toLowerCase()    
     // retain the first encountered instance of the comment
     if(undefined===key_orig[key_lower])
       key_orig[key_lower]=key
@@ -922,17 +928,17 @@ if(0&lt;c_str.length) {
     if(-1===arr[key_lower].indexOf(str))
       arr[key_lower].push(str)
   }
-
+  
   var str=[]
   for(var key in arr) {
-    // compound repeated events
+    // compound repeated events 
     var subarr=[]
     for(var i=0;i&lt;arr[key].length;i++) {
       var t=arr[key][i].split(&apos;:&apos;)
       var t_key=t[1]
       if(undefined===subarr[t_key])
         subarr[t_key]=[]
-      if(-1===subarr[t_key].indexOf(t[0]))
+      if(-1===subarr[t_key].indexOf(t[0]))  
         subarr[t_key].push(t[0])
     }
     var substr=[]
@@ -946,7 +952,7 @@ if(0&lt;c_str.length) {
     }
     str.push(&apos;[&apos;+((1&lt;substr.length)?substr.join(&apos;/&apos;):substr[0])+&apos;]:&apos;+key_orig[key])
   }
-
+  
   if(1&lt;str.length) {
     res=newValue(str.join(&apos;,&apos;),&apos;text&apos;)
   } else if(1==str.length) {
@@ -960,7 +966,7 @@ res</attribute>
         <attributes>
           <attribute name="script" valueType="text">// this script compounds repeated comments by using lowercase comment strings as array keys
 // and further compounds events within actions
-//
+// 
 var v1=$group(&apos;Admin.Action.stage&apos;,&apos;ForearmBoneDensity&apos;,&apos;Admin.Action.comment&apos;).asSequence()
 var v2=$group(&apos;Admin.Action.stage&apos;,&apos;ForearmBoneDensity&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
 var v3=$group(&apos;Admin.Action.stage&apos;,&apos;ForearmBoneDensity&apos;,&apos;Admin.Action.eventReason&apos;).asSequence()
@@ -968,7 +974,7 @@ var res=null
 var c_str=[]  // string array of comments
 var e_str=[]  // string array of events
 var a_str=[]  // string array of actions
-for(var i=0; i&lt;v1.size(); i++) {
+for(var i=0; i&lt;v1.size(); i++) {  
   if(v1.valueAt(i).isNull().or(v2.valueAt(i).isNull(),v2.valueAt(i).matches(/EXECUTE/)).value()) continue
   c_str.push(v1.valueAt(i).value())
   a_str.push(v2.valueAt(i).value())
@@ -985,7 +991,7 @@ if(0&lt;c_str.length) {
   var key_orig=[]
   for(var i=0;i&lt;c_str.length;i++) {
     var key=c_str[i].replace(/[^a-zA-Z0-9 àâäèéêëîïôœùûüÿçÀÂÄÈÉÊËÎÏÔŒÙÛÜŸÇ]/g,&quot;&quot;)
-    var key_lower = key.toLowerCase()
+    var key_lower = key.toLowerCase()    
     // retain the first encountered instance of the comment
     if(undefined===key_orig[key_lower])
       key_orig[key_lower]=key
@@ -997,17 +1003,17 @@ if(0&lt;c_str.length) {
     if(-1===arr[key_lower].indexOf(str))
       arr[key_lower].push(str)
   }
-
+  
   var str=[]
   for(var key in arr) {
-    // compound repeated events
+    // compound repeated events 
     var subarr=[]
     for(var i=0;i&lt;arr[key].length;i++) {
       var t=arr[key][i].split(&apos;:&apos;)
       var t_key=t[1]
       if(undefined===subarr[t_key])
         subarr[t_key]=[]
-      if(-1===subarr[t_key].indexOf(t[0]))
+      if(-1===subarr[t_key].indexOf(t[0]))  
         subarr[t_key].push(t[0])
     }
     var substr=[]
@@ -1021,7 +1027,7 @@ if(0&lt;c_str.length) {
     }
     str.push(&apos;[&apos;+((1&lt;substr.length)?substr.join(&apos;/&apos;):substr[0])+&apos;]:&apos;+key_orig[key])
   }
-
+  
   if(1&lt;str.length) {
     res=newValue(str.join(&apos;,&apos;),&apos;text&apos;)
   } else if(1==str.length) {
@@ -1035,7 +1041,7 @@ res</attribute>
         <attributes>
           <attribute name="script" valueType="text">// this script compounds repeated comments by using lowercase comment strings as array keys
 // and further compounds events within actions
-//
+// 
 var v1=$group(&apos;Admin.Action.stage&apos;,&apos;DualHipBoneDensity&apos;,&apos;Admin.Action.comment&apos;).asSequence()
 var v2=$group(&apos;Admin.Action.stage&apos;,&apos;DualHipBoneDensity&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
 var v3=$group(&apos;Admin.Action.stage&apos;,&apos;DualHipBoneDensity&apos;,&apos;Admin.Action.eventReason&apos;).asSequence()
@@ -1043,7 +1049,7 @@ var res=null
 var c_str=[]  // string array of comments
 var e_str=[]  // string array of events
 var a_str=[]  // string array of actions
-for(var i=0; i&lt;v1.size(); i++) {
+for(var i=0; i&lt;v1.size(); i++) {  
   if(v1.valueAt(i).isNull().or(v2.valueAt(i).isNull(),v2.valueAt(i).matches(/EXECUTE/)).value()) continue
   c_str.push(v1.valueAt(i).value())
   a_str.push(v2.valueAt(i).value())
@@ -1060,7 +1066,7 @@ if(0&lt;c_str.length) {
   var key_orig=[]
   for(var i=0;i&lt;c_str.length;i++) {
     var key=c_str[i].replace(/[^a-zA-Z0-9 àâäèéêëîïôœùûüÿçÀÂÄÈÉÊËÎÏÔŒÙÛÜŸÇ]/g,&quot;&quot;)
-    var key_lower = key.toLowerCase()
+    var key_lower = key.toLowerCase()    
     // retain the first encountered instance of the comment
     if(undefined===key_orig[key_lower])
       key_orig[key_lower]=key
@@ -1072,17 +1078,17 @@ if(0&lt;c_str.length) {
     if(-1===arr[key_lower].indexOf(str))
       arr[key_lower].push(str)
   }
-
+  
   var str=[]
   for(var key in arr) {
-    // compound repeated events
+    // compound repeated events 
     var subarr=[]
     for(var i=0;i&lt;arr[key].length;i++) {
       var t=arr[key][i].split(&apos;:&apos;)
       var t_key=t[1]
       if(undefined===subarr[t_key])
         subarr[t_key]=[]
-      if(-1===subarr[t_key].indexOf(t[0]))
+      if(-1===subarr[t_key].indexOf(t[0]))  
         subarr[t_key].push(t[0])
     }
     var substr=[]
@@ -1096,7 +1102,7 @@ if(0&lt;c_str.length) {
     }
     str.push(&apos;[&apos;+((1&lt;substr.length)?substr.join(&apos;/&apos;):substr[0])+&apos;]:&apos;+key_orig[key])
   }
-
+  
   if(1&lt;str.length) {
     res=newValue(str.join(&apos;,&apos;),&apos;text&apos;)
   } else if(1==str.length) {
@@ -1110,7 +1116,7 @@ res</attribute>
         <attributes>
           <attribute name="script" valueType="text">// this script compounds repeated comments by using lowercase comment strings as array keys
 // and further compounds events within actions
-//
+// 
 var v1=$group(&apos;Admin.Action.stage&apos;,&apos;WholeBodyBoneDensity&apos;,&apos;Admin.Action.comment&apos;).asSequence()
 var v2=$group(&apos;Admin.Action.stage&apos;,&apos;WholeBodyBoneDensity&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
 var v3=$group(&apos;Admin.Action.stage&apos;,&apos;WholeBodyBoneDensity&apos;,&apos;Admin.Action.eventReason&apos;).asSequence()
@@ -1118,7 +1124,7 @@ var res=null
 var c_str=[]  // string array of comments
 var e_str=[]  // string array of events
 var a_str=[]  // string array of actions
-for(var i=0; i&lt;v1.size(); i++) {
+for(var i=0; i&lt;v1.size(); i++) {  
   if(v1.valueAt(i).isNull().or(v2.valueAt(i).isNull(),v2.valueAt(i).matches(/EXECUTE/)).value()) continue
   c_str.push(v1.valueAt(i).value())
   a_str.push(v2.valueAt(i).value())
@@ -1135,7 +1141,7 @@ if(0&lt;c_str.length) {
   var key_orig=[]
   for(var i=0;i&lt;c_str.length;i++) {
     var key=c_str[i].replace(/[^a-zA-Z0-9 àâäèéêëîïôœùûüÿçÀÂÄÈÉÊËÎÏÔŒÙÛÜŸÇ]/g,&quot;&quot;)
-    var key_lower = key.toLowerCase()
+    var key_lower = key.toLowerCase()    
     // retain the first encountered instance of the comment
     if(undefined===key_orig[key_lower])
       key_orig[key_lower]=key
@@ -1147,17 +1153,17 @@ if(0&lt;c_str.length) {
     if(-1===arr[key_lower].indexOf(str))
       arr[key_lower].push(str)
   }
-
+  
   var str=[]
   for(var key in arr) {
-    // compound repeated events
+    // compound repeated events 
     var subarr=[]
     for(var i=0;i&lt;arr[key].length;i++) {
       var t=arr[key][i].split(&apos;:&apos;)
       var t_key=t[1]
       if(undefined===subarr[t_key])
         subarr[t_key]=[]
-      if(-1===subarr[t_key].indexOf(t[0]))
+      if(-1===subarr[t_key].indexOf(t[0]))  
         subarr[t_key].push(t[0])
     }
     var substr=[]
@@ -1171,7 +1177,7 @@ if(0&lt;c_str.length) {
     }
     str.push(&apos;[&apos;+((1&lt;substr.length)?substr.join(&apos;/&apos;):substr[0])+&apos;]:&apos;+key_orig[key])
   }
-
+  
   if(1&lt;str.length) {
     res=newValue(str.join(&apos;,&apos;),&apos;text&apos;)
   } else if(1==str.length) {
@@ -1185,7 +1191,7 @@ res</attribute>
         <attributes>
           <attribute name="script" valueType="text">// this script compounds repeated comments by using lowercase comment strings as array keys
 // and further compounds events within actions
-//
+// 
 var v1=$group(&apos;Admin.Action.stage&apos;,&apos;TUG&apos;,&apos;Admin.Action.comment&apos;).asSequence()
 var v2=$group(&apos;Admin.Action.stage&apos;,&apos;TUG&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
 var v3=$group(&apos;Admin.Action.stage&apos;,&apos;TUG&apos;,&apos;Admin.Action.eventReason&apos;).asSequence()
@@ -1193,7 +1199,7 @@ var res=null
 var c_str=[]  // string array of comments
 var e_str=[]  // string array of events
 var a_str=[]  // string array of actions
-for(var i=0; i&lt;v1.size(); i++) {
+for(var i=0; i&lt;v1.size(); i++) {  
   if(v1.valueAt(i).isNull().or(v2.valueAt(i).isNull(),v2.valueAt(i).matches(/EXECUTE/)).value()) continue
   c_str.push(v1.valueAt(i).value())
   a_str.push(v2.valueAt(i).value())
@@ -1204,7 +1210,7 @@ if(0&lt;c_str.length) {
   var key_orig=[]
   for(var i=0;i&lt;c_str.length;i++) {
     var key=c_str[i].replace(/[^a-zA-Z0-9 àâäèéêëîïôœùûüÿçÀÂÄÈÉÊËÎÏÔŒÙÛÜŸÇ]/g,&quot;&quot;)
-    var key_lower = key.toLowerCase()
+    var key_lower = key.toLowerCase()    
     // retain the first encountered instance of the comment
     if(undefined===key_orig[key_lower])
       key_orig[key_lower]=key
@@ -1216,17 +1222,17 @@ if(0&lt;c_str.length) {
     if(-1===arr[key_lower].indexOf(str))
       arr[key_lower].push(str)
   }
-
+  
   var str=[]
   for(var key in arr) {
-    // compound repeated events
+    // compound repeated events 
     var subarr=[]
     for(var i=0;i&lt;arr[key].length;i++) {
       var t=arr[key][i].split(&apos;:&apos;)
       var t_key=t[1]
       if(undefined===subarr[t_key])
         subarr[t_key]=[]
-      if(-1===subarr[t_key].indexOf(t[0]))
+      if(-1===subarr[t_key].indexOf(t[0]))  
         subarr[t_key].push(t[0])
     }
     var substr=[]
@@ -1240,7 +1246,7 @@ if(0&lt;c_str.length) {
     }
     str.push(&apos;[&apos;+((1&lt;substr.length)?substr.join(&apos;/&apos;):substr[0])+&apos;]:&apos;+key_orig[key])
   }
-
+  
   if(1&lt;str.length) {
     res=newValue(str.join(&apos;,&apos;),&apos;text&apos;)
   } else if(1==str.length) {
@@ -1254,7 +1260,7 @@ res</attribute>
         <attributes>
           <attribute name="script" valueType="text">// this script compounds repeated comments by using lowercase comment strings as array keys
 // and further compounds events within actions
-//
+// 
 var v1=$group(&apos;Admin.Action.stage&apos;,&apos;HipsWaist&apos;,&apos;Admin.Action.comment&apos;).asSequence()
 var v2=$group(&apos;Admin.Action.stage&apos;,&apos;HipsWaist&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
 var v3=$group(&apos;Admin.Action.stage&apos;,&apos;HipsWaist&apos;,&apos;Admin.Action.eventReason&apos;).asSequence()
@@ -1262,7 +1268,7 @@ var res=null
 var c_str=[]  // string array of comments
 var e_str=[]  // string array of events
 var a_str=[]  // string array of actions
-for(var i=0; i&lt;v1.size(); i++) {
+for(var i=0; i&lt;v1.size(); i++) {  
   if(v1.valueAt(i).isNull().or(v2.valueAt(i).isNull(),v2.valueAt(i).matches(/EXECUTE/)).value()) continue
   c_str.push(v1.valueAt(i).value())
   a_str.push(v2.valueAt(i).value())
@@ -1279,7 +1285,7 @@ if(0&lt;c_str.length) {
   var key_orig=[]
   for(var i=0;i&lt;c_str.length;i++) {
     var key=c_str[i].replace(/[^a-zA-Z0-9 àâäèéêëîïôœùûüÿçÀÂÄÈÉÊËÎÏÔŒÙÛÜŸÇ]/g,&quot;&quot;)
-    var key_lower = key.toLowerCase()
+    var key_lower = key.toLowerCase()    
     // retain the first encountered instance of the comment
     if(undefined===key_orig[key_lower])
       key_orig[key_lower]=key
@@ -1291,17 +1297,17 @@ if(0&lt;c_str.length) {
     if(-1===arr[key_lower].indexOf(str))
       arr[key_lower].push(str)
   }
-
+  
   var str=[]
   for(var key in arr) {
-    // compound repeated events
+    // compound repeated events 
     var subarr=[]
     for(var i=0;i&lt;arr[key].length;i++) {
       var t=arr[key][i].split(&apos;:&apos;)
       var t_key=t[1]
       if(undefined===subarr[t_key])
         subarr[t_key]=[]
-      if(-1===subarr[t_key].indexOf(t[0]))
+      if(-1===subarr[t_key].indexOf(t[0]))  
         subarr[t_key].push(t[0])
     }
     var substr=[]
@@ -1315,7 +1321,7 @@ if(0&lt;c_str.length) {
     }
     str.push(&apos;[&apos;+((1&lt;substr.length)?substr.join(&apos;/&apos;):substr[0])+&apos;]:&apos;+key_orig[key])
   }
-
+  
   if(1&lt;str.length) {
     res=newValue(str.join(&apos;,&apos;),&apos;text&apos;)
   } else if(1==str.length) {
@@ -1329,7 +1335,7 @@ res</attribute>
         <attributes>
           <attribute name="script" valueType="text">// this script compounds repeated comments by using lowercase comment strings as array keys
 // and further compounds events within actions
-//
+// 
 var v1=$group(&apos;Admin.Action.stage&apos;,&apos;4mWalk&apos;,&apos;Admin.Action.comment&apos;).asSequence()
 var v2=$group(&apos;Admin.Action.stage&apos;,&apos;4mWalk&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
 var v3=$group(&apos;Admin.Action.stage&apos;,&apos;4mWalk&apos;,&apos;Admin.Action.eventReason&apos;).asSequence()
@@ -1337,7 +1343,7 @@ var res=null
 var c_str=[]  // string array of comments
 var e_str=[]  // string array of events
 var a_str=[]  // string array of actions
-for(var i=0; i&lt;v1.size(); i++) {
+for(var i=0; i&lt;v1.size(); i++) {  
   if(v1.valueAt(i).isNull().or(v2.valueAt(i).isNull(),v2.valueAt(i).matches(/EXECUTE/)).value()) continue
   c_str.push(v1.valueAt(i).value())
   a_str.push(v2.valueAt(i).value())
@@ -1348,7 +1354,7 @@ if(0&lt;c_str.length) {
   var key_orig=[]
   for(var i=0;i&lt;c_str.length;i++) {
     var key=c_str[i].replace(/[^a-zA-Z0-9 àâäèéêëîïôœùûüÿçÀÂÄÈÉÊËÎÏÔŒÙÛÜŸÇ]/g,&quot;&quot;)
-    var key_lower = key.toLowerCase()
+    var key_lower = key.toLowerCase()    
     // retain the first encountered instance of the comment
     if(undefined===key_orig[key_lower])
       key_orig[key_lower]=key
@@ -1360,17 +1366,17 @@ if(0&lt;c_str.length) {
     if(-1===arr[key_lower].indexOf(str))
       arr[key_lower].push(str)
   }
-
+  
   var str=[]
   for(var key in arr) {
-    // compound repeated events
+    // compound repeated events 
     var subarr=[]
     for(var i=0;i&lt;arr[key].length;i++) {
       var t=arr[key][i].split(&apos;:&apos;)
       var t_key=t[1]
       if(undefined===subarr[t_key])
         subarr[t_key]=[]
-      if(-1===subarr[t_key].indexOf(t[0]))
+      if(-1===subarr[t_key].indexOf(t[0]))  
         subarr[t_key].push(t[0])
     }
     var substr=[]
@@ -1384,7 +1390,7 @@ if(0&lt;c_str.length) {
     }
     str.push(&apos;[&apos;+((1&lt;substr.length)?substr.join(&apos;/&apos;):substr[0])+&apos;]:&apos;+key_orig[key])
   }
-
+  
   if(1&lt;str.length) {
     res=newValue(str.join(&apos;,&apos;),&apos;text&apos;)
   } else if(1==str.length) {
@@ -1398,7 +1404,7 @@ res</attribute>
         <attributes>
           <attribute name="script" valueType="text">// this script compounds repeated comments by using lowercase comment strings as array keys
 // and further compounds events within actions
-//
+// 
 var v1=$group(&apos;Admin.Action.stage&apos;,&apos;CarotidIntima&apos;,&apos;Admin.Action.comment&apos;).asSequence()
 var v2=$group(&apos;Admin.Action.stage&apos;,&apos;CarotidIntima&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
 var v3=$group(&apos;Admin.Action.stage&apos;,&apos;CarotidIntima&apos;,&apos;Admin.Action.eventReason&apos;).asSequence()
@@ -1406,7 +1412,7 @@ var res=null
 var c_str=[]  // string array of comments
 var e_str=[]  // string array of events
 var a_str=[]  // string array of actions
-for(var i=0; i&lt;v1.size(); i++) {
+for(var i=0; i&lt;v1.size(); i++) {  
   if(v1.valueAt(i).isNull().or(v2.valueAt(i).isNull(),v2.valueAt(i).matches(/EXECUTE/)).value()) continue
   c_str.push(v1.valueAt(i).value())
   a_str.push(v2.valueAt(i).value())
@@ -1423,7 +1429,7 @@ if(0&lt;c_str.length) {
   var key_orig=[]
   for(var i=0;i&lt;c_str.length;i++) {
     var key=c_str[i].replace(/[^a-zA-Z0-9 àâäèéêëîïôœùûüÿçÀÂÄÈÉÊËÎÏÔŒÙÛÜŸÇ]/g,&quot;&quot;)
-    var key_lower = key.toLowerCase()
+    var key_lower = key.toLowerCase()    
     // retain the first encountered instance of the comment
     if(undefined===key_orig[key_lower])
       key_orig[key_lower]=key
@@ -1435,17 +1441,17 @@ if(0&lt;c_str.length) {
     if(-1===arr[key_lower].indexOf(str))
       arr[key_lower].push(str)
   }
-
+  
   var str=[]
   for(var key in arr) {
-    // compound repeated events
+    // compound repeated events 
     var subarr=[]
     for(var i=0;i&lt;arr[key].length;i++) {
       var t=arr[key][i].split(&apos;:&apos;)
       var t_key=t[1]
       if(undefined===subarr[t_key])
         subarr[t_key]=[]
-      if(-1===subarr[t_key].indexOf(t[0]))
+      if(-1===subarr[t_key].indexOf(t[0]))  
         subarr[t_key].push(t[0])
     }
     var substr=[]
@@ -1459,7 +1465,7 @@ if(0&lt;c_str.length) {
     }
     str.push(&apos;[&apos;+((1&lt;substr.length)?substr.join(&apos;/&apos;):substr[0])+&apos;]:&apos;+key_orig[key])
   }
-
+  
   if(1&lt;str.length) {
     res=newValue(str.join(&apos;,&apos;),&apos;text&apos;)
   } else if(1==str.length) {
@@ -1473,7 +1479,7 @@ res</attribute>
         <attributes>
           <attribute name="script" valueType="text">// this script compounds repeated comments by using lowercase comment strings as array keys
 // and further compounds events within actions
-//
+// 
 var v1=$group(&apos;Admin.Action.stage&apos;,&apos;ChairRise&apos;,&apos;Admin.Action.comment&apos;).asSequence()
 var v2=$group(&apos;Admin.Action.stage&apos;,&apos;ChairRise&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
 var v3=$group(&apos;Admin.Action.stage&apos;,&apos;ChairRise&apos;,&apos;Admin.Action.eventReason&apos;).asSequence()
@@ -1481,7 +1487,7 @@ var res=null
 var c_str=[]  // string array of comments
 var e_str=[]  // string array of events
 var a_str=[]  // string array of actions
-for(var i=0; i&lt;v1.size(); i++) {
+for(var i=0; i&lt;v1.size(); i++) {  
   if(v1.valueAt(i).isNull().or(v2.valueAt(i).isNull(),v2.valueAt(i).matches(/EXECUTE/)).value()) continue
   c_str.push(v1.valueAt(i).value())
   a_str.push(v2.valueAt(i).value())
@@ -1492,7 +1498,7 @@ if(0&lt;c_str.length) {
   var key_orig=[]
   for(var i=0;i&lt;c_str.length;i++) {
     var key=c_str[i].replace(/[^a-zA-Z0-9 àâäèéêëîïôœùûüÿçÀÂÄÈÉÊËÎÏÔŒÙÛÜŸÇ]/g,&quot;&quot;)
-    var key_lower = key.toLowerCase()
+    var key_lower = key.toLowerCase()    
     // retain the first encountered instance of the comment
     if(undefined===key_orig[key_lower])
       key_orig[key_lower]=key
@@ -1504,17 +1510,17 @@ if(0&lt;c_str.length) {
     if(-1===arr[key_lower].indexOf(str))
       arr[key_lower].push(str)
   }
-
+  
   var str=[]
   for(var key in arr) {
-    // compound repeated events
+    // compound repeated events 
     var subarr=[]
     for(var i=0;i&lt;arr[key].length;i++) {
       var t=arr[key][i].split(&apos;:&apos;)
       var t_key=t[1]
       if(undefined===subarr[t_key])
         subarr[t_key]=[]
-      if(-1===subarr[t_key].indexOf(t[0]))
+      if(-1===subarr[t_key].indexOf(t[0]))  
         subarr[t_key].push(t[0])
     }
     var substr=[]
@@ -1528,7 +1534,7 @@ if(0&lt;c_str.length) {
     }
     str.push(&apos;[&apos;+((1&lt;substr.length)?substr.join(&apos;/&apos;):substr[0])+&apos;]:&apos;+key_orig[key])
   }
-
+  
   if(1&lt;str.length) {
     res=newValue(str.join(&apos;,&apos;),&apos;text&apos;)
   } else if(1==str.length) {
@@ -1542,7 +1548,7 @@ res</attribute>
         <attributes>
           <attribute name="script" valueType="text">// this script compounds repeated comments by using lowercase comment strings as array keys
 // and further compounds events within actions
-//
+// 
 var v1=$group(&apos;Admin.Action.stage&apos;,&apos;SittingHeight&apos;,&apos;Admin.Action.comment&apos;).asSequence()
 var v2=$group(&apos;Admin.Action.stage&apos;,&apos;SittingHeight&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
 var v3=$group(&apos;Admin.Action.stage&apos;,&apos;SittingHeight&apos;,&apos;Admin.Action.eventReason&apos;).asSequence()
@@ -1550,7 +1556,7 @@ var res=null
 var c_str=[]  // string array of comments
 var e_str=[]  // string array of events
 var a_str=[]  // string array of actions
-for(var i=0; i&lt;v1.size(); i++) {
+for(var i=0; i&lt;v1.size(); i++) {  
   if(v1.valueAt(i).isNull().or(v2.valueAt(i).isNull(),v2.valueAt(i).matches(/EXECUTE/)).value()) continue
   c_str.push(v1.valueAt(i).value())
   a_str.push(v2.valueAt(i).value())
@@ -1567,7 +1573,7 @@ if(0&lt;c_str.length) {
   var key_orig=[]
   for(var i=0;i&lt;c_str.length;i++) {
     var key=c_str[i].replace(/[^a-zA-Z0-9 àâäèéêëîïôœùûüÿçÀÂÄÈÉÊËÎÏÔŒÙÛÜŸÇ]/g,&quot;&quot;)
-    var key_lower = key.toLowerCase()
+    var key_lower = key.toLowerCase()    
     // retain the first encountered instance of the comment
     if(undefined===key_orig[key_lower])
       key_orig[key_lower]=key
@@ -1579,17 +1585,17 @@ if(0&lt;c_str.length) {
     if(-1===arr[key_lower].indexOf(str))
       arr[key_lower].push(str)
   }
-
+  
   var str=[]
   for(var key in arr) {
-    // compound repeated events
+    // compound repeated events 
     var subarr=[]
     for(var i=0;i&lt;arr[key].length;i++) {
       var t=arr[key][i].split(&apos;:&apos;)
       var t_key=t[1]
       if(undefined===subarr[t_key])
         subarr[t_key]=[]
-      if(-1===subarr[t_key].indexOf(t[0]))
+      if(-1===subarr[t_key].indexOf(t[0]))  
         subarr[t_key].push(t[0])
     }
     var substr=[]
@@ -1603,7 +1609,7 @@ if(0&lt;c_str.length) {
     }
     str.push(&apos;[&apos;+((1&lt;substr.length)?substr.join(&apos;/&apos;):substr[0])+&apos;]:&apos;+key_orig[key])
   }
-
+  
   if(1&lt;str.length) {
     res=newValue(str.join(&apos;,&apos;),&apos;text&apos;)
   } else if(1==str.length) {
@@ -1617,7 +1623,7 @@ res</attribute>
         <attributes>
           <attribute name="script" valueType="text">// this script compounds repeated comments by using lowercase comment strings as array keys
 // and further compounds events within actions
-//
+// 
 var v1=$group(&apos;Admin.Action.stage&apos;,&apos;VisionAcuity&apos;,&apos;Admin.Action.comment&apos;).asSequence()
 var v2=$group(&apos;Admin.Action.stage&apos;,&apos;VisionAcuity&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
 var v3=$group(&apos;Admin.Action.stage&apos;,&apos;VisionAcuity&apos;,&apos;Admin.Action.eventReason&apos;).asSequence()
@@ -1625,7 +1631,7 @@ var res=null
 var c_str=[]  // string array of comments
 var e_str=[]  // string array of events
 var a_str=[]  // string array of actions
-for(var i=0; i&lt;v1.size(); i++) {
+for(var i=0; i&lt;v1.size(); i++) {  
   if(v1.valueAt(i).isNull().or(v2.valueAt(i).isNull(),v2.valueAt(i).matches(/EXECUTE/)).value()) continue
   c_str.push(v1.valueAt(i).value())
   a_str.push(v2.valueAt(i).value())
@@ -1636,7 +1642,7 @@ if(0&lt;c_str.length) {
   var key_orig=[]
   for(var i=0;i&lt;c_str.length;i++) {
     var key=c_str[i].replace(/[^a-zA-Z0-9 àâäèéêëîïôœùûüÿçÀÂÄÈÉÊËÎÏÔŒÙÛÜŸÇ]/g,&quot;&quot;)
-    var key_lower = key.toLowerCase()
+    var key_lower = key.toLowerCase()    
     // retain the first encountered instance of the comment
     if(undefined===key_orig[key_lower])
       key_orig[key_lower]=key
@@ -1648,17 +1654,17 @@ if(0&lt;c_str.length) {
     if(-1===arr[key_lower].indexOf(str))
       arr[key_lower].push(str)
   }
-
+  
   var str=[]
   for(var key in arr) {
-    // compound repeated events
+    // compound repeated events 
     var subarr=[]
     for(var i=0;i&lt;arr[key].length;i++) {
       var t=arr[key][i].split(&apos;:&apos;)
       var t_key=t[1]
       if(undefined===subarr[t_key])
         subarr[t_key]=[]
-      if(-1===subarr[t_key].indexOf(t[0]))
+      if(-1===subarr[t_key].indexOf(t[0]))  
         subarr[t_key].push(t[0])
     }
     var substr=[]
@@ -1672,7 +1678,7 @@ if(0&lt;c_str.length) {
     }
     str.push(&apos;[&apos;+((1&lt;substr.length)?substr.join(&apos;/&apos;):substr[0])+&apos;]:&apos;+key_orig[key])
   }
-
+  
   if(1&lt;str.length) {
     res=newValue(str.join(&apos;,&apos;),&apos;text&apos;)
   } else if(1==str.length) {
@@ -1686,7 +1692,7 @@ res</attribute>
         <attributes>
           <attribute name="script" valueType="text">// this script compounds repeated comments by using lowercase comment strings as array keys
 // and further compounds events within actions
-//
+// 
 var v1=$group(&apos;Admin.Action.stage&apos;,&apos;StroopFAS&apos;,&apos;Admin.Action.comment&apos;).asSequence()
 var v2=$group(&apos;Admin.Action.stage&apos;,&apos;StroopFAS&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
 var v3=$group(&apos;Admin.Action.stage&apos;,&apos;StroopFAS&apos;,&apos;Admin.Action.eventReason&apos;).asSequence()
@@ -1694,7 +1700,7 @@ var res=null
 var c_str=[]  // string array of comments
 var e_str=[]  // string array of events
 var a_str=[]  // string array of actions
-for(var i=0; i&lt;v1.size(); i++) {
+for(var i=0; i&lt;v1.size(); i++) {  
   if(v1.valueAt(i).isNull().or(v2.valueAt(i).isNull(),v2.valueAt(i).matches(/EXECUTE/)).value()) continue
   c_str.push(v1.valueAt(i).value())
   a_str.push(v2.valueAt(i).value())
@@ -1705,7 +1711,7 @@ if(0&lt;c_str.length) {
   var key_orig=[]
   for(var i=0;i&lt;c_str.length;i++) {
     var key=c_str[i].replace(/[^a-zA-Z0-9 àâäèéêëîïôœùûüÿçÀÂÄÈÉÊËÎÏÔŒÙÛÜŸÇ]/g,&quot;&quot;)
-    var key_lower = key.toLowerCase()
+    var key_lower = key.toLowerCase()    
     // retain the first encountered instance of the comment
     if(undefined===key_orig[key_lower])
       key_orig[key_lower]=key
@@ -1717,17 +1723,17 @@ if(0&lt;c_str.length) {
     if(-1===arr[key_lower].indexOf(str))
       arr[key_lower].push(str)
   }
-
+  
   var str=[]
   for(var key in arr) {
-    // compound repeated events
+    // compound repeated events 
     var subarr=[]
     for(var i=0;i&lt;arr[key].length;i++) {
       var t=arr[key][i].split(&apos;:&apos;)
       var t_key=t[1]
       if(undefined===subarr[t_key])
         subarr[t_key]=[]
-      if(-1===subarr[t_key].indexOf(t[0]))
+      if(-1===subarr[t_key].indexOf(t[0]))  
         subarr[t_key].push(t[0])
     }
     var substr=[]
@@ -1741,7 +1747,7 @@ if(0&lt;c_str.length) {
     }
     str.push(&apos;[&apos;+((1&lt;substr.length)?substr.join(&apos;/&apos;):substr[0])+&apos;]:&apos;+key_orig[key])
   }
-
+  
   if(1&lt;str.length) {
     res=newValue(str.join(&apos;,&apos;),&apos;text&apos;)
   } else if(1==str.length) {
@@ -1925,7 +1931,7 @@ res</attribute>
         <attributes>
           <attribute name="script" valueType="text">// this script compounds repeated comments by using lowercase comment strings as array keys
 // and further compounds events within actions
-//
+// 
 var v1=$group(&apos;Admin.Action.stage&apos;,&apos;StandingBalance&apos;,&apos;Admin.Action.comment&apos;).asSequence()
 var v2=$group(&apos;Admin.Action.stage&apos;,&apos;StandingBalance&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
 var v3=$group(&apos;Admin.Action.stage&apos;,&apos;StandingBalance&apos;,&apos;Admin.Action.eventReason&apos;).asSequence()
@@ -1933,7 +1939,7 @@ var res=null
 var c_str=[]  // string array of comments
 var e_str=[]  // string array of events
 var a_str=[]  // string array of actions
-for(var i=0; i&lt;v1.size(); i++) {
+for(var i=0; i&lt;v1.size(); i++) {  
   if(v1.valueAt(i).isNull().or(v2.valueAt(i).isNull(),v2.valueAt(i).matches(/EXECUTE/)).value()) continue
   c_str.push(v1.valueAt(i).value())
   a_str.push(v2.valueAt(i).value())
@@ -1944,7 +1950,7 @@ if(0&lt;c_str.length) {
   var key_orig=[]
   for(var i=0;i&lt;c_str.length;i++) {
     var key=c_str[i].replace(/[^a-zA-Z0-9 àâäèéêëîïôœùûüÿçÀÂÄÈÉÊËÎÏÔŒÙÛÜŸÇ]/g,&quot;&quot;)
-    var key_lower = key.toLowerCase()
+    var key_lower = key.toLowerCase()    
     // retain the first encountered instance of the comment
     if(undefined===key_orig[key_lower])
       key_orig[key_lower]=key
@@ -1956,17 +1962,17 @@ if(0&lt;c_str.length) {
     if(-1===arr[key_lower].indexOf(str))
       arr[key_lower].push(str)
   }
-
+  
   var str=[]
   for(var key in arr) {
-    // compound repeated events
+    // compound repeated events 
     var subarr=[]
     for(var i=0;i&lt;arr[key].length;i++) {
       var t=arr[key][i].split(&apos;:&apos;)
       var t_key=t[1]
       if(undefined===subarr[t_key])
         subarr[t_key]=[]
-      if(-1===subarr[t_key].indexOf(t[0]))
+      if(-1===subarr[t_key].indexOf(t[0]))  
         subarr[t_key].push(t[0])
     }
     var substr=[]
@@ -1980,7 +1986,7 @@ if(0&lt;c_str.length) {
     }
     str.push(&apos;[&apos;+((1&lt;substr.length)?substr.join(&apos;/&apos;):substr[0])+&apos;]:&apos;+key_orig[key])
   }
-
+  
   if(1&lt;str.length) {
     res=newValue(str.join(&apos;,&apos;),&apos;text&apos;)
   } else if(1==str.length) {
@@ -1994,7 +2000,7 @@ res</attribute>
         <attributes>
           <attribute name="script" valueType="text">// this script compounds repeated comments by using lowercase comment strings as array keys
 // and further compounds events within actions
-//
+// 
 var v1=$group(&apos;Admin.Action.stage&apos;,&apos;RetinalScanLeft&apos;,&apos;Admin.Action.comment&apos;).asSequence()
 var v2=$group(&apos;Admin.Action.stage&apos;,&apos;RetinalScanLeft&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
 var v3=$group(&apos;Admin.Action.stage&apos;,&apos;RetinalScanLeft&apos;,&apos;Admin.Action.eventReason&apos;).asSequence()
@@ -2002,7 +2008,7 @@ var res=null
 var c_str=[]  // string array of comments
 var e_str=[]  // string array of events
 var a_str=[]  // string array of actions
-for(var i=0; i&lt;v1.size(); i++) {
+for(var i=0; i&lt;v1.size(); i++) {  
   if(v1.valueAt(i).isNull().or(v2.valueAt(i).isNull(),v2.valueAt(i).matches(/EXECUTE/)).value()) continue
   c_str.push(v1.valueAt(i).value())
   a_str.push(v2.valueAt(i).value())
@@ -2019,7 +2025,7 @@ if(0&lt;c_str.length) {
   var key_orig=[]
   for(var i=0;i&lt;c_str.length;i++) {
     var key=c_str[i].replace(/[^a-zA-Z0-9 àâäèéêëîïôœùûüÿçÀÂÄÈÉÊËÎÏÔŒÙÛÜŸÇ]/g,&quot;&quot;)
-    var key_lower = key.toLowerCase()
+    var key_lower = key.toLowerCase()    
     // retain the first encountered instance of the comment
     if(undefined===key_orig[key_lower])
       key_orig[key_lower]=key
@@ -2031,17 +2037,17 @@ if(0&lt;c_str.length) {
     if(-1===arr[key_lower].indexOf(str))
       arr[key_lower].push(str)
   }
-
+  
   var str=[]
   for(var key in arr) {
-    // compound repeated events
+    // compound repeated events 
     var subarr=[]
     for(var i=0;i&lt;arr[key].length;i++) {
       var t=arr[key][i].split(&apos;:&apos;)
       var t_key=t[1]
       if(undefined===subarr[t_key])
         subarr[t_key]=[]
-      if(-1===subarr[t_key].indexOf(t[0]))
+      if(-1===subarr[t_key].indexOf(t[0]))  
         subarr[t_key].push(t[0])
     }
     var substr=[]
@@ -2055,7 +2061,7 @@ if(0&lt;c_str.length) {
     }
     str.push(&apos;[&apos;+((1&lt;substr.length)?substr.join(&apos;/&apos;):substr[0])+&apos;]:&apos;+key_orig[key])
   }
-
+  
   if(1&lt;str.length) {
     res=newValue(str.join(&apos;,&apos;),&apos;text&apos;)
   } else if(1==str.length) {
@@ -2069,7 +2075,7 @@ res</attribute>
         <attributes>
           <attribute name="script" valueType="text">// this script compounds repeated comments by using lowercase comment strings as array keys
 // and further compounds events within actions
-//
+// 
 var v1=$group(&apos;Admin.Action.stage&apos;,&apos;RetinalScanRight&apos;,&apos;Admin.Action.comment&apos;).asSequence()
 var v2=$group(&apos;Admin.Action.stage&apos;,&apos;RetinalScanRight&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
 var v3=$group(&apos;Admin.Action.stage&apos;,&apos;RetinalScanRight&apos;,&apos;Admin.Action.eventReason&apos;).asSequence()
@@ -2077,7 +2083,7 @@ var res=null
 var c_str=[]  // string array of comments
 var e_str=[]  // string array of events
 var a_str=[]  // string array of actions
-for(var i=0; i&lt;v1.size(); i++) {
+for(var i=0; i&lt;v1.size(); i++) {  
   if(v1.valueAt(i).isNull().or(v2.valueAt(i).isNull(),v2.valueAt(i).matches(/EXECUTE/)).value()) continue
   c_str.push(v1.valueAt(i).value())
   a_str.push(v2.valueAt(i).value())
@@ -2094,7 +2100,7 @@ if(0&lt;c_str.length) {
   var key_orig=[]
   for(var i=0;i&lt;c_str.length;i++) {
     var key=c_str[i].replace(/[^a-zA-Z0-9 àâäèéêëîïôœùûüÿçÀÂÄÈÉÊËÎÏÔŒÙÛÜŸÇ]/g,&quot;&quot;)
-    var key_lower = key.toLowerCase()
+    var key_lower = key.toLowerCase()    
     // retain the first encountered instance of the comment
     if(undefined===key_orig[key_lower])
       key_orig[key_lower]=key
@@ -2106,17 +2112,17 @@ if(0&lt;c_str.length) {
     if(-1===arr[key_lower].indexOf(str))
       arr[key_lower].push(str)
   }
-
+  
   var str=[]
   for(var key in arr) {
-    // compound repeated events
+    // compound repeated events 
     var subarr=[]
     for(var i=0;i&lt;arr[key].length;i++) {
       var t=arr[key][i].split(&apos;:&apos;)
       var t_key=t[1]
       if(undefined===subarr[t_key])
         subarr[t_key]=[]
-      if(-1===subarr[t_key].indexOf(t[0]))
+      if(-1===subarr[t_key].indexOf(t[0]))  
         subarr[t_key].push(t[0])
     }
     var substr=[]
@@ -2130,7 +2136,7 @@ if(0&lt;c_str.length) {
     }
     str.push(&apos;[&apos;+((1&lt;substr.length)?substr.join(&apos;/&apos;):substr[0])+&apos;]:&apos;+key_orig[key])
   }
-
+  
   if(1&lt;str.length) {
     res=newValue(str.join(&apos;,&apos;),&apos;text&apos;)
   } else if(1==str.length) {
@@ -2144,7 +2150,7 @@ res</attribute>
         <attributes>
           <attribute name="script" valueType="text">// this script compounds repeated comments by using lowercase comment strings as array keys
 // and further compounds events within actions
-//
+// 
 var v1=$group(&apos;Admin.Action.stage&apos;,&apos;Consent&apos;,&apos;Admin.Action.comment&apos;).asSequence()
 var v2=$group(&apos;Admin.Action.stage&apos;,&apos;Consent&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
 var v3=$group(&apos;Admin.Action.stage&apos;,&apos;Consent&apos;,&apos;Admin.Action.eventReason&apos;).asSequence()
@@ -2152,7 +2158,7 @@ var res=null
 var c_str=[]  // string array of comments
 var e_str=[]  // string array of events
 var a_str=[]  // string array of actions
-for(var i=0; i&lt;v1.size(); i++) {
+for(var i=0; i&lt;v1.size(); i++) {  
   if(v1.valueAt(i).isNull().or(v2.valueAt(i).isNull(),v2.valueAt(i).matches(/EXECUTE/)).value()) continue
   c_str.push(v1.valueAt(i).value())
   a_str.push(v2.valueAt(i).value())
@@ -2163,7 +2169,7 @@ if(0&lt;c_str.length) {
   var key_orig=[]
   for(var i=0;i&lt;c_str.length;i++) {
     var key=c_str[i].replace(/[^a-zA-Z0-9 àâäèéêëîïôœùûüÿçÀÂÄÈÉÊËÎÏÔŒÙÛÜŸÇ]/g,&quot;&quot;)
-    var key_lower = key.toLowerCase()
+    var key_lower = key.toLowerCase()    
     // retain the first encountered instance of the comment
     if(undefined===key_orig[key_lower])
       key_orig[key_lower]=key
@@ -2175,17 +2181,17 @@ if(0&lt;c_str.length) {
     if(-1===arr[key_lower].indexOf(str))
       arr[key_lower].push(str)
   }
-
+  
   var str=[]
   for(var key in arr) {
-    // compound repeated events
+    // compound repeated events 
     var subarr=[]
     for(var i=0;i&lt;arr[key].length;i++) {
       var t=arr[key][i].split(&apos;:&apos;)
       var t_key=t[1]
       if(undefined===subarr[t_key])
         subarr[t_key]=[]
-      if(-1===subarr[t_key].indexOf(t[0]))
+      if(-1===subarr[t_key].indexOf(t[0]))  
         subarr[t_key].push(t[0])
     }
     var substr=[]
@@ -2199,7 +2205,7 @@ if(0&lt;c_str.length) {
     }
     str.push(&apos;[&apos;+((1&lt;substr.length)?substr.join(&apos;/&apos;):substr[0])+&apos;]:&apos;+key_orig[key])
   }
-
+  
   if(1&lt;str.length) {
     res=newValue(str.join(&apos;,&apos;),&apos;text&apos;)
   } else if(1==str.length) {
@@ -2213,7 +2219,7 @@ res</attribute>
         <attributes>
           <attribute name="script" valueType="text">// this script compounds repeated comments by using lowercase comment strings as array keys
 // and further compounds events within actions
-//
+// 
 var v1=$group(&apos;Admin.Action.stage&apos;,&apos;ContraIndications&apos;,&apos;Admin.Action.comment&apos;).asSequence()
 var v2=$group(&apos;Admin.Action.stage&apos;,&apos;ContraIndications&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
 var v3=$group(&apos;Admin.Action.stage&apos;,&apos;ContraIndications&apos;,&apos;Admin.Action.eventReason&apos;).asSequence()
@@ -2221,7 +2227,7 @@ var res=null
 var c_str=[]  // string array of comments
 var e_str=[]  // string array of events
 var a_str=[]  // string array of actions
-for(var i=0; i&lt;v1.size(); i++) {
+for(var i=0; i&lt;v1.size(); i++) {  
   if(v1.valueAt(i).isNull().or(v2.valueAt(i).isNull(),v2.valueAt(i).matches(/EXECUTE/)).value()) continue
   c_str.push(v1.valueAt(i).value())
   a_str.push(v2.valueAt(i).value())
@@ -2232,7 +2238,7 @@ if(0&lt;c_str.length) {
   var key_orig=[]
   for(var i=0;i&lt;c_str.length;i++) {
     var key=c_str[i].replace(/[^a-zA-Z0-9 àâäèéêëîïôœùûüÿçÀÂÄÈÉÊËÎÏÔŒÙÛÜŸÇ]/g,&quot;&quot;)
-    var key_lower = key.toLowerCase()
+    var key_lower = key.toLowerCase()    
     // retain the first encountered instance of the comment
     if(undefined===key_orig[key_lower])
       key_orig[key_lower]=key
@@ -2244,17 +2250,17 @@ if(0&lt;c_str.length) {
     if(-1===arr[key_lower].indexOf(str))
       arr[key_lower].push(str)
   }
-
+  
   var str=[]
   for(var key in arr) {
-    // compound repeated events
+    // compound repeated events 
     var subarr=[]
     for(var i=0;i&lt;arr[key].length;i++) {
       var t=arr[key][i].split(&apos;:&apos;)
       var t_key=t[1]
       if(undefined===subarr[t_key])
         subarr[t_key]=[]
-      if(-1===subarr[t_key].indexOf(t[0]))
+      if(-1===subarr[t_key].indexOf(t[0]))  
         subarr[t_key].push(t[0])
     }
     var substr=[]
@@ -2268,7 +2274,7 @@ if(0&lt;c_str.length) {
     }
     str.push(&apos;[&apos;+((1&lt;substr.length)?substr.join(&apos;/&apos;):substr[0])+&apos;]:&apos;+key_orig[key])
   }
-
+  
   if(1&lt;str.length) {
     res=newValue(str.join(&apos;,&apos;),&apos;text&apos;)
   } else if(1==str.length) {
@@ -2282,7 +2288,7 @@ res</attribute>
         <attributes>
           <attribute name="script" valueType="text">// this script compounds repeated comments by using lowercase comment strings as array keys
 // and further compounds events within actions
-//
+// 
 var v1=$group(&apos;Admin.Action.stage&apos;,&apos;EventPMT&apos;,&apos;Admin.Action.comment&apos;).asSequence()
 var v2=$group(&apos;Admin.Action.stage&apos;,&apos;EventPMT&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
 var v3=$group(&apos;Admin.Action.stage&apos;,&apos;EventPMT&apos;,&apos;Admin.Action.eventReason&apos;).asSequence()
@@ -2290,7 +2296,7 @@ var res=null
 var c_str=[]  // string array of comments
 var e_str=[]  // string array of events
 var a_str=[]  // string array of actions
-for(var i=0; i&lt;v1.size(); i++) {
+for(var i=0; i&lt;v1.size(); i++) {  
   if(v1.valueAt(i).isNull().or(v2.valueAt(i).isNull(),v2.valueAt(i).matches(/EXECUTE/)).value()) continue
   c_str.push(v1.valueAt(i).value())
   a_str.push(v2.valueAt(i).value())
@@ -2301,7 +2307,7 @@ if(0&lt;c_str.length) {
   var key_orig=[]
   for(var i=0;i&lt;c_str.length;i++) {
     var key=c_str[i].replace(/[^a-zA-Z0-9 àâäèéêëîïôœùûüÿçÀÂÄÈÉÊËÎÏÔŒÙÛÜŸÇ]/g,&quot;&quot;)
-    var key_lower = key.toLowerCase()
+    var key_lower = key.toLowerCase()    
     // retain the first encountered instance of the comment
     if(undefined===key_orig[key_lower])
       key_orig[key_lower]=key
@@ -2313,17 +2319,17 @@ if(0&lt;c_str.length) {
     if(-1===arr[key_lower].indexOf(str))
       arr[key_lower].push(str)
   }
-
+  
   var str=[]
   for(var key in arr) {
-    // compound repeated events
+    // compound repeated events 
     var subarr=[]
     for(var i=0;i&lt;arr[key].length;i++) {
       var t=arr[key][i].split(&apos;:&apos;)
       var t_key=t[1]
       if(undefined===subarr[t_key])
         subarr[t_key]=[]
-      if(-1===subarr[t_key].indexOf(t[0]))
+      if(-1===subarr[t_key].indexOf(t[0]))  
         subarr[t_key].push(t[0])
     }
     var substr=[]
@@ -2337,7 +2343,7 @@ if(0&lt;c_str.length) {
     }
     str.push(&apos;[&apos;+((1&lt;substr.length)?substr.join(&apos;/&apos;):substr[0])+&apos;]:&apos;+key_orig[key])
   }
-
+  
   if(1&lt;str.length) {
     res=newValue(str.join(&apos;,&apos;),&apos;text&apos;)
   } else if(1==str.length) {
@@ -2391,7 +2397,7 @@ res</attribute>
         <attributes>
           <attribute name="script" valueType="text">// this script compounds repeated comments by using lowercase comment strings as array keys
 // and further compounds events within actions
-//
+// 
 var v1=$group(&apos;Admin.Action.stage&apos;,&apos;TimeBasedProspectiveMemoryTask&apos;,&apos;Admin.Action.comment&apos;).asSequence()
 var v2=$group(&apos;Admin.Action.stage&apos;,&apos;TimeBasedProspectiveMemoryTask&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
 var v3=$group(&apos;Admin.Action.stage&apos;,&apos;TimeBasedProspectiveMemoryTask&apos;,&apos;Admin.Action.eventReason&apos;).asSequence()
@@ -2399,7 +2405,7 @@ var res=null
 var c_str=[]  // string array of comments
 var e_str=[]  // string array of events
 var a_str=[]  // string array of actions
-for(var i=0; i&lt;v1.size(); i++) {
+for(var i=0; i&lt;v1.size(); i++) {  
   if(v1.valueAt(i).isNull().or(v2.valueAt(i).isNull(),v2.valueAt(i).matches(/EXECUTE/)).value()) continue
   c_str.push(v1.valueAt(i).value())
   a_str.push(v2.valueAt(i).value())
@@ -2410,7 +2416,7 @@ if(0&lt;c_str.length) {
   var key_orig=[]
   for(var i=0;i&lt;c_str.length;i++) {
     var key=c_str[i].replace(/[^a-zA-Z0-9 àâäèéêëîïôœùûüÿçÀÂÄÈÉÊËÎÏÔŒÙÛÜŸÇ]/g,&quot;&quot;)
-    var key_lower = key.toLowerCase()
+    var key_lower = key.toLowerCase()    
     // retain the first encountered instance of the comment
     if(undefined===key_orig[key_lower])
       key_orig[key_lower]=key
@@ -2422,17 +2428,17 @@ if(0&lt;c_str.length) {
     if(-1===arr[key_lower].indexOf(str))
       arr[key_lower].push(str)
   }
-
+  
   var str=[]
   for(var key in arr) {
-    // compound repeated events
+    // compound repeated events 
     var subarr=[]
     for(var i=0;i&lt;arr[key].length;i++) {
       var t=arr[key][i].split(&apos;:&apos;)
       var t_key=t[1]
       if(undefined===subarr[t_key])
         subarr[t_key]=[]
-      if(-1===subarr[t_key].indexOf(t[0]))
+      if(-1===subarr[t_key].indexOf(t[0]))  
         subarr[t_key].push(t[0])
     }
     var substr=[]
@@ -2446,7 +2452,7 @@ if(0&lt;c_str.length) {
     }
     str.push(&apos;[&apos;+((1&lt;substr.length)?substr.join(&apos;/&apos;):substr[0])+&apos;]:&apos;+key_orig[key])
   }
-
+  
   if(1&lt;str.length) {
     res=newValue(str.join(&apos;,&apos;),&apos;text&apos;)
   } else if(1==str.length) {
@@ -2460,7 +2466,7 @@ res</attribute>
         <attributes>
           <attribute name="script" valueType="text">// this script compounds repeated comments by using lowercase comment strings as array keys
 // and further compounds events within actions
-//
+// 
 var v1=$group(&apos;Admin.Action.stage&apos;,&apos;HearingQuestionnaire&apos;,&apos;Admin.Action.comment&apos;).asSequence()
 var v2=$group(&apos;Admin.Action.stage&apos;,&apos;HearingQuestionnaire&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
 var v3=$group(&apos;Admin.Action.stage&apos;,&apos;HearingQuestionnaire&apos;,&apos;Admin.Action.eventReason&apos;).asSequence()
@@ -2468,7 +2474,7 @@ var res=null
 var c_str=[]  // string array of comments
 var e_str=[]  // string array of events
 var a_str=[]  // string array of actions
-for(var i=0; i&lt;v1.size(); i++) {
+for(var i=0; i&lt;v1.size(); i++) {  
   if(v1.valueAt(i).isNull().or(v2.valueAt(i).isNull(),v2.valueAt(i).matches(/EXECUTE/)).value()) continue
   c_str.push(v1.valueAt(i).value())
   a_str.push(v2.valueAt(i).value())
@@ -2479,7 +2485,7 @@ if(0&lt;c_str.length) {
   var key_orig=[]
   for(var i=0;i&lt;c_str.length;i++) {
     var key=c_str[i].replace(/[^a-zA-Z0-9 àâäèéêëîïôœùûüÿçÀÂÄÈÉÊËÎÏÔŒÙÛÜŸÇ]/g,&quot;&quot;)
-    var key_lower = key.toLowerCase()
+    var key_lower = key.toLowerCase()    
     // retain the first encountered instance of the comment
     if(undefined===key_orig[key_lower])
       key_orig[key_lower]=key
@@ -2491,17 +2497,17 @@ if(0&lt;c_str.length) {
     if(-1===arr[key_lower].indexOf(str))
       arr[key_lower].push(str)
   }
-
+  
   var str=[]
   for(var key in arr) {
-    // compound repeated events
+    // compound repeated events 
     var subarr=[]
     for(var i=0;i&lt;arr[key].length;i++) {
       var t=arr[key][i].split(&apos;:&apos;)
       var t_key=t[1]
       if(undefined===subarr[t_key])
         subarr[t_key]=[]
-      if(-1===subarr[t_key].indexOf(t[0]))
+      if(-1===subarr[t_key].indexOf(t[0]))  
         subarr[t_key].push(t[0])
     }
     var substr=[]
@@ -2515,7 +2521,7 @@ if(0&lt;c_str.length) {
     }
     str.push(&apos;[&apos;+((1&lt;substr.length)?substr.join(&apos;/&apos;):substr[0])+&apos;]:&apos;+key_orig[key])
   }
-
+  
   if(1&lt;str.length) {
     res=newValue(str.join(&apos;,&apos;),&apos;text&apos;)
   } else if(1==str.length) {
@@ -2529,7 +2535,7 @@ res</attribute>
         <attributes>
           <attribute name="script" valueType="text">// this script compounds repeated comments by using lowercase comment strings as array keys
 // and further compounds events within actions
-//
+// 
 var v1=$group(&apos;Admin.Action.stage&apos;,&apos;ConclusionQuestionnaire&apos;,&apos;Admin.Action.comment&apos;).asSequence()
 var v2=$group(&apos;Admin.Action.stage&apos;,&apos;ConclusionQuestionnaire&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
 var v3=$group(&apos;Admin.Action.stage&apos;,&apos;ConclusionQuestionnaire&apos;,&apos;Admin.Action.eventReason&apos;).asSequence()
@@ -2537,7 +2543,7 @@ var res=null
 var c_str=[]  // string array of comments
 var e_str=[]  // string array of events
 var a_str=[]  // string array of actions
-for(var i=0; i&lt;v1.size(); i++) {
+for(var i=0; i&lt;v1.size(); i++) {  
   if(v1.valueAt(i).isNull().or(v2.valueAt(i).isNull(),v2.valueAt(i).matches(/EXECUTE/)).value()) continue
   c_str.push(v1.valueAt(i).value())
   a_str.push(v2.valueAt(i).value())
@@ -2548,7 +2554,7 @@ if(0&lt;c_str.length) {
   var key_orig=[]
   for(var i=0;i&lt;c_str.length;i++) {
     var key=c_str[i].replace(/[^a-zA-Z0-9 àâäèéêëîïôœùûüÿçÀÂÄÈÉÊËÎÏÔŒÙÛÜŸÇ]/g,&quot;&quot;)
-    var key_lower = key.toLowerCase()
+    var key_lower = key.toLowerCase()    
     // retain the first encountered instance of the comment
     if(undefined===key_orig[key_lower])
       key_orig[key_lower]=key
@@ -2560,17 +2566,17 @@ if(0&lt;c_str.length) {
     if(-1===arr[key_lower].indexOf(str))
       arr[key_lower].push(str)
   }
-
+  
   var str=[]
   for(var key in arr) {
-    // compound repeated events
+    // compound repeated events 
     var subarr=[]
     for(var i=0;i&lt;arr[key].length;i++) {
       var t=arr[key][i].split(&apos;:&apos;)
       var t_key=t[1]
       if(undefined===subarr[t_key])
         subarr[t_key]=[]
-      if(-1===subarr[t_key].indexOf(t[0]))
+      if(-1===subarr[t_key].indexOf(t[0]))  
         subarr[t_key].push(t[0])
     }
     var substr=[]
@@ -2584,7 +2590,7 @@ if(0&lt;c_str.length) {
     }
     str.push(&apos;[&apos;+((1&lt;substr.length)?substr.join(&apos;/&apos;):substr[0])+&apos;]:&apos;+key_orig[key])
   }
-
+  
   if(1&lt;str.length) {
     res=newValue(str.join(&apos;,&apos;),&apos;text&apos;)
   } else if(1==str.length) {
@@ -2598,7 +2604,7 @@ res</attribute>
         <attributes>
           <attribute name="script" valueType="text">// this script compounds repeated comments by using lowercase comment strings as array keys
 // and further compounds events within actions
-//
+// 
 var v1=$group(&apos;Admin.Action.stage&apos;,&apos;QuestionnaireBoneDensity&apos;,&apos;Admin.Action.comment&apos;).asSequence()
 var v2=$group(&apos;Admin.Action.stage&apos;,&apos;QuestionnaireBoneDensity&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
 var v3=$group(&apos;Admin.Action.stage&apos;,&apos;QuestionnaireBoneDensity&apos;,&apos;Admin.Action.eventReason&apos;).asSequence()
@@ -2606,7 +2612,7 @@ var res=null
 var c_str=[]  // string array of comments
 var e_str=[]  // string array of events
 var a_str=[]  // string array of actions
-for(var i=0; i&lt;v1.size(); i++) {
+for(var i=0; i&lt;v1.size(); i++) {  
   if(v1.valueAt(i).isNull().or(v2.valueAt(i).isNull(),v2.valueAt(i).matches(/EXECUTE/)).value()) continue
   c_str.push(v1.valueAt(i).value())
   a_str.push(v2.valueAt(i).value())
@@ -2617,7 +2623,7 @@ if(0&lt;c_str.length) {
   var key_orig=[]
   for(var i=0;i&lt;c_str.length;i++) {
     var key=c_str[i].replace(/[^a-zA-Z0-9 àâäèéêëîïôœùûüÿçÀÂÄÈÉÊËÎÏÔŒÙÛÜŸÇ]/g,&quot;&quot;)
-    var key_lower = key.toLowerCase()
+    var key_lower = key.toLowerCase()    
     // retain the first encountered instance of the comment
     if(undefined===key_orig[key_lower])
       key_orig[key_lower]=key
@@ -2629,17 +2635,17 @@ if(0&lt;c_str.length) {
     if(-1===arr[key_lower].indexOf(str))
       arr[key_lower].push(str)
   }
-
+  
   var str=[]
   for(var key in arr) {
-    // compound repeated events
+    // compound repeated events 
     var subarr=[]
     for(var i=0;i&lt;arr[key].length;i++) {
       var t=arr[key][i].split(&apos;:&apos;)
       var t_key=t[1]
       if(undefined===subarr[t_key])
         subarr[t_key]=[]
-      if(-1===subarr[t_key].indexOf(t[0]))
+      if(-1===subarr[t_key].indexOf(t[0]))  
         subarr[t_key].push(t[0])
     }
     var substr=[]
@@ -2653,7 +2659,7 @@ if(0&lt;c_str.length) {
     }
     str.push(&apos;[&apos;+((1&lt;substr.length)?substr.join(&apos;/&apos;):substr[0])+&apos;]:&apos;+key_orig[key])
   }
-
+  
   if(1&lt;str.length) {
     res=newValue(str.join(&apos;,&apos;),&apos;text&apos;)
   } else if(1==str.length) {
@@ -2667,7 +2673,7 @@ res</attribute>
         <attributes>
           <attribute name="script" valueType="text">// this script compounds repeated comments by using lowercase comment strings as array keys
 // and further compounds events within actions
-//
+// 
 var v1=$group(&apos;Admin.Action.stage&apos;,&apos;DiseaseSymptoms&apos;,&apos;Admin.Action.comment&apos;).asSequence()
 var v2=$group(&apos;Admin.Action.stage&apos;,&apos;DiseaseSymptoms&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
 var v3=$group(&apos;Admin.Action.stage&apos;,&apos;DiseaseSymptoms&apos;,&apos;Admin.Action.eventReason&apos;).asSequence()
@@ -2675,7 +2681,7 @@ var res=null
 var c_str=[]  // string array of comments
 var e_str=[]  // string array of events
 var a_str=[]  // string array of actions
-for(var i=0; i&lt;v1.size(); i++) {
+for(var i=0; i&lt;v1.size(); i++) {  
   if(v1.valueAt(i).isNull().or(v2.valueAt(i).isNull(),v2.valueAt(i).matches(/EXECUTE/)).value()) continue
   c_str.push(v1.valueAt(i).value())
   a_str.push(v2.valueAt(i).value())
@@ -2686,7 +2692,7 @@ if(0&lt;c_str.length) {
   var key_orig=[]
   for(var i=0;i&lt;c_str.length;i++) {
     var key=c_str[i].replace(/[^a-zA-Z0-9 àâäèéêëîïôœùûüÿçÀÂÄÈÉÊËÎÏÔŒÙÛÜŸÇ]/g,&quot;&quot;)
-    var key_lower = key.toLowerCase()
+    var key_lower = key.toLowerCase()    
     // retain the first encountered instance of the comment
     if(undefined===key_orig[key_lower])
       key_orig[key_lower]=key
@@ -2698,17 +2704,17 @@ if(0&lt;c_str.length) {
     if(-1===arr[key_lower].indexOf(str))
       arr[key_lower].push(str)
   }
-
+  
   var str=[]
   for(var key in arr) {
-    // compound repeated events
+    // compound repeated events 
     var subarr=[]
     for(var i=0;i&lt;arr[key].length;i++) {
       var t=arr[key][i].split(&apos;:&apos;)
       var t_key=t[1]
       if(undefined===subarr[t_key])
         subarr[t_key]=[]
-      if(-1===subarr[t_key].indexOf(t[0]))
+      if(-1===subarr[t_key].indexOf(t[0]))  
         subarr[t_key].push(t[0])
     }
     var substr=[]
@@ -2722,7 +2728,7 @@ if(0&lt;c_str.length) {
     }
     str.push(&apos;[&apos;+((1&lt;substr.length)?substr.join(&apos;/&apos;):substr[0])+&apos;]:&apos;+key_orig[key])
   }
-
+  
   if(1&lt;str.length) {
     res=newValue(str.join(&apos;,&apos;),&apos;text&apos;)
   } else if(1==str.length) {
@@ -2760,7 +2766,7 @@ res</attribute>
         <attributes>
           <attribute name="script" valueType="text">// this script compounds repeated comments by using lowercase comment strings as array keys
 // and further compounds events within actions
-//
+// 
 var v1=$group(&apos;Admin.Action.stage&apos;,&apos;Frax&apos;,&apos;Admin.Action.comment&apos;).asSequence()
 var v2=$group(&apos;Admin.Action.stage&apos;,&apos;Frax&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
 var v3=$group(&apos;Admin.Action.stage&apos;,&apos;Frax&apos;,&apos;Admin.Action.eventReason&apos;).asSequence()
@@ -2768,7 +2774,7 @@ var res=null
 var c_str=[]  // string array of comments
 var e_str=[]  // string array of events
 var a_str=[]  // string array of actions
-for(var i=0; i&lt;v1.size(); i++) {
+for(var i=0; i&lt;v1.size(); i++) {  
   if(v1.valueAt(i).isNull().or(v2.valueAt(i).isNull(),v2.valueAt(i).matches(/EXECUTE/)).value()) continue
   c_str.push(v1.valueAt(i).value())
   a_str.push(v2.valueAt(i).value())
@@ -2785,7 +2791,7 @@ if(0&lt;c_str.length) {
   var key_orig=[]
   for(var i=0;i&lt;c_str.length;i++) {
     var key=c_str[i].replace(/[^a-zA-Z0-9 àâäèéêëîïôœùûüÿçÀÂÄÈÉÊËÎÏÔŒÙÛÜŸÇ]/g,&quot;&quot;)
-    var key_lower = key.toLowerCase()
+    var key_lower = key.toLowerCase()    
     // retain the first encountered instance of the comment
     if(undefined===key_orig[key_lower])
       key_orig[key_lower]=key
@@ -2797,17 +2803,17 @@ if(0&lt;c_str.length) {
     if(-1===arr[key_lower].indexOf(str))
       arr[key_lower].push(str)
   }
-
+  
   var str=[]
   for(var key in arr) {
-    // compound repeated events
+    // compound repeated events 
     var subarr=[]
     for(var i=0;i&lt;arr[key].length;i++) {
       var t=arr[key][i].split(&apos;:&apos;)
       var t_key=t[1]
       if(undefined===subarr[t_key])
         subarr[t_key]=[]
-      if(-1===subarr[t_key].indexOf(t[0]))
+      if(-1===subarr[t_key].indexOf(t[0]))  
         subarr[t_key].push(t[0])
     }
     var substr=[]
@@ -2821,7 +2827,7 @@ if(0&lt;c_str.length) {
     }
     str.push(&apos;[&apos;+((1&lt;substr.length)?substr.join(&apos;/&apos;):substr[0])+&apos;]:&apos;+key_orig[key])
   }
-
+  
   if(1&lt;str.length) {
     res=newValue(str.join(&apos;,&apos;),&apos;text&apos;)
   } else if(1==str.length) {
@@ -2835,7 +2841,7 @@ res</attribute>
         <attributes>
           <attribute name="script" valueType="text">// this script compounds repeated comments by using lowercase comment strings as array keys
 // and further compounds events within actions
-//
+// 
 var v1=$group(&apos;Admin.Action.stage&apos;,&apos;SocialNetwork&apos;,&apos;Admin.Action.comment&apos;).asSequence()
 var v2=$group(&apos;Admin.Action.stage&apos;,&apos;SocialNetwork&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
 var v3=$group(&apos;Admin.Action.stage&apos;,&apos;SocialNetwork&apos;,&apos;Admin.Action.eventReason&apos;).asSequence()
@@ -2843,7 +2849,7 @@ var res=null
 var c_str=[]  // string array of comments
 var e_str=[]  // string array of events
 var a_str=[]  // string array of actions
-for(var i=0; i&lt;v1.size(); i++) {
+for(var i=0; i&lt;v1.size(); i++) {  
   if(v1.valueAt(i).isNull().or(v2.valueAt(i).isNull(),v2.valueAt(i).matches(/EXECUTE/)).value()) continue
   c_str.push(v1.valueAt(i).value())
   a_str.push(v2.valueAt(i).value())
@@ -2854,7 +2860,7 @@ if(0&lt;c_str.length) {
   var key_orig=[]
   for(var i=0;i&lt;c_str.length;i++) {
     var key=c_str[i].replace(/[^a-zA-Z0-9 àâäèéêëîïôœùûüÿçÀÂÄÈÉÊËÎÏÔŒÙÛÜŸÇ]/g,&quot;&quot;)
-    var key_lower = key.toLowerCase()
+    var key_lower = key.toLowerCase()    
     // retain the first encountered instance of the comment
     if(undefined===key_orig[key_lower])
       key_orig[key_lower]=key
@@ -2866,17 +2872,17 @@ if(0&lt;c_str.length) {
     if(-1===arr[key_lower].indexOf(str))
       arr[key_lower].push(str)
   }
-
+  
   var str=[]
   for(var key in arr) {
-    // compound repeated events
+    // compound repeated events 
     var subarr=[]
     for(var i=0;i&lt;arr[key].length;i++) {
       var t=arr[key][i].split(&apos;:&apos;)
       var t_key=t[1]
       if(undefined===subarr[t_key])
         subarr[t_key]=[]
-      if(-1===subarr[t_key].indexOf(t[0]))
+      if(-1===subarr[t_key].indexOf(t[0]))  
         subarr[t_key].push(t[0])
     }
     var substr=[]
@@ -2890,7 +2896,7 @@ if(0&lt;c_str.length) {
     }
     str.push(&apos;[&apos;+((1&lt;substr.length)?substr.join(&apos;/&apos;):substr[0])+&apos;]:&apos;+key_orig[key])
   }
-
+  
   if(1&lt;str.length) {
     res=newValue(str.join(&apos;,&apos;),&apos;text&apos;)
   } else if(1==str.length) {
@@ -2904,7 +2910,7 @@ res</attribute>
         <attributes>
           <attribute name="script" valueType="text">// this script compounds repeated comments by using lowercase comment strings as array keys
 // and further compounds events within actions
-//
+// 
 var v1=$group(&apos;Admin.Action.stage&apos;,&apos;GenHealth&apos;,&apos;Admin.Action.comment&apos;).asSequence()
 var v2=$group(&apos;Admin.Action.stage&apos;,&apos;GenHealth&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
 var v3=$group(&apos;Admin.Action.stage&apos;,&apos;GenHealth&apos;,&apos;Admin.Action.eventReason&apos;).asSequence()
@@ -2912,7 +2918,7 @@ var res=null
 var c_str=[]  // string array of comments
 var e_str=[]  // string array of events
 var a_str=[]  // string array of actions
-for(var i=0; i&lt;v1.size(); i++) {
+for(var i=0; i&lt;v1.size(); i++) {  
   if(v1.valueAt(i).isNull().or(v2.valueAt(i).isNull(),v2.valueAt(i).matches(/EXECUTE/)).value()) continue
   c_str.push(v1.valueAt(i).value())
   a_str.push(v2.valueAt(i).value())
@@ -2923,7 +2929,7 @@ if(0&lt;c_str.length) {
   var key_orig=[]
   for(var i=0;i&lt;c_str.length;i++) {
     var key=c_str[i].replace(/[^a-zA-Z0-9 àâäèéêëîïôœùûüÿçÀÂÄÈÉÊËÎÏÔŒÙÛÜŸÇ]/g,&quot;&quot;)
-    var key_lower = key.toLowerCase()
+    var key_lower = key.toLowerCase()    
     // retain the first encountered instance of the comment
     if(undefined===key_orig[key_lower])
       key_orig[key_lower]=key
@@ -2935,17 +2941,17 @@ if(0&lt;c_str.length) {
     if(-1===arr[key_lower].indexOf(str))
       arr[key_lower].push(str)
   }
-
+  
   var str=[]
   for(var key in arr) {
-    // compound repeated events
+    // compound repeated events 
     var subarr=[]
     for(var i=0;i&lt;arr[key].length;i++) {
       var t=arr[key][i].split(&apos;:&apos;)
       var t_key=t[1]
       if(undefined===subarr[t_key])
         subarr[t_key]=[]
-      if(-1===subarr[t_key].indexOf(t[0]))
+      if(-1===subarr[t_key].indexOf(t[0]))  
         subarr[t_key].push(t[0])
     }
     var substr=[]
@@ -2959,7 +2965,7 @@ if(0&lt;c_str.length) {
     }
     str.push(&apos;[&apos;+((1&lt;substr.length)?substr.join(&apos;/&apos;):substr[0])+&apos;]:&apos;+key_orig[key])
   }
-
+  
   if(1&lt;str.length) {
     res=newValue(str.join(&apos;,&apos;),&apos;text&apos;)
   } else if(1==str.length) {
@@ -2973,7 +2979,7 @@ res</attribute>
         <attributes>
           <attribute name="script" valueType="text">// this script compounds repeated comments by using lowercase comment strings as array keys
 // and further compounds events within actions
-//
+// 
 var v1=$group(&apos;Admin.Action.stage&apos;,&apos;OSIPV&apos;,&apos;Admin.Action.comment&apos;).asSequence()
 var v2=$group(&apos;Admin.Action.stage&apos;,&apos;OSIPV&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
 var v3=$group(&apos;Admin.Action.stage&apos;,&apos;OSIPV&apos;,&apos;Admin.Action.eventReason&apos;).asSequence()
@@ -2981,7 +2987,7 @@ var res=null
 var c_str=[]  // string array of comments
 var e_str=[]  // string array of events
 var a_str=[]  // string array of actions
-for(var i=0; i&lt;v1.size(); i++) {
+for(var i=0; i&lt;v1.size(); i++) {  
   if(v1.valueAt(i).isNull().or(v2.valueAt(i).isNull(),v2.valueAt(i).matches(/EXECUTE/)).value()) continue
   c_str.push(v1.valueAt(i).value())
   a_str.push(v2.valueAt(i).value())
@@ -2992,7 +2998,7 @@ if(0&lt;c_str.length) {
   var key_orig=[]
   for(var i=0;i&lt;c_str.length;i++) {
     var key=c_str[i].replace(/[^a-zA-Z0-9 àâäèéêëîïôœùûüÿçÀÂÄÈÉÊËÎÏÔŒÙÛÜŸÇ]/g,&quot;&quot;)
-    var key_lower = key.toLowerCase()
+    var key_lower = key.toLowerCase()    
     // retain the first encountered instance of the comment
     if(undefined===key_orig[key_lower])
       key_orig[key_lower]=key
@@ -3004,17 +3010,17 @@ if(0&lt;c_str.length) {
     if(-1===arr[key_lower].indexOf(str))
       arr[key_lower].push(str)
   }
-
+  
   var str=[]
   for(var key in arr) {
-    // compound repeated events
+    // compound repeated events 
     var subarr=[]
     for(var i=0;i&lt;arr[key].length;i++) {
       var t=arr[key][i].split(&apos;:&apos;)
       var t_key=t[1]
       if(undefined===subarr[t_key])
         subarr[t_key]=[]
-      if(-1===subarr[t_key].indexOf(t[0]))
+      if(-1===subarr[t_key].indexOf(t[0]))  
         subarr[t_key].push(t[0])
     }
     var substr=[]
@@ -3028,7 +3034,7 @@ if(0&lt;c_str.length) {
     }
     str.push(&apos;[&apos;+((1&lt;substr.length)?substr.join(&apos;/&apos;):substr[0])+&apos;]:&apos;+key_orig[key])
   }
-
+  
   if(1&lt;str.length) {
     res=newValue(str.join(&apos;,&apos;),&apos;text&apos;)
   } else if(1==str.length) {
@@ -3047,7 +3053,7 @@ res</attribute>
         <attributes>
           <attribute name="script" valueType="text">// this script compounds repeated comments by using lowercase comment strings as array keys
 // and further compounds events within actions
-//
+// 
 var v1=$group(&apos;Admin.Action.stage&apos;,&apos;Urine&apos;,&apos;Admin.Action.comment&apos;).asSequence()
 var v2=$group(&apos;Admin.Action.stage&apos;,&apos;Urine&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
 var v3=$group(&apos;Admin.Action.stage&apos;,&apos;Urine&apos;,&apos;Admin.Action.eventReason&apos;).asSequence()
@@ -3055,7 +3061,7 @@ var res=null
 var c_str=[]  // string array of comments
 var e_str=[]  // string array of events
 var a_str=[]  // string array of actions
-for(var i=0; i&lt;v1.size(); i++) {
+for(var i=0; i&lt;v1.size(); i++) {  
   if(v1.valueAt(i).isNull().or(v2.valueAt(i).isNull(),v2.valueAt(i).matches(/EXECUTE/)).value()) continue
   c_str.push(v1.valueAt(i).value())
   a_str.push(v2.valueAt(i).value())
@@ -3066,7 +3072,7 @@ if(0&lt;c_str.length) {
   var key_orig=[]
   for(var i=0;i&lt;c_str.length;i++) {
     var key=c_str[i].replace(/[^a-zA-Z0-9 àâäèéêëîïôœùûüÿçÀÂÄÈÉÊËÎÏÔŒÙÛÜŸÇ]/g,&quot;&quot;)
-    var key_lower = key.toLowerCase()
+    var key_lower = key.toLowerCase()    
     // retain the first encountered instance of the comment
     if(undefined===key_orig[key_lower])
       key_orig[key_lower]=key
@@ -3078,17 +3084,17 @@ if(0&lt;c_str.length) {
     if(-1===arr[key_lower].indexOf(str))
       arr[key_lower].push(str)
   }
-
+  
   var str=[]
   for(var key in arr) {
-    // compound repeated events
+    // compound repeated events 
     var subarr=[]
     for(var i=0;i&lt;arr[key].length;i++) {
       var t=arr[key][i].split(&apos;:&apos;)
       var t_key=t[1]
       if(undefined===subarr[t_key])
         subarr[t_key]=[]
-      if(-1===subarr[t_key].indexOf(t[0]))
+      if(-1===subarr[t_key].indexOf(t[0]))  
         subarr[t_key].push(t[0])
     }
     var substr=[]
@@ -3102,7 +3108,7 @@ if(0&lt;c_str.length) {
     }
     str.push(&apos;[&apos;+((1&lt;substr.length)?substr.join(&apos;/&apos;):substr[0])+&apos;]:&apos;+key_orig[key])
   }
-
+  
   if(1&lt;str.length) {
     res=newValue(str.join(&apos;,&apos;),&apos;text&apos;)
   } else if(1==str.length) {
@@ -3133,7 +3139,7 @@ if(stage.isNull().not().value()) {
   var c_str=[]  // string array of comments
   var e_str=[]  // string array of events
   var a_str=[]  // string array of actions
-  for(var i=0; i&lt;v1.size(); i++) {
+  for(var i=0; i&lt;v1.size(); i++) {  
     if(v1.valueAt(i).isNull().or(v2.valueAt(i).isNull(),v2.valueAt(i).matches(/EXECUTE/)).value()) continue
     c_str.push(v1.valueAt(i).value())
     a_str.push(v2.valueAt(i).value())
@@ -3144,7 +3150,7 @@ if(stage.isNull().not().value()) {
     var key_orig=[]
     for(var i=0;i&lt;c_str.length;i++) {
       var key=c_str[i].replace(/[^a-zA-Z0-9 àâäèéêëîïôœùûüÿçÀÂÄÈÉÊËÎÏÔŒÙÛÜŸÇ]/g,&quot;&quot;)
-      var key_lower = key.toLowerCase()
+      var key_lower = key.toLowerCase()    
       // retain the first encountered instance of the comment
       if(undefined===key_orig[key_lower])
         key_orig[key_lower]=key
@@ -3156,17 +3162,17 @@ if(stage.isNull().not().value()) {
       if(-1===arr[key_lower].indexOf(str))
         arr[key_lower].push(str)
     }
-
+  
     var str=[]
     for(var key in arr) {
-      // compound repeated events
+      // compound repeated events 
       var subarr=[]
       for(var i=0;i&lt;arr[key].length;i++) {
         var t=arr[key][i].split(&apos;:&apos;)
         var t_key=t[1]
         if(undefined===subarr[t_key])
           subarr[t_key]=[]
-        if(-1===subarr[t_key].indexOf(t[0]))
+        if(-1===subarr[t_key].indexOf(t[0]))  
           subarr[t_key].push(t[0])
       }
       var substr=[]
@@ -3180,14 +3186,14 @@ if(stage.isNull().not().value()) {
       }
       str.push(&apos;[&apos;+((1&lt;substr.length)?substr.join(&apos;/&apos;):substr[0])+&apos;]:&apos;+key_orig[key])
     }
-
+  
     if(1&lt;str.length) {
       res=newValue(str.join(&apos;,&apos;),&apos;text&apos;)
     } else if(1==str.length) {
       res=newValue(str[0],&apos;text&apos;)
     }
   }
-}
+}  
 res</attribute>
         </attributes>
       </variable>
@@ -3200,7 +3206,7 @@ res</attribute>
         <attributes>
           <attribute name="script" valueType="text">// this script compounds repeated comments by using lowercase comment strings as array keys
 // and further compounds events within actions
-//
+// 
 var v1=$group(&apos;Admin.Action.stage&apos;,&apos;Deviation_AE_CRF&apos;,&apos;Admin.Action.comment&apos;).asSequence()
 var v2=$group(&apos;Admin.Action.stage&apos;,&apos;Deviation_AE_CRF&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
 var v3=$group(&apos;Admin.Action.stage&apos;,&apos;Deviation_AE_CRF&apos;,&apos;Admin.Action.eventReason&apos;).asSequence()
@@ -3208,7 +3214,7 @@ var res=null
 var c_str=[]  // string array of comments
 var e_str=[]  // string array of events
 var a_str=[]  // string array of actions
-for(var i=0; i&lt;v1.size(); i++) {
+for(var i=0; i&lt;v1.size(); i++) {  
   if(v1.valueAt(i).isNull().or(v2.valueAt(i).isNull(),v2.valueAt(i).matches(/EXECUTE/)).value()) continue
   c_str.push(v1.valueAt(i).value())
   a_str.push(v2.valueAt(i).value())
@@ -3219,7 +3225,7 @@ if(0&lt;c_str.length) {
   var key_orig=[]
   for(var i=0;i&lt;c_str.length;i++) {
     var key=c_str[i].replace(/[^a-zA-Z0-9 àâäèéêëîïôœùûüÿçÀÂÄÈÉÊËÎÏÔŒÙÛÜŸÇ]/g,&quot;&quot;)
-    var key_lower = key.toLowerCase()
+    var key_lower = key.toLowerCase()    
     // retain the first encountered instance of the comment
     if(undefined===key_orig[key_lower])
       key_orig[key_lower]=key
@@ -3231,17 +3237,17 @@ if(0&lt;c_str.length) {
     if(-1===arr[key_lower].indexOf(str))
       arr[key_lower].push(str)
   }
-
+  
   var str=[]
   for(var key in arr) {
-    // compound repeated events
+    // compound repeated events 
     var subarr=[]
     for(var i=0;i&lt;arr[key].length;i++) {
       var t=arr[key][i].split(&apos;:&apos;)
       var t_key=t[1]
       if(undefined===subarr[t_key])
         subarr[t_key]=[]
-      if(-1===subarr[t_key].indexOf(t[0]))
+      if(-1===subarr[t_key].indexOf(t[0]))  
         subarr[t_key].push(t[0])
     }
     var substr=[]
@@ -3255,7 +3261,7 @@ if(0&lt;c_str.length) {
     }
     str.push(&apos;[&apos;+((1&lt;substr.length)?substr.join(&apos;/&apos;):substr[0])+&apos;]:&apos;+key_orig[key])
   }
-
+  
   if(1&lt;str.length) {
     res=newValue(str.join(&apos;,&apos;),&apos;text&apos;)
   } else if(1==str.length) {
@@ -3274,7 +3280,7 @@ res</attribute>
         <attributes>
           <attribute name="script" valueType="text">// this script compounds repeated comments by using lowercase comment strings as array keys
 // and further compounds events within actions
-//
+// 
 var v1=$group(&apos;Admin.Action.stage&apos;,&apos;NeuropsychologicalBatteryScoring&apos;,&apos;Admin.Action.comment&apos;).asSequence()
 var v2=$group(&apos;Admin.Action.stage&apos;,&apos;NeuropsychologicalBatteryScoring&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
 var v3=$group(&apos;Admin.Action.stage&apos;,&apos;NeuropsychologicalBatteryScoring&apos;,&apos;Admin.Action.eventReason&apos;).asSequence()
@@ -3282,7 +3288,7 @@ var res=null
 var c_str=[]  // string array of comments
 var e_str=[]  // string array of events
 var a_str=[]  // string array of actions
-for(var i=0; i&lt;v1.size(); i++) {
+for(var i=0; i&lt;v1.size(); i++) {  
   if(v1.valueAt(i).isNull().or(v2.valueAt(i).isNull(),v2.valueAt(i).matches(/EXECUTE/)).value()) continue
   c_str.push(v1.valueAt(i).value())
   a_str.push(v2.valueAt(i).value())
@@ -3293,7 +3299,7 @@ if(0&lt;c_str.length) {
   var key_orig=[]
   for(var i=0;i&lt;c_str.length;i++) {
     var key=c_str[i].replace(/[^a-zA-Z0-9 àâäèéêëîïôœùûüÿçÀÂÄÈÉÊËÎÏÔŒÙÛÜŸÇ]/g,&quot;&quot;)
-    var key_lower = key.toLowerCase()
+    var key_lower = key.toLowerCase()    
     // retain the first encountered instance of the comment
     if(undefined===key_orig[key_lower])
       key_orig[key_lower]=key
@@ -3305,17 +3311,17 @@ if(0&lt;c_str.length) {
     if(-1===arr[key_lower].indexOf(str))
       arr[key_lower].push(str)
   }
-
+  
   var str=[]
   for(var key in arr) {
-    // compound repeated events
+    // compound repeated events 
     var subarr=[]
     for(var i=0;i&lt;arr[key].length;i++) {
       var t=arr[key][i].split(&apos;:&apos;)
       var t_key=t[1]
       if(undefined===subarr[t_key])
         subarr[t_key]=[]
-      if(-1===subarr[t_key].indexOf(t[0]))
+      if(-1===subarr[t_key].indexOf(t[0]))  
         subarr[t_key].push(t[0])
     }
     var substr=[]
@@ -3329,7 +3335,7 @@ if(0&lt;c_str.length) {
     }
     str.push(&apos;[&apos;+((1&lt;substr.length)?substr.join(&apos;/&apos;):substr[0])+&apos;]:&apos;+key_orig[key])
   }
-
+  
   if(1&lt;str.length) {
     res=newValue(str.join(&apos;,&apos;),&apos;text&apos;)
   } else if(1==str.length) {
@@ -3348,7 +3354,7 @@ res</attribute>
         <attributes>
           <attribute name="script" valueType="text">// this script compounds repeated comments by using lowercase comment strings as array keys
 // and further compounds events within actions
-//
+// 
 var v1=$group(&apos;Admin.Action.stage&apos;,&apos;QualityAssuranceIH&apos;,&apos;Admin.Action.comment&apos;).asSequence()
 var v2=$group(&apos;Admin.Action.stage&apos;,&apos;QualityAssuranceIH&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
 var v3=$group(&apos;Admin.Action.stage&apos;,&apos;QualityAssuranceIH&apos;,&apos;Admin.Action.eventReason&apos;).asSequence()
@@ -3356,7 +3362,7 @@ var res=null
 var c_str=[]  // string array of comments
 var e_str=[]  // string array of events
 var a_str=[]  // string array of actions
-for(var i=0; i&lt;v1.size(); i++) {
+for(var i=0; i&lt;v1.size(); i++) {  
   if(v1.valueAt(i).isNull().or(v2.valueAt(i).isNull(),v2.valueAt(i).matches(/EXECUTE/)).value()) continue
   c_str.push(v1.valueAt(i).value())
   a_str.push(v2.valueAt(i).value())
@@ -3367,7 +3373,7 @@ if(0&lt;c_str.length) {
   var key_orig=[]
   for(var i=0;i&lt;c_str.length;i++) {
     var key=c_str[i].replace(/[^a-zA-Z0-9 àâäèéêëîïôœùûüÿçÀÂÄÈÉÊËÎÏÔŒÙÛÜŸÇ]/g,&quot;&quot;)
-    var key_lower = key.toLowerCase()
+    var key_lower = key.toLowerCase()    
     // retain the first encountered instance of the comment
     if(undefined===key_orig[key_lower])
       key_orig[key_lower]=key
@@ -3379,17 +3385,17 @@ if(0&lt;c_str.length) {
     if(-1===arr[key_lower].indexOf(str))
       arr[key_lower].push(str)
   }
-
+  
   var str=[]
   for(var key in arr) {
-    // compound repeated events
+    // compound repeated events 
     var subarr=[]
     for(var i=0;i&lt;arr[key].length;i++) {
       var t=arr[key][i].split(&apos;:&apos;)
       var t_key=t[1]
       if(undefined===subarr[t_key])
         subarr[t_key]=[]
-      if(-1===subarr[t_key].indexOf(t[0]))
+      if(-1===subarr[t_key].indexOf(t[0]))  
         subarr[t_key].push(t[0])
     }
     var substr=[]
@@ -3403,7 +3409,7 @@ if(0&lt;c_str.length) {
     }
     str.push(&apos;[&apos;+((1&lt;substr.length)?substr.join(&apos;/&apos;):substr[0])+&apos;]:&apos;+key_orig[key])
   }
-
+  
   if(1&lt;str.length) {
     res=newValue(str.join(&apos;,&apos;),&apos;text&apos;)
   } else if(1==str.length) {
@@ -3432,7 +3438,7 @@ res</attribute>
         <attributes>
           <attribute name="script" valueType="text">// this script compounds repeated comments by using lowercase comment strings as array keys
 // and further compounds events within actions
-//
+// 
 var v1=$group(&apos;Admin.Action.stage&apos;,&apos;CDTT&apos;,&apos;Admin.Action.comment&apos;).asSequence()
 var v2=$group(&apos;Admin.Action.stage&apos;,&apos;CDTT&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
 var v3=$group(&apos;Admin.Action.stage&apos;,&apos;CDTT&apos;,&apos;Admin.Action.eventReason&apos;).asSequence()
@@ -3440,7 +3446,7 @@ var res=null
 var c_str=[]  // string array of comments
 var e_str=[]  // string array of events
 var a_str=[]  // string array of actions
-for(var i=0; i&lt;v1.size(); i++) {
+for(var i=0; i&lt;v1.size(); i++) {  
   if(v1.valueAt(i).isNull().or(v2.valueAt(i).isNull(),v2.valueAt(i).matches(/EXECUTE/)).value()) continue
   c_str.push(v1.valueAt(i).value())
   a_str.push(v2.valueAt(i).value())
@@ -3457,7 +3463,7 @@ if(0&lt;c_str.length) {
   var key_orig=[]
   for(var i=0;i&lt;c_str.length;i++) {
     var key=c_str[i].replace(/[^a-zA-Z0-9 àâäèéêëîïôœùûüÿçÀÂÄÈÉÊËÎÏÔŒÙÛÜŸÇ]/g,&quot;&quot;)
-    var key_lower = key.toLowerCase()
+    var key_lower = key.toLowerCase()    
     // retain the first encountered instance of the comment
     if(undefined===key_orig[key_lower])
       key_orig[key_lower]=key
@@ -3469,17 +3475,17 @@ if(0&lt;c_str.length) {
     if(-1===arr[key_lower].indexOf(str))
       arr[key_lower].push(str)
   }
-
+  
   var str=[]
   for(var key in arr) {
-    // compound repeated events
+    // compound repeated events 
     var subarr=[]
     for(var i=0;i&lt;arr[key].length;i++) {
       var t=arr[key][i].split(&apos;:&apos;)
       var t_key=t[1]
       if(undefined===subarr[t_key])
         subarr[t_key]=[]
-      if(-1===subarr[t_key].indexOf(t[0]))
+      if(-1===subarr[t_key].indexOf(t[0]))  
         subarr[t_key].push(t[0])
     }
     var substr=[]
@@ -3493,7 +3499,7 @@ if(0&lt;c_str.length) {
     }
     str.push(&apos;[&apos;+((1&lt;substr.length)?substr.join(&apos;/&apos;):substr[0])+&apos;]:&apos;+key_orig[key])
   }
-
+  
   if(1&lt;str.length) {
     res=newValue(str.join(&apos;,&apos;),&apos;text&apos;)
   } else if(1==str.length) {
@@ -3503,8 +3509,28 @@ if(0&lt;c_str.length) {
 res</attribute>
         </attributes>
       </variable>
+      <variable name="stage_technician_stroop" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;Quality_Control.QC_F2:stage_technician_stroop_fas&apos;)</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_technician_fas" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;Quality_Control.QC_F2:stage_technician_stroop_fas&apos;)</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_comment_stroop" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$this(&apos;stage_comment_stroop_fas&apos;)</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_comment_fas" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$this(&apos;stage_comment_stroop_fas&apos;)</attribute>
+        </attributes>
+      </variable>
     </variables>
   </variables>
   <created valueType="datetime">2018-05-28T10:05:11.338-04</created>
-  <updated valueType="datetime">2018-11-05T11:13:30.259-05</updated>
+  <updated valueType="datetime">2018-12-07T10:48:08.147-05</updated>
 </org.obiba.magma.views.View>
