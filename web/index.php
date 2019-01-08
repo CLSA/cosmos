@@ -169,7 +169,7 @@ $date_ranges = json_encode($db->get_all( $sql ));
           } else if(2==num) {
 
             $('#stage option[value="scripts/cdttTable.php"]').hide();
-            $('#stage option[value="scripts/deviation_aecrfTable.php"]').hide();
+            $('#stage option[value="scripts/deviation_aecrfTable.php"]').show();
             $('#stage option[value="scripts/fraxTable.php"]').show();
             $('#stage option[value="scripts/functional_statusTable.php"]').show();
             $('#stage option[value="scripts/general_healthTable.php"]').show();
@@ -189,7 +189,7 @@ $date_ranges = json_encode($db->get_all( $sql ));
 
             $('#duration option[value="scripts/body_composition_weightDuration.php"]').show();
             $('#duration option[value="scripts/cdttDuration.php"]').hide();
-            $('#duration option[value="scripts/deviation_aecrfDuration.php"]').hide();
+            $('#duration option[value="scripts/deviation_aecrfDuration.php"]').show();
             $('#duration option[value="scripts/fraxDuration.php"]').show();
             $('#duration option[value="scripts/functional_statusDuration.php"]').show();
             $('#duration option[value="scripts/general_healthDuration.php"]').show();
@@ -225,7 +225,7 @@ $date_ranges = json_encode($db->get_all( $sql ));
             $('#stage option[value="scripts/retinal_scan_leftTable.php"]').hide();
             $('#stage option[value="scripts/retinal_scan_rightTable.php"]').hide();
             $('#stage option[value="scripts/retinal_scanTable.php"]').show();
-            $('#stage option[value="scripts/sitting_heightTable.php"]').hide();
+            $('#stage option[value="scripts/sitting_heightTable.php"]').show();
             $('#stage option[value="scripts/social_networkTable.php"]').hide();
             $('#stage option[value="scripts/spine_bone_densityTable.php"]').hide();
             $('#stage option[value="scripts/stroop_fasTable.php"]').hide();
