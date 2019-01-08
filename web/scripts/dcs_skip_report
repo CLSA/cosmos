@@ -10,16 +10,107 @@ $rank=3;
 $begin_date='2018-11-01';
 $end_date='2018-12-31';
 
-$stage_list=array(
-  'inhome_1'=>array(
-    'data'=>null),
-  'inhome_2'=>array(
-    'data'=>null),
-  'inhome_3'=>array(
-    'data'=>null),
-  'inhome_4'=>array(
-    'data'=>null)
-);
+$default_stage_list=array(
+  'blood'=>array('data'=>null),
+  'blood_pressure'=>array('data'=>null),
+  //'body_composition_weight'=>array('data'=>null),
+  'cdtt'=>array('data'=>null),
+  'chair_rise'=>array('data'=>null),
+  'cognition_recording'=>array('data'=>null),
+  'cognitive_test'=>array('data'=>null),
+  'conclusion_questionnaire'=>array('data'=>null),
+  'contraindications'=>array('data'=>null),
+  'carotid_intima'=>array('data'=>null),
+  'deviation_aecrf'=>array('data'=>null),
+  'disease_symptoms'=>array('data'=>null),
+  'bone_density_questionnaire'=>array('data'=>null),
+  'dual_hip_bone_density'=>array('data'=>null),
+  'forearm_bone_density'=>array('data'=>null),
+  'lateral_bone_density'=>array('data'=>null),
+  'spine_bone_density'=>array('data'=>null),
+  'whole_body_bone_density'=>array('data'=>null),
+  'frax'=>array('data'=>null),
+  'ecg'=>array('data'=>null),
+  'event_pmt'=>array('data'=>null),
+  'four_metre_walk'=>array('data'=>null),
+  'functional_status'=>array('data'=>null),
+  'general_health'=>array('data'=>null),
+  'grip_strength'=>array('data'=>null),
+  'hearing'=>array('data'=>null),
+  'hips_waist'=>array('data'=>null),
+  'osea'=>array('data'=>null),
+  'osipv'=>array('data'=>null),
+  'osonly'=>array('data'=>null),
+  'quality_assurance_inhome'=>array('data'=>null),
+  'retinal_scan_left'=>array('data'=>null),
+  'retinal_scan_right'=>array('data'=>null),
+  'retinal_scan'=>array('data'=>null),
+  'sitting_height'=>array('data'=>null),
+  'social_network'=>array('data'=>null),
+  'spirometry'=>array('data'=>null),
+  'standing_balance'=>array('data'=>null),
+  'standing_height'=>array('data'=>null),
+  'stroop_fas'=>array('data'=>null),
+  'time_based_pmt'=>array('data'=>null),
+  'tonometer'=>array('data'=>null),
+  'tug'=>array('data'=>null),
+  'urine'=>array('data'=>null),
+  'vision_acuity'=>array('data'=>null),
+  'weight'=>array('data'=>null));
+
+$blood = null;
+$blood_pressure = null;
+//$body_composition_weight = null;
+$cdtt = null;
+$chair_rise = null;
+$cognition_recording = null;
+$cognitive_test = null;
+$conclusion_questionnaire = null;
+$contraindications = null;
+$carotid_intima = null;
+$deviation_aecrf = null;
+$disease_symptoms = null;
+$bone_density_questionnaire = null;
+$dual_hip_bone_density = null;
+$forearm_bone_density = null;
+$lateral_bone_density = null;
+$spine_bone_density = null;
+$whole_body_bone_density = null;
+$frax = null;
+$ecg = null;
+$event_pmt = null;
+$four_metre_walk = null;
+$functional_status = null;
+$general_health = null;
+$grip_strength = null;
+$hearing = null;
+$hips_waist = null;
+$osea = null;
+$osipv = null;
+$osonly = null;
+$quality_assurance_inhome = null;
+$retinal_scan_left = null;
+$retinal_scan_right = null;
+$retinal_scan = null;
+$sitting_height = null;
+$social_network = null;
+$spirometry = null;
+$standing_balance = null;
+$standing_height = null;
+$stroop_fas = null;
+$time_based_pmt = null;
+$tonometer = null;
+$tug = null;
+$urine = null;
+$vision_acuity = null;
+$weight = null;
+
+$discard_list = array(
+ 1=>array('cdtt','deviation_aecrf','frax','general_health',
+  'osea','osipv','osonly','quality_assurance_inhome','retinal_scan_left',
+  'retinal_scan_right','social_network','spine_bone_density','stroop_fas'),
+ 2=>array('cdtt','osipv','retinal_scan','sitting_height','social_network','stroop_fas'),
+ 3=>array('functional_status','osea','osonly','retinal_scan'));
 
 $common_header_str = array();
 $common_header_str[] = sprintf('"DATES","%s - %s"',$begin_date, $end_date);
@@ -29,15 +120,17 @@ $str = array();
 $site_keys = array();
 $site_key_counts = array();
 $all_site_total = array();
-$total_key_list = array('total_skip','total_unexplained_missing');
+$total_key_list = array('total_skip','total_contraindicated','total_unexplained_missing');
 $total_key_count = count($total_key_list);
-foreach($stage_list as $key=>$value)
+$stage_list = array();
+foreach($default_stage_list as $key=>$value)
 {
+  if(in_array($key,$discard_list[$rank])) continue;
   $$key = new simple_table_generator($key, $rank, $begin_date, $end_date);
   $$key->build_table_data();
   $data = $$key->get_site_data_list();
   unset($data['ALL']);
-  $stage_list[$key]['data'] = $data;
+  $stage_list[$key]['data']=$data;
   $keys = array_keys($data);
   $site_keys[] = $keys;
   $site_key_counts[] = count($keys);
@@ -47,7 +140,7 @@ foreach($stage_list as $key=>$value)
 $idx = array_search(min($site_key_counts),$site_key_counts);
 $site_keys = $site_keys[$idx];
 
-$stage_key_list = array_keys($stage_list);
+$stage_key_list = array_keys($all_site_total);
 $all_site_total['total_interview'] = 0;
 
 $file_str_sites = array();
@@ -61,7 +154,7 @@ foreach($site_keys as $site)
   $site_data['total_interview'] = 0;
   foreach($stage_list as $stage_key=>$value)
   {
-    // for the current stage, get the number of skips, missing for each tech
+    // for the current stage, get the number of skips, contraindicated, and missing for each tech
     $data = $value['data'][$site]['technicians'];
     $site_stage_total = array_combine($total_key_list,array_fill(0,$total_key_count,0));
     foreach($data as $tech_key=>$tech_totals)
@@ -105,13 +198,14 @@ foreach($compound_site_data_list as $site => $data)
   $header_str = array();
 
   $file_str[] = '""'; // row separator
-  $file_str[]='"NUMBER OF SKIPS, MISSING"';
+  $file_str[]='"NUMBER OF SKIPS, CONTRAINDICATED, MISSING"';
 
   // headings of stage names with separators for total columns below
   $stage_heading_list = array();
   foreach($stage_key_list as $stage)
   {
     $stage_heading_list[] = $stage;
+    $stage_heading_list[] = '';
     $stage_heading_list[] = '';
   }
   $file_str[] =
@@ -123,7 +217,7 @@ foreach($compound_site_data_list as $site => $data)
   // sub-headings
   $file_str[] =
     '"Tech",'.
-    implode(',',array_fill(0,count($stage_key_list),'"Total Skips","Total Missing"')) .
+    implode(',',array_fill(0,count($stage_key_list),'"Total Skips","Total Contraindicated","Total Missing"')) .
     ',"Total Interviews (%)"';
 
   $total_site_interview = $site_data['total_interview'];
@@ -155,35 +249,34 @@ foreach($compound_site_data_list as $site => $data)
   }
 
   $str[] = sprintf('%s (%s)', $total_site_interview,
-      (0 == $all_site_total['total_interview'] ? 0 : round(100.0*$total_site_interview/$all_site_total['total_interview'])));
+    (0 == $all_site_total['total_interview'] ? 0 : round(100.0*$total_site_interview/$all_site_total['total_interview'])));
   $file_str[] = '"'.implode('","', $str).'"';
 
-  //var_dump($site_data);dd
   $file_str_sites[$site] = $file_str;
   util::out($site);
 }
 
 $overall_str = array('OVERALL');
 $summary_str = array('OVERALL BY STAGE');
-$summary_str[] =  '"'. implode('","',array('Stage','Total Skips','Total Missing')) . '"';
+$summary_str[] =  '"'. implode('","',array('Stage','Total Skips','Total Contraindicated','Total Missing')) . '"';
 foreach($stage_key_list as $stage)
 {
   $summary_str[] = '"' . implode('","',array_merge(array(
-    str_replace('_', ' ',strtoupper($stage))),$all_site_total[$stage])) . '"';
+  str_replace('_', ' ',strtoupper($stage))),$all_site_total[$stage])) . '"';
 
-  //$total_stage = array_sum(array_values($all_site_total[$stage]));
   foreach($all_site_total[$stage] as $key=>$value)
   {
     $overall_str[] = $value;
-    //$str[] = sprintf('%s (%s)',$value,
+    //$overall_str[] = sprintf('%s (%s)',$value,
     //(0 == $total_stage ? 0 : round(100.0*$value/$total_stage)));
   }
 }
 
+//$overall_str[] = sprintf('%s (100)', $all_site_total['total_interview']);
 $overall_str[] = $all_site_total['total_interview'];
 $overall_str = '"'.implode('","', $overall_str).'"';
 
-$filename = sprintf('/home/dean/files/webapps/qac/aux/inhome_skip_report_wave_%d_%s_%s.csv',
+$filename = sprintf('/home/dean/files/webapps/qac/aux/dcs_skip_report_wave_%d_%s_%s.csv',
  $rank,
  str_replace('-','',$begin_date),
  str_replace('-','',$end_date));
