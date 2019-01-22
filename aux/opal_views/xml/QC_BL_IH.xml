@@ -192,7 +192,7 @@ var sections={
       rcount+=j.any(&apos;REFUSED&apos;).value()?1:0
     }
     if(0==qcount) {
-      str.push(key+&apos;:100&apos;)
+      str.push(key+&apos;:0&apos;)
     } else {
       var perc=100.0*rcount/qcount
       if(0&lt;perc &amp;&amp; 100&gt;perc &amp;&amp; 0!=(perc-Math.floor(perc))) {
@@ -416,7 +416,7 @@ var sections={
       rcount+=j.any(&apos;REFUSED&apos;).value()?1:0
     }
     if(0==qcount) {
-      str.push(key+&apos;:100&apos;)
+      str.push(key+&apos;:0&apos;)
     } else {
       var perc=100.0*rcount/qcount
       if(0&lt;perc &amp;&amp; 100&gt;perc &amp;&amp; 0!=(perc-Math.floor(perc))) {
@@ -1004,7 +1004,7 @@ var sections={
       rcount+=j.any(&apos;REFUSED&apos;).value()?1:0
     }
     if(0==qcount) {
-      str.push(key+&apos;:100&apos;)
+      str.push(key+&apos;:0&apos;)
     } else {
       var perc=100.0*rcount/qcount
       if(0&lt;perc &amp;&amp; 100&gt;perc &amp;&amp; 0!=(perc-Math.floor(perc))) {
@@ -1087,7 +1087,7 @@ var sections={
       rcount+=j.any(&apos;REFUSED&apos;).value()?1:0
     }
     if(0==qcount) {
-      str.push(key+&apos;:100&apos;)
+      str.push(key+&apos;:0&apos;)
     } else {
       var perc=100.0*rcount/qcount
       if(0&lt;perc &amp;&amp; 100&gt;perc &amp;&amp; 0!=(perc-Math.floor(perc))) {
@@ -1288,5 +1288,5 @@ res</attribute>
     </variables>
   </variables>
   <created valueType="datetime">2018-08-13T13:56:44.296-04</created>
-  <updated valueType="datetime">2018-10-11T11:56:29.429-04</updated>
+  <updated valueType="datetime">2019-01-22T11:11:55.922-05</updated>
 </org.obiba.magma.views.View>
