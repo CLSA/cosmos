@@ -145,9 +145,11 @@ while($offset < $max_limit)
         continue;
       }
       $interview_values[] =
-        sprintf( '(%d,"%s","%s","%s",%d)',
+        sprintf( '(%d,"%s","%s","%s",%s,%d)',
           $site_id_map[$site], $row['interview_start_date'],
-          $uid,$row['interview_barcode'],$rank);
+          $uid,$row['interview_barcode'],
+          ''==$row['interview_duration']?'NULL':$row['interview_duration'],
+          $rank);
 
       $res=array_filter(array_keys($row), function($var) {
         return preg_match('/stage_technician_/', $var); } );
@@ -177,7 +179,7 @@ while($offset < $max_limit)
 
     $sql =
       'INSERT IGNORE INTO interview '.
-      '(site_id, start_date, uid, barcode, rank) '.
+      '(site_id, start_date, uid, barcode, duration, rank) '.
       'VALUES '.
       implode(',', $interview_values);
 

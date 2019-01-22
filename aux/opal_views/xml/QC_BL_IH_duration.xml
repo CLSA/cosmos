@@ -81,7 +81,7 @@ if($(&apos;Quality_Control.QC_BL_IH:stage_contraindicated_inhome_1&apos;).eq(0).
     res=$group(
       &apos;clsa-inhome.Participants:Admin.StageInstance.stage&apos;,
       &apos;InHome_1&apos;,
-      &apos;Admin.StageInstance.duration&apos;).asSequence().last().div(60)
+      &apos;Admin.StageInstance.duration&apos;).asSequence().sum().div(60)
   }
 }
 if(null!==res &amp;&amp; res.isNull().not().value()) {
@@ -118,7 +118,7 @@ if($(&apos;Quality_Control.QC_BL_IH:stage_contraindicated_inhome_2&apos;).eq(0).
     res=$group(
       &apos;clsa-inhome.Participants:Admin.StageInstance.stage&apos;,
       &apos;InHome_2&apos;,
-      &apos;Admin.StageInstance.duration&apos;).asSequence().last().div(60)
+      &apos;Admin.StageInstance.duration&apos;).asSequence().sum().div(60)
   }
 }
 if(null!==res  &amp;&amp; res.isNull().not().value()) {
@@ -155,7 +155,7 @@ if($(&apos;Quality_Control.QC_BL_IH:stage_contraindicated_inhome_3&apos;).eq(0).
     res=$group(
       &apos;clsa-inhome.Participants:Admin.StageInstance.stage&apos;,
       &apos;InHome_3&apos;,
-      &apos;Admin.StageInstance.duration&apos;).asSequence().last().div(60)
+      &apos;Admin.StageInstance.duration&apos;).asSequence().sum().div(60)
   }
 }
 if(null!==res &amp;&amp; res.isNull().not().value()) {
@@ -192,7 +192,7 @@ if($(&apos;Quality_Control.QC_BL_IH:stage_contraindicated_inhome_id&apos;).eq(0)
     res=$group(
       &apos;clsa-inhome.Participants:Admin.StageInstance.stage&apos;,
       &apos;InHome_Id&apos;,
-      &apos;Admin.StageInstance.duration&apos;).asSequence().last().div(60)
+      &apos;Admin.StageInstance.duration&apos;).asSequence().sum().div(60)
   }
 }
 if(null!==res &amp;&amp; res.isNull().not().value()) {
@@ -226,7 +226,7 @@ res</attribute>
 var v=$group(
       &apos;clsa-inhome.Participants:Admin.StageInstance.stage&apos;,
       &apos;Consent&apos;,
-      &apos;Admin.StageInstance.duration&apos;).asSequence().last()
+      &apos;Admin.StageInstance.duration&apos;).asSequence().sum()
 if(v.isNull().not().value()) {
   res=newValue(&apos;{stage:&apos;+v.div(60).round(3)+&apos;}&apos;,&apos;text&apos;)
 }
@@ -251,7 +251,7 @@ if($(&apos;Quality_Control.QC_BL_IH:stage_contraindicated_inhome_conclusion_ques
     var v=$group(
       &apos;clsa-inhome.Participants:Admin.StageInstance.stage&apos;,
       &apos;ConclusionQuestionnaire&apos;,
-      &apos;Admin.StageInstance.duration&apos;).asSequence().last()
+      &apos;Admin.StageInstance.duration&apos;).asSequence().sum()
     if(v.isNull().not().value()) {
       res=newValue(&apos;{stage:&apos;+v.div(60).round(3)+&apos;}&apos;,&apos;text&apos;)
     }
@@ -314,7 +314,7 @@ if($(&apos;Quality_Control.QC_BL_IH:stage_contraindicated_inhome_2&apos;).eq(0).
     res=$group(
       &apos;clsa-inhome.Participants:Admin.StageInstance.stage&apos;,
       &apos;InHome_2&apos;,
-      &apos;Admin.StageInstance.duration&apos;).asSequence().last().div(60)
+      &apos;Admin.StageInstance.duration&apos;).asSequence().sum().div(60)
   }
 }
 if(null!==res &amp;&amp; res.isNull().not().value()) {
@@ -342,8 +342,46 @@ res</attribute>
           <attribute name="script" valueType="text">$this(&apos;stage_technician_inhome_2&apos;)</attribute>
         </attributes>
       </variable>
+      <variable name="interview_duration" valueType="decimal" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var res = null
+var stages = $(&apos;clsa-inhome.Participants:Admin.StageInstance.stage&apos;).asSequence()
+var unique = stages.filter(function(v,i) {
+    return i==this.indexOf(v)
+  })
+var t=newValue(0,&apos;decimal&apos;)
+for(var i=0;i&lt;unique.size();i++) {
+  var stage=unique.valueAt(i).value()
+  var v=null
+  if(&apos;Consent&apos;==stage) {
+    var begin=$(&apos;clsa-inhome.Consent:timeStart&apos;)
+    var end=$(&apos;clsa-inhome.Consent:timeStart&apos;)
+    if(begin.isNull().or(end.isNull()).value()) continue;
+    v=begin.time().minus(end.time()).asSequence()
+  }
+  else {
+    v = $group(
+      &apos;clsa-inhome.Participants:Admin.StageInstance.stage&apos;,
+      stage,
+      &apos;Admin.StageInstance.duration&apos;).asSequence()
+  }
+  if(v.isNull().value()) continue
+  var s=v.sum()
+  var m=v.min()
+  if(s.le(10800).value()) { // 3 hr time limit
+    t=t.plus(s)
+  } else if(m.le(10800).value()) {
+    t=t.plus(m)
+  }
+}
+if(t.gt(0).value()) {
+  res=newValue(t.div(3600),&apos;decimal&apos;)
+}
+res</attribute>
+        </attributes>
+      </variable>
     </variables>
   </variables>
   <created valueType="datetime">2018-08-13T14:00:37.361-04</created>
-  <updated valueType="datetime">2018-10-14T11:11:36.943-04</updated>
+  <updated valueType="datetime">2019-01-22T10:44:48.823-05</updated>
 </org.obiba.magma.views.View>

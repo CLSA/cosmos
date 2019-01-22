@@ -124,7 +124,7 @@ if($(&apos;Quality_Control.QC_BL:stage_contraindicated_spirometry&apos;).eq(0).a
   var v=$group(
     &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
     &apos;Spirometry&apos;,
-    &apos;Admin.StageInstance.duration&apos;).asSequence().last()
+    &apos;Admin.StageInstance.duration&apos;).asSequence().sum()
   if(v.isNull().not().value()) {
     res=newValue(&apos;{stage:&apos;+v.div(60).round(3)+&apos;}&apos;,&apos;text&apos;)
   }
@@ -140,7 +140,7 @@ if($(&apos;Quality_Control.QC_BL:stage_contraindicated_grip_strength&apos;).eq(0
   var v=$group(
     &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
     &apos;GripStrength&apos;,
-    &apos;Admin.StageInstance.duration&apos;).asSequence().last()
+    &apos;Admin.StageInstance.duration&apos;).asSequence().sum()
   if(v.isNull().not().value()) {
     res=newValue(&apos;{stage:&apos;+v.div(60).round(3)+&apos;}&apos;,&apos;text&apos;)
   }
@@ -156,7 +156,7 @@ if($(&apos;Quality_Control.QC_BL:stage_contraindicated_blood_pressure&apos;).eq(
   var v=$group(
     &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
     &apos;BloodPressure&apos;,
-    &apos;Admin.StageInstance.duration&apos;).asSequence().last()
+    &apos;Admin.StageInstance.duration&apos;).asSequence().sum()
   if(v.isNull().not().value()) {
     res=newValue(&apos;{stage:&apos;+v.div(60).round(3)+&apos;}&apos;,&apos;text&apos;)
   }
@@ -167,19 +167,9 @@ res</attribute>
       <variable name="stage_duration_ecg" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">var res=null
-if($this(&apos;group_duration_ecg&apos;).isNull().not().value()) {
-  var stages=$(&apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;).asSequence()
-  var preStage=stages.valueAt($this(&apos;group_duration_ecg&apos;).first()).value()
-  var pre=(-1!=$this(&apos;group_questionnaire&apos;).indexOf(preStage)) ?
-    $(&apos;clsa-dcs.&apos;+preStage+&apos;:QuestionnaireRun.timeEnd&apos;) :
-    $(&apos;clsa-dcs.&apos;+preStage+&apos;:InstrumentRun.timeEnd&apos;)
-  var postStage=stages.valueAt($this(&apos;group_duration_ecg&apos;).last()).value()
-  var post=(-1!=$this(&apos;group_questionnaire&apos;).indexOf(postStage)) ?
-    $(&apos;clsa-dcs.&apos;+postStage+&apos;:QuestionnaireRun.timeStart&apos;) :
-    $(&apos;clsa-dcs.&apos;+postStage+&apos;:InstrumentRun.timeStart&apos;)
-  if(post.after(pre).value()) {
-    res=newValue(&apos;{stage:&apos;+post.time().minus(pre.time()).div(60000).round(3)+&apos;}&apos;,&apos;text&apos;)
-  }
+var v=$this(&apos;group_duration_ecg&apos;)
+if(v.isNull().not().value()) {
+  res=newValue(&apos;{stage:&apos;+v.div(60).round(3)+&apos;}&apos;,&apos;text&apos;)
 }
 res</attribute>
         </attributes>
@@ -192,7 +182,7 @@ if($(&apos;Quality_Control.QC_BL:stage_contraindicated_cognitive_test&apos;).eq(
   var v=$group(
     &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
     &apos;CognitiveTest&apos;,
-    &apos;Admin.StageInstance.duration&apos;).asSequence().last()
+    &apos;Admin.StageInstance.duration&apos;).asSequence().sum()
   if(v.isNull().not().value()) {
     res=newValue(&apos;{stage:&apos;+v.div(60).round(3)+&apos;}&apos;,&apos;text&apos;)
   }
@@ -208,7 +198,7 @@ if($(&apos;Quality_Control.QC_BL:stage_contraindicated_hearing&apos;).eq(0).and(
   var v=$group(
     &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
     &apos;Hearing&apos;,
-    &apos;Admin.StageInstance.duration&apos;).asSequence().last()
+    &apos;Admin.StageInstance.duration&apos;).asSequence().sum()
   if(v.isNull().not().value()) {
     res=newValue(&apos;{stage:&apos;+v.div(60).round(3)+&apos;}&apos;,&apos;text&apos;)
   }
@@ -224,7 +214,7 @@ if($(&apos;Quality_Control.QC_BL:stage_contraindicated_tonometer&apos;).eq(0).an
   var v=$group(
     &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
     &apos;Tonometer&apos;,
-    &apos;Admin.StageInstance.duration&apos;).asSequence().last()
+    &apos;Admin.StageInstance.duration&apos;).asSequence().sum()
   if(v.isNull().not().value()) {
     res=newValue(&apos;{stage:&apos;+v.div(60).round(3)+&apos;}&apos;,&apos;text&apos;)
   }
@@ -240,7 +230,7 @@ if($(&apos;Quality_Control.QC_BL:stage_contraindicated_weight&apos;).eq(0).and(
   var v=$group(
     &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
     &apos;Weight&apos;,
-    &apos;Admin.StageInstance.duration&apos;).asSequence().last()
+    &apos;Admin.StageInstance.duration&apos;).asSequence().sum()
   if(v.isNull().not().value()) {
     res=newValue(&apos;{stage:&apos;+v.div(60).round(3)+&apos;}&apos;,&apos;text&apos;)
   }
@@ -256,7 +246,7 @@ if($(&apos;Quality_Control.QC_BL:stage_contraindicated_retinal_scan&apos;).eq(0)
   var v=$group(
     &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
     &apos;RetinalScan&apos;,
-    &apos;Admin.StageInstance.duration&apos;).asSequence().last()
+    &apos;Admin.StageInstance.duration&apos;).asSequence().sum()
   if(v.isNull().not().value()) {
     res=newValue(&apos;{stage:&apos;+v.div(60).round(3)+&apos;}&apos;,&apos;text&apos;)
   }
@@ -293,7 +283,7 @@ if($(&apos;Quality_Control.QC_BL:stage_contraindicated_standing_height&apos;).eq
   var v=$group(
     &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
     &apos;StandingHeight&apos;,
-    &apos;Admin.StageInstance.duration&apos;).asSequence().last()
+    &apos;Admin.StageInstance.duration&apos;).asSequence().sum()
   if(v.isNull().not().value()) {
     res=newValue(&apos;{stage:&apos;+v.div(60).round(3)+&apos;}&apos;,&apos;text&apos;)
   }
@@ -427,7 +417,7 @@ if($(&apos;Quality_Control.QC_BL:stage_contraindicated_tug&apos;).eq(0).and(
   var v=$group(
     &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
     &apos;TUG&apos;,
-    &apos;Admin.StageInstance.duration&apos;).asSequence().last()
+    &apos;Admin.StageInstance.duration&apos;).asSequence().sum()
   if(v.isNull().not().value()) {
     res=newValue(&apos;{stage:&apos;+v.div(60).round(3)+&apos;}&apos;,&apos;text&apos;)
   }
@@ -443,7 +433,7 @@ if($(&apos;Quality_Control.QC_BL:stage_contraindicated_chair_rise&apos;).eq(0).a
   var v=$group(
     &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
     &apos;ChairRise&apos;,
-    &apos;Admin.StageInstance.duration&apos;).asSequence().last()
+    &apos;Admin.StageInstance.duration&apos;).asSequence().sum()
   if(v.isNull().not().value()) {
     res=newValue(&apos;{stage:&apos;+v.div(60).round(3)+&apos;}&apos;,&apos;text&apos;)
   }
@@ -459,7 +449,7 @@ if($(&apos;Quality_Control.QC_BL:stage_contraindicated_hips_waist&apos;).eq(0).a
   var v=$group(
     &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
     &apos;HipsWaist&apos;,
-    &apos;Admin.StageInstance.duration&apos;).asSequence().last()
+    &apos;Admin.StageInstance.duration&apos;).asSequence().sum()
   if(v.isNull().not().value()) {
     res=newValue(&apos;{stage:&apos;+v.div(60).round(3)+&apos;}&apos;,&apos;text&apos;)
   }
@@ -481,7 +471,7 @@ if($(&apos;Quality_Control.QC_BL:stage_contraindicated_neuropsychological_batter
     res=$group(
       &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
       &apos;NeuropsychologicalBattery&apos;,
-      &apos;Admin.StageInstance.duration&apos;).asSequence().last().div(60)
+      &apos;Admin.StageInstance.duration&apos;).asSequence().sum().div(60)
   }
 }
 if(null!==res &amp;&amp; res.isNull().not().value()) {
@@ -512,7 +502,7 @@ if($(&apos;Quality_Control.QC_BL:stage_contraindicated_standing_balance&apos;).e
   var v=$group(
     &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
     &apos;StandingBalance&apos;,
-    &apos;Admin.StageInstance.duration&apos;).asSequence().last()
+    &apos;Admin.StageInstance.duration&apos;).asSequence().sum()
   if(v.isNull().not().value()) {
     res=newValue(&apos;{stage:&apos;+v.div(60).round(3)+&apos;}&apos;,&apos;text&apos;)
   }
@@ -528,7 +518,7 @@ if($(&apos;Quality_Control.QC_BL:stage_contraindicated_four_metre_walk&apos;).eq
   var v=$group(
     &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
     &apos;4mWalk&apos;,
-    &apos;Admin.StageInstance.duration&apos;).asSequence().last()
+    &apos;Admin.StageInstance.duration&apos;).asSequence().sum()
   if(v.isNull().not().value()) {
     res=newValue(&apos;{stage:&apos;+v.div(60).round(3)+&apos;}&apos;,&apos;text&apos;)
   }
@@ -544,7 +534,7 @@ if($(&apos;Quality_Control.QC_BL:stage_contraindicated_sitting_height&apos;).eq(
   var v=$group(
     &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
     &apos;SittingHeight&apos;,
-    &apos;Admin.StageInstance.duration&apos;).asSequence().last()
+    &apos;Admin.StageInstance.duration&apos;).asSequence().sum()
   if(v.isNull().not().value()) {
     res=newValue(&apos;{stage:&apos;+v.div(60).round(3)+&apos;}&apos;,&apos;text&apos;)
   }
@@ -560,7 +550,7 @@ if($(&apos;Quality_Control.QC_BL:stage_contraindicated_vision_acuity&apos;).eq(0
   var v=$group(
     &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
     &apos;VisionAcuity&apos;,
-    &apos;Admin.StageInstance.duration&apos;).asSequence().last()
+    &apos;Admin.StageInstance.duration&apos;).asSequence().sum()
   if(v.isNull().not().value()) {
     res=newValue(&apos;{stage:&apos;+v.div(60).round(3)+&apos;}&apos;,&apos;text&apos;)
   }
@@ -576,7 +566,7 @@ if($(&apos;Quality_Control.QC_BL:stage_contraindicated_consent&apos;).eq(0).and(
   var v=$group(
     &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
     &apos;Consent&apos;,
-    &apos;Admin.StageInstance.duration&apos;).asSequence().last()
+    &apos;Admin.StageInstance.duration&apos;).asSequence().sum()
   if(v.isNull().not().value()) {
     res=newValue(&apos;{stage:&apos;+v.div(60).round(3)+&apos;}&apos;,&apos;text&apos;)
   }
@@ -598,7 +588,7 @@ if($(&apos;Quality_Control.QC_BL:stage_contraindicated_contraindications&apos;).
     res=$group(
       &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
       &apos;ContraIndications&apos;,
-      &apos;Admin.StageInstance.duration&apos;).asSequence().last().div(60)
+      &apos;Admin.StageInstance.duration&apos;).asSequence().sum().div(60)
   }
 }
 if(null!==res &amp;&amp; res.isNull().not().value()) {
@@ -635,7 +625,7 @@ if($(&apos;Quality_Control.QC_BL:stage_contraindicated_event_pmt&apos;).eq(0).an
     res=$group(
       &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
       &apos;EventPMT&apos;,
-      &apos;Admin.StageInstance.duration&apos;).asSequence().last().div(60)
+      &apos;Admin.StageInstance.duration&apos;).asSequence().sum().div(60)
   }
 }
 if(null!==res &amp;&amp; res.isNull().not().value()) {
@@ -672,7 +662,7 @@ if($(&apos;Quality_Control.QC_BL:stage_contraindicated_functional_status&apos;).
     res=$group(
       &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
       &apos;FunctionalStatus&apos;,
-      &apos;Admin.StageInstance.duration&apos;).asSequence().last().div(60)
+      &apos;Admin.StageInstance.duration&apos;).asSequence().sum().div(60)
   }
 }
 if(null!==res &amp;&amp; res.isNull().not().value()) {
@@ -709,7 +699,7 @@ if($(&apos;Quality_Control.QC_BL:stage_contraindicated_disease_symptoms&apos;).e
     res=$group(
       &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
       &apos;DiseaseSymptoms&apos;,
-      &apos;Admin.StageInstance.duration&apos;).asSequence().last().div(60)
+      &apos;Admin.StageInstance.duration&apos;).asSequence().sum().div(60)
   }
 }
 if(null!==res &amp;&amp; res.isNull().not().value()) {
@@ -748,7 +738,7 @@ if($(&apos;Quality_Control.QC_BL:stage_contraindicated_time_based_pmt&apos;).eq(
     res=$group(
       &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
       &apos;TimeBasedProspectiveMemoryTask&apos;,
-      &apos;Admin.StageInstance.duration&apos;).asSequence().last().div(60)
+      &apos;Admin.StageInstance.duration&apos;).asSequence().sum().div(60)
   }
 }
 if(null!==res &amp;&amp; res.isNull().not().value()) {
@@ -784,7 +774,7 @@ if($(&apos;Quality_Control.QC_BL:stage_contraindicated_hearing_questionnaire&apo
     var v=$group(
       &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
       &apos;HearingQuestionnaire&apos;,
-      &apos;Admin.StageInstance.duration&apos;).asSequence().last()
+      &apos;Admin.StageInstance.duration&apos;).asSequence().sum()
     if(v.isNull().not().value()) {
       res=newValue(&apos;{stage:&apos;+v.div(60).round(3)+&apos;}&apos;,&apos;text&apos;)
     }
@@ -806,7 +796,7 @@ if($(&apos;Quality_Control.QC_BL:stage_contraindicated_conclusion_questionnaire&
     var v=$group(
       &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
       &apos;ConclusionQuestionnaire&apos;,
-      &apos;Admin.StageInstance.duration&apos;).asSequence().last()
+      &apos;Admin.StageInstance.duration&apos;).asSequence().sum()
     if(v.isNull().not().value()) {
       res=newValue(&apos;{stage:&apos;+v.div(60).round(3)+&apos;}&apos;,&apos;text&apos;)
     }
@@ -828,7 +818,7 @@ if($(&apos;Quality_Control.QC_BL:stage_contraindicated_bone_density_questionnair
     var v=$group(
       &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
       &apos;QuestionnaireBoneDensity&apos;,
-      &apos;Admin.StageInstance.duration&apos;).asSequence().last()
+      &apos;Admin.StageInstance.duration&apos;).asSequence().sum()
     if(v.isNull().not().value()) {
       res=newValue(&apos;{stage:&apos;+v.div(60).round(3)+&apos;}&apos;,&apos;text&apos;)
     }
@@ -1062,7 +1052,7 @@ if($(&apos;Quality_Control.QC_BL:stage_contraindicated_urine&apos;).eq(0).and(
     res=$group(
       &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
       &apos;Urine&apos;,
-      &apos;Admin.StageInstance.duration&apos;).asSequence().last().div(60)
+      &apos;Admin.StageInstance.duration&apos;).asSequence().sum().div(60)
   }
 }
 if(null!==res &amp;&amp; res.isNull().not().value()) {
@@ -1100,7 +1090,7 @@ if($(&apos;Quality_Control.QC_BL:stage_contraindicated_blood&apos;).eq(0).and(
     res=$group(
       &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
       stage,
-      &apos;Admin.StageInstance.duration&apos;).asSequence().last().div(60)
+      &apos;Admin.StageInstance.duration&apos;).asSequence().sum().div(60)
   }
 }
 if(null!==res &amp;&amp; res.isNull().not().value()) {
@@ -1128,7 +1118,7 @@ res</attribute>
           <attribute name="script" valueType="text">$(&apos;Quality_Control.QC_BL:stage_technician_blood&apos;)</attribute>
         </attributes>
       </variable>
-      <variable name="group_duration_ecg" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0" repeatable="true" occurrenceGroup="">
+      <variable name="group_duration_ecg" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">var res=null
 if($(&apos;Quality_Control.QC_BL:stage_contraindicated_ecg&apos;).eq(0).and(
@@ -1182,8 +1172,34 @@ if($(&apos;Quality_Control.QC_BL:stage_contraindicated_ecg&apos;).eq(0).and(
         }
       }
     }// end for loop
-    if(-1!=preIndex &amp;&amp; preIndex&lt;postIndex) {
-      res=newSequence([preIndex,postIndex],&apos;integer&apos;)
+    var valid = false
+    if(-1!=preIndex &amp;&amp; (postIndex-preIndex)==2) {
+      valid = &apos;ECG&apos; == stages.valueAt(preIndex+1).value()
+    }
+    else
+    {
+      var preCandidates = [&apos;BloodPressure&apos;,&apos;Spirometry&apos;,&apos;SittingHeight&apos;,&apos;StandingHeight&apos;,&apos;HipsWaist&apos;,&apos;Weight&apos;]
+      for(var i=0;i&lt;preCandidates.length &amp;&amp; !valid;i++) {
+        preIndex = stages.indexOf(preCandidates[i])
+        postIndex = preIndex+1
+        if(&apos;ECG&apos;==stages.valueAt(postIndex).value()) {
+          while(&apos;ECG&apos;==stages.valueAt(++postIndex).value()) {}
+          valid = 1 &lt; (postIndex-preIndex)
+        }
+      }
+    }
+    if(valid) {
+      var preStage=stages.valueAt(preIndex).value()
+      pre=(-1!=$this(&apos;group_questionnaire&apos;).indexOf(preStage)) ?
+        $(&apos;clsa-dcs.&apos;+preStage+&apos;:QuestionnaireRun.timeEnd&apos;) :
+        $(&apos;clsa-dcs.&apos;+preStage+&apos;:InstrumentRun.timeEnd&apos;)
+      var postStage=stages.valueAt(postIndex).value()
+      post=(-1!=$this(&apos;group_questionnaire&apos;).indexOf(postStage)) ?
+        $(&apos;clsa-dcs.&apos;+postStage+&apos;:QuestionnaireRun.timeStart&apos;) :
+        $(&apos;clsa-dcs.&apos;+postStage+&apos;:InstrumentRun.timeStart&apos;)
+      if(post.after(pre).value()) {
+        res=newValue(post.time().minus(pre.time()).div(1000),&apos;integer&apos;)
+      }
     }
   }
 }
@@ -1253,7 +1269,7 @@ if($(&apos;Quality_Control.QC_BL:stage_contraindicated_neuropsychological_batter
     var v=$group(
       &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
       &apos;NeuropsychologicalBatteryScoring&apos;,
-      &apos;Admin.StageInstance.duration&apos;).asSequence().last()
+      &apos;Admin.StageInstance.duration&apos;).asSequence().sum()
     if(v.isNull().not().value()) {
       res=newValue(&apos;{stage:&apos;+v.div(60).round(3)+&apos;}&apos;,&apos;text&apos;)
     }
@@ -1350,7 +1366,7 @@ if($(&apos;Quality_Control.QC_BL:stage_contraindicated_neuropsychological_batter
     res=$group(
       &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
       &apos;NeuropsychologicalBattery&apos;,
-      &apos;Admin.StageInstance.duration&apos;).asSequence().last().div(60)
+      &apos;Admin.StageInstance.duration&apos;).asSequence().sum().div(60)
   }
 }
 if(null!==res &amp;&amp; res.isNull().not().value()) {
@@ -1373,8 +1389,63 @@ if(null!==res &amp;&amp; res.isNull().not().value()) {
 res</attribute>
         </attributes>
       </variable>
+      <variable name="stage_duration_dexa" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var res=null
+if($this(&apos;group_duration_dexa&apos;).isNull().not().value()) {
+  res=newValue(&apos;{stage:&apos;+$this(&apos;group_duration_dexa&apos;).value()+&apos;}&apos;,&apos;text&apos;)
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_technician_dexa" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;Quality_Control.QC_F2:stage_technician_dexa&apos;)</attribute>
+        </attributes>
+      </variable>
+      <variable name="interview_duration" valueType="decimal" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var res = null
+var stages = $(&apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;).asSequence()
+var unique = stages.filter(function(v,i) {
+    return i==this.indexOf(v)
+  })
+var t=newValue(0,&apos;decimal&apos;)
+var group_stages=[&apos;ECG&apos;,&apos;ForearmBoneDensity&apos;,&apos;DualHipBoneDensity&apos;,&apos;WholeBodyBoneDensity&apos;,&apos;LateralBoneDensity&apos;]
+var skip_stages=[&apos;CarotidIntima&apos;,&apos;Plaque&apos;]
+for(var i=0;i&lt;unique.size();i++) {
+  var stage=unique.valueAt(i).value()
+  if(-1!=skip_stages.indexOf(stage)) continue
+  var v = null
+  if(-1!=group_stages.indexOf(stage)) {
+    if(&apos;ECG&apos;==stage) {
+      v=$this(&apos;group_duration_ecg&apos;).asSequence()
+    } else {
+      v=$this(&apos;group_duration_dexa&apos;).asSequence()
+    }
+  } else {
+    v=$group(
+      &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
+      stage,
+      &apos;Admin.StageInstance.duration&apos;).asSequence()
+  }
+  if(v.isNull().value()) continue
+  var s=v.sum()
+  var m=v.min()
+  if(s.le(10800).value()) { // 3 hr time limit
+    t=t.plus(s)
+  } else if(m.le(10800).value()) {
+    t=t.plus(m)
+  }
+}
+if(t.gt(0).value()) {
+  res=newValue(t.div(3600),&apos;decimal&apos;)
+}
+res</attribute>
+        </attributes>
+      </variable>
     </variables>
   </variables>
   <created valueType="datetime">2018-06-18T09:52:50.447-04</created>
-  <updated valueType="datetime">2018-10-16T11:45:26.994-04</updated>
+  <updated valueType="datetime">2019-01-22T12:08:40.004-05</updated>
 </org.obiba.magma.views.View>

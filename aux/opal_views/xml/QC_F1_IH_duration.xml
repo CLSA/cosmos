@@ -78,7 +78,7 @@ if($(&apos;Quality_Control.QC_F1_IH:stage_contraindicated_inhome_1&apos;).eq(0).
     res=$group(
       &apos;clsa-inhome-f1.Participants:Admin.StageInstance.stage&apos;,
       &apos;InHome_1&apos;,
-      &apos;Admin.StageInstance.duration&apos;).asSequence().last().div(60)
+      &apos;Admin.StageInstance.duration&apos;).asSequence().sum().div(60)
   }
 }
 if(null!==res &amp;&amp; res.isNull().not().value()) {
@@ -115,7 +115,7 @@ if($(&apos;Quality_Control.QC_F1_IH:stage_contraindicated_inhome_2&apos;).eq(0).
     res=$group(
       &apos;clsa-inhome-f1.Participants:Admin.StageInstance.stage&apos;,
       &apos;InHome_2&apos;,
-      &apos;Admin.StageInstance.duration&apos;).asSequence().last().div(60)
+      &apos;Admin.StageInstance.duration&apos;).asSequence().sum().div(60)
   }
 }
 if(null!==res &amp;&amp; res.isNull().not().value()) {
@@ -152,7 +152,7 @@ if($(&apos;Quality_Control.QC_F1_IH:stage_contraindicated_inhome_3&apos;).eq(0).
     res=$group(
       &apos;clsa-inhome-f1.Participants:Admin.StageInstance.stage&apos;,
       &apos;InHome_3&apos;,
-      &apos;Admin.StageInstance.duration&apos;).asSequence().last().div(60)
+      &apos;Admin.StageInstance.duration&apos;).asSequence().sum().div(60)
   }
 }
 if(null!==res &amp;&amp; res.isNull().not().value()) {
@@ -189,7 +189,7 @@ if($(&apos;Quality_Control.QC_F1_IH:stage_contraindicated_inhome_4&apos;).eq(0).
     res=$group(
       &apos;clsa-inhome-f1.Participants:Admin.StageInstance.stage&apos;,
       &apos;InHome_4&apos;,
-      &apos;Admin.StageInstance.duration&apos;).asSequence().last().div(60)
+      &apos;Admin.StageInstance.duration&apos;).asSequence().sum().div(60)
   }
 }
 if(null!==res &amp;&amp; res.isNull().not().value()) {
@@ -225,7 +225,7 @@ if($(&apos;Quality_Control.QC_F1_IH:stage_contraindicated_inhome_conclusion_ques
     var v=$group(
       &apos;clsa-inhome-f1.Participants:Admin.StageInstance.stage&apos;,
       &apos;ConclusionQuestionnaire&apos;,
-      &apos;Admin.StageInstance.duration&apos;).asSequence().last()
+      &apos;Admin.StageInstance.duration&apos;).asSequence().sum()
     if(v.isNull().not().value()) {
       res=newValue(&apos;{stage:&apos;+v.div(60).round(3)+&apos;}&apos;,&apos;text&apos;)
     }
@@ -307,7 +307,7 @@ if($(&apos;Quality_Control.QC_F1_IH:stage_contraindicated_inhome_2&apos;).eq(0).
     res=$group(
       &apos;clsa-inhome-f1.Participants:Admin.StageInstance.stage&apos;,
       &apos;InHome_2&apos;,
-      &apos;Admin.StageInstance.duration&apos;).asSequence().last().div(60)
+      &apos;Admin.StageInstance.duration&apos;).asSequence().sum().div(60)
   }
 }
 if(null!==res &amp;&amp; res.isNull().not().value()) {
@@ -330,8 +330,37 @@ if(null!==res &amp;&amp; res.isNull().not().value()) {
 res</attribute>
         </attributes>
       </variable>
+      <variable name="interview_duration" valueType="decimal" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var res = null
+var stages = $(&apos;clsa-inhome-f1.Participants:Admin.StageInstance.stage&apos;).asSequence()
+var unique = stages.filter(function(v,i) {
+    return i==this.indexOf(v)
+  })
+var t=newValue(0,&apos;decimal&apos;)
+for(var i=0;i&lt;unique.size();i++) {
+  var stage=unique.valueAt(i).value()
+  var v=$group(
+      &apos;clsa-inhome-f1.Participants:Admin.StageInstance.stage&apos;,
+      stage,
+      &apos;Admin.StageInstance.duration&apos;).asSequence()
+  if(v.isNull().value()) continue
+  var s=v.sum()
+  var m=v.min()
+  if(s.le(10800).value()) { // 3 hr time limit
+    t=t.plus(s)
+  } else if(m.le(10800).value()) {
+    t=t.plus(m)
+  }
+}
+if(t.gt(0).value()) {
+  res=newValue(t.div(3600),&apos;decimal&apos;)
+}
+res</attribute>
+        </attributes>
+      </variable>
     </variables>
   </variables>
   <created valueType="datetime">2018-08-13T13:43:24.444-04</created>
-  <updated valueType="datetime">2018-10-11T15:11:55.914-04</updated>
+  <updated valueType="datetime">2019-01-22T10:46:35.360-05</updated>
 </org.obiba.magma.views.View>
