@@ -3273,8 +3273,69 @@ res</attribute>
 ).value() ? 1 : 0</attribute>
         </attributes>
       </variable>
+      <variable name="stage_technician_dexa" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">res=null
+var tech=[]
+var types=[&apos;forearm&apos;,&apos;dual_hip&apos;,&apos;whole_body&apos;,&apos;lateral&apos;]
+for(var i=0;i&lt;types.length;i++) {
+  var name = $(&apos;Quality_Control.QC_BL:stage_technician_&apos;+types[i]+&apos;_bone_density&apos;)
+  if(name.isNull().not().value()) tech.push(name)
+}
+if(0&lt;tech.length) {
+  tech=tech.filter(function(value,index,self){return self.indexOf(value)===index;})
+  res=tech[0]
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_contraindicated_dexa" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">res=null
+var c=0
+var types=[&apos;forearm&apos;,&apos;dual_hip&apos;,&apos;whole_body&apos;,&apos;lateral&apos;]
+for(var i=0;i&lt;types.length;i++) {
+  var v = $(&apos;Quality_Control.QC_BL:stage_contraindicated_&apos;+types[i]+&apos;_bone_density&apos;)
+  if(v.eq(0).value()) c++
+}
+res=newValue(c==0 ? 1 : 0,&apos;integer&apos;)
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="data_missing_dexa" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">res=null
+var c=0
+var types=[&apos;forearm&apos;,&apos;dual_hip&apos;,&apos;whole_body&apos;,&apos;lateral&apos;]
+for(var i=0;i&lt;types.length;i++) {
+  var v = $(&apos;Quality_Control.QC_BL:data_missing_&apos;+types[i]+&apos;_bone_density&apos;)
+  if(v.eq(1).value()) c++
+}
+res=newValue(c==0 ? 0 : 1,&apos;integer&apos;)
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_skip_dexa" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0"/>
+      <variable name="data_qac_dexa" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">res=null
+var types=[&apos;forearm&apos;,&apos;dual_hip&apos;,&apos;whole_body&apos;,&apos;lateral&apos;]
+var n=0
+var d=types.length
+for(var i=0;i&lt;types.length;i++) {
+  var v = $(&apos;Quality_Control.QC_BL:stage_contraindicated_&apos;+types[i]+&apos;_bone_density&apos;)
+  var q = $(&apos;Quality_Control.QC_BL:data_qac_&apos;+types[i]+&apos;_bone_density&apos;)
+  if(v.eq(0).and(q.isNull().not()).value()) n++
+  if(v.eq(1).value()) d--
+}
+if(d&gt;0) {
+  res=newValue(&apos;{file_capture:&apos;+ 100.0*n/d +&apos;}&apos;,&apos;text&apos;)
+}
+res</attribute>
+        </attributes>
+      </variable>
     </variables>
   </variables>
   <created valueType="datetime">2018-05-15T17:37:52.240-04</created>
-  <updated valueType="datetime">2018-10-13T11:14:50.907-04</updated>
+  <updated valueType="datetime">2019-01-17T16:45:20.354-05</updated>
 </org.obiba.magma.views.View>
