@@ -2861,8 +2861,14 @@ res</attribute>
           <attribute name="script" valueType="text">$this(&apos;stage_comment_neuropsychological_battery&apos;)</attribute>
         </attributes>
       </variable>
+      <variable name="stage_comment_dexa" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0"/>
+      <variable name="stage_technician_dexa" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;Quality_Control.QC_BL:stage_technician_dexa&apos;)</attribute>
+        </attributes>
+      </variable>
     </variables>
   </variables>
   <created valueType="datetime">2018-05-28T09:56:58.265-04</created>
-  <updated valueType="datetime">2018-10-13T14:28:55.573-04</updated>
+  <updated valueType="datetime">2019-01-17T16:46:58.528-05</updated>
 </org.obiba.magma.views.View>
