@@ -733,7 +733,7 @@ $sql =
   'cast( '.
   '  cast( '.
   '    substring_index( '.
-  '      substring_index(duration,",",1),":",-1) as decimal(15,3))*60 as unsigned) as duration, ';
+  '      substring_index(s.duration,",",1),":",-1) as decimal(15,3))*60 as unsigned) as duration, ';
 
 if(in_array($type,$module_list))
 {
@@ -753,7 +753,7 @@ $sql .= sprintf(
   'left join technician t on t.id=s.technician_id and t.site_id=site.id '.
   'where rank=%d '.
   //'and start_date>"2018-08-25" '.
-  'and duration is not null '.
+  'and s.duration is not null '.
   'and s.name="%s"', $rank, $type);
 
 $db->execute($sql);

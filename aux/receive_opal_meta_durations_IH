@@ -181,7 +181,14 @@ while($offset < $max_limit)
       'INSERT IGNORE INTO interview '.
       '(site_id, start_date, uid, barcode, duration, rank) '.
       'VALUES '.
-      implode(',', $interview_values);
+      implode(',', $interview_values) .
+      ' ON DUPLICATE KEY UPDATE '.
+      'site_id = VALUES( site_id ), '.
+      'start_date = VALUES( start_date ), '.
+      'uid = VALUES( uid ), '.
+      'barcode = VALUES( barcode ), '.
+      'duration = VALUES( duration ), '.
+      'rank = VALUES( rank )';
 
     if(false === $db->execute( $sql ) )
     {
