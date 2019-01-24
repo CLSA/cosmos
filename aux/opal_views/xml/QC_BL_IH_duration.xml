@@ -342,7 +342,7 @@ res</attribute>
           <attribute name="script" valueType="text">$this(&apos;stage_technician_inhome_2&apos;)</attribute>
         </attributes>
       </variable>
-      <variable name="interview_duration" valueType="decimal" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+      <variable name="interview_duration" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">var res = null
 var stages = $(&apos;clsa-inhome.Participants:Admin.StageInstance.stage&apos;).asSequence()
@@ -367,21 +367,22 @@ for(var i=0;i&lt;unique.size();i++) {
   }
   if(v.isNull().value()) continue
   var s=v.sum()
-  var m=v.min()
+  var m=v.max()
   if(s.le(10800).value()) { // 3 hr time limit
     t=t.plus(s)
   } else if(m.le(10800).value()) {
     t=t.plus(m)
   }
 }
-if(t.gt(0).value()) {
-  res=newValue(t.div(3600),&apos;decimal&apos;)
-}
+var te=$(&apos;clsa-inhome.Participants:Admin.Participant.captureEndDate&apos;).time()
+var tb=$(&apos;clsa-inhome.Participants:Admin.Participant.captureStartDate&apos;).time()
+var iv=te.minus(tb).whenNull(0).div(3600000)
+res=newValue(&apos;{duration:&apos;+iv.value().toFixed(4)+&apos;,stage_sum:&apos;+t.whenNull(0).div(3600).value().toFixed(4)+&apos;}&apos;,&apos;text&apos;)
 res</attribute>
         </attributes>
       </variable>
     </variables>
   </variables>
   <created valueType="datetime">2018-08-13T14:00:37.361-04</created>
-  <updated valueType="datetime">2019-01-22T10:44:48.823-05</updated>
+  <updated valueType="datetime">2019-01-24T11:16:16.905-05</updated>
 </org.obiba.magma.views.View>

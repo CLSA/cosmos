@@ -1403,7 +1403,7 @@ res</attribute>
           <attribute name="script" valueType="text">$(&apos;Quality_Control.QC_F2:stage_technician_dexa&apos;)</attribute>
         </attributes>
       </variable>
-      <variable name="interview_duration" valueType="decimal" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+      <variable name="interview_duration" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">var res = null
 var stages = $(&apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;).asSequence()
@@ -1412,10 +1412,8 @@ var unique = stages.filter(function(v,i) {
   })
 var t=newValue(0,&apos;decimal&apos;)
 var group_stages=[&apos;ECG&apos;,&apos;ForearmBoneDensity&apos;,&apos;DualHipBoneDensity&apos;,&apos;WholeBodyBoneDensity&apos;,&apos;LateralBoneDensity&apos;]
-var skip_stages=[&apos;CarotidIntima&apos;,&apos;Plaque&apos;]
 for(var i=0;i&lt;unique.size();i++) {
   var stage=unique.valueAt(i).value()
-  if(-1!=skip_stages.indexOf(stage)) continue
   var v = null
   if(-1!=group_stages.indexOf(stage)) {
     if(&apos;ECG&apos;==stage) {
@@ -1431,21 +1429,20 @@ for(var i=0;i&lt;unique.size();i++) {
   }
   if(v.isNull().value()) continue
   var s=v.sum()
-  var m=v.min()
+  var m=v.max()
   if(s.le(10800).value()) { // 3 hr time limit
     t=t.plus(s)
   } else if(m.le(10800).value()) {
     t=t.plus(m)
   }
 }
-if(t.gt(0).value()) {
-  res=newValue(t.div(3600),&apos;decimal&apos;)
-}
+var iv=$(&apos;clsa-dcs.Participants:Admin.Interview.duration&apos;).whenNull(0).div(3600)
+res=newValue(&apos;{duration:&apos;+iv.value().toFixed(4)+&apos;,stage_sum:&apos;+t.whenNull(0).div(3600).value().toFixed(4)+&apos;}&apos;,&apos;text&apos;)
 res</attribute>
         </attributes>
       </variable>
     </variables>
   </variables>
   <created valueType="datetime">2018-06-18T09:52:50.447-04</created>
-  <updated valueType="datetime">2019-01-22T12:08:40.004-05</updated>
+  <updated valueType="datetime">2019-01-24T11:00:39.047-05</updated>
 </org.obiba.magma.views.View>
