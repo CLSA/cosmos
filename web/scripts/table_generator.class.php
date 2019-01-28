@@ -40,6 +40,18 @@ abstract class table_generator
 
     $this->statistic = null;
     $this->standard_deviation_scale = null;
+
+    $this->html_percentage = true;
+  }
+
+  public function html_percentage_on()
+  {
+    $this->html_percentage = true;
+  }
+
+  public function html_percentage_off()
+  {
+    $this->html_percentage = false;
   }
 
   public function set_statistic($_stat)
@@ -169,9 +181,13 @@ abstract class table_generator
             {
               $value = $this->site_data_list[$site]['totals'][$key] ;
               if( 0 < $value )
-                $this->site_data_list[$site]['totals'][$key] = sprintf( '%d</br>(%d)',
-                  //$value, round( 100.0 * $value / $site_total ) );
-                  $value, round( 100.0 * $value / $qc_total[$group] ) );
+              {
+                $this->site_data_list[$site]['totals'][$key] =
+                  $this->html_percentage ?
+                    sprintf( '%d</br>(%d)',
+                      $value, round( 100.0 * $value / $qc_total[$group] ) ) :
+                    $value;
+              }
             }
           }
         }
@@ -187,9 +203,12 @@ abstract class table_generator
           {
             $value = $this->site_data_list[$site]['totals'][$key] ;
             if( 0 < $value )
-              $this->site_data_list[$site]['totals'][$key] = sprintf( '%d</br>(%d)',
-                $value, round( 100.0 * $value / $site_total ) );
-                //$value, round( 100.0 * $value / $qc_total ) );
+            {
+              $this->site_data_list[$site]['totals'][$key] =
+                $this->html_percentage ?
+                  sprintf( '%d</br>(%d)',  $value, round( 100.0 * $value / $site_total ) ) :
+                  $value;
+            }
           }
         }
       }
@@ -199,14 +218,20 @@ abstract class table_generator
         {
           $value = $this->site_data_list[$site]['totals'][$key];
           if( 0 < $value )
-            $this->site_data_list[$site]['totals'][$key] = sprintf( '%d</br>(%d)',
-              $value, round( 100.0 * $value / $site_total ) );
+          {
+            $this->site_data_list[$site]['totals'][$key] =
+              $this->html_percentage ?
+                sprintf( '%d</br>(%d)', $value, round( 100.0 * $value / $site_total ) ) :
+                $value;
+          }
         }
       }
       if( 'ALL' != $site && 0 < $all_total && 0 < $site_total )
       {
-        $this->site_data_list[$site]['totals']['total_interview'] = sprintf( '%d</br>(%d)',
-          $site_total, round( 100.0 * $site_total / $all_total ) );
+        $this->site_data_list[$site]['totals']['total_interview'] =
+          $this->html_percentage ?
+            sprintf( '%d</br>(%d)', $site_total, round( 100.0 * $site_total / $all_total ) ) :
+            $site_total;
       }
       if( !array_key_exists( 'technicians', $site_data ) ) continue;
 
@@ -228,9 +253,12 @@ abstract class table_generator
               {
                 $value = $row[$key];
                 if( 0 < $value )
-                  $this->site_data_list[$site]['technicians'][$tech][$key] = sprintf( '%d</br>(%d)',
-                    $value, round( 100.0 * $value / $site_total ) );
-                    //$value, round( 100.0 * $value / $qc_total[$group] ) );
+                {
+                  $this->site_data_list[$site]['technicians'][$tech][$key] =
+                    $this->html_percentage ?
+                      sprintf( '%d</br>(%d)', $value, round( 100.0 * $value / $site_total ) ) :
+                      $value;
+                }
               }
             }
           }
@@ -246,9 +274,12 @@ abstract class table_generator
             {
               $value = $row[$key];
               if( 0 < $value )
-                $this->site_data_list[$site]['technicians'][$tech][$key] = sprintf( '%d</br>(%d)',
-                  $value, round( 100.0 * $value / $site_total ) );
-                  //$value, round( 100.0 * $value / $qc_total ) );
+              {
+                $this->site_data_list[$site]['technicians'][$tech][$key] =
+                  $this->html_percentage ?
+                    sprintf( '%d</br>(%d)', $value, round( 100.0 * $value / $site_total ) ) :
+                    $value;
+              }
             }
           }
         }
@@ -259,14 +290,20 @@ abstract class table_generator
           {
             $value = $row[$key];
             if( 0 < $value )
-              $this->site_data_list[$site]['technicians'][$tech][$key] = sprintf( '%d</br>(%d)',
-                $value, round( 100.0 * $value / $total ) );
+            {
+              $this->site_data_list[$site]['technicians'][$tech][$key] =
+                $this->html_percentage ?
+                  sprintf( '%d</br>(%d)', $value, round( 100.0 * $value / $total ) ) :
+                  $value;
+            }
           }
 
           if( 0 < $site_total )
           {
-            $this->site_data_list[$site]['technicians'][$tech]['total_interview'] = sprintf( '%d</br>(%d)',
-              $total, round( 100.0 * $total / $site_total ) );
+            $this->site_data_list[$site]['technicians'][$tech]['total_interview'] =
+              $this->html_percentage ?
+                sprintf( '%d</br>(%d)', $total, round( 100.0 * $total / $site_total ) ) :
+                $total;
           }
         }
       }
@@ -473,5 +510,7 @@ HTML;
   private $statistic;
 
   private $standard_deviation_scale;
+
+  private $html_percentage;
 }
 ?>
