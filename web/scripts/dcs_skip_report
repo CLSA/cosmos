@@ -11,18 +11,16 @@ $begin_date='2018-11-01';
 $end_date='2018-12-31';
 
 $default_stage_list=array(
-  'blood'=>array('data'=>null),
-  'blood_pressure'=>array('data'=>null),
-  //'body_composition_weight'=>array('data'=>null),
-  'cdtt'=>array('data'=>null),
-  'chair_rise'=>array('data'=>null),
-  'cognition_recording'=>array('data'=>null),
-  'cognitive_test'=>array('data'=>null),
-  'conclusion_questionnaire'=>array('data'=>null),
   'contraindications'=>array('data'=>null),
+  'hips_waist'=>array('data'=>null),
+  'weight'=>array('data'=>null),
+  'sitting_height'=>array('data'=>null),
+  'standing_height'=>array('data'=>null),
+  'blood_pressure'=>array('data'=>null),
   'carotid_intima'=>array('data'=>null),
-  'deviation_aecrf'=>array('data'=>null),
-  'disease_symptoms'=>array('data'=>null),
+  'ecg'=>array('data'=>null),
+  'spirometry'=>array('data'=>null),
+
   'bone_density_questionnaire'=>array('data'=>null),
   'dual_hip_bone_density'=>array('data'=>null),
   'forearm_bone_density'=>array('data'=>null),
@@ -30,34 +28,46 @@ $default_stage_list=array(
   'spine_bone_density'=>array('data'=>null),
   'whole_body_bone_density'=>array('data'=>null),
   'frax'=>array('data'=>null),
-  'ecg'=>array('data'=>null),
+
   'event_pmt'=>array('data'=>null),
-  'four_metre_walk'=>array('data'=>null),
-  'functional_status'=>array('data'=>null),
-  'general_health'=>array('data'=>null),
-  'grip_strength'=>array('data'=>null),
+  'hearing_questionnaire'=>array('data'=>null),
   'hearing'=>array('data'=>null),
-  'hips_waist'=>array('data'=>null),
-  'osea'=>array('data'=>null),
+  'cdtt'=>array('data'=>null),
+  'stroop_fas'=>array('data'=>null),
+  'cognitive_test'=>array('data'=>null),
+  'cognition_recording'=>array('data'=>null),
+  'social_network'=>array('data'=>null),
+
+  'four_metre_walk'=>array('data'=>null),
+  'tug'=>array('data'=>null),
+  'standing_balance'=>array('data'=>null),
+  'chair_rise'=>array('data'=>null),
+  'vision_acuity'=>array('data'=>null),
+  'retinal_scan'=>array('data'=>null),
+  'retinal_scan_right'=>array('data'=>null),
+  'general_health'=>array('data'=>null),
+  'retinal_scan_left'=>array('data'=>null),
+  'tonometer'=>array('data'=>null),
+  'grip_strength'=>array('data'=>null),
+
+  'time_based_pmt'=>array('data'=>null),
+  'disease_symptoms'=>array('data'=>null),
   'osipv'=>array('data'=>null),
+  'osea'=>array('data'=>null),
+  'functional_status'=>array('data'=>null),
   'osonly'=>array('data'=>null),
   'quality_assurance_inhome'=>array('data'=>null),
-  'retinal_scan_left'=>array('data'=>null),
-  'retinal_scan_right'=>array('data'=>null),
-  'retinal_scan'=>array('data'=>null),
-  'sitting_height'=>array('data'=>null),
-  'social_network'=>array('data'=>null),
-  'spirometry'=>array('data'=>null),
-  'standing_balance'=>array('data'=>null),
-  'standing_height'=>array('data'=>null),
-  'stroop_fas'=>array('data'=>null),
-  'time_based_pmt'=>array('data'=>null),
-  'tonometer'=>array('data'=>null),
-  'tug'=>array('data'=>null),
-  'urine'=>array('data'=>null),
-  'vision_acuity'=>array('data'=>null),
-  'weight'=>array('data'=>null));
 
+  'blood'=>array('data'=>null),
+  'urine'=>array('data'=>null),
+
+  'deviation_aecrf'=>array('data'=>null),
+  'conclusion_questionnaire'=>array('data'=>null));
+
+  //'body_composition_weight'=>array('data'=>null),
+
+
+/*
 $blood = null;
 $blood_pressure = null;
 //$body_composition_weight = null;
@@ -104,7 +114,7 @@ $tug = null;
 $urine = null;
 $vision_acuity = null;
 $weight = null;
-
+*/
 $discard_list = array(
  1=>array('cdtt','deviation_aecrf','frax','general_health',
   'osea','osipv','osonly','quality_assurance_inhome','retinal_scan_left',
@@ -127,6 +137,7 @@ foreach($default_stage_list as $key=>$value)
 {
   if(in_array($key,$discard_list[$rank])) continue;
   $$key = new simple_table_generator($key, $rank, $begin_date, $end_date);
+  $$key->html_percentage_off();
   $$key->build_table_data();
   $data = $$key->get_site_data_list();
   unset($data['ALL']);

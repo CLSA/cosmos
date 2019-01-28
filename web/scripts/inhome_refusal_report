@@ -29,7 +29,7 @@ $str = array();
 $site_keys = array();
 $site_key_counts = array();
 $all_site_total = array();
-$total_key_list = array();
+$total_refusal_key_list = array();
 $module_threshold = 90;
 foreach($stage_list as $key=>$value)
 {

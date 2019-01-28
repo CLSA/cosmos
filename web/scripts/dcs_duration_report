@@ -1,0 +1,502 @@
+#!/usr/bin/php
+<?php
+require_once 'simple_duration_generator.class.php';
+
+define( 'MIN_RANK', 1 );
+define( 'MAX_RANK', 3 );
+
+// require an input rank, begin date, end date, site
+$rank=3;
+$begin_date='2018-11-01';
+$end_date='2018-12-31';
+
+$room_list =array(
+ 'MEASUREMENT ROOM 1'=>
+ array(
+  'contraindications'=>array(
+    'ranges'=>array(
+       1*60+55,6*60+35,
+       1*60+55,6*60+35),
+    'data'=>null),
+  //'hips_waist'=>array('ranges'=>null,'data'=>null),
+  'weight'=>array(
+    'ranges'=>array(
+      23,1*60+20,
+      23,1*60+20),
+    'data'=>null),
+  //'sitting_height'=>array('ranges'=>null,'data'=>null),
+  //'standing_height'=>array('ranges'=>null,'data'=>null),
+  'blood_pressure'=>array(
+    'ranges'=>array(
+      6*60+25,9*60+20,
+      6*60+25,9*60+20),
+    'data'=>null),
+  'ecg'=>array(
+    'ranges'=>array(
+      4*60+20,20*60+55,
+      4*60+20*60+55),
+    'data'=>null),
+  /*
+  'carotid_intima'=>array('ranges'=>null,'data'=>null),
+  */
+  //'bone_density_questionnaire'=>array('ranges'=>null,'data'=>null),
+  'dexa'=>array(
+    'ranges'=>null,
+    'data'=>null)
+  ),
+  /*
+  'whole_body_bone_density'=>array('ranges'=>null,'data'=>null),
+  'forearm_bone_density'=>array('ranges'=>null,'data'=>null),
+  'spine_bone_density'=>array('ranges'=>null,'data'=>null),
+  'dual_hip_bone_density'=>array('ranges'=>null,'data'=>null),
+  'lateral_bone_density'=>array('ranges'=>null,'data'=>null)
+  */
+  'INTERVIEW ROOM 1'=>
+  array(
+  'event_pmt'=>array(
+    'ranges'=>array(
+       30*60,33*60+15,
+       30*60,33*60+15),
+    'data'=>null),
+  'hearing_questionnaire'=>array(
+    'ranges'=>null, 
+    'data'=>null),
+  'hearing'=>array(
+    'ranges'=>array(
+       5*60+35,10*60+20,
+       5*60+35,10*60+20),
+    'data'=>null),
+  'cdtt'=>array(
+    'ranges'=>array(
+       3*60+25,8*60+35,
+       3*60+25,8*60+35),
+    'data'=>null),
+  'fas'=>array(
+    'ranges'=>array(
+       3*60+25,4*60+50,
+       3*60+25,4*60+50),
+    'data'=>null),
+  'stroop'=>array(
+    'ranges'=>array(
+       1*60+20,3*60+20,
+       1*60+20,3*60+20),
+    'data'=>null),
+  'cognitive_test'=>array(
+    'ranges'=>array(
+       2*60,3*60+30,
+       2*60,3*60+30),
+    'data'=>null),
+  'social_network'=>array(
+    'ranges'=>array(
+       6*60+45,14*60+25,
+       6*60+45,14*60+25),
+    'data'=>null)
+  ),
+  'HALLWAY/MEASUREMENT ROOM 2'=>
+  array(
+  'vision_acuity'=>array(
+    'ranges'=>array(
+       3*60+50,8*60+10,
+       3*60+50,8*60+10),
+    'data'=>null),
+  'retinal_scan_left'=>array(
+    'ranges'=>array(
+       44,2*60+27,
+       44,2*60+27),
+    'data'=>null),
+  'general_health'=>array(
+    'ranges'=>array(
+       4*60+35,9*60+5,
+       4*60+35,9*60+5),
+    'data'=>null),
+  'retinal_scan_right'=>array(
+    'ranges'=>array(
+       44,2*60+27,
+       44,2*60+27),
+    'data'=>null),
+  'tonometer'=>array(
+    'ranges'=>array(
+       56,2*60+54,
+       56,2*60+54),
+    'data'=>null),
+  'grip_strength'=>array(
+    'ranges'=>array(
+       1*60+30,3*60+2,
+       1*60+30,3*60+2),
+    'data'=>null)
+  ),
+  'INTERVIEW ROOM 2/BLOOD'=>
+  array(
+  'time_based_pmt'=>array(
+    'ranges'=>array(
+       15*60,19*60,
+       15*60,19*60),
+    'data'=>null),
+  'disease_symptoms'=>array(
+    'ranges'=>array(
+       9*60+25,24*60,
+       9*60+25,24*60),
+    'data'=>null),
+  'osipv'=>array(
+    'ranges'=>array(
+       4*60+40,10*60+20,
+       4*60+40,10*60+20),
+    'data'=>null),
+  'blood'=>array(
+    'ranges'=>array(
+       3*60+35,11*60+25,
+       3*60+35,11*60+25),
+    'data'=>null)
+  )
+);
+
+
+//
+
+$common_header_str = array();
+$common_header_str[]=sprintf('"DATES","%s - %s"',$begin_date, $end_date);
+/*
+$common_header_str[]='"","Low","High","","Low","High","","Low","High","","Low","High","*"';
+*/
+
+$stage_list=array();
+$h1=array('');
+$h2=array('');
+$h3=array('');
+$h4=array('');
+foreach($room_list as $room_key=>$stage)
+{
+  $h1[]=$room_key;
+  $first = true;
+  foreach($stage as $stage_key=>$stage_data)
+  {
+    $h2[]=
+     str_replace('_', ' ',strtoupper($stage_key));
+    $has_ranges = $stage_data['ranges'] == null ? false : true;
+    $stage_list[$stage_key]=$stage_data;
+
+    if($has_ranges)
+    {
+      $h1=array_merge($h1,array_fill(0, $first ? 3 : 4,''));
+      $h2=array_merge($h2,array_fill(0,3,''));
+      $h3=array_merge($h3,array('Low','High','',''));
+      $h4=array_merge($h4,array(
+        util::time_to_label($stage_data['ranges'][0]/60),
+        util::time_to_label($stage_data['ranges'][1]/60),'',''));
+    }  
+    else
+    {
+      if(!$first) $h1[]='';
+      $h3[]='';
+      $h4[]='';
+    }
+    $first=false;
+  }  
+}
+
+$common_header_str[]='"'.implode('","',$h1).'"';
+$common_header_str[]='"'.implode('","',$h2).'"';
+$common_header_str[]='"'.implode('","',$h3).'"';
+$common_header_str[]='"'.implode('","',$h4).'"';
+
+$total_key_list = array('total_time_sub','total_time_par','total_time_sup','total_interview');
+$total_key_count = count($total_key_list);
+$range_keys = array('total_time_sub','total_time_par','total_time_sup');
+$file_str_sites = array();
+$overall_total = array();
+$site_keys = array();
+$site_key_counts = array();
+$site_tech_keys = array();
+foreach($stage_list as $key=>$value)
+{
+  $$key = new simple_duration_generator($key, $rank, $begin_date, $end_date);
+  $$key->html_percentage_off();
+  util::out('ok stage ' . $key);
+  $$key->set_par_time_range($value['ranges']);
+  $$key->build_table_data();
+  $data = $$key->get_site_data_list();
+  unset($data['ALL']);
+  $stage_list[$key]['data'] = $data;
+  $keys = array_keys($data);
+  $site_keys[] = $keys;
+  $site_key_counts[] = count($keys);
+  foreach($data as $site_key=>$value)
+  {
+    $tech_keys = array_keys($value['technicians']);
+    if(!array_key_exists($site_key,$site_tech_keys))
+      $site_tech_keys[$site_key] = $tech_keys;
+    else
+      $site_tech_keys[$site_key] = array_merge($tech_keys, $site_tech_keys[$site_key]);
+  }
+}
+
+$idx = array_search(min($site_key_counts),$site_key_counts);
+  $site_keys = $site_keys[$idx];
+foreach($site_keys as $key)
+  $site_tech_keys[$key] = array_unique($site_tech_keys[$key]);
+
+$compound_site_data_list = array();
+foreach($site_keys as $site)
+{
+  $tech_data = array();
+  $site_data = array();
+  $tech_list = $site_tech_keys[$site];
+  foreach($stage_list as $stage_key=>$value)
+  {
+    if(!array_key_exists($stage_key,$overall_total))
+      $overall_total[$stage_key] = array_combine($total_key_list,array_fill(0,$total_key_count,0));
+
+    // for the current stage, get the number of below, within, above for each tech
+    $has_ranges = $value['ranges'] == null ? false : true;
+
+    // do the technician data for the stage
+    $tdata = $value['data'][$site]['technicians'];
+    $sdata = $value['data'][$site]['totals'];
+    foreach($tech_list as $tech_key)
+    {
+      if(!array_key_exists($tech_key,$tdata))
+      {
+        $tdata[$tech_key]=array_combine($total_key_list,array_fill(0,$total_key_count,0));
+      }
+    }
+    foreach($tdata as $tech_key=>$tech_totals)
+    {
+      if('NA' == $tech_key) continue;
+      if(!array_key_exists($tech_key,$tech_data))
+      {
+        $tech_data[$tech_key] = array();
+      }
+      $total_list = array();
+      foreach($total_key_list as $total_key)
+      {
+        $total_val = intval($tech_totals[$total_key]);
+        if($has_ranges && in_array($total_key,$range_keys))
+          $total_list[] = $total_val;
+      }
+      if($has_ranges)
+      {
+        $total_sum = array_sum( $total_list );
+        // within tech and par percentages
+        if(3 != count($total_list))
+        {
+          util::out(sprintf('error on total list %s %s %s', $stage_key, $site, $tech_key));
+        }
+        foreach($total_list as $idx=>$total)
+        {
+          if(0==$total_sum)
+            $total_list[$idx] = 'NA';
+          else
+            $total_list[$idx] = sprintf('%d (%d)',$total, round(100.0*$total/$total_sum));
+        }
+      }
+      $total_list[] = intval($tech_totals['total_interview']);
+      $tech_data[$tech_key][$stage_key]['total_list'] = $total_list;
+    }
+
+    $total_list = array();
+    foreach($total_key_list as $total_key)
+    {
+      $total_val = intval($sdata[$total_key]);
+      $overall_total[$stage_key][$total_key] += $total_val;
+      if($has_ranges && in_array($total_key,$range_keys))
+        $total_list[] = $total_val;
+    }
+    $total_list[] = intval($sdata['total_interview']);
+    $site_data[$stage_key]['total_list'] = $total_list;
+  }
+  $compound_site_data_list[$site]['site_data'] = $site_data;
+  $compound_site_data_list[$site]['tech_data'] = $tech_data;
+}
+
+// strip off the array keys for the totals and prune off par counts where not required for reporting
+foreach($stage_list as $stage_key=>$value)
+{
+    // for the current stage, get the number of below, within, above for each tech
+  $has_ranges = $value['ranges'] == null ? false : true;
+  $total_list = array();
+  if($has_ranges)
+  {
+    foreach($range_keys as $key)
+      $total_list[] = $overall_total[$stage_key][$key];
+  }
+  $total_list[] = $overall_total[$stage_key]['total_interview'];
+  $overall_total[$stage_key] = $total_list;
+}
+
+$stage_key_list = array_keys($stage_list);
+foreach($compound_site_data_list as $site => $data)
+{
+  $tech_data = $data['tech_data'];
+  $site_data = $data['site_data'];
+  $file_str = array();
+  $file_str[] = sprintf('"SITE","%s"',$site);
+  $file_str = array_merge($file_str,$common_header_str);
+  $header_str = array();
+
+  $file_str[] = '""'; // row separator
+  $file_str[] = '"BELOW, WITHIN AND ABOVE DURATIONS AND NUMBER OF INTERVIEWS BY STAGE"';
+
+  $stage_heading_list = array();
+  $sub_heading_list = array('Tech');
+  foreach($stage_list as $stage_key=>$value)
+  {
+    $stage_heading_list[] = $stage_key;
+    $has_ranges = $value['ranges'] == null ? false : true;
+    if($has_ranges)
+    {
+      for($i=0;$i<3;$i++) $stage_heading_list[] = '';
+      $sub_heading_list[] = 'Total Below';
+      $sub_heading_list[] = 'Total Within';
+      $sub_heading_list[] = 'Total Above';
+    }
+    $sub_heading_list[] = 'Total Interviews';
+  }
+
+  $file_str[] =
+    str_replace('_', ' ',strtoupper(
+    '"","' .
+    implode('","',$stage_heading_list) .
+    '"'));
+  $file_str[] = '"' . implode('","', $sub_heading_list) . '"';
+
+  foreach($tech_data as $tech=>$values)
+  {
+    $str = array();
+    $str[] = $tech;
+    // append the stage category totals and percentage of interviews
+    foreach($stage_key_list as $stage)
+    {
+      $idx = count($site_data[$stage_key]['total_list']) - 1;
+      $total_site_interview = $site_data[$stage_key]['total_list'][$idx];
+      if(!array_key_exists($stage,$values) || !array_key_exists('total_list',$values[$stage]))
+      {
+        util::out(sprintf('WARNING: site %s tech %s has no data on %s',$site,$tech,$stage));
+        $str = array_merge($str,array_fill(0,  ($has_ranges ? 4 : 1), 'NA'));
+      }
+      else
+      {
+        $tech_total_list = $values[$stage]['total_list'];
+        $idx = count($tech_total_list)-1;
+        if(0<$total_site_interview)
+        {
+          $tech_total_list[$idx] = sprintf('%d (%d)',
+            $tech_total_list[$idx],
+            round(100.0*$tech_total_list[$idx]/$total_site_interview));
+        }
+        $str = array_merge($str,$values[$stage]['total_list']);
+      }
+    }
+    $file_str[] = '"'.implode('","',$str).'"';
+  }
+
+  $str = array('TOTAL');
+  foreach($stage_key_list as $stage)
+  {
+    $str = array_merge($str,$site_data[$stage]['total_list']);
+  }
+
+  $file_str[] = '"'.implode('","', $str).'"';
+
+  $file_str_sites[$site] = $file_str;
+  util::out($site);
+}
+
+$summary_str = array('OVERALL BY STAGE');
+$summary_str[] =  '"'. implode('","',array('Stage','Total Below','Total Within','Total Above', 'Total Interview')) . '"';
+foreach($stage_list as $stage=>$value)
+{
+  $has_ranges = $value['ranges'] == null ? false : true;
+  $stage_totals = $overall_total[$stage];
+  if(!$has_ranges) $stage_totals = array_merge(array('NA','NA','NA'),$stage_totals);
+  $summary_str[] = '"' . implode('","',array_merge(array(
+  str_replace('_', ' ',strtoupper($stage))),$stage_totals)) . '"';
+
+  foreach($overall_total[$stage] as $value)
+  {
+    $overall_str[] = $value;
+  }
+}
+$overall_str = '"OVERALL","'.implode('","', $overall_str).'"';
+
+$filename = sprintf('/home/dean/files/webapps/qac/aux/dcs_duration_report_wave_%d_%s_%s.csv',
+ $rank,
+ str_replace('-','',$begin_date),
+ str_replace('-','',$end_date));
+
+$file = fopen($filename,'w');
+foreach($file_str_sites as $site=>$file_str)
+{
+  foreach($file_str as $item_str)
+    fwrite($file, $item_str . PHP_EOL );
+  fwrite($file, $overall_str . PHP_EOL );
+  fwrite($file, '""' . PHP_EOL );
+}
+
+$sql = sprintf(
+  'select site_name, '.
+  'avg(time) as avg_time, min(time) as min_time, max(time) as max_time, '.
+  'avg(sum_time) as avg_sum_time, min(sum_time) as min_sum_time, max(sum_time) as max_sum_time, '.
+  'sum(1) as total_interview '.
+  'from ( '.
+    'select s.name as site_name, '.
+    'cast(substring_index(substring_index(duration,",",1),":",-1) as decimal(10,3)) as time, '.
+    'cast(substring_index(substring_index(duration,",",2),":",-1) as decimal(10,3)) as sum_time, '.
+    'i.id as interview_id '.
+    'from interview i '.
+    'join site s on s.id=i.site_id '.
+    'where start_date between "%s" and "%s" '.
+    'and rank=%d '.
+    'and barcode regexp "^[[:digit:]]{8}$" '.
+    'and duration is not null '.
+  ') as t '.
+  'group by t.site_name '.
+  'order by t.site_name asc',$begin_date, $end_date, $rank);
+
+  util::out($sql);
+$site_duration_data = $db->get_all($sql);
+
+$summary_str[] = '""';
+$summary_str[] = '"TOTAL INTERVIEWS AND INTERVIEW DURATIONS"';
+$summary_str[] = '"' . implode('","',array(
+  'Site',
+  'Total Interviews',
+  'Min Duration','Max Duration','Average Duration',
+  'Min Duration (Summed)','Max Duration (Summed)','Average Duration (Summed)')) . '"';
+foreach($site_duration_data as $data)
+{
+  $summary_str[] = '"' . implode('","', array(
+    $data['site_name'],$data['total_interview'],
+    util::time_to_label($data['min_time'],'hr'),
+    util::time_to_label($data['max_time'],'hr'),
+    util::time_to_label($data['avg_time'],'hr'),
+    util::time_to_label($data['min_sum_time'],'hr'),
+    util::time_to_label($data['max_sum_time'],'hr'),
+    util::time_to_label($data['avg_sum_time'],'hr')
+    )) . '"';
+}
+foreach($summary_str as $str)
+{
+  fwrite($file, $str . PHP_EOL );
+}
+
+fclose($file);
+
+
+/*
+$str = '"'.implode('","', $str).'"';
+
+$filename = sprintf('/home/dean/files/webapps/qac/aux/test_dcs_duration_report_wave_%d_%s_%s.csv',
+  $rank,
+  str_replace('-','',$begin_date),
+  str_replace('-','',$end_date));
+
+$file = fopen($filename,'w');
+foreach($file_str_sites as $site=>$file_str)
+{
+  foreach($file_str as $item_str)
+    fwrite($file, $item_str . PHP_EOL );
+  fwrite($file, $str . PHP_EOL );
+  fwrite($file, '""' . PHP_EOL );
+}
+fclose($file);
+*/
