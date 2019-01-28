@@ -17,11 +17,11 @@ class duration_generator extends table_generator
 
     // what type of duration data is here?
     $sql = sprintf(
-      'select duration from stage s '.
+      'select s.duration from stage s '.
       'join interview i on i.id=s.interview_id '.
       'where rank=%d '.
       'and s.name="%s" '.
-      'and duration is not null '.
+      'and s.duration is not null '.
       'limit 1',$this->rank,$this->name);
     $res = $db->get_one($sql);
     if(false===$res)
@@ -69,11 +69,11 @@ class duration_generator extends table_generator
     $sql = sprintf(
         'select avg(d_time) as d_avg, stddev(d_time) as d_std, min(d_time) as d_min, max(d_time) as d_max '.
         'from ( '.
-        '  select cast(substring_index(substring_index(duration,",",1),":",-1) as decimal(10,3)) as d_time '.
+        '  select cast(substring_index(substring_index(s.duration,",",1),":",-1) as decimal(10,3)) as d_time '.
         '  from interview i '.
         '  join stage s on i.id=s.interview_id '.
         '  where rank=%d '.
-        '  and duration is not null '.
+        '  and s.duration is not null '.
         '  and s.name="%s" '.
         ') as t '.
         'where d_time>0.0 and d_time<=%s ', $this->rank, $this->name, $this->threshold);
@@ -106,16 +106,16 @@ class duration_generator extends table_generator
       'site.name as site, ';
 
     $sql .= sprintf(
-      'sum(if(duration is null, 0, '.
+      'sum(if(s.duration is null, 0, '.
       'if(cast(substring_index(substring_index(duration,",",1),":",-1) as decimal(10,3))<%s,1,0))) as total_time_sub, ',$stage_time_min);
 
     $sql .= sprintf(
-      'sum(if(duration is null, 0, '.
-      'if(cast(substring_index(substring_index(duration,",",1),":",-1) as decimal(10,3)) between %s and %s,1,0))) as total_time_par, ',$stage_time_min,$stage_time_max);
+      'sum(if(s.duration is null, 0, '.
+      'if(cast(substring_index(substring_index(s.duration,",",1),":",-1) as decimal(10,3)) between %s and %s,1,0))) as total_time_par, ',$stage_time_min,$stage_time_max);
 
     $sql .= sprintf(
-      'sum(if(duration is null, 0, '.
-      'if(cast(substring_index(substring_index(duration,",",1),":",-1) as decimal(10,3))>%s,1,0))) as total_time_sup, ',$stage_time_max);
+      'sum(if(s.duration is null, 0, '.
+      'if(cast(substring_index(substring_index(s.duration,",",1),":",-1) as decimal(10,3))>%s,1,0))) as total_time_sup, ',$stage_time_max);
 
     $this->page_explanation = array();
 
@@ -145,11 +145,11 @@ class duration_generator extends table_generator
       $module_sql = sprintf(
         'select avg(d_time) as d_avg, stddev(d_time) as d_std, min(d_time) as d_min, max(d_time) as d_max '.
         'from ( '.
-        '  select cast(trim("}" from substring_index(duration,":",-1)) as decimal(10,3)) as d_time '.
+        '  select cast(trim("}" from substring_index(s.duration,":",-1)) as decimal(10,3)) as d_time '.
         '  from interview i '.
         '  join stage s on i.id=s.interview_id '.
         '  where rank=%d '.
-        '  and duration is not null '.
+        '  and s.duration is not null '.
         '  and s.name="%s" '.
         ') as t '.
         'where d_time>0.0 and d_time<=%s ', $this->rank, $this->name, $this->threshold);
@@ -173,16 +173,16 @@ class duration_generator extends table_generator
       }
 
       $sql .= sprintf(
-        'sum(if(duration is null, 0, '.
-        'if(cast(trim("}" from substring_index(duration,":",-1)) as decimal(10,3))<%s,1,0))) as total_module_sub, ',$module_time_min);
+        'sum(if(s.duration is null, 0, '.
+        'if(cast(trim("}" from substring_index(s.duration,":",-1)) as decimal(10,3))<%s,1,0))) as total_module_sub, ',$module_time_min);
 
       $sql .= sprintf(
-        'sum(if(duration is null, 0, '.
-        'if(cast(trim("}" from substring_index(duration,":",-1)) as decimal(10,3)) between %s and %s,1,0))) as total_module_par, ',$module_time_min,$module_time_max);
+        'sum(if(s.duration is null, 0, '.
+        'if(cast(trim("}" from substring_index(s.duration,":",-1)) as decimal(10,3)) between %s and %s,1,0))) as total_module_par, ',$module_time_min,$module_time_max);
 
       $sql .= sprintf(
-        'sum(if(duration is null, 0, '.
-        'if(cast(trim("}" from substring_index(duration,":",-1)) as decimal(10,3))>%s,1,0))) as total_module_sup, ',$module_time_max);
+        'sum(if(s.duration is null, 0, '.
+        'if(cast(trim("}" from substring_index(s.duration,":",-1)) as decimal(10,3))>%s,1,0))) as total_module_sup, ',$module_time_max);
 
       $this->page_explanation[] = '';
 
