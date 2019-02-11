@@ -1808,7 +1808,7 @@
         "attributes": [
           {
             "name": "script",
-            "value": "// if a dcs by phone visit, then the skip will be \"ModifiedVisit\"\nvar res=null\nif($('clsa-dcs-f1.Participants:DCS_PHONE').isNull().not().value()){\n  res=newValue('ModifiedVisit','text')\n} else {\n  var action=$group('Admin.Action.stage','NeuropsychologicalBattery','Admin.Action.actionType').asSequence()\n  var res=$group('Admin.Action.stage','NeuropsychologicalBattery','Admin.Action.eventReason').asSequence().filter(function(v,i){\n      return action.indexOf('SKIP')==i\n    }).last()\n  if(res.isNull().not().value()) {\n    res=newValue(res.value().slice(14),'text')\n  }  \n}\nres"
+            "value": "var res=null\nvar action=$group('Admin.Action.stage','NeuropsychologicalBattery','Admin.Action.actionType').asSequence()\nvar res=$group('Admin.Action.stage','NeuropsychologicalBattery','Admin.Action.eventReason').asSequence().filter(function(v,i){\n    return action.indexOf('SKIP')==i\n  }).last()\nif(res.isNull().not().value()) {\n  res=newValue(res.value().slice(14),'text')\n}  \nres"
           }
         ],
         "entityType": "Participant",

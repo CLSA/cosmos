@@ -1209,18 +1209,13 @@ res</attribute>
       </variable>
       <variable name="stage_skip_neuropsychological_battery" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">// if a dcs by phone visit, then the skip will be &quot;ModifiedVisit&quot;
-var res=null
-if($(&apos;clsa-dcs-f1.Participants:DCS_PHONE&apos;).isNull().not().value()){
-  res=newValue(&apos;ModifiedVisit&apos;,&apos;text&apos;)
-} else {
-  var action=$group(&apos;Admin.Action.stage&apos;,&apos;NeuropsychologicalBattery&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
-  var res=$group(&apos;Admin.Action.stage&apos;,&apos;NeuropsychologicalBattery&apos;,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
-      return action.indexOf(&apos;SKIP&apos;)==i
-    }).last()
-  if(res.isNull().not().value()) {
-    res=newValue(res.value().slice(14),&apos;text&apos;)
-  }
+          <attribute name="script" valueType="text">var res=null
+var action=$group(&apos;Admin.Action.stage&apos;,&apos;NeuropsychologicalBattery&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
+var res=$group(&apos;Admin.Action.stage&apos;,&apos;NeuropsychologicalBattery&apos;,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
+    return action.indexOf(&apos;SKIP&apos;)==i
+  }).last()
+if(res.isNull().not().value()) {
+  res=newValue(res.value().slice(14),&apos;text&apos;)
 }
 res</attribute>
         </attributes>
@@ -4428,5 +4423,5 @@ res</attribute>
     </variables>
   </variables>
   <created valueType="datetime">2018-05-03T13:40:11.946-04</created>
-  <updated valueType="datetime">2019-02-11T12:56:15.840-05</updated>
+  <updated valueType="datetime">2019-02-11T14:23:48.339-05</updated>
 </org.obiba.magma.views.View>
