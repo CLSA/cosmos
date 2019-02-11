@@ -107,7 +107,7 @@ class duration_generator extends table_generator
 
     $sql .= sprintf(
       'sum(if(s.duration is null, 0, '.
-      'if(cast(substring_index(substring_index(duration,",",1),":",-1) as decimal(10,3))<%s,1,0))) as total_time_sub, ',$stage_time_min);
+      'if(cast(substring_index(substring_index(s.duration,",",1),":",-1) as decimal(10,3))<%s,1,0))) as total_time_sub, ',$stage_time_min);
 
     $sql .= sprintf(
       'sum(if(s.duration is null, 0, '.
