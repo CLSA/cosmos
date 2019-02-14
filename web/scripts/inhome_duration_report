@@ -7,8 +7,8 @@ define( 'MAX_RANK', 3 );
 
 // require an input rank, begin date, end date, site
 $rank=3;
-$begin_date='2018-11-01';
-$end_date='2018-11-30';
+$begin_date='2018-12-01';
+$end_date='2019-01-15';
 
 $durations=array(
   'inhome_1'=>array(
@@ -273,7 +273,7 @@ $str[] = 0 < $all_site_total['total_time_count'] ?
 
 $str = '"'.implode('","', $str).'"';
 
-$filename = sprintf('/home/dean/files/webapps/qac/aux/test_inhome_duration_report_wave_%d_%s_%s.csv',
+$filename = sprintf('/home/dean/files/webapps/qac/aux/inhome_duration_report_wave_%d_%s_%s.csv',
   $rank,
   str_replace('-','',$begin_date),
   str_replace('-','',$end_date));

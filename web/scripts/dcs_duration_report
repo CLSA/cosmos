@@ -7,8 +7,8 @@ define( 'MAX_RANK', 3 );
 
 // require an input rank, begin date, end date, site
 $rank=3;
-$begin_date='2018-11-01';
-$end_date='2018-12-31';
+$begin_date='2018-12-01';
+$end_date='2019-01-15';
 
 $room_list =array(
  'MEASUREMENT ROOM 1'=>
@@ -30,6 +30,11 @@ $room_list =array(
     'ranges'=>array(
       6*60+25,9*60+20,
       6*60+25,9*60+20),
+    'data'=>null),
+  'spirometry'=>array(
+    'ranges'=>array(
+      3*60+10,11*60+30,
+      3*60+10,11*60+30),
     'data'=>null),
   'ecg'=>array(
     'ranges'=>array(
@@ -58,9 +63,9 @@ $room_list =array(
        30*60,33*60+15,
        30*60,33*60+15),
     'data'=>null),
-  'hearing_questionnaire'=>array(
-    'ranges'=>null, 
-    'data'=>null),
+//  'hearing_questionnaire'=>array(
+//    'ranges'=>null,
+//    'data'=>null),
   'hearing'=>array(
     'ranges'=>array(
        5*60+35,10*60+20,
@@ -183,7 +188,7 @@ foreach($room_list as $room_key=>$stage)
       $h4=array_merge($h4,array(
         util::time_to_label($stage_data['ranges'][0]/60),
         util::time_to_label($stage_data['ranges'][1]/60),'',''));
-    }  
+    }
     else
     {
       if(!$first) $h1[]='';
@@ -191,7 +196,7 @@ foreach($room_list as $room_key=>$stage)
       $h4[]='';
     }
     $first=false;
-  }  
+  }
 }
 
 $common_header_str[]='"'.implode('","',$h1).'"';
@@ -434,9 +439,9 @@ foreach($file_str_sites as $site=>$file_str)
 
 $sql = sprintf(
   'select site_name, '.
-  'avg(time) as avg_time, min(time) as min_time, max(time) as max_time, '.
-  'avg(sum_time) as avg_sum_time, min(sum_time) as min_sum_time, max(sum_time) as max_sum_time, '.
-  'sum(1) as total_interview '.
+  'avg(nullif(time,0.0)) as avg_time, min(nullif(time,0.0)) as min_time, max(time) as max_time, '.
+  'avg(nullif(sum_time,0.0)) as avg_sum_time, min(nullif(sum_time,0.0)) as min_sum_time, max(sum_time) as max_sum_time, '.
+  'sum(if(time>0.0,1,0)) as total_interview '.
   'from ( '.
     'select s.name as site_name, '.
     'cast(substring_index(substring_index(duration,",",1),":",-1) as decimal(10,3)) as time, '.
@@ -452,7 +457,7 @@ $sql = sprintf(
   'group by t.site_name '.
   'order by t.site_name asc',$begin_date, $end_date, $rank);
 
-  util::out($sql);
+util::out($sql);
 $site_duration_data = $db->get_all($sql);
 
 $summary_str[] = '""';
@@ -474,6 +479,36 @@ foreach($site_duration_data as $data)
     util::time_to_label($data['avg_sum_time'],'hr')
     )) . '"';
 }
+
+$sql = sprintf(
+  'select '.
+  'avg(nullif(time,0.0)) as avg_time, min(nullif(time,0.0)) as min_time, max(time) as max_time, '.
+  'avg(nullif(sum_time,0.0)) as avg_sum_time, min(nullif(sum_time,0.0)) as min_sum_time, max(sum_time) as max_sum_time, '.
+  'sum(if(time>0.0,1,0)) as total_interview '.
+  'from ( '.
+    'select '.
+    'cast(substring_index(substring_index(duration,",",1),":",-1) as decimal(10,3)) as time, '.
+    'cast(substring_index(substring_index(duration,",",2),":",-1) as decimal(10,3)) as sum_time, '.
+    'i.id as interview_id '.
+    'from interview i '.
+    'where start_date between "%s" and "%s" '.
+    'and rank=%d '.
+    'and barcode regexp "^[[:digit:]]{8}$" '.
+    'and duration is not null '.
+  ') as t',$begin_date, $end_date, $rank);
+util::out($sql);
+
+$data = $db->get_row($sql);
+$summary_str[] = '"' . implode('","', array(
+    'OVERALL',$data['total_interview'],
+    util::time_to_label($data['min_time'],'hr'),
+    util::time_to_label($data['max_time'],'hr'),
+    util::time_to_label($data['avg_time'],'hr'),
+    util::time_to_label($data['min_sum_time'],'hr'),
+    util::time_to_label($data['max_sum_time'],'hr'),
+    util::time_to_label($data['avg_sum_time'],'hr')
+  )) . '"';
+
 foreach($summary_str as $str)
 {
   fwrite($file, $str . PHP_EOL );
