@@ -177,6 +177,12 @@ class dual_file_generator extends table_generator
       $filesize_max_all = intval($res['maxsz']*$this->file_scale);
     }
 
+    if(null !== $this->par_range)
+    {
+      $filesize_min = $this->par_range['min'];//*$this->file_scale;
+      $filesize_max = $this->par_range['max'];//*$this->file_scale;
+    }
+
     // build the main query
     $sql =
       'select '.

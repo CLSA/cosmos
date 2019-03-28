@@ -42,6 +42,15 @@ abstract class table_generator
     $this->standard_deviation_scale = null;
 
     $this->html_percentage = true;
+    $this->par_range = null;
+  }
+
+  public function set_par_range($_range)
+  {
+    if(null==$_range || !is_array($_range))
+      $this->par_range = null;
+    else
+      $this->par_range = array('min'=>$_range[0],'max'=>$_range[1]);
   }
 
   public function html_percentage_on()
@@ -512,5 +521,7 @@ HTML;
   private $standard_deviation_scale;
 
   private $html_percentage;
+
+  public $par_range;
 }
 ?>

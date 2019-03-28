@@ -1,0 +1,328 @@
+#!/usr/bin/php
+<?php
+require_once '../settings.ini.php';
+require_once $SETTINGS['path']['PHP_UTIL'].'/database.class.php';
+require_once $SETTINGS['path']['PHP_UTIL'].'/util.class.php';
+
+define( 'MIN_RANK', 1 );
+define( 'MAX_RANK', 3 );
+
+$stage = 'tug';
+if( 2 == $argc )
+{
+  $stage = $argv[1];
+}
+
+$db = new database(
+  $SETTINGS['db']['DB_SERV'],
+  $SETTINGS['db']['DB_USER'],
+  $SETTINGS['db']['DB_PASS'],
+  $SETTINGS['db']['DB_NAME'] );
+
+
+$sql = sprintf(
+  'select comment, skip '.
+  'from stage '.
+  'where name="%s" '.
+  'and comment is not null '.
+  'and qcdata is null '.
+  'and skip is not null', $stage);
+
+$res = $db->get_all($sql);
+
+util::out(sprintf('number of missing data skip comments %d',count($res)));
+
+$data = array(
+'SeeComment'=>array(),
+'InterviewerDecision'=>array(),
+'ParticipantDecision'=>array(),
+'TechnicalProblem'=>array()
+);
+
+$data_reductions = array_combine(array_keys($data),array_fill(0,count(array_keys($data)),0));
+
+$data_no_filter = $data;
+
+$participant_synonym=array(
+  'p',
+  'ppt',
+  'participant',
+  'patient',
+  'pt');
+
+$staff_synonym=array(
+  'xray technician',
+  'xray tech',
+  'xray staff',
+  'lab technician',
+  'lab tech',
+  'mla',
+  'phlebotomist',
+  'technologist',
+  'lab staff',
+  'lab personnel',
+  'lab person',
+  'technician',
+  'interviewer',
+  'lab girl',
+  'nurse');
+
+$no_staff_synonym=array(
+  'no tech',
+  'no staff',
+  'no rt',
+  'tech not available',
+  'short staff',
+  'no available staff',
+  'staff was unavailable',
+  'staff unavailable',
+  'staff was not available',
+  'staff not available',
+  'staff absence',
+  'staff out sick',
+  'staff off',
+  'off sick',
+  'staff was ill',
+  'staff did not come in',
+  'staff not in',
+  'staff sick',
+  'staff ill',
+  'staff absent',
+  'no xray tech',
+  'staff not here');
+
+$reduced_synonym=array(
+  'reduced dcs',
+  'reduced visit',
+  'dcs by phone',
+  'dbp',
+  'phone interview',
+  'shortened dcs visit',
+  'reduced visitt',
+  'dcs over the phone',
+  'shortend dcs',
+  'reduced',
+  'shortened dcs',
+  'short dcs',
+  'reduce dcs',
+  'interview conducted by phone',
+  'dcs over he phone',
+  'interview done over the phone'
+);
+
+$nonspecific_synonym=array(
+'error message',
+'technical problem',
+'technical error',
+'technical issue',
+'machine down',
+'machine error',
+'not working',
+'system failed',
+'equipment error',
+'system error',
+'software error',
+'software issue',
+'instrument error',
+'error in the system',
+'instrument not responding',
+'machine is not responding',
+'bug',
+'problem with the equipment',
+'not functioning',
+);
+
+$discard = array(
+  'false start',
+  'test skip',
+  'skip',
+  'skipping',
+  'restart',
+  'na',
+  'pause',
+  'paused',
+  'test',
+  'testing',
+  'test run',
+  'trial',
+  'cancel',
+  'error',
+  'erreur',
+  'error in note',
+  'see conclusion comments',
+  'mistake',
+  'see comment',
+  'see notes',
+  'see note',
+  'see note above',
+  'see above',
+  'see above comment',
+  'see comment above',
+  'see previous',
+  'read notes',
+  'see prev',
+  'see next',
+  'see next comment',
+  'please see note',
+  'same',
+  'oops',
+  'try again',
+  'try',
+  'retry',
+  'see previous commemt',
+  'see previous comment',
+  'see previous comments',
+  'see earlier comment');
+
+$connection_synonym=array(
+'measurement not available',
+'not connect',
+'unable to connect',
+'doesnt connect',
+'failed to connect',
+'lost connect',
+'probleme de connexion',
+'issues with connectivity'
+);
+
+$transfer_synonym=array(
+'issue at transfer',
+'unable to export',
+'not export',
+'unable to transfer data',
+'failed to transfer',
+'problem with data transfer',
+'error in transfer',
+'info not transfer',
+'results did not transfer',
+'transfer failed',
+'problem when transfering data',
+'not able to transfer',
+'would not transfer',
+'cannot transmit',
+'could not transmit',
+'unable to transmit',
+'failed to transmit',
+'not being uploaded',
+'data was not uploaded',
+'data would not transfer',
+'data not properly transfer',
+'data not transfer',
+'data wont transfer',
+'data cannot be transfer',
+'data did not transfer',
+'data did not save',
+'data did not upload',
+'didnt transfer the data',
+'not save and transfer',
+'wont transfer',
+'no transfer',
+'canceled transfer',
+'images unable to transfer',
+'unable to transfer',
+'could not upload',
+'would not upload',
+'measurements did not transfer',
+'measurement did not transfer',
+'not transfered properly',
+'issues downloading',
+'not transferring',
+'not transfering',
+'not tranfering',
+'wont receive'
+);
+
+foreach($res as $item)
+{
+  $comment = $item['comment'];
+  if(false!==strpos($comment,','))
+    $comment = explode(',',$comment);
+  else
+    $comment = array($comment);
+
+  $skip = $item['skip'];
+  foreach($comment as $str)
+  {
+    // prune prefix categorization and remove repeat spaces
+    $str =preg_replace('/\s+/',' ',strtolower(substr($str, strpos($str,':')+1)));
+
+    $data_no_filter[$skip][]=$str;
+
+    if(2>strlen($str)) continue;
+
+    // discard non-informative comments
+    if(in_array($str,$discard)) continue;
+
+    // participant synonyms
+    $list = explode(' ',$str);
+    foreach($list as $id=>$word)
+    {
+      if(in_array($word,$participant_synonym))
+      {
+        $list[$id]='participant';
+      }
+    }
+    $str = implode(' ', $list);
+
+    // staff synonyms
+    $str = str_replace($staff_synonym, 'staff', $str);
+
+    // no staff synonyms
+    $str = str_replace($no_staff_synonym,'no staff',$str);
+    if(false!==strpos($str,'no staff'))
+      $str = 'no staff';
+
+    // reduced interview synonyms
+    $str = str_replace($reduced_synonym,'reduced interview',$str);
+    if(false!==strpos($str,'reduced interview'))
+      $str = 'reduced interview';
+
+    // data transfer issues
+    $str = str_replace($transfer_synonym,'data transfer issue',$str);
+    if(false!==strpos($str,'data transfer issue') || 'transfer'==$str)
+      $str = 'data transfer issue';
+
+    // connection issues
+    $str = str_replace($connection_synonym,'connection issue',$str);
+    if(false!==strpos($str,'connection issue'))
+      $str = 'connection issue';
+
+    // non-specific technical issues
+    $str = str_replace($nonspecific_synonym,'nonspecific technical issue',$str);
+    if(false!==strpos($str,'nonspecific technical issue'))
+      $str = 'connection issue';
+
+    $data[$skip][]=$str;
+  }
+}
+
+foreach($data_no_filter as $skip=>$items)
+{
+  $c1 = count($items);
+  $keys = array_unique($items);
+  $c2 = count($keys);
+  util::out(sprintf('Unfiltered skip type: %s, items: %d, keys: %d',$skip,$c1,$c2));
+  $data_reductions[$skip]=$c1;
+}
+
+$filename=sprintf('test_skip_comment_%s.csv',$stage);
+$file=fopen($filename,'w');
+fwrite($file,'"skip","key","count"' . PHP_EOL);
+foreach($data as $skip=>$items)
+{
+  $c1 = count($items);
+  $keys = array_unique($items);
+  $c2 = count($keys);
+  util::out(sprintf('Filtered skip type: %s, items: %d, keys: %d, %% reduction: %d',$skip,$c1,$c2,
+  100-round(100*$c2/$data_reductions[$skip])));
+
+  foreach($keys as $key)
+  {
+    $c3 = 0;
+    foreach($items as $item)
+      if($item==$key) $c3++;
+    fwrite($file,sprintf('"%s","%s","%d"',$skip,$key,$c3) . PHP_EOL);
+  }
+}
+fclose($file);
+

@@ -7,8 +7,8 @@ define( 'MAX_RANK', 3 );
 
 // require an input rank, begin date, end date, site
 $rank=3;
-$begin_date='2018-12-01';
-$end_date='2019-01-15';
+$begin_date='2019-01-16';
+$end_date='2019-02-15';
 
 $stage_list=array(
   'inhome_1'=>array(
@@ -66,7 +66,7 @@ foreach($site_keys as $site)
     $site_stage_total = array_combine($total_key_list,array_fill(0,$total_key_count,0));
     foreach($data as $tech_key=>$tech_totals)
     {
-      if('NA' == $tech_key) continue;
+      //if('NA' == $tech_key) continue;
       if(!array_key_exists($tech_key,$tech_data))
       {
         $tech_data[$tech_key] = array();

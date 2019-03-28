@@ -493,8 +493,10 @@ foreach($percentile_list as $percentile=>$data)
   util::out(sprintf('percentile: %s -> %s [%s -> %s] n: %d  perc range: [%7.3lf => %7.3lf]',
     $percentile,
     $data['endpercentile'],
-    util::time_to_label($data['ord']/60.0),
-    util::time_to_label($data['endord']/60.0),
+    $data['ord'],
+    $data['endord'],
+    //util::time_to_label($data['ord']/60.0),
+    //util::time_to_label($data['endord']/60.0),
     count($data['freq']),
     min($data['perc']),
     max($data['perc'])));
