@@ -15,7 +15,6 @@ CREATE PROCEDURE patch_interview()
         "create_timestamp TIMESTAMP NOT NULL, ",
         "site_id INT UNSIGNED NOT NULL, ",
         "start_date DATE NOT NULL, ",
-        "uid VARCHAR(10) NOT NULL, ",
         "participant_id INT UNSIGNED NOT NULL, ",
         "barcode VARCHAR(20) NOT NULL, ",
         "rank TINYINT UNSIGNED NOT NULL, ",
