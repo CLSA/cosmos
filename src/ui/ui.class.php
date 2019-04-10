@@ -21,13 +21,6 @@ class ui extends \cenozo\ui\ui
   {
     parent::build_module_list();
 
-    $module = $this->get_module( 'indicator' );
-    if( !is_null( $module ) )
-    {
-      $module->add_choose( 'stage' );
-      $module->add_choose( 'interview' );
-    }
-
     $module = $this->get_module( 'participant' );
     if( !is_null( $module ) ) $module->add_child( 'interview' );
 
@@ -38,18 +31,11 @@ class ui extends \cenozo\ui\ui
       $module->add_child( 'interview' );
     }
 
-    $module = $this->get_module( 'stage' );
-    if( !is_null( $module ) ) $module->add_choose( 'indicator' );
-
     $module = $this->get_module( 'technician' );
     if( !is_null( $module ) ) $module->add_child( 'stage' );
 
     $module = $this->get_module( 'interview' );
-    if( !is_null( $module ) )
-    {
-      $module->add_child( 'stage' );
-      $module->add_choose( 'indicator' );
-    }
+    if( !is_null( $module ) ) $module->add_child( 'stage' );
   }
 
   /**
@@ -59,7 +45,6 @@ class ui extends \cenozo\ui\ui
   {
     parent::build_listitem_list();
 
-    $this->add_listitem( 'Indicators', 'indicator' );
     $this->add_listitem( 'Stages', 'stage' );
     $this->add_listitem( 'Technicians', 'technician' );
     $this->add_listitem( 'Interviews', 'interview' );

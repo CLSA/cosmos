@@ -17,3 +17,6 @@ $SETTINGS['general']['build'] = 'eaf5da9';
 
 // the location of the application's internal path
 $SETTINGS['path']['APPLICATION'] = str_replace( '/settings.ini.php', '', __FILE__ );
+
+// the location of the php_util repository
+$SETTINGS['path']['PHP_UTIL'] = $SETTINGS['path']['APPLICATION'].'/../php_util';

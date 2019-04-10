@@ -76,9 +76,6 @@ INSERT INTO service ( subject, method, resource, restricted ) VALUES
 ( 'user', 'POST', 0, 1 ),
 
 -- application services
-( 'indicator', 'GET', 0, 1 ),
-( 'indicator', 'GET', 1, 1 ),
-( 'indicator', 'PATCH', 1, 1 ),
 ( 'interview', 'GET', 0, 1 ),
 ( 'interview', 'GET', 1, 1 ),
 ( 'interview', 'PATCH', 1, 1 ),
