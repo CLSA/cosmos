@@ -14,7 +14,7 @@ CREATE PROCEDURE patch_technician()
         "update_timestamp TIMESTAMP NOT NULL, ",
         "create_timestamp TIMESTAMP NOT NULL, ",
         "site_id INT UNSIGNED NOT NULL, ",
-        "user_id INT UNSIGNED NOT NULL, ",
+        "user_id INT UNSIGNED NULL DEFAULT NULL, ",
         "name VARCHAR(45) NOT NULL, ",
         "PRIMARY KEY (id), ",
         "INDEX fk_site_id (site_id ASC), ",

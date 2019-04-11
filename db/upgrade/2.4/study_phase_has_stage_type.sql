@@ -32,6 +32,16 @@ CREATE PROCEDURE patch_study_phase_has_stage_type()
     EXECUTE statement;
     DEALLOCATE PREPARE statement;
 
+    SET @sql = CONCAT(
+      "INSERT IGNORE INTO study_phase_has_stage_type( study_phase_id, stage_type_id ) ",
+      "SELECT study_phase.id, stage_type.id ",
+      "FROM ", @cenozo, ".study_phase, stage_type ",
+      "WHERE stage_type.category = 'DCS' ",
+      "AND stage_type.name IN ( 'ecg', 'carotid_intima' )" );
+    PREPARE statement FROM @sql;
+    EXECUTE statement;
+    DEALLOCATE PREPARE statement;
+
   END //
 DELIMITER ;
 

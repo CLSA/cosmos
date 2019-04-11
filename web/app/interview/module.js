@@ -10,9 +10,32 @@ define( function() {
       possessive: 'interview\'s'
     },
     columnList: {
+      uid: {
+        column: 'participant.uid',
+        title: 'UID'
+      },
+      study_phase: {
+        column: 'study_phase.name',
+        title: 'Study Phase'
+      },
+      site: {
+        column: 'site.name',
+        title: 'Site'
+      },
       start_date: {
         title: 'Date',
         type: 'date'
+      },
+      barcode: {
+        title: 'Barcode'
+      },
+      duration: {
+        title: 'Duration',
+        type: 'number'
+      },
+      total_stage_duration: {
+        title: 'Total Stage Duration',
+        type: 'number'
       }
     },
     defaultOrder: {
@@ -22,9 +45,38 @@ define( function() {
   } );
 
   module.addInputGroup( '', {
+    uid: {
+      column: 'participant.uid',
+      title: 'UID',
+      type: 'string'
+    },
+    study_phase: {
+      column: 'study_phase.name',
+      title: 'Study Phase',
+      type: 'string'
+    },
+    site: {
+      column: 'site.name',
+      title: 'Site',
+      type: 'string'
+    },
     start_date: {
       title: 'Date',
       type: 'date'
+    },
+    barcode: {
+      title: 'Barcode',
+      type: 'string'
+    },
+    duration: {
+      title: 'Duration',
+      type: 'string',
+      format: 'float'
+    },
+    total_stage_duration: {
+      title: 'Total Stage Duration',
+      type: 'string',
+      format: 'float'
     }
   } );
 
@@ -110,6 +162,9 @@ define( function() {
         this.addModel = CnInterviewAddFactory.instance( this );
         this.listModel = CnInterviewListFactory.instance( this );
         this.viewModel = CnInterviewViewFactory.instance( this, root );
+
+        // override the edit functionality (it's used to update data in a nightly script only)
+        this.getEditEnabled = function() { return false; }
       };
 
       return {

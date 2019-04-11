@@ -5,19 +5,19 @@ CREATE TABLE IF NOT EXISTS carotid_intima_data (
   update_timestamp TIMESTAMP NOT NULL,
   create_timestamp TIMESTAMP NOT NULL,
   stage_id INT UNSIGNED NOT NULL,
-  technician_id INT UNSIGNED NOT NULL,
-  contraindicated TINYINT(1) NOT NULL,
-  missing TINYINT(1) NOT NULL,
-  skip VARCHAR(255) NULL DEFAULT NULL,
+  still_image_1_left INT NULL DEFAULT NULL,
+  still_image_1_right INT NULL DEFAULT NULL,
+  still_image_2_left INT NULL DEFAULT NULL,
+  still_image_2_right INT NULL DEFAULT NULL,
+  still_image_3_left INT NULL DEFAULT NULL,
+  still_image_3_right INT NULL DEFAULT NULL,
+  cineloop_1_left INT NULL DEFAULT NULL,
+  cineloop_1_right INT NULL DEFAULT NULL,
+  structured_report_1_left INT NULL DEFAULT NULL,
+  structured_report_1_right INT NULL DEFAULT NULL,
   PRIMARY KEY (id),
   INDEX fk_stage_id (stage_id ASC),
-  INDEX fk_technician_id (technician_id ASC),
-  UNIQUE INDEX uq_stage_id_technician_id (stage_id ASC, technician_id ASC),
-  CONSTRAINT fk_carotid_intima_data_technician_id
-    FOREIGN KEY (technician_id)
-    REFERENCES technician (id)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+  UNIQUE INDEX uq_stage_id (stage_id ASC),
   CONSTRAINT fk_carotid_intima_data_stage_id
     FOREIGN KEY (stage_id)
     REFERENCES stage (id)

@@ -55,7 +55,7 @@ CREATE PROCEDURE patch_access()
         "FROM ", @cenozo, ".user, ", @cenozo, ".site, ", @cenozo, ".role ",
         "WHERE user.name IN ( 'cenozo', 'dean', 'patrick' ) ",
         "AND role.name IN( 'administrator' ) ",
-        "AND site.name = 'NCC'" );
+        "AND site.name = 'Hamilton DCS'" );
       PREPARE statement FROM @sql;
       EXECUTE statement;
       DEALLOCATE PREPARE statement;

@@ -10,21 +10,63 @@ define( function() {
       possessive: 'stage\'s'
     },
     columnList: {
-      date: {
-        title: 'Date',
-        type: 'start_date'
+      stage_type: {
+        column: 'stage_type.name',
+        title: 'Stage Type'
+      },
+      technician: {
+        column: 'technician.name',
+        title: 'Technician'
+      },
+      contraindicated: {
+        title: 'Contraindicated',
+        type: 'boolean'
+      },
+      missing: {
+        title: 'Missing',
+        type: 'boolean'
+      },
+      skip: {
+        title: 'Skip'
+      },
+      duration: {
+        title: 'Duration',
+        type: 'number'
       }
     },
     defaultOrder: {
-      column: 'start_date',
-      reverse: true
+      column: 'stage_type.name',
+      reverse: false
     }
   } );
 
   module.addInputGroup( '', {
-    date: {
-      title: 'Date',
-      type: 'start_date'
+    stage_type: {
+      column: 'stage_type.name',
+      title: 'Stage Type',
+      type: 'string'
+    },
+    technician: {
+      column: 'technician.name',
+      title: 'Technician',
+      type: 'string'
+    },
+    contraindicated: {
+      title: 'Contraindicated',
+      type: 'boolean'
+    },
+    missing: {
+      title: 'Missing',
+      type: 'boolean'
+    },
+    skip: {
+      title: 'Skip',
+      type: 'string'
+    },
+    duration: {
+      title: 'Duration',
+      type: 'string',
+      format: 'float'
     }
   } );
 

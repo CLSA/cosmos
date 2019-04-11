@@ -81,7 +81,6 @@ INSERT INTO service ( subject, method, resource, restricted ) VALUES
 ( 'interview', 'PATCH', 1, 1 ),
 ( 'stage', 'GET', 0, 1 ),
 ( 'stage', 'GET', 1, 1 ),
-( 'stage', 'PATCH', 1, 1 ),
 ( 'technician', 'GET', 0, 1 ),
 ( 'technician', 'GET', 1, 1 ),
 ( 'technician', 'PATCH', 1, 1 );

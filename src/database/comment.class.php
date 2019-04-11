@@ -1,15 +1,14 @@
 <?php
 /**
- * dexa_forearm_data.class.php
+ * comment.class.php
  * 
  * @author Patrick Emond <emondpd@mcmaster.ca>
- * @filesource
  */
 
 namespace cosmos\database;
 use cenozo\lib, cenozo\log, cosmos\util;
 
 /**
- * dexa_forearm_data: record
+ * comment: record
  */
-class dexa_forearm_data extends base_data {}
+class comment extends \cenozo\database\record {}

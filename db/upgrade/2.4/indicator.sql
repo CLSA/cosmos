@@ -38,38 +38,46 @@ CREATE PROCEDURE patch_indicator()
     EXECUTE statement;
     DEALLOCATE PREPARE statement;
 
+    -- carotid_intima
+    SET @sql = CONCAT(
+      "INSERT IGNORE INTO indicator( study_phase_id, stage_type_id, name, type ) ",
+      "SELECT study_phase.id, stage_type.id, col.name, col.type ",
+      "FROM ", @cenozo, ".study_phase, stage_type, ( ",
+        "SELECT 'still_image_1_left' AS name, 'integer' AS type UNION ",
+        "SELECT 'still_image_1_right' AS name, 'integer' AS type UNION ",
+        "SELECT 'still_image_2_left' AS name, 'integer' AS type UNION ",
+        "SELECT 'still_image_2_right' AS name, 'integer' AS type UNION ",
+        "SELECT 'still_image_3_left' AS name, 'integer' AS type UNION ",
+        "SELECT 'still_image_3_right' AS name, 'integer' AS type UNION ",
+        "SELECT 'cineloop_1_left' AS name, 'integer' AS type UNION ",
+        "SELECT 'cineloop_1_right' AS name, 'integer' AS type UNION ",
+        "SELECT 'structured_report_1_left' AS name, 'integer' AS type UNION ",
+        "SELECT 'structured_report_1_right' AS name, 'integer' AS type ",
+      ") as col ",
+      "WHERE study_phase.code = 'f2' ",
+      "AND stage_type.category = 'DCS' ",
+      "AND stage_type.name = 'carotid_intima'" );
+    PREPARE statement FROM @sql;
+    EXECUTE statement;
+    DEALLOCATE PREPARE statement;
+
+    -- ecg
+    SET @sql = CONCAT(
+      "INSERT IGNORE INTO indicator( study_phase_id, stage_type_id, name, type ) ",
+      "SELECT study_phase.id, stage_type.id, col.name, col.type ",
+      "FROM ", @cenozo, ".study_phase, stage_type, ( ",
+        "SELECT 'intrinsic_poor_quality' AS name, 'integer' AS type UNION ",
+        "SELECT 'xml_file_size' AS name, 'integer' AS type ",
+      ") as col ",
+      "WHERE study_phase.code = 'f2' ",
+      "AND stage_type.category = 'DCS' ",
+      "AND stage_type.name = 'ecg'" );
+    PREPARE statement FROM @sql;
+    EXECUTE statement;
+    DEALLOCATE PREPARE statement;
+
   END //
 DELIMITER ;
 
 CALL patch_indicator();
 DROP PROCEDURE IF EXISTS patch_indicator;
-
--- carotid_intima
-INSERT IGNORE INTO indicator( study_phase_id, stage_type_id, name, type )
-SELECT study_phase.id, stage_type.id, col.name, col.type
-FROM study_phase, stage_type, (
-  SELECT "still_image_1_left" AS name, "integer" AS type UNION
-  SELECT "still_image_1_right" AS name, "integer" AS type UNION
-  SELECT "still_image_2_left" AS name, "integer" AS type UNION
-  SELECT "still_image_2_right" AS name, "integer" AS type UNION
-  SELECT "still_image_3_left" AS name, "integer" AS type UNION
-  SELECT "still_image_3_right" AS name, "integer" AS type UNION
-  SELECT "cineloop_1_left" AS name, "integer" AS type UNION
-  SELECT "cineloop_1_right" AS name, "integer" AS type UNION
-  SELECT "structured_report_1_left" AS name, "integer" AS type UNION
-  SELECT "structured_report_1_right" AS name, "integer" AS type
-) as col
-WHERE study_phase.code = "f2"
-AND stage_type.category = "DCS"
-AND stage_type.name = "carotid_intima";
-
--- ecg
-INSERT IGNORE INTO indicator( study_phase_id, stage_type_id, name, type )
-SELECT study_phase.id, stage_type.id, col.name, col.type
-FROM study_phase, stage_type, (
-  SELECT "intrinsic_poor_quality" AS name, "integer" AS type UNION
-  SELECT "xml_file_size" AS name, "integer" AS type
-) as col
-WHERE study_phase.code = "f2"
-AND stage_type.category = "DCS"
-AND stage_type.name = "ecg";

@@ -1,15 +1,14 @@
 <?php
 /**
- * walk_data.class.php
+ * stage_type.class.php
  * 
  * @author Patrick Emond <emondpd@mcmaster.ca>
- * @filesource
  */
 
 namespace cosmos\database;
 use cenozo\lib, cenozo\log, cosmos\util;
 
 /**
- * walk_data: record
+ * stage_type: record
  */
-class walk_data extends base_data {}
+class stage_type extends \cenozo\database\record {}

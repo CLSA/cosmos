@@ -17,14 +17,24 @@ CREATE PROCEDURE patch_application_has_site()
     DEALLOCATE PREPARE statement;
 
     IF @total = 0 THEN
-      SELECT "Adding main site to the new cosmos application" AS "";
+      SELECT "Adding sites to the new cosmos application" AS "";
+
+      SET @sql = CONCAT(
+        "CREATE TEMPORARY TABLE temp_add_sites ",
+        "SELECT DISTINCT application_has_site.site_id ",
+        "FROM ", @cenozo, ".application_type ",
+        "JOIN ", @cenozo, ".application ON application_type.id = application.application_type_id ",
+        "JOIN ", @cenozo, ".application_has_site ON application.id = application_has_site.application_id ",
+        "WHERE application_type.name = 'beartooth'" );
+      PREPARE statement FROM @sql;
+      EXECUTE statement;
+      DEALLOCATE PREPARE statement;
 
       SET @sql = CONCAT(
         "INSERT IGNORE INTO ", @cenozo, ".application_has_site( application_id, site_id ) ",
-        "SELECT application.id, site.id ",
-        "FROM ", @cenozo, ".application, ", @cenozo, ".site ",
-        "WHERE application.name = 'cosmos' ",
-        "AND site.name = 'NCC'" );
+        "SELECT DISTINCT application.id, temp_add_sites.site_id ",
+        "FROM ", @cenozo, ".application, temp_add_sites "
+        "WHERE application.name = 'cosmos'" );
       PREPARE statement FROM @sql;
       EXECUTE statement;
       DEALLOCATE PREPARE statement;
