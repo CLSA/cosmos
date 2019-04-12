@@ -81,21 +81,6 @@ define( function() {
   } );
 
   /* ######################################################################################################## */
-  cenozo.providers.directive( 'cnInterviewAdd', [
-    'CnInterviewModelFactory',
-    function( CnInterviewModelFactory ) {
-      return {
-        templateUrl: module.getFileUrl( 'add.tpl.html' ),
-        restrict: 'E',
-        scope: { model: '=?' },
-        controller: function( $scope ) {
-          if( angular.isUndefined( $scope.model ) ) $scope.model = CnInterviewModelFactory.root;
-        }
-      };
-    }
-  ] );
-
-  /* ######################################################################################################## */
   cenozo.providers.directive( 'cnInterviewList', [
     'CnInterviewModelFactory',
     function( CnInterviewModelFactory ) {
@@ -126,15 +111,6 @@ define( function() {
   ] );
 
   /* ######################################################################################################## */
-  cenozo.providers.factory( 'CnInterviewAddFactory', [
-    'CnBaseAddFactory',
-    function( CnBaseAddFactory ) {
-      var object = function( parentModel ) { CnBaseAddFactory.construct( this, parentModel ); };
-      return { instance: function( parentModel ) { return new object( parentModel ); } };
-    }
-  ] );
-
-  /* ######################################################################################################## */
   cenozo.providers.factory( 'CnInterviewListFactory', [
     'CnBaseListFactory',
     function( CnBaseListFactory ) {
@@ -154,12 +130,11 @@ define( function() {
 
   /* ######################################################################################################## */
   cenozo.providers.factory( 'CnInterviewModelFactory', [
-    'CnBaseModelFactory', 'CnInterviewAddFactory', 'CnInterviewListFactory', 'CnInterviewViewFactory',
-    function( CnBaseModelFactory, CnInterviewAddFactory, CnInterviewListFactory, CnInterviewViewFactory ) {
+    'CnBaseModelFactory', 'CnInterviewListFactory', 'CnInterviewViewFactory',
+    function( CnBaseModelFactory, CnInterviewListFactory, CnInterviewViewFactory ) {
       var object = function( root ) {
         var self = this;
         CnBaseModelFactory.construct( this, module );
-        this.addModel = CnInterviewAddFactory.instance( this );
         this.listModel = CnInterviewListFactory.instance( this );
         this.viewModel = CnInterviewViewFactory.instance( this, root );
 

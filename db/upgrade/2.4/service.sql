@@ -76,11 +76,15 @@ INSERT INTO service ( subject, method, resource, restricted ) VALUES
 ( 'user', 'POST', 0, 1 ),
 
 -- application services
-( 'interview', 'GET', 0, 1 ),
-( 'interview', 'GET', 1, 1 ),
+( 'carotid_intima_data', 'GET', 0, 0 ),
+( 'carotid_intima_data', 'GET', 1, 0 ),
+( 'ecg_data', 'GET', 0, 0 ),
+( 'ecg_data', 'GET', 1, 0 ),
+( 'interview', 'GET', 0, 0 ),
+( 'interview', 'GET', 1, 0 ),
 ( 'interview', 'PATCH', 1, 1 ),
-( 'stage', 'GET', 0, 1 ),
-( 'stage', 'GET', 1, 1 ),
+( 'stage', 'GET', 0, 0 ),
+( 'stage', 'GET', 1, 0 ),
 ( 'technician', 'GET', 0, 1 ),
 ( 'technician', 'GET', 1, 1 ),
 ( 'technician', 'PATCH', 1, 1 );

@@ -1,4 +1,6 @@
-define( function() {
+define( [ 'carotid_intima_data', 'ecg_data' ].reduce( function( list, name ) {
+  return list.concat( cenozoApp.module( name ).getRequiredFiles() );
+}, [] ), function () {
   'use strict';
 
   try { var module = cenozoApp.module( 'stage', true ); } catch( err ) { console.warn( err ); return; }
@@ -71,21 +73,6 @@ define( function() {
   } );
 
   /* ######################################################################################################## */
-  cenozo.providers.directive( 'cnStageAdd', [
-    'CnStageModelFactory',
-    function( CnStageModelFactory ) {
-      return {
-        templateUrl: module.getFileUrl( 'add.tpl.html' ),
-        restrict: 'E',
-        scope: { model: '=?' },
-        controller: function( $scope ) {
-          if( angular.isUndefined( $scope.model ) ) $scope.model = CnStageModelFactory.root;
-        }
-      };
-    }
-  ] );
-
-  /* ######################################################################################################## */
   cenozo.providers.directive( 'cnStageList', [
     'CnStageModelFactory',
     function( CnStageModelFactory ) {
@@ -116,15 +103,6 @@ define( function() {
   ] );
 
   /* ######################################################################################################## */
-  cenozo.providers.factory( 'CnStageAddFactory', [
-    'CnBaseAddFactory',
-    function( CnBaseAddFactory ) {
-      var object = function( parentModel ) { CnBaseAddFactory.construct( this, parentModel ); };
-      return { instance: function( parentModel ) { return new object( parentModel ); } };
-    }
-  ] );
-
-  /* ######################################################################################################## */
   cenozo.providers.factory( 'CnStageListFactory', [
     'CnBaseListFactory',
     function( CnBaseListFactory ) {
@@ -135,21 +113,34 @@ define( function() {
 
   /* ######################################################################################################## */
   cenozo.providers.factory( 'CnStageViewFactory', [
-    'CnBaseViewFactory',
-    function( CnBaseViewFactory ) {
-      var object = function( parentModel, root ) { CnBaseViewFactory.construct( this, parentModel, root ); }
+    'CnBaseViewFactory', 'CnHttpFactory',
+    'CnCarotidIntimaDataModelFactory', 'CnEcgDataModelFactory',
+    function( CnBaseViewFactory, CnHttpFactory,
+              CnCarotidIntimaDataModelFactory, CnEcgDataModelFactory ) {
+      var object = function( parentModel, root ) {
+        var self = this;
+        this.indicatorList = [];
+        CnBaseViewFactory.construct( this, parentModel, root );
+
+        this.onView = function( force ) {
+          self.dataModel = null;
+          return this.$$onView( force ).then( function() {
+            self.dataModel = eval( 'Cn' + self.record.stage_type.snakeToCamel().ucWords() + 'DataModelFactory' ).root;
+            self.dataModel.viewModel.onView( true );
+          } );
+        };
+      }
       return { instance: function( parentModel, root ) { return new object( parentModel, root ); } };
     }
   ] );
 
   /* ######################################################################################################## */
   cenozo.providers.factory( 'CnStageModelFactory', [
-    'CnBaseModelFactory', 'CnStageAddFactory', 'CnStageListFactory', 'CnStageViewFactory',
-    function( CnBaseModelFactory, CnStageAddFactory, CnStageListFactory, CnStageViewFactory ) {
+    'CnBaseModelFactory', 'CnStageListFactory', 'CnStageViewFactory',
+    function( CnBaseModelFactory, CnStageListFactory, CnStageViewFactory ) {
       var object = function( root ) {
         var self = this;
         CnBaseModelFactory.construct( this, module );
-        this.addModel = CnStageAddFactory.instance( this );
         this.listModel = CnStageListFactory.instance( this );
         this.viewModel = CnStageViewFactory.instance( this, root );
       };
