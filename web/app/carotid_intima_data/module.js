@@ -10,6 +10,14 @@ define( function() {
       possessive: 'carotid intima data\'s'
     },
     columnList: {
+      uid: {
+        column: 'participant.uid',
+        title: 'UID'
+      },
+      study_phase: {
+        column: 'study_phase.code',
+        title: 'Phase'
+      },
       still_image_1_left: {
         title: 'Still Image 1 Left',
         type: 'number'
@@ -52,7 +60,7 @@ define( function() {
       }
     },
     defaultOrder: {
-      column: 'id',
+      column: 'participant.uid',
       reverse: false
     }
   } );

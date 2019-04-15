@@ -5,13 +5,26 @@ define( [ 'carotid_intima_data', 'ecg_data' ].reduce( function( list, name ) {
 
   try { var module = cenozoApp.module( 'stage', true ); } catch( err ) { console.warn( err ); return; }
   angular.extend( module, {
-    identifier: {},
+    identifier: {
+      parent: {
+        subject: 'interview',
+        column: 'interview_id'
+      }
+    },
     name: {
       singular: 'stage',
       plural: 'stages',
       possessive: 'stage\'s'
     },
     columnList: {
+      uid: {
+        column: 'participant.uid',
+        title: 'UID'
+      },
+      study_phase: {
+        column: 'study_phase.code',
+        title: 'Phase'
+      },
       stage_type: {
         column: 'stage_type.name',
         title: 'Stage Type'

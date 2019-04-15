@@ -46,6 +46,7 @@ class ui extends \cenozo\ui\ui
     parent::build_listitem_list();
 
     $this->add_listitem( 'Stages', 'stage' );
+    $this->add_listitem( 'Stage Types', 'stage_type' );
     $this->add_listitem( 'Technicians', 'technician' );
     $this->add_listitem( 'Interviews', 'interview' );
   }
