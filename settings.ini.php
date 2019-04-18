@@ -20,3 +20,6 @@ $SETTINGS['path']['APPLICATION'] = str_replace( '/settings.ini.php', '', __FILE_
 
 // the location of the php_util repository
 $SETTINGS['path']['PHP_UTIL'] = $SETTINGS['path']['APPLICATION'].'/../php_util';
+
+// the location of new forms which need to be processed
+$SETTINGS['path']['OPAL_VIEWS'] = $SETTINGS['path']['APPLICATION'].'/aux/opal_views';

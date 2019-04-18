@@ -14,6 +14,7 @@ SOURCE setting.sql
 SOURCE writelog.sql
 
 SOURCE technician.sql
+SOURCE platform.sql
 SOURCE interview.sql
 SOURCE stage_type.sql
 SOURCE study_phase_has_stage_type.sql
