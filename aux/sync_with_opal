@@ -371,12 +371,12 @@ while( $row = $result->fetch_assoc() )
   foreach( $template_filename_list as $template_filename )
   {
     $filename = str_replace(
-      array( 'doc/code_templates/', '/module/' ),
-      array( '', sprintf( '/%s/', $subject ) ),
+      array( 'doc/code_templates/', 'SUBJECT' ),
+      array( '', $subject ),
       $template_filename
     );
 
-    if( false !== strpos( $template_filename, '/module/' ) )
+    if( false !== strpos( $template_filename, '/SUBJECT/' ) )
     {
       $dir = preg_replace( '#/[^/]+$#', '', $filename );
       if( !file_exists( $dir ) ) mkdir( $dir, true );
@@ -387,7 +387,7 @@ while( $row = $result->fetch_assoc() )
       str_replace(
         array( '<NAME>', '<SUBJECT>', '<SUBJECT_CAMEL>' ),
         array( $name, $subject, snake_to_camel( $subject ) ),
-        file_get_contents( $template_file )
+        file_get_contents( $template_filename )
       )
     );
   }
