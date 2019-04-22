@@ -17,13 +17,9 @@ SOURCE technician.sql
 SOURCE platform.sql
 SOURCE interview.sql
 SOURCE stage_type.sql
-SOURCE study_phase_has_stage_type.sql
 SOURCE stage.sql
 SOURCE comment.sql
 SOURCE indicator.sql
-
-SOURCE carotid_intima_data.sql
-SOURCE ecg_data.sql
 
 SOURCE update_version_number.sql
 

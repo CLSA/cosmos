@@ -76,10 +76,6 @@ INSERT INTO service ( subject, method, resource, restricted ) VALUES
 ( 'user', 'POST', 0, 1 ),
 
 -- application services
-( 'carotid_intima_data', 'GET', 0, 0 ),
-( 'carotid_intima_data', 'GET', 1, 0 ),
-( 'ecg_data', 'GET', 0, 0 ),
-( 'ecg_data', 'GET', 1, 0 ),
 ( 'interview', 'GET', 0, 0 ),
 ( 'interview', 'GET', 1, 0 ),
 ( 'interview', 'PATCH', 1, 1 ),
