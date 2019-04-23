@@ -1,4 +1,5 @@
-define( [ 'carotid_intima_data', 'ecg_data' ].reduce( function( list, name ) {
+var dataModuleList = [ 'bl_dcs_auxiliary_data', 'bl_dcs_carotid_intima_data', 'bl_dcs_ecg_data', 'bl_dcs_interview_data', 'bl_inhome_inhome_1_data', 'bl_inhome_inhome_2_data', 'bl_inhome_inhome_3_data', 'bl_inhome_inhome_cognition_recording_data', 'bl_inhome_inhome_conclusion_qnaire_data', 'bl_inhome_inhome_id_data', 'bl_inhome_inhome_scoring_data', 'bl_inhome_interview_data', 'f1_dcs_auxiliary_data', 'f1_dcs_carotid_intima_data', 'f1_dcs_ecg_data', 'f1_dcs_interview_data', 'f1_dcs_home_blood_pressure_data', 'f1_dcs_home_body_composition_data', 'f1_dcs_home_contraindication_qnaire_data', 'f1_dcs_home_disease_qnaire_data', 'f1_dcs_home_event_pmt_data', 'f1_dcs_home_functional_status_data', 'f1_dcs_home_general_health_data', 'f1_dcs_home_grip_strength_data', 'f1_dcs_home_hips_waist_data', 'f1_dcs_home_interview_data', 'f1_dcs_home_neuro_scoring_data', 'f1_dcs_home_osonly_data', 'f1_dcs_home_spirometry_data', 'f1_dcs_home_stroop_fas_data', 'f1_dcs_home_time_based_pmt_data', 'f1_dcs_phone_contraindication_qnaire_data', 'f1_dcs_phone_disease_qnaire_data', 'f1_dcs_phone_functional_status_data', 'f1_dcs_phone_general_health_data', 'f1_dcs_phone_height_weight_data', 'f1_dcs_phone_interview_data', 'f1_dcs_phone_osea_data', 'f1_dcs_phone_stroop_fas_data', 'f1_inhome_inhome_1_data', 'f1_inhome_inhome_2_data', 'f1_inhome_inhome_3_data', 'f1_inhome_inhome_4_data', 'f1_inhome_inhome_cognition_recording_data', 'f1_inhome_inhome_conclusion_qnaire_data', 'f1_inhome_interview_data', 'f2_dcs_auxiliary_data', 'f2_dcs_carotid_intima_data', 'f2_dcs_ecg_data', 'f2_dcs_interview_data', 'f2_dcs_phone_contraindication_qnaire_data', 'f2_dcs_phone_disease_qnaire_data', 'f2_dcs_phone_general_health_data', 'f2_dcs_phone_height_weight_data', 'f2_dcs_phone_interview_data', 'f2_dcs_phone_os_data', 'f2_dcs_phone_social_network_data', 'f2_inhome_inhome_1_data', 'f2_inhome_inhome_2_data', 'f2_inhome_inhome_3_data', 'f2_inhome_inhome_4_data', 'f2_inhome_inhome_cognition_recording_data', 'f2_inhome_inhome_conclusion_qnaire_data', 'f2_inhome_interview_data' ];
+define( dataModuleList.reduce( function( list, name ) {
   return list.concat( cenozoApp.module( name ).getRequiredFiles() );
 }, [] ), function () {
   'use strict';
@@ -125,27 +126,26 @@ define( [ 'carotid_intima_data', 'ecg_data' ].reduce( function( list, name ) {
   ] );
 
   /* ######################################################################################################## */
-  cenozo.providers.factory( 'CnStageViewFactory', [
-    'CnBaseViewFactory', 'CnHttpFactory',
-    'CnCarotidIntimaDataModelFactory', 'CnEcgDataModelFactory',
-    function( CnBaseViewFactory, CnHttpFactory,
-              CnCarotidIntimaDataModelFactory, CnEcgDataModelFactory ) {
+  var injectionList = [ 'CnBaseViewFactory' ];
+  injectionList = injectionList.concat( dataModuleList.map( dataModule => 'Cn' + dataModule.snakeToCamel( true ) + 'ModelFactory' ) );
+  cenozo.providers.factory( 'CnStageViewFactory',
+    injectionList.concat( function( ...injected ) {
       var object = function( parentModel, root ) {
         var self = this;
         this.indicatorList = [];
-        CnBaseViewFactory.construct( this, parentModel, root );
+        injected[0].construct( this, parentModel, root );
 
         this.onView = function( force ) {
           self.dataModel = null;
           return this.$$onView( force ).then( function() {
-            self.dataModel = eval( 'Cn' + self.record.stage_type.snakeToCamel().ucWords() + 'DataModelFactory' ).root;
+            self.dataModel = injected[ dataModuleList.indexOf( self.record.stage_type ) ].root;
             self.dataModel.viewModel.onView( true );
           } );
         };
       }
       return { instance: function( parentModel, root ) { return new object( parentModel, root ); } };
-    }
-  ] );
+    } )
+  );
 
   /* ######################################################################################################## */
   cenozo.providers.factory( 'CnStageModelFactory', [

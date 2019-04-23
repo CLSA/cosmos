@@ -5,8 +5,9 @@ define( function() {
   angular.extend( module, {
     identifier: {
       parent: {
-        subject: 'interview',
-        column: 'interview_id'
+        subject: 'platform',
+        column: 'platform_id',
+        friendly: 'name'
       }
     },
     name: {
@@ -15,26 +16,37 @@ define( function() {
       possessive: 'stage type\'s'
     },
     columnList: {
+      study_phase: {
+        column: 'study_phase.name',
+        title: 'Study Phase'
+      },
+      platform: {
+        column: 'platform.name',
+        title: 'Platform'
+      },
       name: {
         title: 'Name'
-      },
-      category: {
-        title: 'Category'
-      },
+      }
     },
     defaultOrder: {
-      column: 'stage_type.name',
+      column: 'study_phase.name',
       reverse: false
     }
   } );
 
   module.addInputGroup( '', {
-    name: {
-      title: 'Name',
+    study_phase: {
+      column: 'study_phase.name',
+      title: 'Study Phase',
       type: 'string'
     },
-    category: {
-      title: 'Category',
+    platform: {
+      column: 'platform.name',
+      title: 'Platform',
+      type: 'string'
+    },
+    name: {
+      title: 'Name',
       type: 'string'
     }
   } );
@@ -100,7 +112,7 @@ define( function() {
 
       return {
         root: new object( true ),
-        nstance: function() { return new object( false ); }
+        instance: function() { return new object( false ); }
       };
     }
   ] );

@@ -1,67 +1,64 @@
 define( function() {
   'use strict';
 
-  try { var module = cenozoApp.module( '<SUBJECT>', true ); } catch( err ) { console.warn( err ); return; }
+  try { var module = cenozoApp.module( 'platform', true ); } catch( err ) { console.warn( err ); return; }
   angular.extend( module, {
-    identifier: {},
+    identifier: { column: 'name' },
     name: {
-      singular: '<NAME> data',
-      plural: '<NAME> data',
-      possessive: '<NAME> data\'s'
+      singular: 'platform',
+      plural: 'platforms',
+      possessive: 'platform\'s'
     },
     columnList: {
-      uid: {
-        column: 'participant.uid',
-        title: 'UID'
-      },
-      study_phase: {
-        column: 'study_phase.code',
-        title: 'Phase'
-      },
-<COLUMN_LIST>
+      name: {
+        title: 'Name'
+      }
     },
     defaultOrder: {
-      column: 'id',
+      column: 'platform.name',
       reverse: false
     }
   } );
 
   module.addInputGroup( '', {
-<INPUT_LIST>
+    name: {
+      title: 'Name',
+      type: 'string'
+    }
   } );
 
   /* ######################################################################################################## */
-  cenozo.providers.directive( 'cn<SUBJECT_CAMEL>List', [
-    'Cn<SUBJECT_CAMEL>ModelFactory',
-    function( Cn<SUBJECT_CAMEL>ModelFactory ) {
+  cenozo.providers.directive( 'cnPlatformList', [
+    'CnPlatformModelFactory',
+    function( CnPlatformModelFactory ) {
       return {
         templateUrl: module.getFileUrl( 'list.tpl.html' ),
         restrict: 'E',
         scope: { model: '=?' },
         controller: function( $scope ) {
-          if( angular.isUndefined( $scope.model ) ) $scope.model = Cn<SUBJECT_CAMEL>ModelFactory.root;
+          if( angular.isUndefined( $scope.model ) ) $scope.model = CnPlatformModelFactory.root;
         }
       };
     }
   ] );
 
   /* ######################################################################################################## */
-  cenozo.providers.directive( 'cn<SUBJECT_CAMEL>View', [
-    'Cn<SUBJECT_CAMEL>ModelFactory',
-    function( Cn<SUBJECT_CAMEL>ModelFactory ) {
+  cenozo.providers.directive( 'cnPlatformView', [
+    'CnPlatformModelFactory',
+    function( CnPlatformModelFactory ) {
       return {
         templateUrl: module.getFileUrl( 'view.tpl.html' ),
         restrict: 'E',
         scope: { model: '=?' },
         controller: function( $scope ) {
-          if( angular.isUndefined( $scope.model ) ) $scope.model = Cn<SUBJECT_CAMEL>ModelFactory.root;
+          if( angular.isUndefined( $scope.model ) ) $scope.model = CnPlatformModelFactory.root;
         }
       };
     }
   ] );
 
   /* ######################################################################################################## */
-  cenozo.providers.factory( 'Cn<SUBJECT_CAMEL>ListFactory', [
+  cenozo.providers.factory( 'CnPlatformListFactory', [
     'CnBaseListFactory',
     function( CnBaseListFactory ) {
       var object = function( parentModel ) { CnBaseListFactory.construct( this, parentModel ); };
@@ -70,7 +67,7 @@ define( function() {
   ] );
 
   /* ######################################################################################################## */
-  cenozo.providers.factory( 'Cn<SUBJECT_CAMEL>ViewFactory', [
+  cenozo.providers.factory( 'CnPlatformViewFactory', [
     'CnBaseViewFactory',
     function( CnBaseViewFactory ) {
       var object = function( parentModel, root ) { CnBaseViewFactory.construct( this, parentModel, root ); }
@@ -79,18 +76,14 @@ define( function() {
   ] );
 
   /* ######################################################################################################## */
-  cenozo.providers.factory( 'Cn<SUBJECT_CAMEL>ModelFactory', [
-    'CnBaseModelFactory', 'Cn<SUBJECT_CAMEL>ListFactory', 'Cn<SUBJECT_CAMEL>ViewFactory', '$state',
-    function( CnBaseModelFactory, Cn<SUBJECT_CAMEL>ListFactory, Cn<SUBJECT_CAMEL>ViewFactory, $state ) {
+  cenozo.providers.factory( 'CnPlatformModelFactory', [
+    'CnBaseModelFactory', 'CnPlatformListFactory', 'CnPlatformViewFactory',
+    function( CnBaseModelFactory, CnPlatformListFactory, CnPlatformViewFactory ) {
       var object = function( root ) {
         var self = this;
         CnBaseModelFactory.construct( this, module );
-        this.listModel = Cn<SUBJECT_CAMEL>ListFactory.instance( this );
-        this.viewModel = Cn<SUBJECT_CAMEL>ViewFactory.instance( this, root );
-
-        this.getServiceResourcePath = function( resource ) {
-          return self.module.subject.snake + '/stage_id=' + $state.params.identifier;
-        };
+        this.listModel = CnPlatformListFactory.instance( this );
+        this.viewModel = CnPlatformViewFactory.instance( this, root );
       };
 
       return {

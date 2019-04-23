@@ -36,6 +36,12 @@ class ui extends \cenozo\ui\ui
 
     $module = $this->get_module( 'interview' );
     if( !is_null( $module ) ) $module->add_child( 'stage' );
+
+    $module = $this->get_module( 'platform' );
+    if( !is_null( $module ) ) $module->add_child( 'stage_type' );
+
+    $module = $this->get_module( 'stage_type' );
+    if( !is_null( $module ) ) $module->add_child( 'indicator' );
   }
 
   /**
@@ -46,7 +52,7 @@ class ui extends \cenozo\ui\ui
     parent::build_listitem_list();
 
     $this->add_listitem( 'Stages', 'stage' );
-    $this->add_listitem( 'Stage Types', 'stage_type' );
+    $this->add_listitem( 'Platforms', 'platform' );
     $this->add_listitem( 'Technicians', 'technician' );
     $this->add_listitem( 'Interviews', 'interview' );
   }

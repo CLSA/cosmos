@@ -1,67 +1,94 @@
 define( function() {
   'use strict';
 
-  try { var module = cenozoApp.module( '<SUBJECT>', true ); } catch( err ) { console.warn( err ); return; }
+  try { var module = cenozoApp.module( 'indicator', true ); } catch( err ) { console.warn( err ); return; }
   angular.extend( module, {
-    identifier: {},
+    identifier: {
+      parent: {
+        subject: 'stage_type',
+        column: 'stage_type_id'
+      }
+    },
     name: {
-      singular: '<NAME> data',
-      plural: '<NAME> data',
-      possessive: '<NAME> data\'s'
+      singular: 'indicator',
+      plural: 'indicators',
+      possessive: 'indicator\'s'
     },
     columnList: {
-      uid: {
-        column: 'participant.uid',
-        title: 'UID'
+      name: {
+        title: 'Name'
       },
-      study_phase: {
-        column: 'study_phase.code',
-        title: 'Phase'
+      type: {
+        title: 'Type'
       },
-<COLUMN_LIST>
+      minimum: {
+        title: 'Minimum'
+      },
+      maximum: {
+        title: 'Maximum'
+      }
     },
     defaultOrder: {
-      column: 'id',
+      column: 'indicator.name',
       reverse: false
     }
   } );
 
   module.addInputGroup( '', {
-<INPUT_LIST>
+    name: {
+      title: 'Name',
+      type: 'string',
+      constant: true
+    },
+    type: {
+      title: 'Type',
+      type: 'string',
+      constant: true
+    },
+    minimum: {
+      title: 'Minimum',
+      type: 'string',
+      format: 'integer'
+    },
+    maximum: {
+      title: 'Maximum',
+      type: 'string',
+      format: 'integer'
+    },
   } );
 
   /* ######################################################################################################## */
-  cenozo.providers.directive( 'cn<SUBJECT_CAMEL>List', [
-    'Cn<SUBJECT_CAMEL>ModelFactory',
-    function( Cn<SUBJECT_CAMEL>ModelFactory ) {
+  cenozo.providers.directive( 'cnIndicatorList', [
+    'CnIndicatorModelFactory',
+    function( CnIndicatorModelFactory ) {
       return {
         templateUrl: module.getFileUrl( 'list.tpl.html' ),
         restrict: 'E',
         scope: { model: '=?' },
         controller: function( $scope ) {
-          if( angular.isUndefined( $scope.model ) ) $scope.model = Cn<SUBJECT_CAMEL>ModelFactory.root;
+          if( angular.isUndefined( $scope.model ) ) $scope.model = CnIndicatorModelFactory.root;
         }
       };
     }
   ] );
 
   /* ######################################################################################################## */
-  cenozo.providers.directive( 'cn<SUBJECT_CAMEL>View', [
-    'Cn<SUBJECT_CAMEL>ModelFactory',
-    function( Cn<SUBJECT_CAMEL>ModelFactory ) {
+  cenozo.providers.directive( 'cnIndicatorView', [
+    'CnIndicatorModelFactory',
+    function( CnIndicatorModelFactory ) {
       return {
         templateUrl: module.getFileUrl( 'view.tpl.html' ),
         restrict: 'E',
         scope: { model: '=?' },
         controller: function( $scope ) {
-          if( angular.isUndefined( $scope.model ) ) $scope.model = Cn<SUBJECT_CAMEL>ModelFactory.root;
+          if( angular.isUndefined( $scope.model ) ) $scope.model = CnIndicatorModelFactory.root;
         }
       };
     }
   ] );
 
   /* ######################################################################################################## */
-  cenozo.providers.factory( 'Cn<SUBJECT_CAMEL>ListFactory', [
+  cenozo.providers.factory( 'CnIndicatorListFactory', [
     'CnBaseListFactory',
     function( CnBaseListFactory ) {
       var object = function( parentModel ) { CnBaseListFactory.construct( this, parentModel ); };
@@ -70,7 +97,7 @@ define( function() {
   ] );
 
   /* ######################################################################################################## */
-  cenozo.providers.factory( 'Cn<SUBJECT_CAMEL>ViewFactory', [
+  cenozo.providers.factory( 'CnIndicatorViewFactory', [
     'CnBaseViewFactory',
     function( CnBaseViewFactory ) {
       var object = function( parentModel, root ) { CnBaseViewFactory.construct( this, parentModel, root ); }
@@ -79,18 +106,14 @@ define( function() {
   ] );
 
   /* ######################################################################################################## */
-  cenozo.providers.factory( 'Cn<SUBJECT_CAMEL>ModelFactory', [
-    'CnBaseModelFactory', 'Cn<SUBJECT_CAMEL>ListFactory', 'Cn<SUBJECT_CAMEL>ViewFactory', '$state',
-    function( CnBaseModelFactory, Cn<SUBJECT_CAMEL>ListFactory, Cn<SUBJECT_CAMEL>ViewFactory, $state ) {
+  cenozo.providers.factory( 'CnIndicatorModelFactory', [
+    'CnBaseModelFactory', 'CnIndicatorListFactory', 'CnIndicatorViewFactory',
+    function( CnBaseModelFactory, CnIndicatorListFactory, CnIndicatorViewFactory ) {
       var object = function( root ) {
         var self = this;
         CnBaseModelFactory.construct( this, module );
-        this.listModel = Cn<SUBJECT_CAMEL>ListFactory.instance( this );
-        this.viewModel = Cn<SUBJECT_CAMEL>ViewFactory.instance( this, root );
-
-        this.getServiceResourcePath = function( resource ) {
-          return self.module.subject.snake + '/stage_id=' + $state.params.identifier;
-        };
+        this.listModel = CnIndicatorListFactory.instance( this );
+        this.viewModel = CnIndicatorViewFactory.instance( this, root );
       };
 
       return {
