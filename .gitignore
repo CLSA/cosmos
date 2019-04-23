@@ -3,3 +3,14 @@ settings.local.ini.php
 !.gitkeep
 tmp
 log
+
+# do not include automatically generated code
+web/app/bl_*
+web/app/f1_*
+web/app/f2_*
+src/service/bl_*
+src/service/f1_*
+src/service/f2_*
+src/database/bl_*
+src/database/f1_*
+src/database/f2_*
