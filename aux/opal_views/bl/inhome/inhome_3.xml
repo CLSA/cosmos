@@ -1,0 +1,737 @@
+<org.obiba.magma.views.View>
+  <name>QC_BL_inhome_3</name>
+  <from class="org.obiba.magma.views.JoinTable">
+    <list>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-inhome.Participants</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-inhome.InHome_3</reference>
+      </table>
+    </list>
+  </from>
+  <select class="org.obiba.magma.views.support.NoneClause"/>
+  <where class="org.obiba.magma.views.support.AllClause"/>
+  <variables class="org.obiba.magma.js.views.VariablesClause">
+    <variables class="linked-hash-set">
+      <variable name="technician" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;clsa-inhome.InHome_3:QuestionnaireRun.user&apos;).whenNull(
+  $group(&apos;Admin.Action.stage&apos;,&apos;InHome_3&apos;,&apos;Admin.Action.user&apos;).asSequence().last()).lowerCase()</attribute>
+        </attributes>
+      </variable>
+      <variable name="skip" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var action = $group(&apos;Admin.Action.stage&apos;,&apos;InHome_3&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
+var res = $group(&apos;Admin.Action.stage&apos;,&apos;InHome_3&apos;,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
+  return i == action.indexOf(&apos;SKIP&apos;)
+  }).last()
+if(res.isNull().not().value()) {
+  res = newValue(res.value().slice(14),&apos;text&apos;)  
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="contraindicated" valueType="boolean" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$group(&apos;clsa-inhome.Participants:Admin.StageInstance.stage&apos;,&apos;InHome_3&apos;,
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;)</attribute>
+        </attributes>
+      </variable>
+      <variable name="comment" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">// this script compounds repeated comments by using lowercase comment strings as array keys
+//
+var stage = &apos;InHome_3&apos;
+var c_seq = $group(&apos;Admin.Action.stage&apos;,stage,&apos;Admin.Action.comment&apos;).asSequence()
+var e_seq = $group(&apos;Admin.Action.stage&apos;,stage,&apos;Admin.Action.eventReason&apos;).asSequence()
+var res = null
+if(c_seq.size().eq(e_seq.size()).value())
+{
+  var c_str = []  // string array of comments
+  var e_str = []  // string array of event reasons
+
+  for(var i = 0; i &lt; c_seq.size(); i++) {
+    var c = c_seq.valueAt(i).value()
+    if(null == c) continue
+    c = c.replace(/[^a-zA-Z0-9 àâäèéêëîïôœùûüÿçÀÂÄÈÉÊËÎÏÔŒÙÛÜŸÇ]/g,&quot;&quot;)
+    var e = e_seq.valueAt(i).value()
+    if(0 &lt; c.length) {
+      c_str.push(c)
+      if(null != e &amp;&amp; 0 &lt; e.length) {
+        e = e.slice(14)
+      } else {
+        e = &apos;SeeComment&apos;
+      }
+      e_str.push(e)
+    }
+  }
+
+  if(0 &lt; c_str.length) {
+    var arr = []  // array of event reasons
+    var key_orig = []  // array of lower cased comments as unique keys
+    for(var i = 0; i &lt; c_str.length; i++) {
+      var key = c_str[i]
+      var key_lower = key.toLowerCase()
+      // retain the first encountered instance of the comment
+      //
+      if(undefined === key_orig[key_lower])
+        key_orig[key_lower] = key
+
+      if(undefined === arr[e_str[i]])
+        arr[e_str[i]] = []
+
+      if(-1===arr[e_str[i]].indexOf(key_orig[key_lower]))
+        arr[e_str[i]].push(key_orig[key_lower])
+    }
+
+    // loop over the final array of event reasons and their sets of comments
+    //
+    var str = &apos;{&apos;
+    for(var key in arr) {
+      str += &apos;&quot;&apos; + key + &apos;&quot;:[&apos;
+      var t = []
+      for(var i = 0; i &lt; arr[key].length; i++) {
+        t.push(&apos;&quot;&apos; + arr[key][i] + &apos;&quot;&apos;)
+      }
+      str += t.join(&apos;,&apos;) + &apos;],&apos;
+    }
+
+    res = newValue(str.substring(0,str.length-1)+&apos;}&apos;,&apos;text&apos;)
+  }
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="qnaire_complete" valueType="decimal" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var stage = &apos;InHome_3&apos;
+var p = $(&apos;clsa-inhome.&apos; + stage + &apos;:QuestionnaireMetric.missingCount&apos;).asSequence()
+var q = $(&apos;clsa-inhome.&apos; + stage + &apos;:QuestionnaireMetric.questionCount&apos;).asSequence()
+var res = null
+if(p.isNull().or(q.isNull(),q.sum().eq(0)).not().value()) {
+  res = q.sum().minus(p.sum()).multiply(100).div(q.sum())
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="missing" valueType="boolean" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$this(&apos;contraindicated&apos;).not().and(
+  $this(&apos;skip&apos;).isNull(),
+  $this(&apos;qnaire_complete&apos;).isNull(),
+  $this(&apos;meta_stage_duration&apos;).isNull())</attribute>
+        </attributes>
+      </variable>
+      <variable name="duration_name" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0" repeatable="true" occurrenceGroup="">
+        <attributes>
+          <attribute name="script" valueType="text">newSequence([&apos;stage&apos;], &apos;text&apos;).append($this(&apos;meta_module_name&apos;))</attribute>
+        </attributes>
+      </variable>
+      <variable name="duration_value" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0" repeatable="true" occurrenceGroup="">
+        <attributes>
+          <attribute name="script" valueType="text">newSequence($this(&apos;meta_stage_duration&apos;),&apos;integer&apos;).append($this(&apos;meta_module_duration&apos;))</attribute>
+        </attributes>
+      </variable>
+      <variable name="refusal_name" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0" repeatable="true" occurrenceGroup="">
+        <attributes>
+          <attribute name="script" valueType="text">$this(&apos;meta_module_name&apos;)</attribute>
+        </attributes>
+      </variable>
+      <variable name="refusal_value" valueType="decimal" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0" repeatable="true" occurrenceGroup="">
+        <attributes>
+          <attribute name="script" valueType="text">var stage = &apos;clsa-inhome.InHome_3:&apos;
+var sections = {
+&apos;CAG&apos;:[
+&apos;CAG_HLT_COM&apos;,
+&apos;CAG_PPL_COM&apos;,
+&apos;CAG_MOST_COM&apos;,
+&apos;CAG_GNDR_COM&apos;,
+&apos;CAG_RELN_COM&apos;,
+&apos;CAG_WEEK_COM&apos;,
+&apos;CAG_HRWK_COM&apos;],
+&apos;CR1&apos;:[
+&apos;CR1_PRO_COM&apos;,
+&apos;CR1_MOST_COM&apos;,
+&apos;CR1_PAY_COM&apos;,
+&apos;CR1_FRQ_COM&apos;,
+&apos;CR1_HOUR_COM&apos;],
+&apos;CR2&apos;:[
+&apos;CR2_FAM_COM&apos;,
+&apos;CR2_NMBR_COM&apos;,
+&apos;CR2_WKALL_COM&apos;,
+&apos;CR2_HOUR_COM&apos;,
+&apos;CR2_MOST_COM&apos;,
+&apos;CR2_PERS_COM&apos;,
+&apos;CR2_GNDR_COM&apos;,
+&apos;CR2_NAME_COM&apos;,
+&apos;CR2_AGE_COM&apos;,
+&apos;CR2_RELN_COM&apos;,
+&apos;CR2_DUR_COM&apos;,
+&apos;CR2_WKMST_COM&apos;,
+&apos;CR2_HRWK_COM&apos;,
+&apos;CR2_DEVC_COM&apos;,
+&apos;CR2_HIP_COM&apos;],
+&apos;FAL&apos;:[
+&apos;FAL_NMBR_COM&apos;,
+&apos;FAL_MOST_COM&apos;,
+&apos;FAL_ATTN_COM&apos;,
+&apos;FAL_HOSP_COM&apos;,
+&apos;FAL_FU_COM&apos;,
+&apos;FAL_WHERE_COM&apos;,
+&apos;FAL_HOW_COM&apos;,
+&apos;FAL_DV_CN_COM&apos;,
+&apos;FAL_DV_WC_COM&apos;,
+&apos;FAL_DV_SC_COM&apos;,
+&apos;FAL_DV_WK_COM&apos;,
+&apos;FAL_DV_LG_COM&apos;,
+&apos;FAL_DV_HD_COM&apos;,
+&apos;FAL_DV_BR_COM&apos;,
+&apos;FAL_DV_BT_COM&apos;,
+&apos;FAL_DV_LT_COM&apos;,
+&apos;FAL_DV_GR_COM&apos;,
+&apos;FAL_DV_UT_COM&apos;,
+&apos;FAL_DV_AL_COM&apos;,
+&apos;FAL_DV_OT_COM&apos;,
+&apos;FAL_DVCTR_CN_COM&apos;,
+&apos;FAL_DVCTR_WC_COM&apos;,
+&apos;FAL_DVCTR_SC_COM&apos;,
+&apos;FAL_DVCTR_WK_COM&apos;,
+&apos;FAL_DVCTR_LG_COM&apos;,
+&apos;FAL_DVCTR_HD_COM&apos;,
+&apos;FAL_DVCTR_BR_COM&apos;,
+&apos;FAL_DVCTR_BT_COM&apos;,
+&apos;FAL_DVCTR_LT_COM&apos;,
+&apos;FAL_DVCTR_GR_COM&apos;,
+&apos;FAL_DVCTR_UT_COM&apos;,
+&apos;FAL_DVCTR_AL_COM&apos;,
+&apos;FAL_DVCTR_OT_COM&apos;,
+&apos;FAL_DVDSC_COM&apos;,
+&apos;FAL_LDR_COM&apos;,
+&apos;FAL_LDRDSC_COM&apos;,
+&apos;FAL_STL_COM&apos;,
+&apos;FAL_STLDSC_COM&apos;,
+&apos;FAL_BED_COM&apos;,
+&apos;FAL_BDDSC_COM&apos;,
+&apos;FAL_CHR_COM&apos;,
+&apos;FAL_CHDSC_COM&apos;,
+&apos;FAL_FURN_COM&apos;,
+&apos;FAL_FRNDSC_COM&apos;,
+&apos;FAL_RUG_COM&apos;,
+&apos;FAL_RGDSC_COM&apos;,
+&apos;FAL_FLR_COM&apos;,
+&apos;FAL_FLDSC_COM&apos;,
+&apos;FAL_ELEC_COM&apos;,
+&apos;FAL_ELDSC_COM&apos;,
+&apos;FAL_FOOT_COM&apos;,
+&apos;FAL_FTDSC_COM&apos;,
+&apos;FAL_CLTH_COM&apos;,
+&apos;FAL_CLDSC_COM&apos;,
+&apos;FAL_TOY_COM&apos;,
+&apos;FAL_TOYDSC_COM&apos;,
+&apos;FAL_YRD_COM&apos;,
+&apos;FAL_YRDDSC_COM&apos;,
+&apos;FAL_BIKE_COM&apos;,
+&apos;FAL_BKDSC_COM&apos;,
+&apos;FAL_SPRT_COM&apos;,
+&apos;FAL_SPRTDSC_COM&apos;,
+&apos;FAL_ELSE_COM&apos;,
+&apos;FAL_ELSEDSC_COM&apos;],
+&apos;INC&apos;:[
+&apos;INC_SRCE_COM&apos;,
+&apos;INC_FRST_COM&apos;,
+&apos;INC_SCND_COM&apos;,
+&apos;INC_THRD_COM&apos;,
+&apos;INC_TOT_COM&apos;,
+&apos;INC_PSRCE_COM&apos;,
+&apos;INC_PFRST_COM&apos;,
+&apos;INC_PSCND_COM&apos;,
+&apos;INC_PTHRD_COM&apos;,
+&apos;INC_PTOT_COM&apos;],
+&apos;INJ&apos;:[
+&apos;INJ_OCC_COM&apos;,
+&apos;INJ_NMBR_COM&apos;,
+&apos;INJ_CAUS_COM&apos;,
+&apos;INJ_HOW_COM&apos;,
+&apos;INJ_WHR_COM&apos;,
+&apos;INJ_ACT_COM&apos;,
+&apos;INJ_TYPE_COM&apos;,
+&apos;INJ_BRKN_COM&apos;,
+&apos;INJ_SITE_COM&apos;],
+&apos;LBF&apos;:[
+&apos;LBF_EVER_COM&apos;,
+&apos;LBF_CURR_COM&apos;,
+&apos;LBF_MANY_COM&apos;,
+&apos;LBF_STTS_COM&apos;,
+&apos;LBF_SCHD_COM&apos;,
+&apos;LBF_TYPE_COM&apos;,
+&apos;LBF_BUSN_COM&apos;,
+&apos;LBF_DURN_COM&apos;,
+&apos;LBF_RSN_COM&apos;,
+&apos;LBF_UNEM_COM&apos;,
+&apos;LBF_NVR_COM&apos;,
+&apos;LBF_LGEVER_COM&apos;,
+&apos;LBF_LGSTAT_COM&apos;,
+&apos;LBF_LGSCHD_COM&apos;,
+&apos;LBF_LGTYPE_COM&apos;,
+&apos;LBF_LGIND_COM&apos;,
+&apos;LBF_LGDURN_COM&apos;],
+&apos;LFP&apos;:[
+&apos;LFP_LAST_COM&apos;,
+&apos;LFP_YRS_COM&apos;,
+&apos;LFP_HRWK_COM&apos;,
+&apos;LFP_SCHD_COM&apos;,
+&apos;LFP_TYPE_COM&apos;,
+&apos;LFP_IND_COM&apos;,
+&apos;LFP_LNGST_COM&apos;,
+&apos;LFP_LGPAY_COM&apos;,
+&apos;LFP_LGHR_COM&apos;,
+&apos;LFP_LGSCHD_COM&apos;,
+&apos;LFP_LGTYPE_COM&apos;,
+&apos;LFP_LGIND_COM&apos;,
+&apos;LFP_LGYRS_COM&apos;],
+&apos;MEDI&apos;:[
+&apos;MEDI_COM&apos;,
+&apos;MEDI_PRES_1_COM&apos;,
+&apos;MEDI_Q_1_COM&apos;,
+&apos;MEDI_DOSE_FRQ_1_COM&apos;,
+&apos;MEDI_DOSAGE_1_COM&apos;,
+&apos;MEDI_ID_2_COM&apos;,
+&apos;MEDI_PRES_2_COM&apos;,
+&apos;MEDI_Q_2_COM&apos;,
+&apos;MEDI_DOSE_FRQ_2_COM&apos;,
+&apos;MEDI_DOSAGE_2_COM&apos;,
+&apos;MED_USE1_2_COM&apos;,
+&apos;MEDI_USE2_2_COM&apos;,
+&apos;MEDI_START_2_COM&apos;,
+&apos;MEDI_REASON_2_COM&apos;,
+&apos;MEDI_ID_3_COM&apos;,
+&apos;MEDI_PRES_3_COM&apos;,
+&apos;MEDI_Q_3_COM&apos;,
+&apos;MEDI_DOSE_FRQ_3_COM&apos;,
+&apos;MEDI_DOSAGE_3_COM&apos;,
+&apos;MED_USE1_3_COM&apos;,
+&apos;MEDI_USE2_3_COM&apos;,
+&apos;MEDI_START_3_COM&apos;,
+&apos;MEDI_REASON_3_COM&apos;,
+&apos;MEDI_ID_4_COM&apos;,
+&apos;MEDI_PRES_4_COM&apos;,
+&apos;MEDI_Q_4_COM&apos;,
+&apos;MEDI_DOSE_FRQ_4_COM&apos;,
+&apos;MEDI_DOSAGE_4_COM&apos;,
+&apos;MED_USE1_4_COM&apos;,
+&apos;MEDI_USE2_4_COM&apos;,
+&apos;MEDI_START_4_COM&apos;,
+&apos;MEDI_REASON_4_COM&apos;,
+&apos;MEDI_ID_5_COM&apos;,
+&apos;MEDI_PRES_5_COM&apos;,
+&apos;MEDI_Q_5_COM&apos;,
+&apos;MEDI_DOSE_FRQ_5_COM&apos;,
+&apos;MEDI_DOSAGE_5_COM&apos;,
+&apos;MED_USE1_5_COM&apos;,
+&apos;MEDI_USE2_5_COM&apos;,
+&apos;MEDI_START_5_COM&apos;,
+&apos;MEDI_REASON_5_COM&apos;,
+&apos;MEDI_ID_6_COM&apos;,
+&apos;MEDI_PRES_6_COM&apos;,
+&apos;MEDI_Q_6_COM&apos;,
+&apos;MEDI_DOSE_FRQ_6_COM&apos;,
+&apos;MEDI_DOSAGE_6_COM&apos;,
+&apos;MED_USE1_6_COM&apos;,
+&apos;MEDI_USE2_6_COM&apos;,
+&apos;MEDI_START_6_COM&apos;,
+&apos;MEDI_REASON_6_COM&apos;,
+&apos;MEDI_ID_7_COM&apos;,
+&apos;MEDI_PRES_7_COM&apos;,
+&apos;MEDI_Q_7_COM&apos;,
+&apos;MEDI_DOSE_FRQ_7_COM&apos;,
+&apos;MEDI_DOSAGE_7_COM&apos;,
+&apos;MED_USE1_7_COM&apos;,
+&apos;MEDI_USE2_7_COM&apos;,
+&apos;MEDI_START_7_COM&apos;,
+&apos;MEDI_REASON_7_COM&apos;,
+&apos;MEDI_ID_8_COM&apos;,
+&apos;MEDI_PRES_8_COM&apos;,
+&apos;MEDI_Q_8_COM&apos;,
+&apos;MEDI_DOSE_FRQ_8_COM&apos;,
+&apos;MEDI_DOSAGE_8_COM&apos;,
+&apos;MED_USE1_8_COM&apos;,
+&apos;MEDI_USE2_8_COM&apos;,
+&apos;MEDI_START_8_COM&apos;,
+&apos;MEDI_REASON_8_COM&apos;,
+&apos;MEDI_ID_9_COM&apos;,
+&apos;MEDI_PRES_9_COM&apos;,
+&apos;MEDI_Q_9_COM&apos;,
+&apos;MEDI_DOSE_FRQ_9_COM&apos;,
+&apos;MEDI_DOSAGE_9&apos;,
+&apos;MED_USE1_9&apos;,
+&apos;MEDI_USE2_9_COM&apos;,
+&apos;MEDI_START_9_COM&apos;,
+&apos;MEDI_REASON_9_COM&apos;,
+&apos;MEDI_ID_10_COM&apos;,
+&apos;MEDI_PRES_10_COM&apos;,
+&apos;MEDI_Q_10_COM&apos;,
+&apos;MEDI_DOSE_FRQ_10_COM&apos;,
+&apos;MEDI_DOSAGE_10_COM&apos;,
+&apos;MED_USE1_10_COM&apos;,
+&apos;MEDI_USE2_10_COM&apos;,
+&apos;MEDI_START_10_COM&apos;,
+&apos;MEDI_REASON_10_COM&apos;,
+&apos;MEDI_ID_11_COM&apos;,
+&apos;MEDI_PRES_11_COM&apos;,
+&apos;MEDI_Q_11_COM&apos;,
+&apos;MEDI_DOSE_FRQ_11_COM&apos;,
+&apos;MEDI_DOSAGE_11_COM&apos;,
+&apos;MED_USE1_11_COM&apos;,
+&apos;MEDI_USE2_11_COM&apos;,
+&apos;MEDI_START_11_COM&apos;,
+&apos;MEDI_REASON_11_COM&apos;,
+&apos;MEDI_ID_12_COM&apos;,
+&apos;MEDI_PRES_12_COM&apos;,
+&apos;MEDI_Q_12_COM&apos;,
+&apos;MEDI_DOSE_FRQ_12_COM&apos;,
+&apos;MEDI_DOSAGE_12_COM&apos;,
+&apos;MED_USE1_12_COM&apos;,
+&apos;MEDI_USE2_12_COM&apos;,
+&apos;MEDI_START_12_COM&apos;,
+&apos;MEDI_REASON_12_COM&apos;,
+&apos;MEDI_ID_13_COM&apos;,
+&apos;MEDI_PRES_13_COM&apos;,
+&apos;MEDI_Q_13_COM&apos;,
+&apos;MEDI_DOSE_FRQ_13_COM&apos;,
+&apos;MEDI_DOSAGE_13_COM&apos;,
+&apos;MED_USE1_13_COM&apos;,
+&apos;MEDI_USE2_13_COM&apos;,
+&apos;MEDI_START_13_COM&apos;,
+&apos;MEDI_REASON_13_COM&apos;,
+&apos;MEDI_ID_14_COM&apos;,
+&apos;MEDI_PRES_14_COM&apos;,
+&apos;MEDI_Q_14_COM&apos;,
+&apos;MEDI_DOSE_FRQ_14_COM&apos;,
+&apos;MEDI_DOSAGE_14_COM&apos;,
+&apos;MED_USE1_14_COM&apos;,
+&apos;MEDI_USE2_14_COM&apos;,
+&apos;MEDI_START_14_COM&apos;,
+&apos;MEDI_REASON_14_COM&apos;,
+&apos;MEDI_ID_15_COM&apos;,
+&apos;MEDI_PRES_15_COM&apos;,
+&apos;MEDI_Q_15_COM&apos;,
+&apos;MEDI_DOSE_FRQ_15_COM&apos;,
+&apos;MEDI_DOSAGE_15_COM&apos;,
+&apos;MED_USE1_15_COM&apos;,
+&apos;MEDI_USE2_15_COM&apos;,
+&apos;MEDI_START_15_COM&apos;,
+&apos;MEDI_REASON_15_COM&apos;,
+&apos;MEDI_ID_16_COM&apos;,
+&apos;MEDI_PRES_16_COM&apos;,
+&apos;MEDI_Q_16_COM&apos;,
+&apos;MEDI_DOSE_FRQ_16_COM&apos;,
+&apos;MEDI_DOSAGE_16_COM&apos;,
+&apos;MED_USE1_16_COM&apos;,
+&apos;MEDI_USE2_16_COM&apos;,
+&apos;MEDI_START_16_COM&apos;,
+&apos;MEDI_REASON_16_COM&apos;,
+&apos;MEDI_ID_17_COM&apos;,
+&apos;MEDI_PRES_17_COM&apos;,
+&apos;MEDI_Q_17_COM&apos;,
+&apos;MEDI_DOSE_FRQ_17_COM&apos;,
+&apos;MEDI_DOSAGE_17_COM&apos;,
+&apos;MED_USE1_17_COM&apos;,
+&apos;MEDI_USE2_17_COM&apos;,
+&apos;MEDI_START_17_COM&apos;,
+&apos;MEDI_REASON_17_COM&apos;,
+&apos;MEDI_ID_18_COM&apos;,
+&apos;MEDI_PRES_18_COM&apos;,
+&apos;MEDI_Q_18_COM&apos;,
+&apos;MEDI_DOSE_FRQ_18_COM&apos;,
+&apos;MEDI_DOSAGE_18_COM&apos;,
+&apos;MED_USE1_18_COM&apos;,
+&apos;MEDI_USE2_18_COM&apos;,
+&apos;MEDI_START_18_COM&apos;,
+&apos;MEDI_REASON_18_COM&apos;,
+&apos;MEDI_ID_19_COM&apos;,
+&apos;MEDI_PRES_19_COM&apos;,
+&apos;MEDI_Q_19_COM&apos;,
+&apos;MEDI_DOSE_FRQ_19_COM&apos;,
+&apos;MEDI_DOSAGE_19_COM&apos;,
+&apos;MED_USE1_19_COM&apos;,
+&apos;MEDI_USE2_19_COM&apos;,
+&apos;MEDI_START_19_COM&apos;,
+&apos;MEDI_REASON_19_COM&apos;,
+&apos;MEDI_ID_20_COM&apos;,
+&apos;MEDI_PRES_20_COM&apos;,
+&apos;MEDI_Q_20_COM&apos;,
+&apos;MEDI_DOSE_FRQ_20_COM&apos;,
+&apos;MEDI_DOSAGE_20_COM&apos;,
+&apos;MED_USE1_20_COM&apos;,
+&apos;MEDI_USE2_20_COM&apos;,
+&apos;MEDI_START_20_COM&apos;,
+&apos;MEDI_REASON_20_COM&apos;,
+&apos;MEDI_ID_21_COM&apos;,
+&apos;MEDI_PRES_21_COM&apos;,
+&apos;MEDI_Q_21_COM&apos;,
+&apos;MEDI_DOSE_FRQ_21_COM&apos;,
+&apos;MEDI_DOSAGE_21_COM&apos;,
+&apos;MED_USE1_21_COM&apos;,
+&apos;MEDI_USE2_21_COM&apos;,
+&apos;MEDI_START_21_COM&apos;,
+&apos;MEDI_REASON_21_COM&apos;,
+&apos;MEDI_ID_22_COM&apos;,
+&apos;MEDI_PRES_22_COM&apos;,
+&apos;MEDI_Q_22_COM&apos;,
+&apos;MEDI_DOSE_FRQ_22_COM&apos;,
+&apos;MEDI_DOSAGE_22_COM&apos;,
+&apos;MED_USE1_22_COM&apos;,
+&apos;MEDI_USE2_22_COM&apos;,
+&apos;MEDI_START_22_COM&apos;,
+&apos;MEDI_REASON_22_COM&apos;,
+&apos;MEDI_ID_23_COM&apos;,
+&apos;MEDI_PRES_23_COM&apos;,
+&apos;MEDI_Q_23_COM&apos;,
+&apos;MEDI_DOSE_FRQ_23_COM&apos;,
+&apos;MEDI_DOSAGE_23_COM&apos;,
+&apos;MED_USE1_23_COM&apos;,
+&apos;MEDI_USE2_23_COM&apos;,
+&apos;MEDI_START_23_COM&apos;,
+&apos;MEDI_REASON_23_COM&apos;,
+&apos;MEDI_ID_24_COM&apos;,
+&apos;MEDI_PRES_24_COM&apos;,
+&apos;MEDI_Q_24_COM&apos;,
+&apos;MEDI_DOSE_FRQ_24_COM&apos;,
+&apos;MEDI_DOSAGE_24_COM&apos;,
+&apos;MED_USE1_24_COM&apos;,
+&apos;MEDI_USE2_24_COM&apos;,
+&apos;MEDI_START_24_COM&apos;,
+&apos;MEDI_REASON_24_COM&apos;,
+&apos;MEDI_ID_25_COM&apos;,
+&apos;MEDI_PRES_25_COM&apos;,
+&apos;MEDI_Q_25_COM&apos;,
+&apos;MEDI_DOSE_FRQ_25_COM&apos;,
+&apos;MEDI_DOSAGE_25_COM&apos;,
+&apos;MED_USE1_25_COM&apos;,
+&apos;MEDI_USE2_25_COM&apos;,
+&apos;MEDI_START_25_COM&apos;,
+&apos;MEDI_REASON_25_COM&apos;,
+&apos;MEDI_ID_26_COM&apos;,
+&apos;MEDI_PRES_26_COM&apos;,
+&apos;MEDI_Q_26_COM&apos;,
+&apos;MEDI_DOSE_FRQ_26_COM&apos;,
+&apos;MEDI_DOSAGE_26_COM&apos;,
+&apos;MED_USE1_26_COM&apos;,
+&apos;MEDI_USE2_26_COM&apos;,
+&apos;MEDI_START_26_COM&apos;,
+&apos;MEDI_REASON_26_COM&apos;,
+&apos;MEDI_ID_27_COM&apos;,
+&apos;MEDI_PRES_27_COM&apos;,
+&apos;MEDI_Q_27_COM&apos;,
+&apos;MEDI_DOSE_FRQ_27_COM&apos;,
+&apos;MEDI_DOSAGE_27_COM&apos;,
+&apos;MED_USE1_27_COM&apos;,
+&apos;MEDI_USE2_27_COM&apos;,
+&apos;MEDI_START_27_COM&apos;,
+&apos;MEDI_REASON_27_COM&apos;,
+&apos;MEDI_ID_28_COM&apos;,
+&apos;MEDI_PRES_28_COM&apos;,
+&apos;MEDI_Q_28_COM&apos;,
+&apos;MEDI_DOSE_FRQ_28_COM&apos;,
+&apos;MEDI_DOSAGE_28_COM&apos;,
+&apos;MED_USE1_28_COM&apos;,
+&apos;MEDI_USE2_28_COM&apos;,
+&apos;MEDI_START_28_COM&apos;,
+&apos;MEDI_REASON_28_COM&apos;,
+&apos;MEDI_ID_29_COM&apos;,
+&apos;MEDI_PRES_29_COM&apos;,
+&apos;MEDI_Q_29_COM&apos;,
+&apos;MEDI_DOSE_FRQ_29_COM&apos;,
+&apos;MEDI_DOSAGE_29_COM&apos;,
+&apos;MED_USE1_29_COM&apos;,
+&apos;MEDI_USE2_29_COM&apos;,
+&apos;MEDI_START_29_COM&apos;,
+&apos;MEDI_REASON_29_COM&apos;,
+&apos;MEDI_ID_30_COM&apos;,
+&apos;MEDI_PRES_30_COM&apos;,
+&apos;MEDI_Q_30_COM&apos;,
+&apos;MEDI_DOSE_FRQ_30_COM&apos;,
+&apos;MEDI_DOSAGE_30_COM&apos;,
+&apos;MED_USE1_30_COM&apos;,
+&apos;MEDI_USE2_30_COM&apos;,
+&apos;MEDI_START_30_COM&apos;,
+&apos;MEDI_REASON_30_COM&apos;,
+&apos;MEDI_ID_31_COM&apos;,
+&apos;MEDI_PRES_31_COM&apos;,
+&apos;MEDI_Q_31_COM&apos;,
+&apos;MEDI_DOSE_FRQ_31_COM&apos;,
+&apos;MEDI_DOSAGE_31_COM&apos;,
+&apos;MED_USE1_31_COM&apos;,
+&apos;MEDI_USE2_31_COM&apos;,
+&apos;MEDI_START_31_COM&apos;,
+&apos;MEDI_REASON_31_COM&apos;,
+&apos;MEDI_ID_32_COM&apos;,
+&apos;MEDI_PRES_32_COM&apos;,
+&apos;MEDI_Q_32_COM&apos;,
+&apos;MEDI_DOSE_FRQ_32_COM&apos;,
+&apos;MEDI_DOSAGE_32_COM&apos;,
+&apos;MED_USE1_32_COM&apos;,
+&apos;MEDI_USE2_32_COM&apos;,
+&apos;MEDI_START_32_COM&apos;,
+&apos;MEDI_REASON_32_COM&apos;,
+&apos;MEDI_ID_33_COM&apos;,
+&apos;MEDI_PRES_33_COM&apos;,
+&apos;MEDI_Q_33_COM&apos;,
+&apos;MEDI_DOSE_FRQ_33_COM&apos;,
+&apos;MEDI_DOSAGE_33_COM&apos;,
+&apos;MED_USE1_33_COM&apos;,
+&apos;MEDI_USE2_33_COM&apos;,
+&apos;MEDI_START_33_COM&apos;,
+&apos;MEDI_REASON_33_COM&apos;,
+&apos;MEDI_ID_34_COM&apos;,
+&apos;MEDI_PRES_34_COM&apos;,
+&apos;MEDI_Q_34_COM&apos;,
+&apos;MEDI_DOSE_FRQ_34_COM&apos;,
+&apos;MEDI_DOSAGE_34_COM&apos;,
+&apos;MED_USE1_34_COM&apos;,
+&apos;MEDI_USE2_34_COM&apos;,
+&apos;MEDI_START_34_COM&apos;,
+&apos;MEDI_REASON_34_COM&apos;,
+&apos;MEDI_ID_35_COM&apos;,
+&apos;MEDI_PRES_35_COM&apos;,
+&apos;MEDI_Q_35_COM&apos;,
+&apos;MEDI_DOSE_FRQ_35_COM&apos;,
+&apos;MEDI_DOSAGE_35_COM&apos;,
+&apos;MED_USE1_35_COM&apos;,
+&apos;MEDI_USE2_35_COM&apos;,
+&apos;MEDI_START_35_COM&apos;,
+&apos;MEDI_REASON_35_COM&apos;,
+&apos;MEDI_ID_36_COM&apos;,
+&apos;MEDI_PRES_36_COM&apos;,
+&apos;MEDI_Q_36_COM&apos;,
+&apos;MEDI_DOSE_FRQ_36_COM&apos;,
+&apos;MEDI_DOSAGE_36_COM&apos;,
+&apos;MED_USE1_36_COM&apos;,
+&apos;MEDI_USE2_36_COM&apos;,
+&apos;MEDI_START_36_COM&apos;,
+&apos;MEDI_REASON_36_COM&apos;,
+&apos;MEDI_ID_37_COM&apos;,
+&apos;MEDI_PRES_37_COM&apos;,
+&apos;MEDI_Q_37_COM&apos;,
+&apos;MEDI_DOSE_FRQ_37_COM&apos;,
+&apos;MEDI_DOSAGE_37_COM&apos;,
+&apos;MED_USE1_37_COM&apos;,
+&apos;MEDI_USE2_37_COM&apos;,
+&apos;MEDI_START_37_COM&apos;,
+&apos;MEDI_REASON_37_COM&apos;,
+&apos;MEDI_ID_38_COM&apos;,
+&apos;MEDI_PRES_38_COM&apos;,
+&apos;MEDI_Q_38_COM&apos;,
+&apos;MEDI_DOSE_FRQ_38_COM&apos;,
+&apos;MEDI_DOSAGE_38_COM&apos;,
+&apos;MED_USE1_38_COM&apos;,
+&apos;MEDI_USE2_38_COM&apos;,
+&apos;MEDI_START_38_COM&apos;,
+&apos;MEDI_REASON_38_COM&apos;,
+&apos;MEDI_ID_39_COM&apos;,
+&apos;MEDI_PRES_39_COM&apos;,
+&apos;MEDI_Q_39_COM&apos;,
+&apos;MEDI_DOSE_FRQ_39_COM&apos;,
+&apos;MEDI_DOSAGE_39_COM&apos;,
+&apos;MED_USE1_39_COM&apos;,
+&apos;MEDI_USE2_39_COM&apos;,
+&apos;MEDI_START_39_COM&apos;,
+&apos;MEDI_REASON_39_COM&apos;,
+&apos;MEDI_ID_40_COM&apos;,
+&apos;MEDI_PRES_40_COM&apos;,
+&apos;MEDI_Q_40_COM&apos;,
+&apos;MEDI_DOSE_FRQ_40_COM&apos;,
+&apos;MEDI_DOSAGE_40_COM&apos;,
+&apos;MED_USE1_40_COM&apos;,
+&apos;MEDI_USE2_40_COM&apos;,
+&apos;MEDI_START_40_COM&apos;,
+&apos;MEDI_REASON_40_COM&apos;],
+&apos;RET&apos;:[
+&apos;RET_RTRD_COM&apos;,
+&apos;RET_RTRN_COM&apos;,
+&apos;RET_SPSE_COM&apos;,
+&apos;RET_AGE_COM&apos;,
+&apos;RET_WHY_COM&apos;],
+&apos;RPL&apos;:[
+&apos;RPL_AGE_COM&apos;]  
+}
+
+var str = []
+for(var key in sections) {
+  var rcount = 0
+  var qcount = 0
+  var arr = sections[key]
+  for(var i = 0; i &lt; arr.length; i++) {
+    var j = $(stage + arr[i])
+    if(j.isNull().value()) {
+      continue
+    }  
+    qcount++
+    rcount += j.any(&apos;REFUSED&apos;).value() ? 1 : 0
+  }
+  if(0 == qcount) {
+    str.push(null)
+  } else {
+    str.push(100.0*rcount/qcount)
+  }
+}
+newSequence(str, &apos;decimal&apos;)</attribute>
+        </attributes>
+      </variable>
+      <variable name="meta_module_duration" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0" repeatable="true" occurrenceGroup="">
+        <attributes>
+          <attribute name="script" valueType="text">var res = null
+if($this(&apos;meta_stage_duration&apos;).isNull().not().value()) {
+  var stage = &apos;InHome_3&apos;
+  var list = $this(&apos;meta_module_name&apos;)
+  var str = []
+  var section = $(&apos;clsa-inhome.&apos;+stage+&apos;:QuestionnaireMetric.section&apos;).asSequence()
+  var duration = $(&apos;clsa-inhome.&apos;+stage+&apos;:QuestionnaireMetric.duration&apos;).asSequence()
+  for(var i = 0; i &lt; list.size(); i++) {
+    str.push(
+      duration.filter(
+        function(v, k) {
+          return list.valueAt(i).eq(section.valueAt(k))
+        }
+      ).asSequence().sum()
+    )
+  }
+  res = newSequence(str, &apos;integer&apos;)
+} else {
+  var str = []
+  for(var i = 0; i &lt; $this(&apos;meta_module_name&apos;).size(); i++) str.push(null)
+  res = newSequence(str,&apos;integer&apos;)
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="meta_stage_duration" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var stage = &apos;InHome_3&apos;
+var res = null
+var post = $(&apos;clsa-inhome.&apos;+stage+&apos;:QuestionnaireRun.timeEnd&apos;)
+var pre = $(&apos;clsa-inhome.&apos;+stage+&apos;:QuestionnaireRun.timeStart&apos;)
+if(pre.before(post).value()) {
+    res = post.time().minus(pre.time()).div(1000)
+}
+if(null === res) {
+  res = $group(
+    &apos;clsa-inhome.Participants:Admin.StageInstance.stage&apos;,
+    stage,
+    &apos;Admin.StageInstance.duration&apos;).asSequence().sum()
+}
+if(res.eq(0).value()) res = null
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="meta_module_name" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0" repeatable="true" occurrenceGroup="">
+        <attributes>
+          <attribute name="script" valueType="text">newSequence([&apos;ADM&apos;,&apos;CAG&apos;,&apos;CR1&apos;,&apos;CR2&apos;,&apos;FAL&apos;,&apos;INC&apos;,&apos;INJ&apos;,&apos;LBF&apos;,&apos;LFP&apos;,&apos;MEDI&apos;,&apos;RET&apos;,&apos;RPL&apos;], &apos;text&apos;)</attribute>
+        </attributes>
+      </variable>
+    </variables>
+  </variables>
+  <created valueType="datetime">2019-04-10T16:30:14.797-04</created>
+  <updated valueType="datetime">2019-05-01T11:11:00.116-04</updated>
+</org.obiba.magma.views.View>

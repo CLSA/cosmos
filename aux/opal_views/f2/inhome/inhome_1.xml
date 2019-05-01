@@ -1,0 +1,365 @@
+<org.obiba.magma.views.View>
+  <name>QC_F2_inhome_1</name>
+  <from class="org.obiba.magma.views.JoinTable">
+    <list>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-inhome-f2.Participants</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-inhome-f2.InHome_1</reference>
+      </table>
+    </list>
+  </from>
+  <select class="org.obiba.magma.views.support.NoneClause"/>
+  <where class="org.obiba.magma.views.support.AllClause"/>
+  <variables class="org.obiba.magma.js.views.VariablesClause">
+    <variables class="linked-hash-set">
+      <variable name="technician" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;clsa-inhome-f2.InHome_1:QuestionnaireRun.user&apos;).whenNull(
+  $group(&apos;Admin.Action.stage&apos;,&apos;InHome_1&apos;,&apos;Admin.Action.user&apos;).asSequence().last()).lowerCase()</attribute>
+        </attributes>
+      </variable>
+      <variable name="skip" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var action = $group(&apos;Admin.Action.stage&apos;,&apos;InHome_1&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
+var res = $group(&apos;Admin.Action.stage&apos;,&apos;InHome_1&apos;,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
+  return i == action.indexOf(&apos;SKIP&apos;)
+  }).last()
+if(res.isNull().not().value()) {
+  res = newValue(res.value().slice(14),&apos;text&apos;)  
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="contraindicated" valueType="boolean" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$group(&apos;clsa-inhome-f2.Participants:Admin.StageInstance.stage&apos;,&apos;InHome_1&apos;,
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;)</attribute>
+        </attributes>
+      </variable>
+      <variable name="comment" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">// this script compounds repeated comments by using lowercase comment strings as array keys
+//
+var stage = &apos;InHome_1&apos;
+var c_seq = $group(&apos;Admin.Action.stage&apos;,stage,&apos;Admin.Action.comment&apos;).asSequence()
+var e_seq = $group(&apos;Admin.Action.stage&apos;,stage,&apos;Admin.Action.eventReason&apos;).asSequence()
+var res = null
+if(c_seq.size().eq(e_seq.size()).value())
+{
+  var c_str = []  // string array of comments
+  var e_str = []  // string array of event reasons
+
+  for(var i = 0; i &lt; c_seq.size(); i++) {
+    var c = c_seq.valueAt(i).value()
+    if(null == c) continue
+    c = c.replace(/[^a-zA-Z0-9 àâäèéêëîïôœùûüÿçÀÂÄÈÉÊËÎÏÔŒÙÛÜŸÇ]/g,&quot;&quot;)
+    var e = e_seq.valueAt(i).value()
+    if(0 &lt; c.length) {
+      c_str.push(c)
+      if(null != e &amp;&amp; 0 &lt; e.length) {
+        e = e.slice(14)
+      } else {
+        e = &apos;SeeComment&apos;
+      }
+      e_str.push(e)
+    }
+  }
+
+  if(0 &lt; c_str.length) {
+    var arr = []  // array of event reasons
+    var key_orig = []  // array of lower cased comments as unique keys
+    for(var i = 0; i &lt; c_str.length; i++) {
+      var key = c_str[i]
+      var key_lower = key.toLowerCase()
+      // retain the first encountered instance of the comment
+      //
+      if(undefined === key_orig[key_lower])
+        key_orig[key_lower] = key
+
+      if(undefined === arr[e_str[i]])
+        arr[e_str[i]] = []
+
+      if(-1===arr[e_str[i]].indexOf(key_orig[key_lower]))
+        arr[e_str[i]].push(key_orig[key_lower])
+    }
+
+    // loop over the final array of event reasons and their sets of comments
+    //
+    var str = &apos;{&apos;
+    for(var key in arr) {
+      str += &apos;&quot;&apos; + key + &apos;&quot;:[&apos;
+      var t = []
+      for(var i = 0; i &lt; arr[key].length; i++) {
+        t.push(&apos;&quot;&apos; + arr[key][i] + &apos;&quot;&apos;)
+      }
+      str += t.join(&apos;,&apos;) + &apos;],&apos;
+    }
+
+    res = newValue(str.substring(0,str.length-1)+&apos;}&apos;,&apos;text&apos;)
+  }
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="qnaire_complete" valueType="decimal" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var stage = &apos;InHome_1&apos;
+var p = $(&apos;clsa-inhome-f2.&apos; + stage + &apos;:QuestionnaireMetric.missingCount&apos;).asSequence()
+var q = $(&apos;clsa-inhome-f2.&apos; + stage + &apos;:QuestionnaireMetric.questionCount&apos;).asSequence()
+var res = null
+if(p.isNull().or(q.isNull(),q.sum().eq(0)).not().value()) {
+  res = q.sum().minus(p.sum()).multiply(100).div(q.sum())
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="missing" valueType="boolean" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$this(&apos;contraindicated&apos;).not().and(
+  $this(&apos;skip&apos;).isNull(),
+  $this(&apos;qnaire_complete&apos;).isNull(),
+  $this(&apos;meta_stage_duration&apos;).isNull())</attribute>
+        </attributes>
+      </variable>
+      <variable name="duration_name" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0" repeatable="true" occurrenceGroup="">
+        <attributes>
+          <attribute name="script" valueType="text">newSequence([&apos;stage&apos;], &apos;text&apos;).append($this(&apos;meta_module_name&apos;))</attribute>
+        </attributes>
+      </variable>
+      <variable name="duration_value" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0" repeatable="true" occurrenceGroup="">
+        <attributes>
+          <attribute name="script" valueType="text">newSequence($this(&apos;meta_stage_duration&apos;),&apos;integer&apos;).append($this(&apos;meta_module_duration&apos;))</attribute>
+        </attributes>
+      </variable>
+      <variable name="refusal_name" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0" repeatable="true" occurrenceGroup="">
+        <attributes>
+          <attribute name="script" valueType="text">$this(&apos;meta_module_name&apos;)</attribute>
+        </attributes>
+      </variable>
+      <variable name="refusal_value" valueType="decimal" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0" repeatable="true" occurrenceGroup="">
+        <attributes>
+          <attribute name="script" valueType="text">var stage = &apos;clsa-inhome-f2.InHome_1:&apos;
+var sections = {
+&apos;AGE&apos;:[
+&apos;AGE_ASK_COF2&apos;,
+&apos;SEX_ASK_COF2&apos;],
+&apos;ALC&apos;:[
+&apos;ALC_FREQ_COF2&apos;,
+&apos;ALC_RDWK_COF2&apos;,
+&apos;ALC_WHWK_COF2&apos;,
+&apos;ALC_BRWK_COF2&apos;,
+&apos;ALC_LQRWK_COF2&apos;,
+&apos;ALC_OTWK_COF2&apos;,
+&apos;ALC_WERD_COF2&apos;,
+&apos;ALC_WEWH_COF2&apos;,
+&apos;ALC_WEBR_COF2&apos;,
+&apos;ALC_WELQR_COF2&apos;,
+&apos;ALC_WEOT_COF2&apos;,
+&apos;ALC_MLFQ_COF2&apos;,
+&apos;ALC_FMFQ_COF2&apos;,
+&apos;ALC_HVST_COF2&apos;],
+&apos;ED&apos;:[
+&apos;ED_OTED_COF2&apos;,
+&apos;ED_LIFE_COF2&apos;],
+&apos;GED&apos;:[
+&apos;SDC_CURRSEX_COF2&apos;],
+&apos;GEN&apos;:[
+&apos;GEN_HLTH_COF2&apos;,
+&apos;GEN_MNTL_COF2&apos;,
+&apos;GEN_HLAG_COF2&apos;,
+&apos;GEN_OWNAG_COF2&apos;,
+&apos;GEN_BRD_COF2&apos;,
+&apos;GEN_MUSC_COF2&apos;],
+&apos;NUT&apos;:[
+&apos;NUT_FBR_COF2&apos;,
+&apos;NUT_BRD_COF2&apos;,
+&apos;NUT_MEAT_COF2&apos;,
+&apos;NUT_MTOT_COF2&apos;,
+&apos;NUT_CHCK_COF2&apos;,
+&apos;NUT_FISH_COF2&apos;,
+&apos;NUT_SASG_COF2&apos;,
+&apos;NUT_PATE_COF2&apos;,
+&apos;NUT_SAUC_COF2&apos;,
+&apos;NUT_O3EG_COF2&apos;,
+&apos;NUT_EGGS_COF2&apos;,
+&apos;NUT_LEGM_COF2&apos;,
+&apos;NUT_NUTS_COF2&apos;,
+&apos;NUT_FRUT_COF2&apos;,
+&apos;NUT_GREEN_COF2&apos;,
+&apos;NUT_PTTO_COF2&apos;,
+&apos;NUT_FRIE_COF2&apos;,
+&apos;NUT_CRRT_COF2&apos;,
+&apos;NUT_VGOT_COF2&apos;,
+&apos;NUT_LWCS_COF2&apos;,
+&apos;NUT_CHSE_COF2&apos;,
+&apos;NUT_LWYG_COF2&apos;,
+&apos;NUT_YOGR_COF2&apos;,
+&apos;NUT_CALC_COF2&apos;,
+&apos;NUT_DAIR_COF2&apos;,
+&apos;NUT_SALT_COF2&apos;,
+&apos;NUT_DSRT_COF2&apos;,
+&apos;NUT_CHOC_COF2&apos;,
+&apos;NUT_BTTR_COF2&apos;,
+&apos;NUT_DRSG_COF2&apos;,
+&apos;NUT_CAJC_COF2&apos;,
+&apos;NUT_PURE_COF2&apos;,
+&apos;NUT_SUGR_COF2&apos;,
+&apos;NUT_SFDRK_COF2&apos;,
+&apos;NUT_ASFDRK_COF2&apos;,
+&apos;NUT_CAML_COF2&apos;,
+&apos;NUT_WHML_COF2&apos;,
+&apos;NUT_LFML_COF2&apos;,
+&apos;NUT_CADR_COF2&apos;,
+&apos;NUT_ENEG_COF2&apos;,
+&apos;NUT_PKFD_COF2&apos;,
+&apos;NUT_LSALT_COF2&apos;,
+&apos;NUT_TAST_COF2&apos;,
+&apos;NUT_SMEL_COF2&apos;,
+&apos;NUT_SPDIET_COF2&apos;,
+&apos;NUT_DTYP_COF2&apos;,
+&apos;NUT_DTIM_COF2&apos;],
+&apos;OWN&apos;:[
+&apos;OWN_DWLG_COF2&apos;,
+&apos;OWN_OWN_COF2&apos;,
+&apos;OWN_MRTG_COF2&apos;,
+&apos;OWN_STFHM_COF2&apos;,
+&apos;OWN_HMPRB_COF2&apos;,
+&apos;OWN_MOVE_COF2&apos;,
+&apos;OWN_CMNTY_COF2&apos;],
+&apos;PA2&apos;:[
+&apos;PA2_SIT_COF2&apos;,
+&apos;PA2_SIT2_COF2&apos;,
+&apos;PA2_SITHR_SIT_COF2&apos;,
+&apos;PA2_WALK_COF2&apos;,
+&apos;PA2_WALKHR_COF2&apos;,
+&apos;PA2_LSPRT_COF2&apos;,
+&apos;PA2_LSPRT2_COF2&apos;,
+&apos;PA2_LSRTHR_COF2&apos;,
+&apos;PA2_MSPRT_COF2&apos;,
+&apos;PA2_MSPRT2_COF2&apos;,
+&apos;PA2_MSPRTHR_COF2&apos;,
+&apos;PA2_SSPRT_COF2&apos;,
+&apos;PA2_SSPRT2_COF2&apos;,
+&apos;PA2_SSPRTHR_COF2&apos;,
+&apos;PA2_EXER_COF2&apos;,
+&apos;PA2_EXER2_COF2&apos;,
+&apos;PA2_EXERHR_COF2&apos;,
+&apos;PA2_LTHSWK_COF2&apos;,
+&apos;PA2_HVYHSWK_COF2&apos;,
+&apos;PA2_HMREPAIR_COF2&apos;,
+&apos;PA2_HVYODA_COF2&apos;,
+&apos;PA2_LTODA_COF2&apos;,
+&apos;PA2_CRPRSN_COF2&apos;,
+&apos;PA2_WRK_COF2&apos;,
+&apos;PA2_WRKHRS_COF2&apos;,
+&apos;PA2_WRKPA_COF2&apos;,
+&apos;PA2_REPRTN_COF2&apos;,
+&apos;PA2_PALVL_COF2&apos;,
+&apos;PA2_PARTPA_COF2&apos;,
+&apos;PA2_PRVPA_COF2&apos;],
+&apos;PCM&apos;:[
+&apos;GEN_MEMO_COF2&apos;,
+&apos;GEN_WORYFM_COF2&apos;],
+&apos;SDC&apos;:[
+&apos;SDC_RELGCP_COF2&apos;,
+&apos;SDC_RELGFQ_COF2&apos;,
+&apos;SDC_MRTL2_COF2&apos;,
+&apos;SDC_MRTL_COF2&apos;],
+&apos;SMK&apos;:[
+&apos;SMK_CURRCG_COF2&apos;,
+&apos;SMK_NBCG_COF2&apos;,
+&apos;SMK_LST30_COF2&apos;,
+&apos;SMK_NB30_COF2&apos;,
+&apos;SMK_OTOCC_COF2&apos;,
+&apos;SMK_OTCURR_COF2&apos;]
+}
+
+var skip=[]
+if($(stage+&apos;QuestionnaireRun.version&apos;).eq(&apos;5.1&apos;).value()) {
+  skip.push(&apos;AGE&apos;)
+}
+
+var str = []
+for(var key in sections) {
+  if(-1 != skip.indexOf(key)) {
+    str.push(null)
+    continue
+  }
+  var rcount = 0
+  var qcount = 0
+  var arr = sections[key]
+  for(var i = 0; i &lt; arr.length; i++) {
+    var j = $(stage + arr[i])
+    if(j.isNull().value()) {
+      continue
+    }  
+    qcount++
+    rcount += j.any(&apos;REFUSED&apos;).value() ? 1 : 0
+  }
+  if(0 == qcount) {
+    str.push(null)
+  } else {
+    str.push(100.0*rcount/qcount)
+  }
+}
+newSequence(str, &apos;decimal&apos;)</attribute>
+        </attributes>
+      </variable>
+      <variable name="meta_module_duration" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0" repeatable="true" occurrenceGroup="">
+        <attributes>
+          <attribute name="script" valueType="text">var res = null
+if($this(&apos;meta_stage_duration&apos;).isNull().not().value()) {
+  var stage = &apos;InHome_1&apos;
+  var list = $this(&apos;meta_module_name&apos;)
+  var str = []
+  var section = $(&apos;clsa-inhome-f2.&apos;+stage+&apos;:QuestionnaireMetric.section&apos;).asSequence()
+  var duration = $(&apos;clsa-inhome-f2.&apos;+stage+&apos;:QuestionnaireMetric.duration&apos;).asSequence()
+  for(var i = 0; i &lt; list.size(); i++) {
+    str.push(
+      duration.filter(
+        function(v, k) {
+          return list.valueAt(i).eq(section.valueAt(k))
+        }
+      ).asSequence().sum()
+    )
+  }
+  res = newSequence(str, &apos;integer&apos;)
+} else {
+  var str = []
+  for(var i = 0; i &lt; $this(&apos;meta_module_name&apos;).size(); i++) str.push(null)
+  res = newSequence(str,&apos;integer&apos;)
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="meta_stage_duration" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var stage = &apos;InHome_1&apos;
+var res = null
+var post = $(&apos;clsa-inhome-f2.&apos;+stage+&apos;:QuestionnaireRun.timeEnd&apos;)
+var pre = $(&apos;clsa-inhome-f2.&apos;+stage+&apos;:QuestionnaireRun.timeStart&apos;)
+if(pre.before(post).value()) {
+    res = post.time().minus(pre.time()).div(1000)
+}
+if(null === res) {
+  res = $group(
+    &apos;clsa-inhome-f2.Participants:Admin.StageInstance.stage&apos;,
+    stage,
+    &apos;Admin.StageInstance.duration&apos;).asSequence().sum()
+}
+if(res.eq(0).value()) res = null
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="meta_module_name" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0" repeatable="true" occurrenceGroup="">
+        <attributes>
+          <attribute name="script" valueType="text">newSequence([&apos;AGE&apos;,&apos;ALC&apos;,&apos;ED&apos;,&apos;GED&apos;,&apos;GEN&apos;,&apos;NUT&apos;,&apos;OWN&apos;,&apos;PA2&apos;,&apos;PCM&apos;,&apos;SDC&apos;,&apos;SMK&apos;], &apos;text&apos;)</attribute>
+        </attributes>
+      </variable>
+    </variables>
+  </variables>
+  <created valueType="datetime">2019-04-15T14:45:49.085-04</created>
+  <updated valueType="datetime">2019-05-01T09:56:19.415-04</updated>
+</org.obiba.magma.views.View>

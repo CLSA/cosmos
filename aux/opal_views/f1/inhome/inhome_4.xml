@@ -1,0 +1,416 @@
+<org.obiba.magma.views.View>
+  <name>QC_F1_inhome_4</name>
+  <from class="org.obiba.magma.views.JoinTable">
+    <list>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-inhome-f1.Participants</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-inhome-f1.InHome_4</reference>
+      </table>
+    </list>
+  </from>
+  <select class="org.obiba.magma.views.support.NoneClause"/>
+  <where class="org.obiba.magma.views.support.AllClause"/>
+  <variables class="org.obiba.magma.js.views.VariablesClause">
+    <variables class="linked-hash-set">
+      <variable name="technician" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;clsa-inhome-f1.InHome_4:QuestionnaireRun.user&apos;).whenNull(
+  $group(&apos;Admin.Action.stage&apos;,&apos;InHome_4&apos;,&apos;Admin.Action.user&apos;).asSequence().last()).lowerCase()</attribute>
+        </attributes>
+      </variable>
+      <variable name="skip" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var action = $group(&apos;Admin.Action.stage&apos;,&apos;InHome_4&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
+var res = $group(&apos;Admin.Action.stage&apos;,&apos;InHome_4&apos;,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
+  return i == action.indexOf(&apos;SKIP&apos;)
+  }).last()
+if(res.isNull().not().value()) {
+  res = newValue(res.value().slice(14),&apos;text&apos;)  
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="contraindicated" valueType="boolean" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$group(&apos;clsa-inhome-f1.Participants:Admin.StageInstance.stage&apos;,&apos;InHome_4&apos;,
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;)</attribute>
+        </attributes>
+      </variable>
+      <variable name="comment" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">// this script compounds repeated comments by using lowercase comment strings as array keys
+//
+var stage = &apos;InHome_4&apos;
+var c_seq = $group(&apos;Admin.Action.stage&apos;,stage,&apos;Admin.Action.comment&apos;).asSequence()
+var e_seq = $group(&apos;Admin.Action.stage&apos;,stage,&apos;Admin.Action.eventReason&apos;).asSequence()
+var res = null
+if(c_seq.size().eq(e_seq.size()).value())
+{
+  var c_str = []  // string array of comments
+  var e_str = []  // string array of event reasons
+
+  for(var i = 0; i &lt; c_seq.size(); i++) {
+    var c = c_seq.valueAt(i).value()
+    if(null == c) continue
+    c = c.replace(/[^a-zA-Z0-9 àâäèéêëîïôœùûüÿçÀÂÄÈÉÊËÎÏÔŒÙÛÜŸÇ]/g,&quot;&quot;)
+    var e = e_seq.valueAt(i).value()
+    if(0 &lt; c.length) {
+      c_str.push(c)
+      if(null != e &amp;&amp; 0 &lt; e.length) {
+        e = e.slice(14)
+      } else {
+        e = &apos;SeeComment&apos;
+      }
+      e_str.push(e)
+    }
+  }
+
+  if(0 &lt; c_str.length) {
+    var arr = []  // array of event reasons
+    var key_orig = []  // array of lower cased comments as unique keys
+    for(var i = 0; i &lt; c_str.length; i++) {
+      var key = c_str[i]
+      var key_lower = key.toLowerCase()
+      // retain the first encountered instance of the comment
+      //
+      if(undefined === key_orig[key_lower])
+        key_orig[key_lower] = key
+
+      if(undefined === arr[e_str[i]])
+        arr[e_str[i]] = []
+
+      if(-1===arr[e_str[i]].indexOf(key_orig[key_lower]))
+        arr[e_str[i]].push(key_orig[key_lower])
+    }
+
+    // loop over the final array of event reasons and their sets of comments
+    //
+    var str = &apos;{&apos;
+    for(var key in arr) {
+      str += &apos;&quot;&apos; + key + &apos;&quot;:[&apos;
+      var t = []
+      for(var i = 0; i &lt; arr[key].length; i++) {
+        t.push(&apos;&quot;&apos; + arr[key][i] + &apos;&quot;&apos;)
+      }
+      str += t.join(&apos;,&apos;) + &apos;],&apos;
+    }
+
+    res = newValue(str.substring(0,str.length-1)+&apos;}&apos;,&apos;text&apos;)
+  }
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="qnaire_complete" valueType="decimal" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var stage = &apos;InHome_4&apos;
+var p = $(&apos;clsa-inhome-f1.&apos; + stage + &apos;:QuestionnaireMetric.missingCount&apos;).asSequence()
+var q = $(&apos;clsa-inhome-f1.&apos; + stage + &apos;:QuestionnaireMetric.questionCount&apos;).asSequence()
+var res = null
+if(p.isNull().or(q.isNull(),q.sum().eq(0)).not().value()) {
+  res = q.sum().minus(p.sum()).multiply(100).div(q.sum())
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="missing" valueType="boolean" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$this(&apos;contraindicated&apos;).not().and(
+  $this(&apos;skip&apos;).isNull(),
+  $this(&apos;qnaire_complete&apos;).isNull(),
+  $this(&apos;meta_stage_duration&apos;).isNull())</attribute>
+        </attributes>
+      </variable>
+      <variable name="duration_name" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0" repeatable="true" occurrenceGroup="">
+        <attributes>
+          <attribute name="script" valueType="text">newSequence([&apos;stage&apos;], &apos;text&apos;).append($this(&apos;meta_module_name&apos;))</attribute>
+        </attributes>
+      </variable>
+      <variable name="duration_value" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0" repeatable="true" occurrenceGroup="">
+        <attributes>
+          <attribute name="script" valueType="text">newSequence($this(&apos;meta_stage_duration&apos;),&apos;integer&apos;).append($this(&apos;meta_module_duration&apos;))</attribute>
+        </attributes>
+      </variable>
+      <variable name="refusal_name" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0" repeatable="true" occurrenceGroup="">
+        <attributes>
+          <attribute name="script" valueType="text">$this(&apos;meta_module_name&apos;)</attribute>
+        </attributes>
+      </variable>
+      <variable name="refusal_value" valueType="decimal" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0" repeatable="true" occurrenceGroup="">
+        <attributes>
+          <attribute name="script" valueType="text">var stage = &apos;clsa-inhome-f1.InHome_4:&apos;
+var sections = {
+&apos;ACE&apos;:[
+&apos;ACE_DTHPRT_COF1&apos;,
+&apos;ACE_DVRCPRT_COF1&apos;,
+&apos;ACE_BRKDN_COF1&apos;],
+&apos;CEX&apos;:[
+&apos;CEX_HURT_COF1&apos;,
+&apos;CEX_SEEHIT_COF1&apos;,
+&apos;CEX_SPANK_COF1&apos;,
+&apos;CEX_SLAP_COF1&apos;,
+&apos;CEX_PUSH_COF1&apos;,
+&apos;CEX_KICK_COF1&apos;,
+&apos;CEX_CARE_COF1&apos;,
+&apos;CEX_SEX_COF1&apos;,
+&apos;CEX_TOUCH_COF1&apos;,
+&apos;CEX_POLICE_COF1&apos;,
+&apos;CEX_WORD_COF1&apos;],
+&apos;ENV&apos;:[
+&apos;ENV_HMPRB_COF1&apos;,
+&apos;ENV_STFHM_COF1&apos;,
+&apos;ENV_FLPRTAREA1_C OF1&apos;,
+&apos;ENV_VNDLSM_COF1&apos;,
+&apos;ENV_FLLNLY_COF1&apos;,
+&apos;ENV_PPLTRST_COF1&apos;,
+&apos;ENV_AFRDWLK_COF1&apos;,
+&apos;ENV_PPLFRNDLY_COF1&apos;,
+&apos;ENV_PPLTKADV_COF1&apos;,
+&apos;ENV_CLEAN_COF1&apos;,
+&apos;ENV_PPLHLP_COF1&apos;],
+&apos;HCU1&apos;:[
+&apos;HCU_FAMPHY_COF1&apos;,
+&apos;HCU_SPEC_COF1&apos;,
+&apos;HCU_PSYCH_COF1&apos;,
+&apos;HCU_OPTO_COF1&apos;,
+&apos;HCU_PHYSIO_COF1&apos;,
+&apos;HCU_SOCLWRK_COF1&apos;,
+&apos;HCU_EMEREG_COF1&apos;,
+&apos;HCU_HLOVRNT_COF1&apos;,
+&apos;HCU_NRSHM_COF1&apos;,
+&apos;HCU_HAVEFAM_COF1&apos;,
+&apos;HCU_NOFAM_COF1&apos;,
+&apos;HCU_PLACE_COF1&apos;,
+&apos;HCU_FAMV_COF1&apos;,
+&apos;HCU_SPEV_COF1&apos;],
+&apos;INT&apos;:[
+&apos;INT_ACCESSHM_COF1&apos;,
+&apos;INT_FRQEMAIL_COF1&apos;,
+&apos;INT_FRQWBSTS_COF1&apos;,
+&apos;INT_FRQHLTH_COF1&apos;,
+&apos;INT_SCLNTWRK_COF1&apos;,
+&apos;INT_WYSSCL_COF1&apos;,
+&apos;INT_FRQMNF_COF1&apos;,
+&apos;INT_FRQFRI_COF1&apos;,
+&apos;INT_FRQFAM_COF1&apos;,
+&apos;INT_FRQPRO_COF1&apos;,
+&apos;INT_FRQOT_COF1&apos;],
+&apos;K10&apos;:[
+&apos;K10_TIRED_COF1&apos;,
+&apos;K10_NRVS_COF1&apos;,
+&apos;K10_NRVSCLMD_COF1&apos;,
+&apos;K10_HPLS_COF1&apos;,
+&apos;K10_RSTLS_COF1&apos;,
+&apos;K10_RSTLSSTL_COF1&apos;,
+&apos;K10_DEP_COF1&apos;,
+&apos;K10_EFFRT_COF1&apos;,
+&apos;K10_NOCHRUP_COF1&apos;,
+&apos;K10_WRTHLSS_COF1&apos;,
+&apos;K10_FLING_COF1&apos;,
+&apos;K10_FLINGLESS_COF1&apos;,
+&apos;K10_FLINGMORE_COF1&apos;,
+&apos;K10_UNWK_NB1_COF1&apos;,
+&apos;K10_HFWK1_NB_COF1&apos;,
+&apos;K10_DOC1_NB_COF1&apos;,
+&apos;K10_OTPFLING_COF1&apos;,
+&apos;K10_OTPFLING1_OTSP_COF1&apos;,
+&apos;K10_PHYSHLTH_COF1&apos;],
+&apos;MEM&apos;:[
+&apos;MEM_PAYBILL_COF1&apos;,
+&apos;MEM_MPLAC_COF1&apos;,
+&apos;MEM_RMNUM_COF1&apos;,
+&apos;MEM_RCNME_COF1&apos;,
+&apos;MEM_LVTHG_COF1&apos;,
+&apos;MEM_FGAPT_COF1&apos;,
+&apos;MEM_FGTDO_COF1&apos;,
+&apos;MEM_FGERD_COF1&apos;,
+&apos;MEM_SPWRD_COF1&apos;,
+&apos;MEM_MBDTL_COF1&apos;,
+&apos;MEM_FGMED_COF1&apos;,
+&apos;MEM_NAMEK_COF1&apos;,
+&apos;MEM_PSMEG_COF1&apos;,
+&apos;MEM_FGSAY_COF1&apos;,
+&apos;MEM_FGANV_COF1&apos;,
+&apos;MEM_TELNM_COF1&apos;,
+&apos;MEM_RETELL_COF1&apos;,
+&apos;MEM_PLAWY_COF1&apos;,
+&apos;MEM_BUYTH_COF1&apos;,
+&apos;MEM_DTCNV_COF1&apos;],
+&apos;MET&apos;:[
+&apos;MET_NEED_COF1&apos;,
+&apos;MET_RSN_COF1&apos;],
+&apos;PER&apos;:[
+&apos;PER_EXTR_COF1&apos;,
+&apos;PER_EXTRDIS_COF1&apos;,
+&apos;PER_EXTRAGR_COF1&apos;,
+&apos;PER_CRT_COF1&apos;,
+&apos;PER_CRTDIS_COF1&apos;,
+&apos;PER_CRTAGR_COF1&apos;,
+&apos;PER_DP_COF1&apos;,
+&apos;PER_DPDIS_COF1&apos;,
+&apos;PER_DPAGR_COF1&apos;,
+&apos;PER_ANX_COF1&apos;,
+&apos;PER_ANXDIS_COF1&apos;,
+&apos;PER_ANXAGR_COF1&apos;,
+&apos;PER_NEXP_COF1&apos;,
+&apos;PER_NEXPDIS_COF1&apos;,
+&apos;PER_NEXPAGR_COF1&apos;,
+&apos;PER_RSV_COF1&apos;,
+&apos;PER_RSVDIS_COF1&apos;,
+&apos;PER_RSVAGR_COF1&apos;,
+&apos;PER_SYMP_COF1&apos;,
+&apos;PER_SYMPDIS_COF1&apos;,
+&apos;PER_SYMPAGR_COF1&apos;,
+&apos;PER_DORG_COF1&apos;,
+&apos;PER_DORGDIS_COF1&apos;,
+&apos;PER_DORGAGR_COF1&apos;,
+&apos;PER_CALM_COF1&apos;,
+&apos;PER_CALMDIS_COF1&apos;,
+&apos;PER_CALMAGR_COF1&apos;,
+&apos;PER_CNV_COF1&apos;,
+&apos;PER_CNVDIS_COF1&apos;,
+&apos;PER_CNVAGR_COF1&apos;],
+&apos;PHB&apos;:[
+&apos;PHB_BLP_COF1&apos;,
+&apos;PHB_COL_COF1&apos;,
+&apos;PHB_CHOL_COF1&apos;,
+&apos;PHB_GLU_COF1&apos;,
+&apos;PHB_PAP_COF1&apos;,
+&apos;PHB_MG_COF1&apos;,
+&apos;PHB_DEXA_COF1&apos;,
+&apos;PHB_FLUV_COF1&apos;,
+&apos;PHB_PCV_COF1&apos;],
+&apos;SEQ&apos;:[
+&apos;SEQ_LADDER_COF1&apos;],
+&apos;TRA&apos;:[
+&apos;TRA_DSTATUS_COF1&apos;,
+&apos;TRA_DFREQ_COF1&apos;,
+&apos;TRA_CMNTR1_COF1&apos;,
+&apos;TRA_CMNTR2_COF1&apos;,
+&apos;TRA_TYPTR_COF1&apos;,
+&apos;TRA_PUBTR_COF1&apos;,
+&apos;TRA_ACCTR_COF1&apos;,
+&apos;TRA_PUBTRFRQ_COF1&apos;,
+&apos;TRA_TRIP_COF1&apos;,
+&apos;TRA_CHGRS_COF1&apos;,
+&apos;TRA_CHGHC_COF1&apos;,
+&apos;TRA_CHGLPE_COF1&apos;,
+&apos;TRA_CHGSLC_COF1&apos;,
+&apos;TRA_CHGJDG_COF1&apos;,
+&apos;TRA_CHGCOC_COF1&apos;,
+&apos;TRA_CHGCGB_COF1&apos;,
+&apos;TRA_CHGQDD_COF1&apos;,
+&apos;TRA_CHGDS_COF1&apos;,
+&apos;TRA_CHGRS2_COF1&apos;,
+&apos;TRA_CHGCH2_COF1&apos;,
+&apos;TRA_CHGPLE2_COF1&apos;,
+&apos;TRA_CHGSLC2_COF1&apos;,
+&apos;TRA_CHGJDG2_COF1&apos;,
+&apos;TRA_CHGCOC2_COF1&apos;,
+&apos;TRA_CHCCGB2_COF1&apos;,
+&apos;TRA_CGCQDD2_COF1&apos;,
+&apos;TRA_CHGDS2_COF1&apos;,
+&apos;TRA_AVOID_COF1&apos;,
+&apos;TRA_DRVST1_YR_COF1&apos;,
+&apos;TRA_CEASE_COF1&apos;,
+&apos;TRA_MED_COF1&apos;,
+&apos;TRA_MEDTPC_COF1&apos;,
+&apos;TRA_LVDHM1_YR_COF1&apos;,
+&apos;TRA_LVCMNTY1_YR_COF1&apos;,
+&apos;TRA_CMNTY_COF1&apos;],
+&apos;WEA&apos;:[
+&apos;WEA_SVNGS_COF1&apos;,
+&apos;WEA_SVNGSVL_COF1&apos;,
+&apos;WEA_LFINS_COF1&apos;,
+&apos;WEA_ASSETS_COF1&apos;,
+&apos;WEA_ASSETS_OTSP_COF1&apos;,
+&apos;WEA_DEBT_COF1&apos;,
+&apos;WEA_FNSTATUS_COF1&apos;,
+&apos;WEA_INCNEEDS_COF1&apos;,
+&apos;WEA_THNGS_COF1&apos;,
+&apos;WEA_ORGMONEY_COF1&apos;,
+&apos;WEA_FNDEC_COF1&apos;,
+&apos;WEA_SUFFUND_COF1&apos;,
+&apos;WEA_INHERT_COF1&apos;]
+}
+
+var str = []
+for(var key in sections) {
+  var rcount = 0
+  var qcount = 0
+  var arr = sections[key]
+  for(var i = 0; i &lt; arr.length; i++) {
+    var j = $(stage + arr[i])
+    if(j.isNull().value()) {
+      continue
+    }  
+    qcount++
+    rcount += j.any(&apos;REFUSED&apos;).value() ? 1 : 0
+  }
+  if(0 == qcount) {
+    str.push(null)
+  } else {
+    str.push(100.0*rcount/qcount)
+  }
+}
+newSequence(str, &apos;decimal&apos;)</attribute>
+        </attributes>
+      </variable>
+      <variable name="meta_module_duration" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0" repeatable="true" occurrenceGroup="">
+        <attributes>
+          <attribute name="script" valueType="text">var res = null
+if($this(&apos;meta_stage_duration&apos;).isNull().not().value()) {
+  var stage = &apos;InHome_4&apos;
+  var list = $this(&apos;meta_module_name&apos;)
+  var str = []
+  var section = $(&apos;clsa-inhome-f1.&apos;+stage+&apos;:QuestionnaireMetric.section&apos;).asSequence()
+  var duration = $(&apos;clsa-inhome-f1.&apos;+stage+&apos;:QuestionnaireMetric.duration&apos;).asSequence()
+  for(var i = 0; i &lt; list.size(); i++) {
+    str.push(
+      duration.filter(
+        function(v, k) {
+          return list.valueAt(i).eq(section.valueAt(k))
+        }
+      ).asSequence().sum()
+    )
+  }
+  res = newSequence(str, &apos;integer&apos;)
+} else {
+  var str = []
+  for(var i = 0; i &lt; $this(&apos;meta_module_name&apos;).size(); i++) str.push(null)
+  res = newSequence(str,&apos;integer&apos;)
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="meta_stage_duration" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var stage = &apos;InHome_4&apos;
+var res = null
+var post = $(&apos;clsa-inhome-f1.&apos;+stage+&apos;:QuestionnaireRun.timeEnd&apos;)
+var pre = $(&apos;clsa-inhome-f1.&apos;+stage+&apos;:QuestionnaireRun.timeStart&apos;)
+if(pre.before(post).value()) {
+    res = post.time().minus(pre.time()).div(1000)
+}
+if(null === res) {
+  res = $group(
+    &apos;clsa-inhome-f1.Participants:Admin.StageInstance.stage&apos;,
+    stage,
+    &apos;Admin.StageInstance.duration&apos;).asSequence().sum()
+}
+if(res.eq(0).value()) res = null
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="meta_module_name" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0" repeatable="true" occurrenceGroup="">
+        <attributes>
+          <attribute name="script" valueType="text">newSequence([&apos;ACE&apos;,&apos;CEX&apos;,&apos;ENV&apos;,&apos;HCU1&apos;,&apos;INT&apos;,&apos;K10&apos;,&apos;MEM&apos;,&apos;MET&apos;,&apos;PER&apos;,&apos;PHB&apos;,&apos;SEQ&apos;,&apos;TRA&apos;,&apos;WEA&apos;], &apos;text&apos;)</attribute>
+        </attributes>
+      </variable>
+    </variables>
+  </variables>
+  <created valueType="datetime">2019-04-15T14:32:15.195-04</created>
+  <updated valueType="datetime">2019-05-01T10:50:47.218-04</updated>
+</org.obiba.magma.views.View>

@@ -1,0 +1,104 @@
+<org.obiba.magma.views.View>
+  <name>QC_BL_dexa</name>
+  <from class="org.obiba.magma.views.JoinTable">
+    <list>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs.Participants</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs-images.DualHipBoneDensity</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs-images.ForearmBoneDensity</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs-images.LateralBoneDensity</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs-images.WholeBodyBoneDensity</reference>
+      </table>
+    </list>
+  </from>
+  <select class="org.obiba.magma.views.support.NoneClause"/>
+  <where class="org.obiba.magma.views.support.AllClause"/>
+  <variables class="org.obiba.magma.js.views.VariablesClause">
+    <variables class="linked-hash-set">
+      <variable name="technician" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var list = [&apos;LateralBoneDensity&apos;,&apos;WholeBodyBoneDensity&apos;,&apos;DualHipBoneDensity&apos;,&apos;ForearmBoneDensity&apos;]
+var res = null
+for(var i=0; i&lt;list.length; i++) {
+  var str = $(&apos;clsa-dcs-images.&apos;+list[i]+&apos;:InstrumentRun.user&apos;).whenNull(
+    $group(&apos;Admin.Action.stage&apos;,list[i],&apos;Admin.Action.user&apos;).asSequence().last()).lowerCase()
+  if(str.isNull().not().value()) {
+    var v = str.value()
+    if(0&lt;v.length) {
+      res = newValue(v)
+      break
+    }  
+  }  
+}
+res  </attribute>
+        </attributes>
+      </variable>
+      <variable name="skip" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0"/>
+      <variable name="contraindicated" valueType="boolean" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;cosmos_dcs.QC_BL_dexa_lateral:contraindicated&apos;).and(
+  $(&apos;cosmos_dcs.QC_BL_dexa_whole_body:contraindicated&apos;),
+  $(&apos;cosmos_dcs.QC_BL_dexa_forearm:contraindicated&apos;),
+  $(&apos;cosmos_dcs.QC_BL_dexa_hip:contraindicated&apos;))</attribute>
+        </attributes>
+      </variable>
+      <variable name="missing" valueType="boolean" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$this(&apos;contraindicated&apos;).not().and(
+  $this(&apos;file_complete&apos;).isNull())</attribute>
+        </attributes>
+      </variable>
+      <variable name="duration" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;cosmos_dcs.QC_BL_meta:group_duration_dexa&apos;)</attribute>
+        </attributes>
+      </variable>
+      <variable name="file_name" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0" repeatable="true" occurrenceGroup="">
+        <attributes>
+          <attribute name="script" valueType="text">newSequence([&apos;hip_left&apos;,&apos;hip_right&apos;,&apos;whole_body&apos;,&apos;lateral&apos;,&apos;forearm&apos;])</attribute>
+        </attributes>
+      </variable>
+      <variable name="file_size" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0" repeatable="true" occurrenceGroup="">
+        <attributes>
+          <attribute name="script" valueType="text">var prefix = &apos;cosmos_dcs.QC_BL_dexa_&apos;
+var list = [&apos;hip&apos;,&apos;whole_body&apos;,&apos;lateral&apos;,&apos;forearm&apos;]
+var str = []
+for(var i=0; i&lt;list.length; i++) {
+  var scan = list[i]  
+  if(&apos;hip&apos;==scan) {
+    str.push($(prefix+scan+&apos;:file_size&apos;).valueAt(0))
+    str.push($(prefix+scan+&apos;:file_size&apos;).valueAt(1))
+  } else {
+    str.push($(prefix+scan+&apos;:file_size&apos;))
+  }
+}
+newSequence(str,&apos;integer&apos;)</attribute>
+        </attributes>
+      </variable>
+      <variable name="file_complete" valueType="decimal" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var res = null
+if($this(&apos;contraindicated&apos;).not().value()) {
+  var q = 0
+  q += ($(&apos;cosmos_dcs.QC_BL_dexa_lateral:contraindicated&apos;).value() ? 0 : 1)
+  q += ($(&apos;cosmos_dcs.QC_BL_dexa_whole_body:contraindicated&apos;).value() ? 0 : 1)
+  q += ($(&apos;cosmos_dcs.QC_BL_dexa_forearm:contraindicated&apos;).value() ? 0 : 1)
+  q += ($(&apos;cosmos_dcs.QC_BL_dexa_hip:contraindicated&apos;).value() ? 0 : 2)
+  res = $this(&apos;file_size&apos;).trimmer().size().div(q).multiply(100)
+}
+res</attribute>
+        </attributes>
+      </variable>
+    </variables>
+  </variables>
+  <created valueType="datetime">2019-04-11T13:38:57.864-04</created>
+  <updated valueType="datetime">2019-04-29T17:07:40.788-04</updated>
+</org.obiba.magma.views.View>

@@ -14,4 +14,3 @@ src/service/f2_*
 src/database/bl_*
 src/database/f1_*
 src/database/f2_*
-aux/opal_views/*

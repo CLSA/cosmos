@@ -1,0 +1,328 @@
+<org.obiba.magma.views.View>
+  <name>QC_BL_meta</name>
+  <from class="org.obiba.magma.views.JoinTable">
+    <list>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs.Participants</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs.ECG</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs.4mWalk</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs.Blood</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs.Blood2</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs.ChairRise</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs.ConclusionQuestionnaire</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs.ContraIndications</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs.DiseaseSymptoms</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs.EventPMT</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs.FunctionalStatus</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs.HearingQuestionnaire</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs.NeuropsychologicalBattery</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs.NeuropsychologicalBatteryScoring</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs.QuestionnaireBoneDensity</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs.StandingBalance</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs.TUG</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs.TimeBasedProspectiveMemoryTask</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs.Urine</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs.VisionAcuity</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs.BloodPressure</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs-images.CarotidIntima</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs.CognitiveTest</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs-images.DualHipBoneDensity</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs-images.ForearmBoneDensity</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs.GripStrength</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs.Hearing</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs.HipsWaist</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs-images.LateralBoneDensity</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs-images.RetinalScan</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs.SittingHeight</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs-images.Plaque</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs.Spirometry</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs.Phlebotomy</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs.Tonometer</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs.Weight</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs-images.WholeBodyBoneDensity</reference>
+      </table>
+    </list>
+  </from>
+  <select class="org.obiba.magma.views.support.NoneClause"/>
+  <where class="org.obiba.magma.views.support.AllClause"/>
+  <variables class="org.obiba.magma.js.views.VariablesClause">
+    <variables class="linked-hash-set">
+      <variable name="group_questionnaire" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0" repeatable="true" occurrenceGroup="">
+        <attributes>
+          <attribute name="script" valueType="text">var list=[
+&apos;4mWalk&apos;,
+&apos;Blood&apos;,
+&apos;Blood2&apos;,
+&apos;ChairRise&apos;,
+&apos;ConclusionQuestionnaire&apos;,
+&apos;ContraIndications&apos;,
+&apos;DiseaseSymptoms&apos;,
+&apos;EventPMT&apos;,
+&apos;FunctionalStatus&apos;,
+&apos;HearingQuestionnaire&apos;,
+&apos;NeuropsychologicalBattery&apos;,
+&apos;NeuropsychologicalBatteryScoring&apos;,
+&apos;Phlebotomy&apos;,
+&apos;QuestionnaireBoneDensity&apos;,
+&apos;StandingBalance&apos;,
+&apos;TUG&apos;,
+&apos;TimeBasedProspectiveMemoryTask&apos;,
+&apos;Urine&apos;,
+&apos;VisionAcuity&apos;
+]
+$(&apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;).asSequence().filter(function(v){
+  return -1!=list.indexOf(v.value())
+})</attribute>
+        </attributes>
+      </variable>
+      <variable name="group_instrument" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0" repeatable="true" occurrenceGroup="">
+        <attributes>
+          <attribute name="script" valueType="text">var list=[
+&apos;BloodPressure&apos;,
+&apos;CarotidIntima&apos;,
+&apos;CognitiveTest&apos;,
+&apos;DualHipBoneDensity&apos;,
+&apos;ECG&apos;,
+&apos;ForearmBoneDensity&apos;,
+&apos;GripStrength&apos;,
+&apos;Hearing&apos;,
+&apos;HipsWaist&apos;,
+&apos;LateralBoneDensity&apos;,
+&apos;Plaque&apos;,
+&apos;RetinalScan&apos;,
+&apos;Spirometry&apos;,
+&apos;StandingHeight&apos;,
+&apos;Tonometer&apos;,
+&apos;Weight&apos;,
+&apos;WholeBodyBoneDensity&apos;
+]
+$(&apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;).asSequence().filter(function(v){
+  return -1!=list.indexOf(v.value())
+})</attribute>
+        </attributes>
+      </variable>
+      <variable name="group_duration_ecg" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var res=null
+if($(&apos;cosmos_dcs.QC_BL_ecg:contraindicated&apos;).not().and(
+   $(&apos;cosmos_dcs.QC_BL_ecg:xml_file_size&apos;).isNull().not()).value()) {
+  var ecg=newValue(null,&apos;datetime&apos;)
+  try {
+    ecg=newValue(
+    $(&apos;clsa-dcs.ECG:RES_MEASUREMENT_DATE&apos;).value() + &apos; &apos; +
+    $(&apos;clsa-dcs.ECG:RES_MEASUREMENT_TIME&apos;).value(), &apos;datetime&apos;)
+  } catch(e) {
+  }
+
+  if(ecg.isNull().not().and(ecg.time().gt(0)).value()) {
+    var ecgTime=ecg.time()
+    var preIndex=-1
+    var postIndex=-1
+    var pre=newValue(null,&apos;datetime&apos;)
+    var post=newValue(null,&apos;datetime&apos;)
+    var minPre=10000000000000000
+    var minPost=minPre
+    var stages=$(&apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;).asSequence().filter(function(v){
+      return v.isNull().not().and(v.any(&apos;ExtendedHIN&apos;,&apos;GeneralProxy&apos;).not()).value()
+    })
+
+    for(var i=0;i&lt;stages.size();i++) {
+      var stage=stages.valueAt(i).value()
+      if(&apos;ECG&apos;==stage) continue
+      var isQ = -1==$this(&apos;group_questionnaire&apos;).indexOf(stage) ? false : true
+      var isI = -1==$this(&apos;group_instrument&apos;).indexOf(stage) ? false : true
+      if(!(isQ || isI)) continue
+      if(isQ) {
+        pre=$(&apos;clsa-dcs.&apos;+stage+&apos;:QuestionnaireRun.timeEnd&apos;)
+      } else  {
+        pre=$(&apos;clsa-dcs.&apos;+stage+&apos;:InstrumentRun.timeEnd&apos;)
+      }
+      if(ecg.after(pre).value()) {
+        var p=ecgTime.minus(pre.time()).value()
+        if(p&lt;minPre) {
+          minPre=p
+          preIndex=i
+        }
+      } else {
+        if(isQ) {
+          post=$(&apos;clsa-dcs.&apos;+stage+&apos;:QuestionnaireRun.timeStart&apos;)
+        } else {
+          post=$(&apos;clsa-dcs.&apos;+stage+&apos;:InstrumentRun.timeStart&apos;)
+        }
+        if(ecg.before(post).value()) {
+          var p=post.time().minus(ecgTime).value()
+          if(p&lt;minPost) {
+            minPost=p
+            postIndex=i
+          }
+        }
+      }
+    }// end for loop
+    var valid = false
+    if(-1!=preIndex &amp;&amp; (postIndex-preIndex)==2) {
+      valid = &apos;ECG&apos; == stages.valueAt(preIndex+1).value()
+    }
+    else
+    {
+      var preCandidates = [&apos;BloodPressure&apos;,&apos;Spirometry&apos;,&apos;SittingHeight&apos;,&apos;StandingHeight&apos;,&apos;HipsWaist&apos;,&apos;Weight&apos;]
+      for(var i=0;i&lt;preCandidates.length &amp;&amp; !valid;i++) {
+        preIndex = stages.indexOf(preCandidates[i])
+        postIndex = preIndex+1
+        if(&apos;ECG&apos;==stages.valueAt(postIndex).value()) {
+          while(&apos;ECG&apos;==stages.valueAt(++postIndex).value()) {}
+          valid = 1 &lt; (postIndex-preIndex)
+        }
+      }
+    }
+    if(valid) {
+      var preStage=stages.valueAt(preIndex).value()
+      pre=(-1!=$this(&apos;group_questionnaire&apos;).indexOf(preStage)) ?
+        $(&apos;clsa-dcs.&apos;+preStage+&apos;:QuestionnaireRun.timeEnd&apos;) :
+        $(&apos;clsa-dcs.&apos;+preStage+&apos;:InstrumentRun.timeEnd&apos;)
+      var postStage=stages.valueAt(postIndex).value()
+      post=(-1!=$this(&apos;group_questionnaire&apos;).indexOf(postStage)) ?
+        $(&apos;clsa-dcs.&apos;+postStage+&apos;:QuestionnaireRun.timeStart&apos;) :
+        $(&apos;clsa-dcs.&apos;+postStage+&apos;:InstrumentRun.timeStart&apos;)
+      if(post.after(pre).value()) {
+        res=post.time().minus(pre.time()).div(1000)
+      }
+    }
+  }
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="group_duration_dexa" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var list = [&apos;LateralBoneDensity&apos;,&apos;ForearmBoneDensity&apos;,&apos;WholeBodyBoneDensity&apos;,&apos;DualHipBoneDensity&apos;]
+var stages = $(&apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;).asSequence()
+var dexa = stages.filter(function(v) {
+    return -1 !== list.indexOf(v.value())
+  })
+var res = null
+if(dexa.empty().not().value()) {
+  // bracket the actual bone density acquisitions
+  // 
+  var pre = $(&apos;clsa-dcs.QuestionnaireBoneDensity:QuestionnaireRun.timeEnd&apos;)
+  var post = $(&apos;clsa-dcs.EventPMT:QuestionnaireRun.timeStart&apos;)
+  
+  if(pre.before(post).value()) {    
+    res = post.time().minus(pre.time()).div(1000)
+  }  
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="group_blood" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var res = null
+var u = $group(&apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,&apos;Phlebotomy&apos;,&apos;Admin.StageInstance.lastState&apos;).asSequence().last()
+var v = $group(&apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,&apos;Blood&apos;,&apos;Admin.StageInstance.lastState&apos;).asSequence().last()
+var w = $group(&apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,&apos;Blood2&apos;,&apos;Admin.StageInstance.lastState&apos;).asSequence().last()
+var p = $(&apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;).any(&apos;Phlebotomy&apos;).and(w.isNull().not()).value()
+var q = $(&apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;).any(&apos;Blood&apos;).and(u.isNull().not()).value()
+var r = $(&apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;).any(&apos;Blood2&apos;).and(v.isNull().not()).value()
+if(p &amp;&amp; !(q || r)) {
+  res = newValue( &apos;Phlebotomy&apos;, &apos;text&apos;) 
+} else if(q &amp;&amp; !(p || r)) {
+  res = newValue( &apos;Blood&apos;, &apos;text&apos;) 
+} else if(r &amp;&amp; !(p || q)) {
+  res = newValue( &apos;Blood2&apos;, &apos;text&apos;) 
+} else if(p || q || r) {
+  var s=[]
+  var n = [&apos;Phlebotomy&apos;,&apos;Blood&apos;,&apos;Blood2&apos;]
+  if(p) s.push(u)
+  if(q) s.push(v)
+  if(r) s.push(w)
+  var x = []
+  var y = []
+  for(var i = 0; i &lt; s.length; i++) {
+    if(s[i].any(&apos;Completed&apos;).value()) x.push(n[i])
+    if(s[i].any(&apos;NotApplicable&apos;).value()) y.push(n[i])
+  }
+  if(0 &lt; x.length) {
+    res = newValue(x[x.length-1],&apos;text&apos;)
+  } else if(0 &lt; y.length) {
+    res = newValue(y[y.length-1],&apos;text&apos;)
+  }
+}
+res</attribute>
+        </attributes>
+      </variable>
+    </variables>
+  </variables>
+  <created valueType="datetime">2019-04-23T15:04:23.246-04</created>
+  <updated valueType="datetime">2019-04-23T15:34:18.296-04</updated>
+</org.obiba.magma.views.View>

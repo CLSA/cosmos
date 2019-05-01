@@ -1,0 +1,639 @@
+<org.obiba.magma.views.View>
+  <name>QC_F1_inhome_3</name>
+  <from class="org.obiba.magma.views.JoinTable">
+    <list>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-inhome-f1.Participants</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-inhome-f1.InHome_3</reference>
+      </table>
+    </list>
+  </from>
+  <select class="org.obiba.magma.views.support.NoneClause"/>
+  <where class="org.obiba.magma.views.support.AllClause"/>
+  <variables class="org.obiba.magma.js.views.VariablesClause">
+    <variables class="linked-hash-set">
+      <variable name="technician" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;clsa-inhome-f1.InHome_3:QuestionnaireRun.user&apos;).whenNull(
+  $group(&apos;Admin.Action.stage&apos;,&apos;InHome_3&apos;,&apos;Admin.Action.user&apos;).asSequence().last()).lowerCase()</attribute>
+        </attributes>
+      </variable>
+      <variable name="skip" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var action = $group(&apos;Admin.Action.stage&apos;,&apos;InHome_3&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
+var res = $group(&apos;Admin.Action.stage&apos;,&apos;InHome_3&apos;,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
+  return i == action.indexOf(&apos;SKIP&apos;)
+  }).last()
+if(res.isNull().not().value()) {
+  res = newValue(res.value().slice(14),&apos;text&apos;)  
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="contraindicated" valueType="boolean" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$group(&apos;clsa-inhome-f1.Participants:Admin.StageInstance.stage&apos;,&apos;InHome_3&apos;,
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;)</attribute>
+        </attributes>
+      </variable>
+      <variable name="comment" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">// this script compounds repeated comments by using lowercase comment strings as array keys
+//
+var stage = &apos;InHome_3&apos;
+var c_seq = $group(&apos;Admin.Action.stage&apos;,stage,&apos;Admin.Action.comment&apos;).asSequence()
+var e_seq = $group(&apos;Admin.Action.stage&apos;,stage,&apos;Admin.Action.eventReason&apos;).asSequence()
+var res = null
+if(c_seq.size().eq(e_seq.size()).value())
+{
+  var c_str = []  // string array of comments
+  var e_str = []  // string array of event reasons
+
+  for(var i = 0; i &lt; c_seq.size(); i++) {
+    var c = c_seq.valueAt(i).value()
+    if(null == c) continue
+    c = c.replace(/[^a-zA-Z0-9 àâäèéêëîïôœùûüÿçÀÂÄÈÉÊËÎÏÔŒÙÛÜŸÇ]/g,&quot;&quot;)
+    var e = e_seq.valueAt(i).value()
+    if(0 &lt; c.length) {
+      c_str.push(c)
+      if(null != e &amp;&amp; 0 &lt; e.length) {
+        e = e.slice(14)
+      } else {
+        e = &apos;SeeComment&apos;
+      }
+      e_str.push(e)
+    }
+  }
+
+  if(0 &lt; c_str.length) {
+    var arr = []  // array of event reasons
+    var key_orig = []  // array of lower cased comments as unique keys
+    for(var i = 0; i &lt; c_str.length; i++) {
+      var key = c_str[i]
+      var key_lower = key.toLowerCase()
+      // retain the first encountered instance of the comment
+      //
+      if(undefined === key_orig[key_lower])
+        key_orig[key_lower] = key
+
+      if(undefined === arr[e_str[i]])
+        arr[e_str[i]] = []
+
+      if(-1===arr[e_str[i]].indexOf(key_orig[key_lower]))
+        arr[e_str[i]].push(key_orig[key_lower])
+    }
+
+    // loop over the final array of event reasons and their sets of comments
+    //
+    var str = &apos;{&apos;
+    for(var key in arr) {
+      str += &apos;&quot;&apos; + key + &apos;&quot;:[&apos;
+      var t = []
+      for(var i = 0; i &lt; arr[key].length; i++) {
+        t.push(&apos;&quot;&apos; + arr[key][i] + &apos;&quot;&apos;)
+      }
+      str += t.join(&apos;,&apos;) + &apos;],&apos;
+    }
+
+    res = newValue(str.substring(0,str.length-1)+&apos;}&apos;,&apos;text&apos;)
+  }
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="qnaire_complete" valueType="decimal" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var stage = &apos;InHome_3&apos;
+var p = $(&apos;clsa-inhome-f1.&apos; + stage + &apos;:QuestionnaireMetric.missingCount&apos;).asSequence()
+var q = $(&apos;clsa-inhome-f1.&apos; + stage + &apos;:QuestionnaireMetric.questionCount&apos;).asSequence()
+var res = null
+if(p.isNull().or(q.isNull(),q.sum().eq(0)).not().value()) {
+  res = q.sum().minus(p.sum()).multiply(100).div(q.sum())
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="missing" valueType="boolean" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$this(&apos;contraindicated&apos;).not().and(
+  $this(&apos;skip&apos;).isNull(),
+  $this(&apos;qnaire_complete&apos;).isNull(),
+  $this(&apos;meta_stage_duration&apos;).isNull())</attribute>
+        </attributes>
+      </variable>
+      <variable name="duration_name" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0" repeatable="true" occurrenceGroup="">
+        <attributes>
+          <attribute name="script" valueType="text">newSequence([&apos;stage&apos;], &apos;text&apos;).append($this(&apos;meta_module_name&apos;))</attribute>
+        </attributes>
+      </variable>
+      <variable name="duration_value" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0" repeatable="true" occurrenceGroup="">
+        <attributes>
+          <attribute name="script" valueType="text">newSequence($this(&apos;meta_stage_duration&apos;),&apos;integer&apos;).append($this(&apos;meta_module_duration&apos;))</attribute>
+        </attributes>
+      </variable>
+      <variable name="refusal_name" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0" repeatable="true" occurrenceGroup="">
+        <attributes>
+          <attribute name="script" valueType="text">$this(&apos;meta_module_name&apos;)</attribute>
+        </attributes>
+      </variable>
+      <variable name="refusal_value" valueType="decimal" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0" repeatable="true" occurrenceGroup="">
+        <attributes>
+          <attribute name="script" valueType="text">var stage = &apos;clsa-inhome-f1.InHome_3:&apos;
+var sections = {
+&apos;CAG&apos;:[
+&apos;CAG_HLT_COF1&apos;,
+&apos;CAG_PPL_COF1&apos;,
+&apos;CAG_PERS_COF1&apos;,
+&apos;CAG_GNDR_COF1&apos;,
+&apos;CAG_RELN_COF1&apos;,
+&apos;CAG_WEEK_COF1&apos;,
+&apos;CAG_HRWK_COF1&apos;],
+&apos;CR1&apos;:[
+&apos;CR1_PRO_COF1&apos;,
+&apos;CR1_IMPT_COF1&apos;,
+&apos;CR1_MOST_COF1&apos;,
+&apos;CR1_PAY_COF1&apos;,
+&apos;CR1_PAY_COST1_COF1&apos;,
+&apos;CR1_FRQ_COF1&apos;,
+&apos;CR1_HOUR_COF1&apos;],
+&apos;CR2&apos;:[
+&apos;CR2_FAM_COF1&apos;,
+&apos;CR2_NMBR_COF1&apos;,
+&apos;CR2_WKALL_COF1&apos;,
+&apos;CR2_HOUR_COF1&apos;,
+&apos;CR2_MOST_COF1&apos;,
+&apos;CR2_PERS_COF1&apos;,
+&apos;CR2_PERS_FAR_COF1&apos;,
+&apos;CR2_GNDR_COF1&apos;,
+&apos;CR2_NAME_COF1&apos;,
+&apos;CR2_AGE_COF1&apos;,
+&apos;CR2_RELN_COF1&apos;,
+&apos;CR2_DUR_COF1&apos;,
+&apos;CR2_WKMST_COF1&apos;,
+&apos;CR2_HRWK_COF1&apos;,
+&apos;CR2_DEVC_COF1&apos;,
+&apos;CR2_HIP_COF1&apos;],
+&apos;FAL&apos;:[
+&apos;FAL_NMBR_COF1&apos;,
+&apos;FAL_MOST_COF1&apos;,
+&apos;FAL_ATTN_COF1&apos;,
+&apos;FAL_HOSP_COF1&apos;,
+&apos;FAL_FU_COF1&apos;,
+&apos;FAL_WHERE_COF1&apos;,
+&apos;FAL_HOW_COF1&apos;,
+&apos;FAL_HOW2_COF1&apos;],
+&apos;INC&apos;:[
+&apos;INC_SRCE_COF1&apos;,
+&apos;INC_FRST_COF1&apos;,
+&apos;INC_SCND_COF1&apos;,
+&apos;INC_THRD_COF1&apos;,
+&apos;INC_TOT_COF1&apos;,
+&apos;INC_PSRCE_COF1&apos;,
+&apos;INC_PFRST_COF1&apos;,
+&apos;INC_PSCND_COF1&apos;,
+&apos;INC_PTHRD_COF1&apos;,
+&apos;INC_PTOT_COF1&apos;],
+&apos;INJ&apos;:[
+&apos;INJ_OCC_COF1&apos;,
+&apos;INJ_NMBR_COF1&apos;,
+&apos;INJ_CAUS_COF1&apos;,
+&apos;INJ_HOW_COF1&apos;,
+&apos;INJ_WHR_COF1&apos;,
+&apos;INJ_ACT_COF1&apos;,
+&apos;INJ_TYPE_COF1&apos;,
+&apos;INJ_BRKN_COF1&apos;,
+&apos;INJ_SITE_COF1&apos;],
+&apos;LBF&apos;:[
+&apos;LBF_CURR_COF1&apos;,
+&apos;LBF_MANY_COF1&apos;,
+&apos;LBF_STTS_COF1&apos;,
+&apos;LBF_SCHD_COF1&apos;,
+&apos;LBF_TYPE_COF1&apos;,
+&apos;LBF_IND_COF1&apos;,
+&apos;LBF_DURN_COF1&apos;,
+&apos;LBF_RSN_COF1&apos;,
+&apos;LBF_UNEM_COF1&apos;],
+&apos;LFP&apos;:[
+&apos;LFP_LAST_COF1&apos;,
+&apos;LFP_WKSAME_COF1&apos;,
+&apos;LFP_HRWK_COF1&apos;,
+&apos;LFP_SCHD_COF1&apos;,
+&apos;LFP_TYPE_COF1&apos;,
+&apos;LFP_IND_COF1&apos;],
+&apos;MEDI&apos;:[
+&apos;MEDI_MORE_1_COF1&apos;,
+&apos;MEDI_PRES_1_COF1&apos;,
+&apos;MEDI_Q_1_COF1&apos;,
+&apos;MEDI_DOSE_FRQ_1_COF1&apos;,
+&apos;MEDI_MORE_2_COF1&apos;,
+&apos;MEDI_ID_2_COF1&apos;,
+&apos;MEDI_PRES_2_COF1&apos;,
+&apos;MEDI_Q_2_COF1&apos;,
+&apos;MEDI_DOSE_FRQ_2_COF1&apos;,
+&apos;MEDI_USE2_2_COF1&apos;,
+&apos;MEDI_START_2_COF1&apos;,
+&apos;MEDI_REASON_2_COF1&apos;,
+&apos;MEDI_MORE_3_COF1&apos;,
+&apos;MEDI_ID_3_COF1&apos;,
+&apos;MEDI_PRES_3_COF1&apos;,
+&apos;MEDI_Q_3_COF1&apos;,
+&apos;MEDI_DOSE_FRQ_3_COF1&apos;,
+&apos;MEDI_USE2_3_COF1&apos;,
+&apos;MEDI_START_3_COF1&apos;,
+&apos;MEDI_REASON_3_COF1&apos;,
+&apos;MEDI_MORE_4_COF1&apos;,
+&apos;MEDI_ID_4_COF1&apos;,
+&apos;MEDI_PRES_4_COF1&apos;,
+&apos;MEDI_Q_4_COF1&apos;,
+&apos;MEDI_DOSE_FRQ_4_COF1&apos;,
+&apos;MEDI_USE2_4_COF1&apos;,
+&apos;MEDI_START_4_COF1&apos;,
+&apos;MEDI_REASON_4_COF1&apos;,
+&apos;MEDI_MORE_5_COF1&apos;,
+&apos;MEDI_ID_5_COF1&apos;,
+&apos;MEDI_PRES_5_COF1&apos;,
+&apos;MEDI_Q_5_COF1&apos;,
+&apos;MEDI_DOSE_FRQ_5_COF1&apos;,
+&apos;MEDI_USE2_5_COF1&apos;,
+&apos;MEDI_START_5_COF1&apos;,
+&apos;MEDI_REASON_5_COF1&apos;,
+&apos;MEDI_MORE_6_COF1&apos;,
+&apos;MEDI_ID_6_COF1&apos;,
+&apos;MEDI_PRES_6_COF1&apos;,
+&apos;MEDI_Q_6_COF1&apos;,
+&apos;MEDI_DOSE_FRQ_6_COF1&apos;,
+&apos;MEDI_USE2_6_COF1&apos;,
+&apos;MEDI_START_6_COF1&apos;,
+&apos;MEDI_REASON_6_COF1&apos;,
+&apos;MEDI_MORE_7_COF1&apos;,
+&apos;MEDI_ID_7_COF1&apos;,
+&apos;MEDI_PRES_7_COF1&apos;,
+&apos;MEDI_Q_7_COF1&apos;,
+&apos;MEDI_DOSE_FRQ_7_COF1&apos;,
+&apos;MEDI_USE2_7_COF1&apos;,
+&apos;MEDI_START_7_COF1&apos;,
+&apos;MEDI_REASON_7_COF1&apos;,
+&apos;MEDI_MORE_8_COF1&apos;,
+&apos;MEDI_ID_8_COF1&apos;,
+&apos;MEDI_PRES_8_COF1&apos;,
+&apos;MEDI_Q_8_COF1&apos;,
+&apos;MEDI_DOSE_FRQ_8_COF1&apos;,
+&apos;MEDI_USE2_8_COF1&apos;,
+&apos;MEDI_START_8_COF1&apos;,
+&apos;MEDI_REASON_8_COF1&apos;,
+&apos;MEDI_MORE_9_COF1&apos;,
+&apos;MEDI_ID_9_COF1&apos;,
+&apos;MEDI_PRES_9_COF1&apos;,
+&apos;MEDI_Q_9_COF1&apos;,
+&apos;MEDI_DOSE_FRQ_9_COF1&apos;,
+&apos;MEDI_USE2_9_COF1&apos;,
+&apos;MEDI_START_9_COF1&apos;,
+&apos;MEDI_REASON_9_COF1&apos;,
+&apos;MEDI_MORE_10_COF1&apos;,
+&apos;MEDI_ID_10_COF1&apos;,
+&apos;MEDI_PRES_10_COF1&apos;,
+&apos;MEDI_Q_10_COF1&apos;,
+&apos;MEDI_DOSE_FRQ_10_COF1&apos;,
+&apos;MEDI_USE2_10_COF1&apos;,
+&apos;MEDI_START_10_COF1&apos;,
+&apos;MEDI_REASON_10_COF1&apos;,
+&apos;MEDI_MORE_11_COF1&apos;,
+&apos;MEDI_ID_11_COF1&apos;,
+&apos;MEDI_PRES_11_COF1&apos;,
+&apos;MEDI_Q_11_COF1&apos;,
+&apos;MEDI_DOSE_FRQ_11_COF1&apos;,
+&apos;MEDI_USE2_11_COF1&apos;,
+&apos;MEDI_START_11_COF1&apos;,
+&apos;MEDI_REASON_11_COF1&apos;,
+&apos;MEDI_MORE_12_COF1&apos;,
+&apos;MEDI_ID_12_COF1&apos;,
+&apos;MEDI_PRES_12_COF1&apos;,
+&apos;MEDI_Q_12_COF1&apos;,
+&apos;MEDI_DOSE_FRQ_12_COF1&apos;,
+&apos;MEDI_USE2_12_COF1&apos;,
+&apos;MEDI_START_12_COF1&apos;,
+&apos;MEDI_REASON_12_COF1&apos;,
+&apos;MEDI_MORE_13_COF1&apos;,
+&apos;MEDI_ID_13_COF1&apos;,
+&apos;MEDI_PRES_13_COF1&apos;,
+&apos;MEDI_Q_13_COF1&apos;,
+&apos;MEDI_DOSE_FRQ_13_COF1&apos;,
+&apos;MEDI_USE2_13_COF1&apos;,
+&apos;MEDI_START_13_COF1&apos;,
+&apos;MEDI_REASON_13_COF1&apos;,
+&apos;MEDI_MORE_14_COF1&apos;,
+&apos;MEDI_ID_14_COF1&apos;,
+&apos;MEDI_PRES_14_COF1&apos;,
+&apos;MEDI_Q_14_COF1&apos;,
+&apos;MEDI_DOSE_FRQ_14_COF1&apos;,
+&apos;MEDI_USE2_14_COF1&apos;,
+&apos;MEDI_START_14_COF1&apos;,
+&apos;MEDI_REASON_14_COF1&apos;,
+&apos;MEDI_MORE_15_COF1&apos;,
+&apos;MEDI_ID_15_COF1&apos;,
+&apos;MEDI_PRES_15_COF1&apos;,
+&apos;MEDI_Q_15_COF1&apos;,
+&apos;MEDI_DOSE_FRQ_15_COF1&apos;,
+&apos;MEDI_USE2_15_COF1&apos;,
+&apos;MEDI_START_15_COF1&apos;,
+&apos;MEDI_REASON_15_COF1&apos;,
+&apos;MEDI_MORE_16_COF1&apos;,
+&apos;MEDI_ID_16_COF1&apos;,
+&apos;MEDI_PRES_16_COF1&apos;,
+&apos;MEDI_Q_16_COF1&apos;,
+&apos;MEDI_DOSE_FRQ_16_COF1&apos;,
+&apos;MEDI_USE2_16_COF1&apos;,
+&apos;MEDI_START_16_COF1&apos;,
+&apos;MEDI_REASON_16_COF1&apos;,
+&apos;MEDI_MORE_17_COF1&apos;,
+&apos;MEDI_ID_17_COF1&apos;,
+&apos;MEDI_PRES_17_COF1&apos;,
+&apos;MEDI_Q_17_COF1&apos;,
+&apos;MEDI_DOSE_FRQ_17_COF1&apos;,
+&apos;MEDI_USE2_17_COF1&apos;,
+&apos;MEDI_START_17_COF1&apos;,
+&apos;MEDI_REASON_17_COF1&apos;,
+&apos;MEDI_MORE_18_COF1&apos;,
+&apos;MEDI_ID_18_COF1&apos;,
+&apos;MEDI_PRES_18_COF1&apos;,
+&apos;MEDI_Q_18_COF1&apos;,
+&apos;MEDI_DOSE_FRQ_18_COF1&apos;,
+&apos;MEDI_USE2_18_COF1&apos;,
+&apos;MEDI_START_18_COF1&apos;,
+&apos;MEDI_REASON_18_COF1&apos;,
+&apos;MEDI_MORE_19_COF1&apos;,
+&apos;MEDI_ID_19_COF1&apos;,
+&apos;MEDI_PRES_19_COF1&apos;,
+&apos;MEDI_Q_19_COF1&apos;,
+&apos;MEDI_DOSE_FRQ_19_COF1&apos;,
+&apos;MEDI_USE2_19_COF1&apos;,
+&apos;MEDI_START_19_COF1&apos;,
+&apos;MEDI_REASON_19_COF1&apos;,
+&apos;MEDI_MORE_20_COF1&apos;,
+&apos;MEDI_ID_20_COF1&apos;,
+&apos;MEDI_PRES_20_COF1&apos;,
+&apos;MEDI_Q_20_COF1&apos;,
+&apos;MEDI_DOSE_FRQ_20_COF1&apos;,
+&apos;MEDI_USE2_20_COF1&apos;,
+&apos;MEDI_START_20_COF1&apos;,
+&apos;MEDI_REASON_20_COF1&apos;,
+&apos;MEDI_MORE_21_COF1&apos;,
+&apos;MEDI_ID_21_COF1&apos;,
+&apos;MEDI_PRES_21_COF1&apos;,
+&apos;MEDI_Q_21_COF1&apos;,
+&apos;MEDI_DOSE_FRQ_21_COF1&apos;,
+&apos;MEDI_USE2_21_COF1&apos;,
+&apos;MEDI_START_21_COF1&apos;,
+&apos;MEDI_REASON_21_COF1&apos;,
+&apos;MEDI_MORE_22_COF1&apos;,
+&apos;MEDI_ID_22_COF1&apos;,
+&apos;MEDI_PRES_22_COF1&apos;,
+&apos;MEDI_Q_22_COF1&apos;,
+&apos;MEDI_DOSE_FRQ_22_COF1&apos;,
+&apos;MEDI_USE2_22_COF1&apos;,
+&apos;MEDI_START_22_COF1&apos;,
+&apos;MEDI_REASON_22_COF1&apos;,
+&apos;MEDI_MORE_23_COF1&apos;,
+&apos;MEDI_ID_23_COF1&apos;,
+&apos;MEDI_PRES_23_COF1&apos;,
+&apos;MEDI_Q_23_COF1&apos;,
+&apos;MEDI_DOSE_FRQ_23_COF1&apos;,
+&apos;MEDI_USE2_23_COF1&apos;,
+&apos;MEDI_START_23_COF1&apos;,
+&apos;MEDI_REASON_23_COF1&apos;,
+&apos;MEDI_MORE_24_COF1&apos;,
+&apos;MEDI_ID_24_COF1&apos;,
+&apos;MEDI_PRES_24_COF1&apos;,
+&apos;MEDI_Q_24_COF1&apos;,
+&apos;MEDI_DOSE_FRQ_24_COF1&apos;,
+&apos;MEDI_USE2_24_COF1&apos;,
+&apos;MEDI_START_24_COF1&apos;,
+&apos;MEDI_REASON_24_COF1&apos;,
+&apos;MEDI_MORE_25_COF1&apos;,
+&apos;MEDI_ID_25_COF1&apos;,
+&apos;MEDI_PRES_25_COF1&apos;,
+&apos;MEDI_Q_25_COF1&apos;,
+&apos;MEDI_DOSE_FRQ_25_COF1&apos;,
+&apos;MEDI_USE2_25_COF1&apos;,
+&apos;MEDI_START_25_COF1&apos;,
+&apos;MEDI_REASON_25_COF1&apos;,
+&apos;MEDI_MORE_26_COF1&apos;,
+&apos;MEDI_ID_26_COF1&apos;,
+&apos;MEDI_PRES_26_COF1&apos;,
+&apos;MEDI_Q_26_COF1&apos;,
+&apos;MEDI_DOSE_FRQ_26_COF1&apos;,
+&apos;MEDI_USE2_26_COF1&apos;,
+&apos;MEDI_START_26_COF1&apos;,
+&apos;MEDI_REASON_26_COF1&apos;,
+&apos;MEDI_MORE_27_COF1&apos;,
+&apos;MEDI_ID_27_COF1&apos;,
+&apos;MEDI_PRES_27_COF1&apos;,
+&apos;MEDI_Q_27_COF1&apos;,
+&apos;MEDI_DOSE_FRQ_27_COF1&apos;,
+&apos;MEDI_USE2_27_COF1&apos;,
+&apos;MEDI_START_27_COF1&apos;,
+&apos;MEDI_REASON_27_COF1&apos;,
+&apos;MEDI_MORE_28_COF1&apos;,
+&apos;MEDI_ID_28_COF1&apos;,
+&apos;MEDI_PRES_28_COF1&apos;,
+&apos;MEDI_Q_28_COF1&apos;,
+&apos;MEDI_DOSE_FRQ_28_COF1&apos;,
+&apos;MEDI_USE2_28_COF1&apos;,
+&apos;MEDI_START_28_COF1&apos;,
+&apos;MEDI_REASON_28_COF1&apos;,
+&apos;MEDI_MORE_29_COF1&apos;,
+&apos;MEDI_ID_29_COF1&apos;,
+&apos;MEDI_PRES_29_COF1&apos;,
+&apos;MEDI_Q_29_COF1&apos;,
+&apos;MEDI_DOSE_FRQ_29_COF1&apos;,
+&apos;MEDI_USE2_29_COF1&apos;,
+&apos;MEDI_START_29_COF1&apos;,
+&apos;MEDI_REASON_29_COF1&apos;,
+&apos;MEDI_MORE_30_COF1&apos;,
+&apos;MEDI_ID_30_COF1&apos;,
+&apos;MEDI_PRES_30_COF1&apos;,
+&apos;MEDI_Q_30_COF1&apos;,
+&apos;MEDI_DOSE_FRQ_30_COF1&apos;,
+&apos;MEDI_USE2_30_COF1&apos;,
+&apos;MEDI_START_30_COF1&apos;,
+&apos;MEDI_REASON_30_COF1&apos;,
+&apos;MEDI_MORE_31_COF1&apos;,
+&apos;MEDI_ID_31_COF1&apos;,
+&apos;MEDI_PRES_31_COF1&apos;,
+&apos;MEDI_Q_31_COF1&apos;,
+&apos;MEDI_DOSE_FRQ_31_COF1&apos;,
+&apos;MEDI_USE2_31_COF1&apos;,
+&apos;MEDI_START_31_COF1&apos;,
+&apos;MEDI_REASON_31_COF1&apos;,
+&apos;MEDI_MORE_32_COF1&apos;,
+&apos;MEDI_ID_32_COF1&apos;,
+&apos;MEDI_PRES_32_COF1&apos;,
+&apos;MEDI_Q_32_COF1&apos;,
+&apos;MEDI_DOSE_FRQ_32_COF1&apos;,
+&apos;MEDI_USE2_32_COF1&apos;,
+&apos;MEDI_START_32_COF1&apos;,
+&apos;MEDI_REASON_32_COF1&apos;,
+&apos;MEDI_MORE_33_COF1&apos;,
+&apos;MEDI_ID_33_COF1&apos;,
+&apos;MEDI_PRES_33_COF1&apos;,
+&apos;MEDI_Q_33_COF1&apos;,
+&apos;MEDI_DOSE_FRQ_33_COF1&apos;,
+&apos;MEDI_USE2_33_COF1&apos;,
+&apos;MEDI_START_33_COF1&apos;,
+&apos;MEDI_REASON_33_COF1&apos;,
+&apos;MEDI_MORE_34_COF1&apos;,
+&apos;MEDI_ID_34_COF1&apos;,
+&apos;MEDI_PRES_34_COF1&apos;,
+&apos;MEDI_Q_34_COF1&apos;,
+&apos;MEDI_DOSE_FRQ_34_COF1&apos;,
+&apos;MEDI_USE2_34_COF1&apos;,
+&apos;MEDI_START_34_COF1&apos;,
+&apos;MEDI_REASON_34_COF1&apos;,
+&apos;MEDI_MORE_35_COF1&apos;,
+&apos;MEDI_ID_35_COF1&apos;,
+&apos;MEDI_PRES_35_COF1&apos;,
+&apos;MEDI_Q_35_COF1&apos;,
+&apos;MEDI_DOSE_FRQ_35_COF1&apos;,
+&apos;MEDI_USE2_35_COF1&apos;,
+&apos;MEDI_START_35_COF1&apos;,
+&apos;MEDI_REASON_35_COF1&apos;,
+&apos;MEDI_MORE_36_COF1&apos;,
+&apos;MEDI_ID_36_COF1&apos;,
+&apos;MEDI_PRES_36_COF1&apos;,
+&apos;MEDI_Q_36_COF1&apos;,
+&apos;MEDI_DOSE_FRQ_36_COF1&apos;,
+&apos;MEDI_USE2_36_COF1&apos;,
+&apos;MEDI_START_36_COF1&apos;,
+&apos;MEDI_REASON_36_COF1&apos;,
+&apos;MEDI_MORE_37_COF1&apos;,
+&apos;MEDI_ID_37_COF1&apos;,
+&apos;MEDI_PRES_37_COF1&apos;,
+&apos;MEDI_Q_37_COF1&apos;,
+&apos;MEDI_DOSE_FRQ_37_COF1&apos;,
+&apos;MEDI_USE2_37_COF1&apos;,
+&apos;MEDI_START_37_COF1&apos;,
+&apos;MEDI_REASON_37_COF1&apos;,
+&apos;MEDI_MORE_38_COF1&apos;,
+&apos;MEDI_ID_38_COF1&apos;,
+&apos;MEDI_PRES_38_COF1&apos;,
+&apos;MEDI_Q_38_COF1&apos;,
+&apos;MEDI_DOSE_FRQ_38_COF1&apos;,
+&apos;MEDI_USE2_38_COF1&apos;,
+&apos;MEDI_START_38_COF1&apos;,
+&apos;MEDI_REASON_38_COF1&apos;,
+&apos;MEDI_MORE_39_COF1&apos;,
+&apos;MEDI_ID_39_COF1&apos;,
+&apos;MEDI_PRES_39_COF1&apos;,
+&apos;MEDI_Q_39_COF1&apos;,
+&apos;MEDI_DOSE_FRQ_39_COF1&apos;,
+&apos;MEDI_USE2_39_COF1&apos;,
+&apos;MEDI_START_39_COF1&apos;,
+&apos;MEDI_REASON_39_COF1&apos;,
+&apos;MEDI_MORE_40_COF1&apos;,
+&apos;MEDI_ID_40_COF1&apos;,
+&apos;MEDI_PRES_40_COF1&apos;,
+&apos;MEDI_Q_40_COF1&apos;,
+&apos;MEDI_DOSE_FRQ_40_COF1&apos;,
+&apos;MEDI_USE2_40_COF1&apos;,
+&apos;MEDI_START_40_COF1&apos;,
+&apos;MEDI_REASON_40_COF1&apos;],
+&apos;RET&apos;:[
+&apos;RET_RTRD_COF1&apos;,
+&apos;RET_RTRN_COF1&apos;,
+&apos;RET_SPSE_COF1&apos;,
+&apos;RET_AGE_COF1&apos;,
+&apos;RET_WHY_COF1&apos;],
+&apos;RPL&apos;:[
+&apos;RPL_AGE_COF1&apos;,
+&apos;RPL_WHYNT_COF1&apos;],
+&apos;WLQ&apos;:[
+&apos;WLQ_GOEASWRK_COF1&apos;,
+&apos;WLQ_STRTARIVWRK_COF1&apos;,
+&apos;WLQ_SITSTNDSTY_COF1&apos;,
+&apos;WLQ_REPMOTION_COF1&apos;,
+&apos;WLQ_PYSEMO_CONTRT_COF1&apos;,
+&apos;WLQ_PYSEMO_SPEAK_COF1&apos;,
+&apos;WLQ_PYSEMO_HDLWRK_COF1&apos;,
+&apos;WLQ_PYSEMO_FHSWRK_COF1&apos;]
+}
+
+var str = []
+for(var key in sections) {
+  var rcount = 0
+  var qcount = 0
+  var arr = sections[key]
+  for(var i = 0; i &lt; arr.length; i++) {
+    var j = $(stage + arr[i])
+    if(j.isNull().value()) {
+      continue
+    }  
+    qcount++
+    rcount += j.any(&apos;REFUSED&apos;).value() ? 1 : 0
+  }
+  if(0 == qcount) {
+    str.push(null)
+  } else {
+    str.push(100.0*rcount/qcount)
+  }
+}
+newSequence(str, &apos;decimal&apos;)</attribute>
+        </attributes>
+      </variable>
+      <variable name="meta_module_duration" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0" repeatable="true" occurrenceGroup="">
+        <attributes>
+          <attribute name="script" valueType="text">var res = null
+if($this(&apos;meta_stage_duration&apos;).isNull().not().value()) {
+  var stage = &apos;InHome_3&apos;
+  var list = $this(&apos;meta_module_name&apos;)
+  var str = []
+  var section = $(&apos;clsa-inhome-f1.&apos;+stage+&apos;:QuestionnaireMetric.section&apos;).asSequence()
+  var duration = $(&apos;clsa-inhome-f1.&apos;+stage+&apos;:QuestionnaireMetric.duration&apos;).asSequence()
+  for(var i = 0; i &lt; list.size(); i++) {
+    str.push(
+      duration.filter(
+        function(v, k) {
+          return list.valueAt(i).eq(section.valueAt(k))
+        }
+      ).asSequence().sum()
+    )
+  }
+  res = newSequence(str, &apos;integer&apos;)
+} else {
+  var str = []
+  for(var i = 0; i &lt; $this(&apos;meta_module_name&apos;).size(); i++) str.push(null)
+  res = newSequence(str,&apos;integer&apos;)
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="meta_stage_duration" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var stage = &apos;InHome_3&apos;
+var res = null
+var post = $(&apos;clsa-inhome-f1.&apos;+stage+&apos;:QuestionnaireRun.timeEnd&apos;)
+var pre = $(&apos;clsa-inhome-f1.&apos;+stage+&apos;:QuestionnaireRun.timeStart&apos;)
+if(pre.before(post).value()) {
+    res = post.time().minus(pre.time()).div(1000)
+}
+if(null === res) {
+  res = $group(
+    &apos;clsa-inhome-f1.Participants:Admin.StageInstance.stage&apos;,
+    stage,
+    &apos;Admin.StageInstance.duration&apos;).asSequence().sum()
+}
+if(res.eq(0).value()) res = null
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="meta_module_name" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0" repeatable="true" occurrenceGroup="">
+        <attributes>
+          <attribute name="script" valueType="text">newSequence([&apos;CAG&apos;,&apos;CR1&apos;,&apos;CR2&apos;,&apos;FAL&apos;,&apos;INC&apos;,&apos;INJ&apos;,&apos;LBF&apos;,&apos;LFP&apos;,&apos;MEDI&apos;,&apos;RET&apos;,&apos;RPL&apos;,&apos;WLQ&apos;], &apos;text&apos;)</attribute>
+        </attributes>
+      </variable>
+    </variables>
+  </variables>
+  <created valueType="datetime">2019-04-15T14:19:03.659-04</created>
+  <updated valueType="datetime">2019-05-01T10:53:25.889-04</updated>
+</org.obiba.magma.views.View>

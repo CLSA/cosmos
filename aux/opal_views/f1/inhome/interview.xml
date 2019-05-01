@@ -1,0 +1,102 @@
+<org.obiba.magma.views.View>
+  <name>QC_F1_interview</name>
+  <from class="org.obiba.magma.security.SudoValueTableReference">
+    <reference>clsa-inhome-f1.Participants</reference>
+  </from>
+  <select class="org.obiba.magma.views.support.NoneClause"/>
+  <where class="org.obiba.magma.views.support.AllClause"/>
+  <variables class="org.obiba.magma.js.views.VariablesClause">
+    <variables class="linked-hash-set">
+      <variable name="barcode" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;Admin.Participant.barcode&apos;)</attribute>
+        </attributes>
+      </variable>
+      <variable name="site" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;Admin.ApplicationConfiguration.siteName&apos;).lowerCase().map({
+  &apos;britishcolumbia&apos;:&apos;University of BC DCS&apos;,
+  &apos;british columbia&apos;:&apos;University of BC DCS&apos;,
+  &apos;calgary&apos;:&apos;Calgary DCS&apos;,
+  &apos;dalhousie&apos;:&apos;Dalhousie DCS&apos;,
+  &apos;hamilton&apos;:&apos;Hamilton DCS&apos;,
+  &apos;hamiltonhome1&apos;:&apos;Hamilton DCS&apos;,
+  &apos;himilton&apos;:&apos;Hamilton DCS&apos;,
+  &apos;manitoba&apos;:&apos;Manitoba DCS&apos;,
+  &apos;mcgill&apos;:&apos;McGill DCS&apos;,
+  &apos;mcmaster&apos;:&apos;Hamilton DCS&apos;,
+  &apos;memorial&apos;:&apos;Memorial DCS&apos;,
+  &apos;memorial university&apos;:&apos;Memorial DCS&apos;,
+  &apos;ottawa&apos;:&apos;Ottawa DCS&apos;,
+  &apos;sherbrooke&apos;:&apos;Sherbrooke DCS&apos;,
+  &apos;simon fraser&apos;:&apos;Simon Fraser DCS&apos;,
+  &apos;simonfraser&apos;:&apos;Simon Fraser DCS&apos;,
+  &apos;universityofbc&apos;:&apos;University of BC DCS&apos;,
+  &apos;university of manitoba&apos;:&apos;Manitoba DCS&apos;,
+  &apos;university of victoria&apos;:&apos;Victoria DCS&apos;,
+  &apos;victoria&apos;:&apos;Victoria DCS&apos;},null)</attribute>
+        </attributes>
+      </variable>
+      <variable name="start_date" valueType="date" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;Admin.Interview.startDate&apos;)</attribute>
+        </attributes>
+      </variable>
+      <variable name="duration_name" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0" repeatable="true" occurrenceGroup="">
+        <attributes>
+          <attribute name="script" valueType="text">newSequence([&apos;interview&apos;,&apos;stage&apos;],&apos;text&apos;)</attribute>
+        </attributes>
+      </variable>
+      <variable name="duration_value" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0" repeatable="true" occurrenceGroup="">
+        <attributes>
+          <attribute name="script" valueType="text">newSequence([$this(&apos;meta_interview_duration&apos;),$this(&apos;meta_stage_duration&apos;)],&apos;integer&apos;)</attribute>
+        </attributes>
+      </variable>
+      <variable name="meta_interview_duration" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var res = null
+var te = $(&apos;clsa-inhome-f1.Participants:Admin.Participant.captureEndDate&apos;).time()
+var tb = $(&apos;clsa-inhome-f1.Participants:Admin.Participant.captureStartDate&apos;).time()
+if(te.isNull().not().and(tb.isNull().not()).value()) {
+ res = te.minus(tb).div(1000)
+ if(res.eq(0).value()) res = null
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="meta_stage_duration" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var res = null
+var stages = $(&apos;clsa-inhome-f1.Participants:Admin.StageInstance.stage&apos;).asSequence()
+var unique = stages.filter(function(v,i) {
+    return i == this.indexOf(v)
+  })
+var t = newValue(0,&apos;integer&apos;)
+for(var i = 0; i &lt; unique.size(); i++  ) {
+  var stage = unique.valueAt(i).value()
+  var v = null
+  if(&apos;ConclusionQuestionnaire&apos; == stage) {
+    var begin = $(&apos;clsa-inhome-f1.ConclusionQuestionnaire:QuestionnaireRun.timeStart&apos;)
+    var end = $(&apos;clsa-inhome-f1.ConclusionQuestionnaire:QuestionnaireRun.timeEnd&apos;)
+    if(begin.isNull().or(end.isNull()).value()) continue;
+    v = end.time().minus(begin.time()).div(1000).asSequence()
+  } else {
+    v = $group(
+      &apos;clsa-inhome-f1.Participants:Admin.StageInstance.stage&apos;,
+      stage,
+      &apos;Admin.StageInstance.duration&apos;).asSequence()
+  }
+  if(null == v) continue
+  t = t.plus(v.sum())
+}
+if(t.gt(0).value()) {
+  res = t
+}  
+res</attribute>
+        </attributes>
+      </variable>
+    </variables>
+  </variables>
+  <created valueType="datetime">2019-04-12T11:35:13.479-04</created>
+  <updated valueType="datetime">2019-05-01T10:39:31.232-04</updated>
+</org.obiba.magma.views.View>

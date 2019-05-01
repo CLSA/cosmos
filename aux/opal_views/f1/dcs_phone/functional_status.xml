@@ -1,0 +1,257 @@
+<org.obiba.magma.views.View>
+  <name>QC_F1_functional_status</name>
+  <from class="org.obiba.magma.views.JoinTable">
+    <list>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs-f1.Participants</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs-f1.FunctionalStatus</reference>
+      </table>
+    </list>
+  </from>
+  <select class="org.obiba.magma.views.support.NoneClause"/>
+  <where class="org.obiba.magma.js.views.JavascriptClause">
+    <scriptName>customScript</scriptName>
+    <script>$(&apos;clsa-dcs-f1.Participants:DCS_PHONE&apos;)</script>
+  </where>
+  <variables class="org.obiba.magma.js.views.VariablesClause">
+    <variables class="linked-hash-set">
+      <variable name="technician" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;clsa-dcs-f1.FunctionalStatus:QuestionnaireRun.user&apos;).whenNull(
+  $group(&apos;Admin.Action.stage&apos;,&apos;FunctionalStatus&apos;,&apos;Admin.Action.user&apos;).asSequence().last()).lowerCase()</attribute>
+        </attributes>
+      </variable>
+      <variable name="skip" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var stage = &apos;FunctionalStatus&apos;
+var action = $group(&apos;Admin.Action.stage&apos;,stage,&apos;Admin.Action.actionType&apos;).asSequence()
+var res = $group(&apos;Admin.Action.stage&apos;,stage,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
+  return i == action.indexOf(&apos;SKIP&apos;)
+  }).last()
+if(res.isNull().not().value()) {
+  res = newValue(res.value().slice(14),&apos;text&apos;)  
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="contraindicated" valueType="boolean" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f1.Participants:Admin.StageInstance.stage&apos;,&apos;FunctionalStatus&apos;,
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;)</attribute>
+        </attributes>
+      </variable>
+      <variable name="comment" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">// this script compounds repeated comments by using lowercase comment strings as array keys
+//
+var stage = &apos;FunctionalStatus&apos;
+var c_seq = $group(&apos;Admin.Action.stage&apos;,stage,&apos;Admin.Action.comment&apos;).asSequence()
+var e_seq = $group(&apos;Admin.Action.stage&apos;,stage,&apos;Admin.Action.eventReason&apos;).asSequence()
+var res = null
+if(c_seq.size().eq(e_seq.size()).value())
+{
+  var c_str = []  // string array of comments
+  var e_str = []  // string array of event reasons
+
+  for(var i = 0; i &lt; c_seq.size(); i++) {
+    var c = c_seq.valueAt(i).value()
+    if(null == c) continue
+    c = c.replace(/[^a-zA-Z0-9 àâäèéêëîïôœùûüÿçÀÂÄÈÉÊËÎÏÔŒÙÛÜŸÇ]/g,&quot;&quot;)
+    var e = e_seq.valueAt(i).value()
+    if(0 &lt; c.length) {
+      c_str.push(c)
+      if(null != e &amp;&amp; 0 &lt; e.length) {
+        e = e.slice(14)
+      } else {
+        e = &apos;SeeComment&apos;
+      }
+      e_str.push(e)
+    }
+  }
+
+  if(0 &lt; c_str.length) {
+    var arr = []  // array of event reasons
+    var key_orig = []  // array of lower cased comments as unique keys
+    for(var i = 0; i &lt; c_str.length; i++) {
+      var key = c_str[i]
+      var key_lower = key.toLowerCase()
+      // retain the first encountered instance of the comment
+      //
+      if(undefined === key_orig[key_lower])
+        key_orig[key_lower] = key
+
+      if(undefined === arr[e_str[i]])
+        arr[e_str[i]] = []
+
+      if(-1===arr[e_str[i]].indexOf(key_orig[key_lower]))
+        arr[e_str[i]].push(key_orig[key_lower])
+    }
+
+    // loop over the final array of event reasons and their sets of comments
+    //
+    var str = &apos;{&apos;
+    for(var key in arr) {
+      str += &apos;&quot;&apos; + key + &apos;&quot;:[&apos;
+      var t = []
+      for(var i = 0; i &lt; arr[key].length; i++) {
+        t.push(&apos;&quot;&apos; + arr[key][i] + &apos;&quot;&apos;)
+      }
+      str += t.join(&apos;,&apos;) + &apos;],&apos;
+    }
+
+    res = newValue(str.substring(0,str.length-1)+&apos;}&apos;,&apos;text&apos;)
+  }
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="qnaire_complete" valueType="decimal" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var stage = &apos;FunctionalStatus&apos;
+var p = $(&apos;clsa-dcs-f1.&apos; + stage + &apos;:QuestionnaireMetric.missingCount&apos;).asSequence()
+var q = $(&apos;clsa-dcs-f1.&apos; + stage + &apos;:QuestionnaireMetric.questionCount&apos;).asSequence()
+var res = null
+if(p.isNull().or(q.isNull(),q.sum().eq(0)).not().value()) {
+  res = q.sum().minus(p.sum()).multiply(100).div(q.sum())
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="missing" valueType="boolean" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$this(&apos;contraindicated&apos;).not().and(
+  $this(&apos;skip&apos;).isNull(),
+  $this(&apos;qnaire_complete&apos;).isNull(),
+  $this(&apos;meta_stage_duration&apos;).isNull())</attribute>
+        </attributes>
+      </variable>
+      <variable name="meta_module_name" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0" repeatable="true" occurrenceGroup="">
+        <attributes>
+          <attribute name="script" valueType="text">newSequence([&apos;Fun&apos;], &apos;text&apos;)</attribute>
+        </attributes>
+      </variable>
+      <variable name="duration_name" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0" repeatable="true" occurrenceGroup="">
+        <attributes>
+          <attribute name="script" valueType="text">newSequence([&apos;stage&apos;], &apos;text&apos;).append($this(&apos;meta_module_name&apos;))</attribute>
+        </attributes>
+      </variable>
+      <variable name="meta_stage_duration" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var stage = &apos;FunctionalStatus&apos;
+var res = null
+var post = $(&apos;clsa-dcs-f1.&apos;+stage+&apos;:QuestionnaireRun.timeEnd&apos;)
+var pre = $(&apos;clsa-dcs-f1.&apos;+stage+&apos;:QuestionnaireRun.timeStart&apos;)
+if(pre.before(post).value()) {
+    res = post.time().minus(pre.time()).div(1000)
+}
+if(null === res) {
+  res = $group(
+    &apos;clsa-dcs-f1.Participants:Admin.StageInstance.stage&apos;,
+    stage,
+    &apos;Admin.StageInstance.duration&apos;).asSequence().sum()
+}
+if(res.eq(0).value()) res = null
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="meta_module_duration" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0" repeatable="true" occurrenceGroup="">
+        <attributes>
+          <attribute name="script" valueType="text">var res = null
+if($this(&apos;meta_stage_duration&apos;).isNull().not().value()) {
+  var stage = &apos;FunctionalStatus&apos;
+  var list = $this(&apos;meta_module_name&apos;)
+  var str = []
+  var section = $(&apos;clsa-dcs-f1.&apos;+stage+&apos;:QuestionnaireMetric.section&apos;).asSequence()
+  var duration = $(&apos;clsa-dcs-f1.&apos;+stage+&apos;:QuestionnaireMetric.duration&apos;).asSequence()
+  for(var i = 0; i &lt; list.size(); i++) {
+    str.push(
+      duration.filter(
+        function(v, k) {
+          return list.valueAt(i).eq(section.valueAt(k))
+        }
+      ).asSequence().sum()
+    )
+  }
+  res = newSequence(str, &apos;integer&apos;) 
+} else {
+  var str = []
+  for(var i = 0; i &lt; $this(&apos;meta_module_name&apos;).size(); i++) str.push(null)
+  res = newSequence(str,&apos;integer&apos;)
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="duration_value" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0" repeatable="true" occurrenceGroup="">
+        <attributes>
+          <attribute name="script" valueType="text">newSequence($this(&apos;meta_stage_duration&apos;),&apos;integer&apos;).append($this(&apos;meta_module_duration&apos;))</attribute>
+        </attributes>
+      </variable>
+      <variable name="refusal_name" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0" repeatable="true" occurrenceGroup="">
+        <attributes>
+          <attribute name="script" valueType="text">$this(&apos;meta_module_name&apos;)</attribute>
+        </attributes>
+      </variable>
+      <variable name="refusal_value" valueType="decimal" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0" repeatable="true" occurrenceGroup="">
+        <attributes>
+          <attribute name="script" valueType="text">var stage = &apos;clsa-dcs-f1.FunctionalStatus:&apos;
+var sections = {
+&apos;Fun&apos;:[
+&apos;FUL_SHLD_COF1&apos;,
+&apos;FUL_SHLDDG_COF1&apos;,
+&apos;FUL_STOOP_COF1&apos;,
+&apos;FUL_STOOPDG_COF1&apos;,
+&apos;FUL_PUSH_COF1&apos;,
+&apos;FUL_PUSHDG_COF1&apos;,
+&apos;FUL_LFT10_COF1&apos;,
+&apos;FUL_LFT1ODG_COF1&apos;,
+&apos;FUL_HDLG_COF1&apos;,
+&apos;FUL_HDLGDG_COF1&apos;,
+&apos;FUL_ST15_COF1&apos;,
+&apos;FUL_ST15DG_COF1&apos;,
+&apos;FUL_SIT1H_COF1&apos;,
+&apos;FUL_SIT1HDG_COF1&apos;,
+&apos;FUL_STDUP_COF1&apos;,
+&apos;FUL_STDUPDG_COF1&apos;,
+&apos;FUL_FSTR_COF1&apos;,
+&apos;FUL_FSTRDG_COF1&apos;,
+&apos;FUL_WK23B_COF1&apos;,
+&apos;FUL_WK23BDG_COF1&apos;,
+&apos;FUL_MKBED_COF1&apos;,
+&apos;FUL_MKBEDDG_COF1&apos;,
+&apos;FUL_WSHBK_COF1&apos;,
+&apos;FUL_WSHBKDG_COF1&apos;,
+&apos;FUL_KNCUT_COF1&apos;,
+&apos;FUL_KNCUTDG_COF1&apos;,
+&apos;FUL_FORC_COF1&apos;,
+&apos;FUL_FORCDG_COF1&apos;]
+}
+
+var str = []
+for(var key in sections) {
+  var rcount = 0
+  var qcount = 0
+  var arr = sections[key]
+  for(var i = 0; i &lt; arr.length; i++) {
+    var j = $(stage + arr[i])
+    if(j.isNull().value()) {
+      continue
+    }  
+    qcount++
+    rcount += j.any(&apos;REFUSED&apos;).value() ? 1 : 0
+  }
+  if(0 == qcount) {
+    str.push(null)
+  } else {
+    str.push(100.0*rcount/qcount)
+  }
+}
+newSequence(str, &apos;decimal&apos;)</attribute>
+        </attributes>
+      </variable>
+    </variables>
+  </variables>
+  <created valueType="datetime">2019-04-11T14:41:07.736-04</created>
+  <updated valueType="datetime">2019-04-30T15:51:18.688-04</updated>
+</org.obiba.magma.views.View>
