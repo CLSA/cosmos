@@ -228,7 +228,7 @@ foreach( $template_filename_list as $template_filename )
     }
     else
     {
-      if( file_exists( $filename ) ) exec( sprintf( 'rm %s', $filename ) );
+      exec( sprintf( 'rm -f %s', $filename ) );
     }
   }
 }
@@ -290,7 +290,8 @@ foreach( $platform_list as $platform => $platform_id )
       file_put_contents( $xml_filename, opal_ws( $xml_url, false, true ) );
     }
 
-    if( 'interview' != $view ) // don't process the interview view, it is for metadata only
+    // don't process the interview or *_meta view, it is for metadata only
+    if( 'interview' != $view && false === strpos( $view, 'meta' ) )
     {
       out( sprintf( ' - processing view "%s" ', $view_name ) );
       if( !array_key_exists( $study_phase, $indicators[$platform] ) )
