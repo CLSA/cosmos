@@ -339,7 +339,7 @@ foreach( $platform_list as $platform => $platform_id )
             {
               if( $variable->isRepeatable )
               {
-                if( '_name' == substr( $variable->name, -5 ) ) // only process *_name columns
+                if( '_name' == substr( $variable->name, -5 ) )
                 {
                   // strip out the _name postfix
                   $suffix = substr( $variable->name, 0, -5 );
@@ -358,6 +358,26 @@ foreach( $platform_list as $platform => $platform_id )
                       }
                     }
                   }
+                }
+                else if( '_size' == substr( $variable->name, -5 ) )
+                {
+                  // strip out the _name postfix
+                  $suffix = substr( $variable->name, 0, -5 );
+                  
+                  // find the indicator and set its type
+                  foreach( $indicators[$platform][$study_phase][$view] as $index => $indicator  )
+                    if( false !== strpos( $indicator['name'], sprintf( '_%s', $suffix ) ) )
+                      $indicators[$platform][$study_phase][$view][$index]['type'] = get_type( $variable->valueType );
+                }
+                else if( '_value' == substr( $variable->name, -6 ) )
+                {
+                  // strip out the _name postfix
+                  $suffix = substr( $variable->name, 0, -6 );
+                  
+                  // find the indicator and set its type
+                  foreach( $indicators[$platform][$study_phase][$view] as $index => $indicator  )
+                    if( false !== strpos( $indicator['name'], sprintf( '_%s', $suffix ) ) )
+                      $indicators[$platform][$study_phase][$view][$index]['type'] = get_type( $variable->valueType );
                 }
               }
               else
