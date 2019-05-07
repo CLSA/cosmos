@@ -142,10 +142,7 @@ res</attribute>
         <attributes>
           <attribute name="script" valueType="text">var stage = &apos;clsa-inhome-f1.InHome_4:&apos;
 var sections = {
-&apos;ACE&apos;:[
-&apos;ACE_DTHPRT_COF1&apos;,
-&apos;ACE_DVRCPRT_COF1&apos;,
-&apos;ACE_BRKDN_COF1&apos;],
+&apos;ACE&apos;:[],
 &apos;CEX&apos;:[
 &apos;CEX_HURT_COF1&apos;,
 &apos;CEX_SEEHIT_COF1&apos;,
@@ -160,23 +157,8 @@ var sections = {
 &apos;CEX_WORD_COF1&apos;],
 &apos;ENV&apos;:[
 &apos;ENV_HMPRB_COF1&apos;,
-&apos;ENV_STFHM_COF1&apos;,
-&apos;ENV_FLPRTAREA1_C OF1&apos;,
-&apos;ENV_VNDLSM_COF1&apos;,
-&apos;ENV_FLLNLY_COF1&apos;,
-&apos;ENV_PPLTRST_COF1&apos;,
-&apos;ENV_AFRDWLK_COF1&apos;,
-&apos;ENV_PPLFRNDLY_COF1&apos;,
-&apos;ENV_PPLTKADV_COF1&apos;,
-&apos;ENV_CLEAN_COF1&apos;,
-&apos;ENV_PPLHLP_COF1&apos;],
+&apos;ENV_STFHM_COF1&apos;],
 &apos;HCU1&apos;:[
-&apos;HCU_FAMPHY_COF1&apos;,
-&apos;HCU_SPEC_COF1&apos;,
-&apos;HCU_PSYCH_COF1&apos;,
-&apos;HCU_OPTO_COF1&apos;,
-&apos;HCU_PHYSIO_COF1&apos;,
-&apos;HCU_SOCLWRK_COF1&apos;,
 &apos;HCU_EMEREG_COF1&apos;,
 &apos;HCU_HLOVRNT_COF1&apos;,
 &apos;HCU_NRSHM_COF1&apos;,
@@ -215,7 +197,6 @@ var sections = {
 &apos;K10_HFWK1_NB_COF1&apos;,
 &apos;K10_DOC1_NB_COF1&apos;,
 &apos;K10_OTPFLING_COF1&apos;,
-&apos;K10_OTPFLING1_OTSP_COF1&apos;,
 &apos;K10_PHYSHLTH_COF1&apos;],
 &apos;MEM&apos;:[
 &apos;MEM_PAYBILL_COF1&apos;,
@@ -272,16 +253,7 @@ var sections = {
 &apos;PER_CNV_COF1&apos;,
 &apos;PER_CNVDIS_COF1&apos;,
 &apos;PER_CNVAGR_COF1&apos;],
-&apos;PHB&apos;:[
-&apos;PHB_BLP_COF1&apos;,
-&apos;PHB_COL_COF1&apos;,
-&apos;PHB_CHOL_COF1&apos;,
-&apos;PHB_GLU_COF1&apos;,
-&apos;PHB_PAP_COF1&apos;,
-&apos;PHB_MG_COF1&apos;,
-&apos;PHB_DEXA_COF1&apos;,
-&apos;PHB_FLUV_COF1&apos;,
-&apos;PHB_PCV_COF1&apos;],
+&apos;PHB&apos;:[],
 &apos;SEQ&apos;:[
 &apos;SEQ_LADDER_COF1&apos;],
 &apos;TRA&apos;:[
@@ -294,24 +266,6 @@ var sections = {
 &apos;TRA_ACCTR_COF1&apos;,
 &apos;TRA_PUBTRFRQ_COF1&apos;,
 &apos;TRA_TRIP_COF1&apos;,
-&apos;TRA_CHGRS_COF1&apos;,
-&apos;TRA_CHGHC_COF1&apos;,
-&apos;TRA_CHGLPE_COF1&apos;,
-&apos;TRA_CHGSLC_COF1&apos;,
-&apos;TRA_CHGJDG_COF1&apos;,
-&apos;TRA_CHGCOC_COF1&apos;,
-&apos;TRA_CHGCGB_COF1&apos;,
-&apos;TRA_CHGQDD_COF1&apos;,
-&apos;TRA_CHGDS_COF1&apos;,
-&apos;TRA_CHGRS2_COF1&apos;,
-&apos;TRA_CHGCH2_COF1&apos;,
-&apos;TRA_CHGPLE2_COF1&apos;,
-&apos;TRA_CHGSLC2_COF1&apos;,
-&apos;TRA_CHGJDG2_COF1&apos;,
-&apos;TRA_CHGCOC2_COF1&apos;,
-&apos;TRA_CHCCGB2_COF1&apos;,
-&apos;TRA_CGCQDD2_COF1&apos;,
-&apos;TRA_CHGDS2_COF1&apos;,
 &apos;TRA_AVOID_COF1&apos;,
 &apos;TRA_DRVST1_YR_COF1&apos;,
 &apos;TRA_CEASE_COF1&apos;,
@@ -325,7 +279,6 @@ var sections = {
 &apos;WEA_SVNGSVL_COF1&apos;,
 &apos;WEA_LFINS_COF1&apos;,
 &apos;WEA_ASSETS_COF1&apos;,
-&apos;WEA_ASSETS_OTSP_COF1&apos;,
 &apos;WEA_DEBT_COF1&apos;,
 &apos;WEA_FNSTATUS_COF1&apos;,
 &apos;WEA_INCNEEDS_COF1&apos;,
@@ -412,5 +365,5 @@ res</attribute>
     </variables>
   </variables>
   <created valueType="datetime">2019-04-15T14:32:15.195-04</created>
-  <updated valueType="datetime">2019-05-01T10:50:47.218-04</updated>
+  <updated valueType="datetime">2019-05-06T11:06:57.570-04</updated>
 </org.obiba.magma.views.View>

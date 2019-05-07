@@ -142,9 +142,7 @@ res</attribute>
         <attributes>
           <attribute name="script" valueType="text">var stage = &apos;clsa-inhome-f2.InHome_1:&apos;
 var sections = {
-&apos;AGE&apos;:[
-&apos;AGE_ASK_COF2&apos;,
-&apos;SEX_ASK_COF2&apos;],
+&apos;AGE&apos;:[],
 &apos;ALC&apos;:[
 &apos;ALC_FREQ_COF2&apos;,
 &apos;ALC_RDWK_COF2&apos;,
@@ -218,8 +216,7 @@ var sections = {
 &apos;NUT_TAST_COF2&apos;,
 &apos;NUT_SMEL_COF2&apos;,
 &apos;NUT_SPDIET_COF2&apos;,
-&apos;NUT_DTYP_COF2&apos;,
-&apos;NUT_DTIM_COF2&apos;],
+&apos;NUT_DTYP_COF2&apos;],
 &apos;OWN&apos;:[
 &apos;OWN_DWLG_COF2&apos;,
 &apos;OWN_OWN_COF2&apos;,
@@ -361,5 +358,5 @@ res</attribute>
     </variables>
   </variables>
   <created valueType="datetime">2019-04-15T14:45:49.085-04</created>
-  <updated valueType="datetime">2019-05-01T09:56:19.415-04</updated>
+  <updated valueType="datetime">2019-05-06T11:29:01.714-04</updated>
 </org.obiba.magma.views.View>

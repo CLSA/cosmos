@@ -142,7 +142,7 @@ res</attribute>
         <attributes>
           <attribute name="script" valueType="text">var stage = &apos;clsa-inhome-f1.InHome_1:&apos;
 var sections = {
-&apos;AGE&apos;:[&apos;AGE_ASK_COF1&apos;],
+&apos;AGE&apos;:[],
 &apos;ALC&apos;:[
 &apos;ALC_EVER_COF1&apos;,
 &apos;ALC_FREQ_COF1&apos;,
@@ -159,7 +159,8 @@ var sections = {
 &apos;ALC_MLFQ_COF1&apos;,
 &apos;ALC_FMFQ_COF1&apos;,
 &apos;ALC_HVST_COF1&apos;],
-&apos;ED&apos;:[&apos;ED_OTED_COF1&apos;],
+&apos;ED&apos;:[
+&apos;ED_OTED_COF1&apos;],
 &apos;GEN&apos;:[
 &apos;GEN_HLTH_COF1&apos;,
 &apos;GEN_MNTL_COF1&apos;,
@@ -210,8 +211,7 @@ var sections = {
 &apos;NUT_TAST_COF1&apos;,
 &apos;NUT_SMEL_COF1&apos;,
 &apos;NUT_SPDIET_COF1&apos;,
-&apos;NUT_DTYP_COF1&apos;,
-&apos;NUT_DTIM_COF1&apos;],
+&apos;NUT_DTYP_COF1&apos;],
 &apos;OWN&apos;:[
 &apos;OWN_DWLG_COF1&apos;,
 &apos;OWN_OWN_COF1&apos;,
@@ -272,7 +272,7 @@ var sections = {
 }
 
 var str = []
-for(var key in sections) {
+for(var key in sections) {  
   var rcount = 0
   var qcount = 0
   var arr = sections[key]
@@ -347,5 +347,5 @@ res</attribute>
     </variables>
   </variables>
   <created valueType="datetime">2019-04-15T14:05:51.736-04</created>
-  <updated valueType="datetime">2019-05-01T10:58:47.484-04</updated>
+  <updated valueType="datetime">2019-05-06T11:08:43.610-04</updated>
 </org.obiba.magma.views.View>

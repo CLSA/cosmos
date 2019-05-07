@@ -142,21 +142,8 @@ res</attribute>
         <attributes>
           <attribute name="script" valueType="text">var stage = &apos;clsa-inhome-f2.InHome_4:&apos;
 var sections = {
-&apos;ENV&apos;:[
-&apos;ENV_FLPRTAREA1_COF2&apos;,
-&apos;ENV_VNDLSM_COF2&apos;,
-&apos;ENV_FLLNLY_COF2&apos;,
-&apos;ENV_PPLTRST_COF2&apos;,
-&apos;ENV_AFRDWLK_COF2&apos;,
-&apos;ENV_PPLFRNDLY_COF2&apos;,
-&apos;ENV_PPLTKADV_COF2&apos;,
-&apos;ENV_CLEAN_COF2&apos;,
-&apos;ENV_PPLHLP_COF2&apos;],
+&apos;ENV&apos;:[],
 &apos;HCU1&apos;:[
-&apos;HCU_FAMPHY_COF2&apos;,
-&apos;HCU_SPEC_COF2&apos;,
-&apos;HCU_PSYCH_COF2&apos;,
-&apos;HCU_PHYSIO_COF2&apos;,
 &apos;HCU_HLOVRNT_COF2&apos;,
 &apos;HCU_NRSHM_COF2&apos;,
 &apos;HCU_HAVEFAM_COF2&apos;,
@@ -247,7 +234,6 @@ var sections = {
 &apos;WEA_SVNGSVL_COF2&apos;,
 &apos;WEA_LFINS_COF2&apos;,
 &apos;WEA_ASSETS_COF2&apos;,
-&apos;WEA_ASSETS_OTSP_COF2&apos;,
 &apos;WEA_DEBT_COF2&apos;,
 &apos;WEA_FNSTATUS_COF2&apos;,
 &apos;WEA_INCNEEDS_COF2&apos;,
@@ -255,13 +241,7 @@ var sections = {
 &apos;WEA_ORGMONEY_COF2&apos;,
 &apos;WEA_FNDEC_COF2&apos;,
 &apos;WEA_SUFFUND_COF2&apos;,
-&apos;WEA_INHERT_COF2&apos;],
-&apos;WTP&apos;:[
-&apos;WTP_IMAGE25_COF2&apos;,
-&apos;WTP_IMAGE45_COF2&apos;,
-&apos;WTP_IMAGE55_COF2&apos;,
-&apos;WTP_IMAGE65_COF2&apos;,
-&apos;WTP_IMAGECUR_COF2&apos;]
+&apos;WEA_INHERT_COF2&apos;]
 }
 
 var skip = []
@@ -350,5 +330,5 @@ res</attribute>
     </variables>
   </variables>
   <created valueType="datetime">2019-04-15T15:02:06.934-04</created>
-  <updated valueType="datetime">2019-05-01T10:32:23.925-04</updated>
+  <updated valueType="datetime">2019-05-06T11:44:30.162-04</updated>
 </org.obiba.magma.views.View>

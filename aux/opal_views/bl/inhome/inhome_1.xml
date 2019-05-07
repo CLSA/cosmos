@@ -171,6 +171,7 @@ var sections = {
 &apos;GEN_BRD_COM&apos;,
 &apos;GEN_MUSC_COM&apos;],
 &apos;NUT&apos;:[
+&apos;NUT_FBR_COM&apos;,
 &apos;NUT_BRD_COM&apos;,
 &apos;NUT_MEAT_COM&apos;,
 &apos;NUT_MTOT_COM&apos;,
@@ -227,14 +228,9 @@ var sections = {
 &apos;SMK_FRSTCG_COM&apos;,
 &apos;SMK_CURRCG_COM&apos;,
 &apos;SMK_CGDL_COM&apos;,
-&apos;SMK_NBCG_COM&apos;,
 &apos;SMK_YRDL_COM&apos;,
-&apos;SMK_FRQDL_COM&apos;,
-&apos;SMK_LST30_COM&apos;,
-&apos;SMK_NB30_COM&apos;,
 &apos;SMK_EVRDL_COM&apos;,
 &apos;SMK_SMKDL_COM&apos;,
-&apos;SMK_NBDL_COM&apos;,
 &apos;SMK_TOTYR_COM&apos;,
 &apos;SMK_STOP_COM&apos;,
 &apos;SMK_OTREG_COM&apos;,
@@ -331,5 +327,5 @@ res</attribute>
     </variables>
   </variables>
   <created valueType="datetime">2019-04-10T16:28:25.373-04</created>
-  <updated valueType="datetime">2019-05-01T11:16:21.103-04</updated>
+  <updated valueType="datetime">2019-05-06T09:13:42.775-04</updated>
 </org.obiba.magma.views.View>

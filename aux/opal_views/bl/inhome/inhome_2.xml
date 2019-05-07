@@ -166,35 +166,14 @@ var sections = {
 &apos;COG&apos;:[
 &apos;COG_REC_COM&apos;,
 &apos;COG_RDY_COM&apos;,
-&apos;COG_RDYRPT_COM&apos;,
-&apos;COG_RDYIMP_COM&apos;,
-&apos;COG_BGN_COM&apos;,
-&apos;COG_HRD_COM&apos;,
-&apos;COG_HRDIMP_COM&apos;,
-&apos;COG_WRD_COM&apos;,
 &apos;COG_WRDRPT_COM&apos;,
-&apos;COG_WRDIMP_COM&apos;,
-&apos;COG_WRDLST_COM&apos;,
-&apos;COG_ANML_COM&apos;,
 &apos;COG_ANMLRPT_COM&apos;,
-&apos;COG_ANMLIMP_COM&apos;,
-&apos;COG_ANMLLIST_COM&apos;,
-&apos;COG_CNT_COM&apos;,
 &apos;COG_CNTRPT_COM&apos;,
-&apos;COG_CNTFCTR_COM&apos;,
 &apos;COG_CNTLST_COM&apos;,
-&apos;COG_CNTTME_RECORD_COM&apos;,
-&apos;COG_ALP_COM&apos;,
 &apos;COG_ALPRPT_COM&apos;,
-&apos;COG_ALPFCTR_COM&apos;,
 &apos;COG_ALPLST_COM&apos;,
-&apos;COG_ALPTME_RECORD_COM&apos;,
-&apos;COG_ALT_COM&apos;,
 &apos;COG_ALTRPT_COM&apos;,
-&apos;COG_ALTFCT_COM&apos;,
-&apos;COG_ALTLST_COM&apos;,
-&apos;COG_ALTTME_RECORD_COM&apos;,
-&apos;COG_WRDLST2_RECORD_COM&apos;],
+&apos;COG_ALTLST_COM&apos;],
 &apos;HRG&apos;:[
 &apos;HRG_HRG_COM&apos;,
 &apos;HRG_NOIS_COM&apos;,
@@ -289,8 +268,7 @@ var sections = {
 &apos;WHO_HRT_COM&apos;,
 &apos;WHO_TYPE_COM&apos;,
 &apos;WHO_HRTAG_COM&apos;,
-&apos;WHO_HRTDR_COM&apos;,
-&apos;WHO_MENOP_COM&apos;]
+&apos;WHO_HRTDR_COM&apos;]
 }
 
 var str = []
@@ -369,5 +347,5 @@ res</attribute>
     </variables>
   </variables>
   <created valueType="datetime">2019-04-10T16:29:03.609-04</created>
-  <updated valueType="datetime">2019-05-01T11:13:16.302-04</updated>
+  <updated valueType="datetime">2019-05-06T09:19:56.605-04</updated>
 </org.obiba.magma.views.View>
