@@ -159,6 +159,8 @@ $db = new mysqli(
   COSMOS_DB
 );
 
+$stage_column_list = array( 'technician', 'contraindicated', 'missing', 'skip', 'duration', 'comment' );
+
 $indicators = array();
 
 $study_phase_list = array();
@@ -309,7 +311,8 @@ foreach( $platform_list as $platform => $platform_id )
         {
           foreach( $view_subobj->variables as $variable )
           {
-            if( 'meta_' == substr( $variable->name, 0, 5 ) ) // use meta variables to search for repeatable column names
+            if( in_array( $variable->name, $stage_column_list ) ) {} // ignore columns which are in the stage table
+            else if( 'meta_' == substr( $variable->name, 0, 5 ) ) // use meta variables to search for repeatable column names
             {
               if( $variable->isRepeatable )
               {
