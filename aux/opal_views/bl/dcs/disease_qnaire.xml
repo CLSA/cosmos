@@ -884,5 +884,5 @@ newSequence(str, &apos;decimal&apos;)</attribute>
     </variables>
   </variables>
   <created valueType="datetime">2019-04-11T13:44:20.232-04</created>
-  <updated valueType="datetime">2019-04-30T13:23:51.984-04</updated>
+  <updated valueType="datetime">2019-05-07T09:34:31.278-04</updated>
 </org.obiba.magma.views.View>

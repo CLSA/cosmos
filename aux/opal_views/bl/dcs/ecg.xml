@@ -43,10 +43,10 @@ res</attribute>
       </variable>
       <variable name="missing" valueType="boolean" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">$this(&apos;xml_file_size&apos;).isNull().and(
+          <attribute name="script" valueType="text">$this(&apos;contraindicated&apos;).not().and(
+  $this(&apos;skip&apos;).isNull(),
   $this(&apos;intrinsic_poor_quality&apos;).isNull(),
-  $this(&apos;contraindicated&apos;).not(),
-  $this(&apos;skip&apos;).isNull()
+  $this(&apos;file_size&apos;).isNull()  
 )</attribute>
         </attributes>
       </variable>
@@ -58,11 +58,6 @@ if(v.isNull().not().value()) {
   res = v.lowerCase().matches(/poor data quality/)
 }
 res</attribute>
-        </attributes>
-      </variable>
-      <variable name="xml_file_size" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
-        <attributes>
-          <attribute name="script" valueType="text">$(&apos;clsa-dcs.ECG:RES_XML_FILE&apos;).length()</attribute>
         </attributes>
       </variable>
       <variable name="duration" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
@@ -143,8 +138,13 @@ if(c_seq.size().eq(e_seq.size()).value())
 res</attribute>
         </attributes>
       </variable>
+      <variable name="file_size" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;clsa-dcs.ECG:RES_XML_FILE&apos;).length()</attribute>
+        </attributes>
+      </variable>
     </variables>
   </variables>
   <created valueType="datetime">2019-04-10T14:31:00.948-04</created>
-  <updated valueType="datetime">2019-04-30T13:13:04.828-04</updated>
+  <updated valueType="datetime">2019-05-07T15:33:47.774-04</updated>
 </org.obiba.magma.views.View>

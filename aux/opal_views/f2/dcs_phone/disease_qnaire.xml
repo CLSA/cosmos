@@ -363,7 +363,6 @@ var sections = {
 &apos;CCC_KIDSTN_COF2&apos;,
 &apos;CCC_KIDSTNAGE_COF2&apos;,
 &apos;CCC_DITYP_COF2&apos;,
-&apos;CCC_DITIM_COF2&apos;,
 &apos;CCC_HCV_COF2&apos;,
 &apos;CCC_HCVAGE_COF2&apos;,
 &apos;CCC_HCV_CHANGE_COF2&apos;,
@@ -485,6 +484,7 @@ var sections = {
 &apos;DPR_MED_39_COF2&apos;,
 &apos;DPR_MED_40_COF2&apos;,
 &apos;DPR_OTHMD_COF2&apos;,
+//&apos;DPR_OTHCOUN_COF2&apos;,
 &apos;DPR_EVRTRT_COF2&apos;],
 &apos;EPI&apos;:[
 &apos;EPI_CAUS_FEV_COF2&apos;,
@@ -997,12 +997,12 @@ if(-1 != skip.indexOf(key)) {
   } else {
     str.push(100.0*rcount/qcount)
   }
-}  
+}
 newSequence(str, &apos;decimal&apos;)</attribute>
         </attributes>
       </variable>
     </variables>
   </variables>
   <created valueType="datetime">2019-04-11T14:43:53.784-04</created>
-  <updated valueType="datetime">2019-04-30T15:49:23.618-04</updated>
+  <updated valueType="datetime">2019-05-06T13:25:02.945-04</updated>
 </org.obiba.magma.views.View>

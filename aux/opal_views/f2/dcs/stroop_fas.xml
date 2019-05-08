@@ -11,7 +11,10 @@
     </list>
   </from>
   <select class="org.obiba.magma.views.support.NoneClause"/>
-  <where class="org.obiba.magma.views.support.AllClause"/>
+  <where class="org.obiba.magma.js.views.JavascriptClause">
+    <scriptName>customScript</scriptName>
+    <script>$(&apos;clsa-dcs-f2.Participants:DCSatHOME&apos;).not().whenNull(true).and($(&apos;clsa-dcs-f2.Participants:DCS_PHONE&apos;).not().whenNull(true))</script>
+  </where>
   <variables class="org.obiba.magma.js.views.VariablesClause">
     <variables class="linked-hash-set">
       <variable name="technician" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
@@ -219,42 +222,15 @@ res</attribute>
 var sections={
 &apos;FAS&apos;:[
 &apos;FAS_INSTRDY_COF2&apos;,
-&apos;FAS_INSTRPT_COF2&apos;,
-&apos;FAS_INSTFCTR_COF2&apos;,
-&apos;FAS_INSTLST_COF2&apos;,
-&apos;FAS_FRECR_COF2&apos;,
-&apos;FAS_FCOMP_COF2&apos;,
-&apos;FAS_FCOMP_COMM_COF2&apos;,
-&apos;FAS_ARECR_COF2&apos;,
-&apos;FAS_ACOMP_COF2&apos;,
-&apos;FAS_ACOMP_COMM_COF2&apos;,
-&apos;FAS_SRECR_COF2&apos;,
-&apos;FAS_SCOMP_COF2&apos;,
-&apos;FAS_SCOMP_COMM_COF2&apos;],
+&apos;FAS_INSTRPT_COF2&apos;],
 &apos;STP&apos;:[
 &apos;NEUR_CONSREC_COF2&apos;,
 &apos;STP_DOT_COF2&apos;,
 &apos;STP_DOTRPT_COF2&apos;,
-&apos;STP_DOTFCTR_COF2&apos;,
-&apos;STP_DOTLST_COF2&apos;,
-&apos;STP_DOTRECR_COF2&apos;,
-&apos;STP_DOTABLE_COF2&apos;,
-&apos;STP_DOTTIMEN_COF2&apos;,
 &apos;STP_WOR_COF2&apos;,
 &apos;STP_WORRPT_COF2&apos;,
-&apos;STP_WORFCTR_COF2&apos;,
-&apos;STP_WORLST_COF2&apos;,
-&apos;STP_WORRECR_COF2&apos;,
-&apos;STP_WORABLE_COF2&apos;,
-&apos;STP_WORTIMEN_COF2&apos;,
 &apos;STP_COL_COF2&apos;,
-&apos;STP_COLRPT_COF2&apos;,
-&apos;STP_COLFCTR_COF2&apos;,
-&apos;STP_COLLST_COF2&apos;,
-&apos;STP_COLRECR_COF2&apos;,
-&apos;STP_COLABLE_COF2&apos;,
-&apos;STP_COLTIMEN_COF2&apos;,
-&apos;STP_COLCOMM_COF2&apos;]
+&apos;STP_COLRPT_COF2&apos;]
 }
 
 var skip=[]
@@ -291,5 +267,5 @@ newSequence(str, &apos;decimal&apos;)</attribute>
     </variables>
   </variables>
   <created valueType="datetime">2019-04-11T13:24:23.553-04</created>
-  <updated valueType="datetime">2019-04-30T13:41:47.467-04</updated>
+  <updated valueType="datetime">2019-05-07T15:43:03.600-04</updated>
 </org.obiba.magma.views.View>

@@ -11,7 +11,10 @@
     </list>
   </from>
   <select class="org.obiba.magma.views.support.NoneClause"/>
-  <where class="org.obiba.magma.views.support.AllClause"/>
+  <where class="org.obiba.magma.js.views.JavascriptClause">
+    <scriptName>customScript</scriptName>
+    <script>$(&apos;clsa-dcs-f1.Participants:DCSatHOME&apos;).not().whenNull(true).and($(&apos;clsa-dcs-f1.Participants:DCS_PHONE&apos;).not().whenNull(true))</script>
+  </where>
   <variables class="org.obiba.magma.js.views.VariablesClause">
     <variables class="linked-hash-set">
       <variable name="technician" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
@@ -185,58 +188,8 @@ res</attribute>
           <attribute name="script" valueType="text">newSequence($this(&apos;meta_stage_duration&apos;),&apos;integer&apos;).append($this(&apos;meta_module_duration&apos;))</attribute>
         </attributes>
       </variable>
-      <variable name="refusal_name" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0" repeatable="true" occurrenceGroup="">
-        <attributes>
-          <attribute name="script" valueType="text">$this(&apos;meta_module_name&apos;)</attribute>
-        </attributes>
-      </variable>
-      <variable name="refusal_value" valueType="decimal" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0" repeatable="true" occurrenceGroup="">
-        <attributes>
-          <attribute name="script" valueType="text">var stage = &apos;clsa-dcs-f1.Deviation_AE_CRF:&apos;
-var sections={
-&apos;Deviation&apos;:[
-&apos;DEV_DCS_COF1&apos;,
-&apos;DEV_WHAT_COF1&apos;,
-&apos;DEV_REAS_COF1&apos;,
-&apos;DEV_ORDR_COF1&apos;,
-&apos;DEV_ORDR2_COF1&apos;,
-&apos;DEV_ORDR3_COF1&apos;,
-&apos;DEV_ORDR4_COF1&apos;,
-&apos;DEV_ORDR5_COF1&apos;,
-&apos;DEV_BLWHEN_COF1&apos;,
-&apos;DAE_DCS_COF1&apos;,
-&apos;DAE_WHAT_COF1&apos;,
-&apos;DAE_FLWUP_COF1&apos;,
-&apos;DAE_COMM_COF1&apos;,
-&apos;CRF_DCS_COF1&apos;,
-&apos;CRF_NCC_COF1&apos;,
-&apos;CRF-REAS_COF1&apos;]
-}
-
-var str = []
-for(var key in sections) {
-  var rcount = 0
-  var qcount = 0
-  var arr = sections[key]
-  for(var i = 0; i &lt; arr.length; i++) {
-    var j = $(stage + arr[i])
-    if(j.isNull().value()) {
-      continue
-    }  
-    qcount++
-    rcount += j.any(&apos;REFUSED&apos;).value() ? 1 : 0
-  }
-  if(0 == qcount) {
-    str.push(null)
-  } else {
-    str.push(100.0*rcount/qcount)
-  }
-}
-newSequence(str, &apos;decimal&apos;)</attribute>
-        </attributes>
-      </variable>
     </variables>
   </variables>
   <created valueType="datetime">2019-04-11T14:03:43.250-04</created>
-  <updated valueType="datetime">2019-04-30T13:30:05.552-04</updated>
+  <updated valueType="datetime">2019-05-07T14:14:36.300-04</updated>
 </org.obiba.magma.views.View>

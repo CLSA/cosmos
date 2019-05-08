@@ -198,34 +198,34 @@ res</attribute>
           <attribute name="script" valueType="text">var stage = &apos;clsa-dcs-f1.FunctionalStatus:&apos;
 var sections = {
 &apos;Fun&apos;:[
-&apos;FUL_SHLD_COF1&apos;,
-&apos;FUL_SHLDDG_COF1&apos;,
-&apos;FUL_STOOP_COF1&apos;,
-&apos;FUL_STOOPDG_COF1&apos;,
-&apos;FUL_PUSH_COF1&apos;,
-&apos;FUL_PUSHDG_COF1&apos;,
+&apos;FUL_FORCDG_COF1&apos;,
+&apos;FUL_FORC_COF1&apos;,
+&apos;FUL_FSTRDG_COF1&apos;,
+&apos;FUL_FSTR_COF1&apos;,
+&apos;FUL_HDLGDG_COF1&apos;,
+&apos;FUL_HDLG_COF1&apos;,
+&apos;FUL_KNCUTDG_COF1&apos;,
+&apos;FUL_KNCUT_COF1&apos;,
 &apos;FUL_LFT10_COF1&apos;,
 &apos;FUL_LFT1ODG_COF1&apos;,
-&apos;FUL_HDLG_COF1&apos;,
-&apos;FUL_HDLGDG_COF1&apos;,
-&apos;FUL_ST15_COF1&apos;,
-&apos;FUL_ST15DG_COF1&apos;,
-&apos;FUL_SIT1H_COF1&apos;,
-&apos;FUL_SIT1HDG_COF1&apos;,
-&apos;FUL_STDUP_COF1&apos;,
-&apos;FUL_STDUPDG_COF1&apos;,
-&apos;FUL_FSTR_COF1&apos;,
-&apos;FUL_FSTRDG_COF1&apos;,
-&apos;FUL_WK23B_COF1&apos;,
-&apos;FUL_WK23BDG_COF1&apos;,
-&apos;FUL_MKBED_COF1&apos;,
 &apos;FUL_MKBEDDG_COF1&apos;,
-&apos;FUL_WSHBK_COF1&apos;,
+&apos;FUL_MKBED_COF1&apos;,
+&apos;FUL_PUSHDG_COF1&apos;,
+&apos;FUL_PUSH_COF1&apos;,
+&apos;FUL_SHLDDG_COF1&apos;,
+&apos;FUL_SHLD_COF1&apos;,
+&apos;FUL_SIT1HDG_COF1&apos;,
+&apos;FUL_SIT1H_COF1&apos;,
+&apos;FUL_ST15DG_COF1&apos;,
+&apos;FUL_ST15_COF1&apos;,
+&apos;FUL_STDUPDG_COF1&apos;,
+&apos;FUL_STDUP_COF1&apos;,
+&apos;FUL_STOOPDG_COF1&apos;,
+&apos;FUL_STOOP_COF1&apos;,
+&apos;FUL_WK23BDG_COF1&apos;,
+&apos;FUL_WK23B_COF1&apos;,
 &apos;FUL_WSHBKDG_COF1&apos;,
-&apos;FUL_KNCUT_COF1&apos;,
-&apos;FUL_KNCUTDG_COF1&apos;,
-&apos;FUL_FORC_COF1&apos;,
-&apos;FUL_FORCDG_COF1&apos;]
+&apos;FUL_WSHBK_COF1&apos;]
 }
 
 var str = []
@@ -253,5 +253,5 @@ newSequence(str, &apos;decimal&apos;)</attribute>
     </variables>
   </variables>
   <created valueType="datetime">2019-04-16T14:03:03.960-04</created>
-  <updated valueType="datetime">2019-05-01T10:05:47.120-04</updated>
+  <updated valueType="datetime">2019-05-02T14:06:19.129-04</updated>
 </org.obiba.magma.views.View>

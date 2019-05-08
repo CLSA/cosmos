@@ -11,7 +11,10 @@
     </list>
   </from>
   <select class="org.obiba.magma.views.support.NoneClause"/>
-  <where class="org.obiba.magma.views.support.AllClause"/>
+  <where class="org.obiba.magma.js.views.JavascriptClause">
+    <scriptName>customScript</scriptName>
+    <script>$(&apos;clsa-dcs-f2.Participants:DCSatHOME&apos;).not().whenNull(true).and($(&apos;clsa-dcs-f2.Participants:DCS_PHONE&apos;).not().whenNull(true))</script>
+  </where>
   <variables class="org.obiba.magma.js.views.VariablesClause">
     <variables class="linked-hash-set">
       <variable name="technician" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
@@ -205,34 +208,6 @@ var sections = {
 &apos;GAD_TOTAL2_COF2&apos;],
 &apos;SN&apos;:[
 &apos;SN_LIVHF2_NB_COF2&apos;,
-&apos;SN_LIVH_COF2&apos;,
-&apos;SN_LIVH_M2R_COF2&apos;,
-&apos;SN_LIVH_M2S_COF2&apos;,
-&apos;SN_LIVH_M2A_COF2&apos;,
-&apos;SN_LIVH_M3R_COF2&apos;,
-&apos;SN_LIVH_M3S_COF2&apos;,
-&apos;SN_LIVH_M3A_COF2&apos;,
-&apos;SN_LIVH_M4R_COF2&apos;,
-&apos;SN_LIVH_M4S_COF2&apos;,
-&apos;SN_LIVH_M4A_COF2&apos;,
-&apos;SN_LIVH_M5R_COF2&apos;,
-&apos;SN_LIVH_M5S_COF2&apos;,
-&apos;SN_LIVH_M5A_COF2&apos;,
-&apos;SN_LIVH_M6R_COF2&apos;,
-&apos;SN_LIVH_M6S_COF2&apos;,
-&apos;SN_LIVH_M6A_COF2&apos;,
-&apos;SN_LIVH_M7R_COF2&apos;,
-&apos;SN_LIVH_M7S_COF2&apos;,
-&apos;SN_LIVH_M7A_COF2&apos;,
-&apos;SN_LIVH_M8R_COF2&apos;,
-&apos;SN_LIVH_M8S_COF2&apos;,
-&apos;SN_LIVH_M8A_COF2&apos;,
-&apos;SN_LIVH_M9R_COF2&apos;,
-&apos;SN_LIVH_M9S_COF2&apos;,
-&apos;SN_LIVH_M9A_COF2&apos;,
-&apos;SN_LIVH_M10R_COF2&apos;,
-&apos;SN_LIVH_M10S_COF2&apos;,
-&apos;SN_LIVH_M10A_COF2&apos;,
 &apos;SN_CHILDSTP_COF2&apos;,
 &apos;SN_DGHTRLIV_COF2&apos;,
 &apos;SN_SONLIV_COF2&apos;,
@@ -316,5 +291,5 @@ newSequence(str, &apos;decimal&apos;)</attribute>
     </variables>
   </variables>
   <created valueType="datetime">2019-04-11T13:21:03.818-04</created>
-  <updated valueType="datetime">2019-04-30T15:59:57.990-04</updated>
+  <updated valueType="datetime">2019-05-07T15:41:41.629-04</updated>
 </org.obiba.magma.views.View>

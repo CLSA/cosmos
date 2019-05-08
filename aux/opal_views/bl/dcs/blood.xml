@@ -14,6 +14,9 @@
       <table inner="false" class="org.obiba.magma.support.ValueTableReference">
         <reference>clsa-dcs.Phlebotomy</reference>
       </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>cosmos_dcs.QC_BL_meta</reference>
+      </table>
     </list>
   </from>
   <select class="org.obiba.magma.views.support.NoneClause"/>
@@ -222,82 +225,8 @@ res</attribute>
           <attribute name="script" valueType="text">newSequence($this(&apos;meta_stage_duration&apos;),&apos;integer&apos;).append($this(&apos;meta_module_duration&apos;))</attribute>
         </attributes>
       </variable>
-      <variable name="refusal_name" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0" repeatable="true" occurrenceGroup="">
-        <attributes>
-          <attribute name="script" valueType="text">$this(&apos;meta_module_name&apos;)</attribute>
-        </attributes>
-      </variable>
-      <variable name="refusal_value" valueType="decimal" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0" repeatable="true" occurrenceGroup="">
-        <attributes>
-          <attribute name="script" valueType="text">var stage = $(&apos;cosmos_dcs.QC_BL_meta:group_blood&apos;)
-var sections={
-&apos;BLOOD&apos;:[
-&apos;AGREE_BS_B&apos;,
-&apos;ALCOHOL_24_B&apos;,
-&apos;BLOOD_COLLECTED_B&apos;,
-&apos;CAFFEINE_24_B&apos;,
-&apos;CURRENTLY_MENSTRUAL_B&apos;,
-&apos;DECLINE_POST_B&apos;,
-&apos;FIRST_ATTEMPT_B&apos;,
-&apos;FOOD_DRINK_24_B&apos;,
-&apos;NEEDLE_B&apos;,
-&apos;NOTE_DRAW_SITE_B.FIBROSED_INFLAMED&apos;,
-&apos;NOTE_DRAW_SITE_B.HEMATOMA&apos;,
-&apos;NOTE_DRAW_SITE_B.PARALYZED&apos;,
-&apos;NOTE_DRAW_SITE_B.PETECHIAE&apos;,
-&apos;NOTE_DRAW_SITE_B.PICC_LINE&apos;,
-&apos;NOTE_DRAW_SITE_B.RED_SWOLLEN&apos;,
-&apos;NOTE_DRAW_SITE_B.SCARRING&apos;,
-&apos;NOTE_DRAW_SITE_B.SCLEROTIC_HARDVEINS&apos;,
-&apos;NOTE_DRAW_SITE_B.SEVERE_PROBLEM&apos;,
-&apos;NOTE_DRAW_SITE_B.TATTOOS&apos;,
-&apos;NOTE_DRAW_SITE_B.VASCULAR_GRAFT&apos;,
-&apos;NOTE_OTHER_B.OTHER&apos;,
-&apos;PART_DECLINED_B&apos;,
-&apos;PART_POSTPONED_B&apos;,
-&apos;SIT_RECLIN_B&apos;,
-&apos;TECH_REASON_B&apos;,
-&apos;TOBACCO_24_B&apos;,
-&apos;WHICH_ARM_CHOSEN_2_B&apos;,
-&apos;WHY_NOT_AGREE_BLOOD_B&apos;,
-&apos;WHY_NO_BLOOD_B&apos;]
-}
-  
-if(stage.any(&apos;Blood2&apos;).value()) {
-  sections[&apos;BLOOD&apos;].splice(sections[&apos;BLOOD&apos;].indexOf(&apos;DECLINE_POST_B&apos;),1)
-  sections[&apos;BLOOD&apos;].splice(sections[&apos;BLOOD&apos;].indexOf(&apos;PART_POSTPONED_B&apos;),1)
-}
-
-if(stage.isNull().value()) {
-  stage = &apos;clsa-dcs.Blood:&apos;
-} else {
-  stage = &apos;clsa-dcs.&apos;+stage.value()+&apos;:&apos;
-}
-  
-var str = []
-for(var key in sections) {
-  var rcount = 0
-  var qcount = 0
-  var arr = sections[key]
-  for(var i = 0; i &lt; arr.length; i++) {
-    var j = $(stage + arr[i])
-    if(j.isNull().value()) {
-      continue
-    }  
-    qcount++
-    rcount += j.any(&apos;REFUSED&apos;).value() ? 1 : 0
-  }
-  if(0 == qcount) {
-    str.push(null)
-  } else {
-    str.push(100.0*rcount/qcount)
-  }
-}  
-newSequence(str, &apos;decimal&apos;)</attribute>
-        </attributes>
-      </variable>
     </variables>
   </variables>
   <created valueType="datetime">2019-04-11T13:31:08.674-04</created>
-  <updated valueType="datetime">2019-04-30T13:22:07.146-04</updated>
+  <updated valueType="datetime">2019-05-07T15:18:07.856-04</updated>
 </org.obiba.magma.views.View>

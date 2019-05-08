@@ -11,7 +11,10 @@
     </list>
   </from>
   <select class="org.obiba.magma.views.support.NoneClause"/>
-  <where class="org.obiba.magma.views.support.AllClause"/>
+  <where class="org.obiba.magma.js.views.JavascriptClause">
+    <scriptName>customScript</scriptName>
+    <script>$(&apos;clsa-dcs-f2.Participants:DCSatHOME&apos;).not().whenNull(true).and($(&apos;clsa-dcs-f2.Participants:DCS_PHONE&apos;).not().whenNull(true))</script>
+  </where>
   <variables class="org.obiba.magma.js.views.VariablesClause">
     <variables class="linked-hash-set">
       <variable name="technician" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
@@ -195,22 +198,14 @@ res</attribute>
           <attribute name="script" valueType="text">var stage = &apos;clsa-dcs-f2.QuestionnaireBoneDensity:&apos;
 var sections = {
 &apos;S1&apos;:[
-&apos;WHOLEBODY&apos;,
-&apos;SPINE&apos;,
-&apos;LHIP&apos;,
-&apos;RHIP&apos;,
-&apos;LFA&apos;,
-&apos;RFA&apos;,
-&apos;APSPINE&apos;,
-&apos;OST_BONE_COF2&apos;,
-&apos;OST_FRAC_COF2&apos;,
-&apos;OST_MOM_COF2&apos;,
-&apos;OST_DAD_COF2&apos;,
-&apos;OST_CST_COF2&apos;,
-&apos;OST_CSTAGE_COF2&apos;,
-&apos;OST_CST_MT_COF2&apos;,
 &apos;CCC_RA_COF2&apos;,
-&apos;CCC_RAMED_COF2&apos;]
+&apos;OST_BONE_COF2&apos;,
+&apos;OST_CSTAGE_COF2&apos;,
+&apos;OST_CST_COF2&apos;,
+&apos;OST_CST_MT_COF2&apos;,
+&apos;OST_DAD_COF2&apos;,
+&apos;OST_FRAC_COF2&apos;,
+&apos;OST_MOM_COF2&apos;]
 }
 
 var str = []
@@ -238,5 +233,5 @@ newSequence(str, &apos;decimal&apos;)</attribute>
     </variables>
   </variables>
   <created valueType="datetime">2019-04-11T13:06:37.242-04</created>
-  <updated valueType="datetime">2019-04-30T13:21:30.829-04</updated>
+  <updated valueType="datetime">2019-05-07T15:30:37.199-04</updated>
 </org.obiba.magma.views.View>

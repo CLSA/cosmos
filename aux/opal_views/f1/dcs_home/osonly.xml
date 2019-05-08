@@ -198,41 +198,41 @@ res</attribute>
           <attribute name="script" valueType="text">var stage = &apos;clsa-dcs-f1.OSOnly:&apos;
 var sections = {
 &apos;ORH&apos;:[
-&apos;ORH_HLTH_COF1&apos;,
-&apos;ORH_TEETH_COF1&apos;,
-&apos;ORH_TETH20_COF1&apos;,
+&apos;ORH_BRUSDN_COF1&apos;,
+&apos;ORH_COST_COF1&apos;,
 &apos;ORH_DENT_COF1&apos;,
 &apos;ORH_DNUSE_COF1&apos;,
-&apos;ORH_UNCEAT_COF1&apos;,
-&apos;ORH_EXP_DNB_COF1&apos;,
 &apos;ORH_DNVST_COF1&apos;,
-&apos;ORH_WYNDN_COF1&apos;,
-&apos;ORH_TYPINS_COF1&apos;,
-&apos;ORH_COST_COF1&apos;,
+&apos;ORH_EXP_DNB_COF1&apos;,
+&apos;ORH_HLTH_COF1&apos;,
+&apos;ORH_OFTN_COF1&apos;,
 &apos;ORH_PRBHT_COF1&apos;,
-&apos;ORH_BRUSDN_COF1&apos;,
+&apos;ORH_TEETH_COF1&apos;,
+&apos;ORH_TETH20_COF1&apos;,
+&apos;ORH_TYPINS_COF1&apos;,
+&apos;ORH_UNCEAT_COF1&apos;,
 &apos;ORH_WHO_COF1&apos;,
-&apos;ORH_OFTN_COF1&apos;],
+&apos;ORH_WYNDN_COF1&apos;],
 &apos;SLE&apos;:[
-&apos;SLE_QLTY_COF1&apos;,
-&apos;SLS_HOUR_COF1&apos;,
-&apos;SLE_30MIN_COF1&apos;,
 &apos;SLE_30DUR_COF1&apos;,
 &apos;SLE_30INTRF_COF1&apos;,
-&apos;SLE_MIDFQ_COF1&apos;,
-&apos;SLE_MIDDUR_COF1&apos;,
-&apos;SLE_MIDINTRF_COF1&apos;,
-&apos;SLE_STAYFQ_COF1&apos;,
-&apos;SLE_STAYDUR_COF1&apos;,
-&apos;SLE_STAYINTRF_COF1&apos;,
+&apos;SLE_30MIN_COF1&apos;,
 &apos;SLE_DREAM_COF1&apos;,
 &apos;SLE_DRMDUR_COF1&apos;,
 &apos;SLE_LEGS_COF1&apos;,
-&apos;SLE_LGURG_COF1&apos;,
 &apos;SLE_LGDUR_COF1&apos;,
+&apos;SLE_LGEVE_COF1&apos;,
 &apos;SLE_LGFQ_COF1&apos;,
 &apos;SLE_LGIMPR_COF1&apos;,
-&apos;SLE_LGEVE_COF1&apos;,
+&apos;SLE_LGURG_COF1&apos;,
+&apos;SLE_MIDDUR_COF1&apos;,
+&apos;SLE_MIDFQ_COF1&apos;,
+&apos;SLE_MIDINTRF_COF1&apos;,
+&apos;SLE_QLTY_COF1&apos;,
+&apos;SLE_STAYDUR_COF1&apos;,
+&apos;SLE_STAYFQ_COF1&apos;,
+&apos;SLE_STAYINTRF_COF1&apos;,
+&apos;SLS_HOUR_COF1&apos;,
 &apos;SNO_SNORE_COF1&apos;,
 &apos;SNO_STOPBREATH_COF1&apos;]
 }
@@ -262,5 +262,5 @@ newSequence(str, &apos;decimal&apos;)</attribute>
     </variables>
   </variables>
   <created valueType="datetime">2019-04-16T14:51:40.895-04</created>
-  <updated valueType="datetime">2019-05-01T09:58:22.350-04</updated>
+  <updated valueType="datetime">2019-05-02T15:14:42.668-04</updated>
 </org.obiba.magma.views.View>

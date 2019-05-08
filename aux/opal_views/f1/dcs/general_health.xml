@@ -11,7 +11,10 @@
     </list>
   </from>
   <select class="org.obiba.magma.views.support.NoneClause"/>
-  <where class="org.obiba.magma.views.support.AllClause"/>
+  <where class="org.obiba.magma.js.views.JavascriptClause">
+    <scriptName>customScript</scriptName>
+    <script>$(&apos;clsa-dcs-f1.Participants:DCSatHOME&apos;).not().whenNull(true).and($(&apos;clsa-dcs-f1.Participants:DCS_PHONE&apos;).not().whenNull(true))</script>
+  </where>
   <variables class="org.obiba.magma.js.views.VariablesClause">
     <variables class="linked-hash-set">
       <variable name="technician" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
@@ -195,48 +198,38 @@ res</attribute>
           <attribute name="script" valueType="text">var stage = &apos;clsa-dcs-f1.GenHealth:&apos;
 var sections = {
 &apos;HRG&apos;:[
+&apos;HRG_AID_COF1&apos;,
 &apos;HRG_HRG_COF1&apos;,
 &apos;HRG_NOIS_COF1&apos;,
-&apos;HRG_AID_COF1&apos;,
-&apos;HRG_USE_COF1&apos;,
-&apos;HRG_PROB_EMBA_COF1&apos;,
-&apos;HRG_PROB_FRST_COF1&apos;,
-&apos;HRG_PROB_DIFF_COF1&apos;,
-&apos;HRG_PROB_HACP_COF1&apos;,
-&apos;HRG_PROB_VIST_COF1&apos;,
-&apos;HRG_PROB_MEET_COF1&apos;,
-&apos;HRG_PROB_ARGU_COF1&apos;,
-&apos;HRG_PROB_LSTN_COF1&apos;,
-&apos;HRG_PROB_LIFE_COF1&apos;,
-&apos;HRG_PROB_FRND_COF1&apos;],
+&apos;HRG_USE_COF1&apos;],
 &apos;HUP&apos;:[
 &apos;HUP_FREE_COF1&apos;,
 &apos;HUP_INTNSTY_COF1&apos;,
 &apos;HUP_PRVACT_COF1&apos;],
 &apos;NUR&apos;:[
-&apos;NUR_GLSWT_COF1&apos;,
-&apos;NUR_WTGL_COF1&apos;,
-&apos;NUR_WTL_COF1&apos;,
-&apos;NUR_WTG_COF1&apos;,
-&apos;NUR_SKPMLS_COF1&apos;,
 &apos;NUR_APPTT_COF1&apos;,
-&apos;NUR_SWLLFD_COF1&apos;,
-&apos;NUR_FRTVEG_COF1&apos;,
-&apos;NUR_DRKFLD_COF1&apos;,
-&apos;NUR_MLSMN_COF1&apos;,
+&apos;NUR_BTEA_COF1&apos;,
 &apos;NUR_CKMEALS_COF1&apos;,
+&apos;NUR_DCOFF_COF1&apos;,
+&apos;NUR_DRKFLD_COF1&apos;,
+&apos;NUR_FASTFD_NB_COF1&apos;,
+&apos;NUR_FRTVEG_COF1&apos;,
+&apos;NUR_GLSWT_COF1&apos;,
+&apos;NUR_GTEA_COF1&apos;,
 &apos;NUR_MLPREP_COF1&apos;,
 &apos;NUR_MLPREP_OTH_COF1&apos;,
-&apos;NUR_FASTFD_NB_COF1&apos;,
+&apos;NUR_MLSMN_COF1&apos;,
 &apos;NUR_NOTENFD_COF1&apos;,
+&apos;NUR_OTEA_COF1&apos;,
 &apos;NUR_RCOFF_COF1&apos;,
-&apos;NUR_DCOFF_COF1&apos;,
-&apos;NUR_BTEA_COF1&apos;,
-&apos;NUR_GTEA_COF1&apos;,
-&apos;NUR_OTEA_COF1&apos;],
+&apos;NUR_SKPMLS_COF1&apos;,
+&apos;NUR_SWLLFD_COF1&apos;,
+&apos;NUR_WTG_COF1&apos;,
+&apos;NUR_WTGL_COF1&apos;,
+&apos;NUR_WTL_COF1&apos;],
 &apos;VIS&apos;:[
-&apos;VIS_SGHT_COF1&apos;,
 &apos;VIS_AID_COF1&apos;,
+&apos;VIS_SGHT_COF1&apos;,
 &apos;VIS_USE_COF1&apos;]
 }
 
@@ -265,5 +258,5 @@ newSequence(str, &apos;decimal&apos;)</attribute>
     </variables>
   </variables>
   <created valueType="datetime">2019-04-11T14:20:36.936-04</created>
-  <updated valueType="datetime">2019-04-30T13:32:44.030-04</updated>
+  <updated valueType="datetime">2019-05-07T14:23:11.242-04</updated>
 </org.obiba.magma.views.View>

@@ -14,7 +14,10 @@
     </list>
   </from>
   <select class="org.obiba.magma.views.support.NoneClause"/>
-  <where class="org.obiba.magma.views.support.AllClause"/>
+  <where class="org.obiba.magma.js.views.JavascriptClause">
+    <scriptName>customScript</scriptName>
+    <script>$(&apos;clsa-dcs-f2.Participants:DCSatHOME&apos;).not().whenNull(true).and($(&apos;clsa-dcs-f2.Participants:DCS_PHONE&apos;).not().whenNull(true))</script>
+  </where>
   <variables class="org.obiba.magma.js.views.VariablesClause">
     <variables class="linked-hash-set">
       <variable name="technician" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
@@ -43,10 +46,10 @@ res</attribute>
       </variable>
       <variable name="missing" valueType="boolean" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">$this(&apos;xml_file_size&apos;).isNull().and(
+          <attribute name="script" valueType="text">$this(&apos;contraindicated&apos;).not().and(
+  $this(&apos;skip&apos;).isNull(),
   $this(&apos;intrinsic_poor_quality&apos;).isNull(),
-  $this(&apos;contraindicated&apos;).not(),
-  $this(&apos;skip&apos;).isNull()
+  $this(&apos;file_size&apos;).isNull()  
 )</attribute>
         </attributes>
       </variable>
@@ -58,11 +61,6 @@ if(v.isNull().not().value()) {
   res = newValue(v.lowerCase().matches(/poor data quality/).value() ? 1 : 0, &apos;integer&apos;)
 }
 res</attribute>
-        </attributes>
-      </variable>
-      <variable name="xml_file_size" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
-        <attributes>
-          <attribute name="script" valueType="text">$(&apos;clsa-dcs-f2.ECG:RES_XML_FILE&apos;).length()</attribute>
         </attributes>
       </variable>
       <variable name="duration" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
@@ -143,8 +141,13 @@ if(c_seq.size().eq(e_seq.size()).value())
 res</attribute>
         </attributes>
       </variable>
+      <variable name="file_size" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;clsa-dcs-f2.ECG:RES_XML_FILE&apos;).length()</attribute>
+        </attributes>
+      </variable>
     </variables>
   </variables>
   <created valueType="datetime">2019-04-10T11:50:27.879-04</created>
-  <updated valueType="datetime">2019-04-30T13:13:48.544-04</updated>
+  <updated valueType="datetime">2019-05-07T15:33:21.038-04</updated>
 </org.obiba.magma.views.View>

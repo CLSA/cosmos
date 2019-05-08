@@ -218,45 +218,9 @@ res</attribute>
           <attribute name="script" valueType="text">var stage = &apos;clsa-dcs.NeuropsychologicalBattery:&apos;
 var sections={
 &apos;FAS&apos;:[
-&apos;FAS_INSTRDY_DCS&apos;,
 &apos;FAS_INSTRPT_DCS&apos;,
-&apos;FAS_INSTFCTR_DCS&apos;,
-&apos;FAS_INSTLST_DCS&apos;,
-&apos;FAS_FRECR_DCS&apos;,
-&apos;FAS_FCOMP_DCS&apos;,
-&apos;FAS_ARECR_DCS&apos;,
-&apos;FAS_ACOMP_DCS&apos;,
-&apos;FAS_SRECR_DCS&apos;,
-&apos;FAS_SCOMP_DCS&apos;],
+&apos;FAS_INSTLST_DCS&apos;],
 &apos;SN&apos;:[
-&apos;SN_LIVH_DCS&apos;,
-&apos;SN_LIVH_M2R_DCS&apos;,
-&apos;SN_LIVH_M2S_DCS&apos;,
-&apos;SN_LIVH_M2A_DCS&apos;,
-&apos;SN_LIVH_M3R_DCS&apos;,
-&apos;SN_LIVH_M3S_DCS&apos;,
-&apos;SN_LIVH_M3A_DCS&apos;,
-&apos;SN_LIVH_M4R_DCS&apos;,
-&apos;SN_LIVH_M4S_DCS&apos;,
-&apos;SN_LIVH_M4A_DCS&apos;,
-&apos;SN_LIVH_M5R_DCS&apos;,
-&apos;SN_LIVH_M5S_DCS&apos;,
-&apos;SN_LIVH_M5A_DCS&apos;,
-&apos;SN_LIVH_M6R_DCS&apos;,
-&apos;SN_LIVH_M6S_DCS&apos;,
-&apos;SN_LIVH_M6A_DCS&apos;,
-&apos;SN_LIVH_M7R_DCS&apos;,
-&apos;SN_LIVH_M7S_DCS&apos;,
-&apos;SN_LIVH_M7A_DCS&apos;,
-&apos;SN_LIVH_M8R_DCS&apos;,
-&apos;SN_LIVH_M8S_DCS&apos;,
-&apos;SN_LIVH_M8A_DCS&apos;,
-&apos;SN_LIVH_M9R_DCS&apos;,
-&apos;SN_LIVH_M9S_DCS&apos;,
-&apos;SN_LIVH_M9A_DCS&apos;,
-&apos;SN_LIVH_M10R_DCS&apos;,
-&apos;SN_LIVH_M10S_DCS&apos;,
-&apos;SN_LIVH_M10A_DCS&apos;,
 &apos;SN_CHILD_DCS&apos;,
 &apos;SN_CHILDBIO_DCS&apos;,
 &apos;SN_CHILDADP_DCS&apos;,
@@ -312,24 +276,12 @@ var sections={
 &apos;SSA_PET_DCS&apos;],
 &apos;STP&apos;:[
 &apos;NEUR_CONSREC_DCS&apos;,
-&apos;STP_DOT_DCS&apos;,
 &apos;STP_DOTRPT_DCS&apos;,
-&apos;STP_DOTFCTR_DCS&apos;,
 &apos;STP_DOTLST_DCS&apos;,
-&apos;STP_DOTRECR_DCS&apos;,
-&apos;STP_DOTTIMEN_DCS&apos;,
-&apos;STP_WOR_DCS&apos;,
 &apos;STP_WORRPT_DCS&apos;,
-&apos;STP_WORFCTR_DCS&apos;,
 &apos;STP_WORLST_DCS&apos;,
-&apos;STP_WORRECR_DCS&apos;,
-&apos;STP_WORTIMEN_DCS&apos;,
-&apos;STP_COL_DCS&apos;,
 &apos;STP_COLRPT_DCS&apos;,
-&apos;STP_COLFCTR_DCS&apos;,
-&apos;STP_COLLST_DCS&apos;,
-&apos;STP_COLRECR_DCS&apos;,
-&apos;STP_COLTIMEN_DCS&apos;]
+&apos;STP_COLLST_DCS&apos;]
 }
 
 var str = []
@@ -357,5 +309,5 @@ newSequence(str, &apos;decimal&apos;)</attribute>
     </variables>
   </variables>
   <created valueType="datetime">2019-04-11T13:53:53.447-04</created>
-  <updated valueType="datetime">2019-04-30T15:57:07.092-04</updated>
+  <updated valueType="datetime">2019-05-07T09:37:41.067-04</updated>
 </org.obiba.magma.views.View>

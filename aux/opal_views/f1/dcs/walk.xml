@@ -11,7 +11,10 @@
     </list>
   </from>
   <select class="org.obiba.magma.views.support.NoneClause"/>
-  <where class="org.obiba.magma.views.support.AllClause"/>
+  <where class="org.obiba.magma.js.views.JavascriptClause">
+    <scriptName>customScript</scriptName>
+    <script>$(&apos;clsa-dcs-f1.Participants:DCSatHOME&apos;).not().whenNull(true).and($(&apos;clsa-dcs-f1.Participants:DCS_PHONE&apos;).not().whenNull(true))</script>
+  </where>
   <variables class="org.obiba.magma.js.views.VariablesClause">
     <variables class="linked-hash-set">
       <variable name="technician" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
@@ -136,8 +139,23 @@ res</attribute>
           <attribute name="script" valueType="text">$(&apos;clsa-dcs-f1.4mWalk:WLK_TIME&apos;).whenNull($(&apos;clsa-dcs-f1.4mWalk:WLK_TIME_2&apos;))</attribute>
         </attributes>
       </variable>
+      <variable name="congruency" valueType="decimal" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var wt = $this(&apos;time&apos;)
+var res = null
+if(wt.isNull().not().value()) {
+  var ct = $(&apos;cosmos_dcs.QC_F1_chair_rise:time&apos;)
+  var tt = $(&apos;cosmos_dcs.QC_F1_tug:time&apos;)
+  if(tt.isNull().not().and(ct.isNull().not()).value()) {
+    var cv = ct.div($(&apos;clsa-dcs-f1.ChairRise:CR_NB&apos;).whenNull(1))
+    res = tt.minus(wt.multiply(1.5).plus(cv)).abs()
+  }
+}
+res</attribute>
+        </attributes>
+      </variable>
     </variables>
   </variables>
   <created valueType="datetime">2019-04-11T14:35:35.519-04</created>
-  <updated valueType="datetime">2019-04-29T16:45:24.410-04</updated>
+  <updated valueType="datetime">2019-05-07T16:02:01.071-04</updated>
 </org.obiba.magma.views.View>

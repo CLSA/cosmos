@@ -198,7 +198,6 @@ res</attribute>
           <attribute name="script" valueType="text">var stage = &apos;clsa-dcs-f2.ContraIndications:&apos;
 var sections = {
 &apos;ICQ_COF2&apos;:[
-&apos;ICQ_DOMHAND_COF2&apos;,
 &apos;ICQ_HNDSWL_COF2&apos;,
 &apos;ICQ_HNDCST_COF2&apos;,
 &apos;ICQ_HNDHMT_COF2&apos;,
@@ -215,8 +214,6 @@ var sections = {
 &apos;ICQ_SRGYABD_COF2&apos;,
 &apos;ICQ_SRGYHRT_COF2&apos;,
 &apos;ICQ_SRGYOT_COF2&apos;,
-&apos;ICQ_SRGYOTSPE_COF2&apos;,
-&apos;ICQ_PAINHND_COF2&apos;,
 &apos;ICQ_RISEASSI_COF2&apos;,
 &apos;ICQ_RISECANE_COF2&apos;,
 &apos;ICQ_ABLESTND_COF2&apos;,
@@ -286,13 +283,9 @@ var sections = {
 &apos;ICQ_BLDTR24H_COF2&apos;,
 &apos;ICQ_NUCLMED_COF2&apos;,
 &apos;ICQ_NUCLMED_48H_COF2&apos;,
-&apos;ICQ_NUCLMED_TEST_Q_COF2&apos;,
 &apos;ICQ_NUCLMED_IV24H_COF2&apos;,
 &apos;ICQ_BARSWAL_COF2&apos;,
 &apos;ICQ_TINNIT_COF2&apos;,
-&apos;ICQ_SMOKE_COF2&apos;,
-&apos;ICQ_SMOKETIME_COF2&apos;,
-&apos;ICQ_SMOKETIMEH_COF2&apos;,
 &apos;ICQ_INHALERLONG_COF2&apos;,
 &apos;ICQ_INHALERSHORT_COF2&apos;]
 }
@@ -322,5 +315,5 @@ newSequence(str, &apos;decimal&apos;)</attribute>
     </variables>
   </variables>
   <created valueType="datetime">2019-04-11T14:43:32.573-04</created>
-  <updated valueType="datetime">2019-04-30T15:49:39.005-04</updated>
+  <updated valueType="datetime">2019-05-06T12:48:42.418-04</updated>
 </org.obiba.magma.views.View>

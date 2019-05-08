@@ -11,7 +11,10 @@
     </list>
   </from>
   <select class="org.obiba.magma.views.support.NoneClause"/>
-  <where class="org.obiba.magma.views.support.AllClause"/>
+  <where class="org.obiba.magma.js.views.JavascriptClause">
+    <scriptName>customScript</scriptName>
+    <script>$(&apos;clsa-dcs-f2.Participants:DCSatHOME&apos;).not().whenNull(true).and($(&apos;clsa-dcs-f2.Participants:DCS_PHONE&apos;).not().whenNull(true))</script>
+  </where>
   <variables class="org.obiba.magma.js.views.VariablesClause">
     <variables class="linked-hash-set">
       <variable name="technician" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
@@ -196,16 +199,10 @@ res</attribute>
 var sections={
 &apos;PMT&apos;:[
 &apos;PMT_ABLE_COF2&apos;,
-&apos;PMT_FCT_COF2&apos;,
-&apos;PMT_TIM_COF2&apos;,
-&apos;PMT_NOCUE_COF2&apos;,
 &apos;PMT_ENV_COF2&apos;,
-&apos;PMT_ENV_OBS_COF2&apos;,
+&apos;PMT_FCT_COF2&apos;,
 &apos;PMT_MONEY_COF2&apos;,
-&apos;PMT_MONEY_OBS_COF2&apos;,
-&apos;PMT_ITP_COF2&apos;,
-&apos;PMT_ACR_COF2&apos;,
-&apos;PMT_REM_COF2&apos;]
+&apos;PMT_TIM_COF2&apos;]
 }
 
 var str = []
@@ -233,5 +230,5 @@ newSequence(str, &apos;decimal&apos;)</attribute>
     </variables>
   </variables>
   <created valueType="datetime">2019-04-11T13:10:29.295-04</created>
-  <updated valueType="datetime">2019-04-30T13:39:07.938-04</updated>
+  <updated valueType="datetime">2019-05-07T15:35:25.855-04</updated>
 </org.obiba.magma.views.View>

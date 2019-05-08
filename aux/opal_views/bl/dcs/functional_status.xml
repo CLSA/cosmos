@@ -195,34 +195,34 @@ res</attribute>
           <attribute name="script" valueType="text">var stage = &apos;clsa-dcs.FunctionalStatus:&apos;
 var sections={
 &apos;Fun&apos;:[
-&apos;FUL_SHLD_COM&apos;,
-&apos;FUL_SHLDDG_COM&apos;,
-&apos;FUL_STOOP_COM&apos;,
-&apos;FUL_STOOPDG_COM&apos;,
-&apos;FUL_PUSH_COM&apos;,
-&apos;FUL_PUSHDG_COM&apos;,
+&apos;FUL_FORCDG_COM&apos;,
+&apos;FUL_FORC_COM&apos;,
+&apos;FUL_FSTRDG_COM&apos;,
+&apos;FUL_FSTR_COM&apos;,
+&apos;FUL_HDLGDG_COM&apos;,
+&apos;FUL_HDLG_COM&apos;,
+&apos;FUL_KNCUTDG_COM&apos;,
+&apos;FUL_KNCUT_COM&apos;,
 &apos;FUL_LFT10_COM&apos;,
 &apos;FUL_LFT1ODG_COM&apos;,
-&apos;FUL_HDLG_COM&apos;,
-&apos;FUL_HDLGDG_COM&apos;,
-&apos;FUL_ST15_COM&apos;,
-&apos;FUL_ST15DG_COM&apos;,
-&apos;FUL_SIT1H_COM&apos;,
-&apos;FUL_SIT1HDG_COM&apos;,
-&apos;FUL_STDUP_COM&apos;,
-&apos;FUL_STDUPDG_COM&apos;,
-&apos;FUL_FSTR_COM&apos;,
-&apos;FUL_FSTRDG_COM&apos;,
-&apos;FUL_WK23B_COM&apos;,
-&apos;FUL_WK23BDG_COM&apos;,
-&apos;FUL_MKBED_COM&apos;,
 &apos;FUL_MKBEDDG_COM&apos;,
-&apos;FUL_WSHBK_COM&apos;,
+&apos;FUL_MKBED_COM&apos;,
+&apos;FUL_PUSHDG_COM&apos;,
+&apos;FUL_PUSH_COM&apos;,
+&apos;FUL_SHLDDG_COM&apos;,
+&apos;FUL_SHLD_COM&apos;,
+&apos;FUL_SIT1HDG_COM&apos;,
+&apos;FUL_SIT1H_COM&apos;,
+&apos;FUL_ST15DG_COM&apos;,
+&apos;FUL_ST15_COM&apos;,
+&apos;FUL_STDUPDG_COM&apos;,
+&apos;FUL_STDUP_COM&apos;,
+&apos;FUL_STOOPDG_COM&apos;,
+&apos;FUL_STOOP_COM&apos;,
+&apos;FUL_WK23BDG_COM&apos;,
+&apos;FUL_WK23B_COM&apos;,
 &apos;FUL_WSHBKDG_COM&apos;,
-&apos;FUL_KNCUT_COM&apos;,
-&apos;FUL_KNCUTDG_COM&apos;,
-&apos;FUL_FORC_COM&apos;,
-&apos;FUL_FORCDG_COM&apos;]  
+&apos;FUL_WSHBK_COM&apos;]  
 }
 
 var str = []
@@ -250,5 +250,5 @@ newSequence(str, &apos;decimal&apos;)</attribute>
     </variables>
   </variables>
   <created valueType="datetime">2019-04-11T13:45:46.920-04</created>
-  <updated valueType="datetime">2019-04-30T13:24:48.010-04</updated>
+  <updated valueType="datetime">2019-05-03T11:34:12.335-04</updated>
 </org.obiba.magma.views.View>

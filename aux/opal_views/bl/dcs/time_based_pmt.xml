@@ -195,19 +195,7 @@ res</attribute>
           <attribute name="script" valueType="text">var stage = &apos;clsa-dcs.TimeBasedProspectiveMemoryTask:&apos;
 var sections={
 &apos;TMT&apos;:[
-&apos;TMT_PASS_DCS&apos;,
-&apos;TMT_TST_DCS&apos;,
-&apos;TMT_FCT_DCS&apos;,
-&apos;TMT_DOTIM_DCS&apos;,
-&apos;TMT_DOTIM_REP_DCS&apos;,
-&apos;TMT_DOTIM_OBS_DCS&apos;,
-&apos;TMT_DOENV_DCS&apos;,
-&apos;TMT_DOENV_OBS_DCS&apos;,
-&apos;TMT_DOCARD_DCS&apos;,
-&apos;TMT_DOCARD_OBS_DCS&apos;,
-&apos;TMT_ITPEXACT_DCS&apos;,
-&apos;TMT_ACC_DCS&apos;,
-&apos;TMT_RMD_DCS&apos;]  
+&apos;TMT_FCT_DCS&apos;]  
 }
 
 var str = []
@@ -235,5 +223,5 @@ newSequence(str, &apos;decimal&apos;)</attribute>
     </variables>
   </variables>
   <created valueType="datetime">2019-04-11T13:54:25.278-04</created>
-  <updated valueType="datetime">2019-04-30T13:27:34.555-04</updated>
+  <updated valueType="datetime">2019-05-03T11:42:37.054-04</updated>
 </org.obiba.magma.views.View>

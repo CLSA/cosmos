@@ -11,7 +11,10 @@
     </list>
   </from>
   <select class="org.obiba.magma.views.support.NoneClause"/>
-  <where class="org.obiba.magma.views.support.AllClause"/>
+  <where class="org.obiba.magma.js.views.JavascriptClause">
+    <scriptName>customScript</scriptName>
+    <script>$(&apos;clsa-dcs-f2.Participants:DCSatHOME&apos;).not().whenNull(true).and($(&apos;clsa-dcs-f2.Participants:DCS_PHONE&apos;).not().whenNull(true))</script>
+  </where>
   <variables class="org.obiba.magma.js.views.VariablesClause">
     <variables class="linked-hash-set">
       <variable name="technician" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
@@ -172,5 +175,5 @@ for(var i=0; i&lt;side.length; i++) {
     </variables>
   </variables>
   <created valueType="datetime">2019-04-11T13:14:08.302-04</created>
-  <updated valueType="datetime">2019-04-30T11:10:36.723-04</updated>
+  <updated valueType="datetime">2019-05-07T15:36:33.348-04</updated>
 </org.obiba.magma.views.View>

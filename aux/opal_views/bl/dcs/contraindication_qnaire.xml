@@ -194,20 +194,7 @@ res</attribute>
         <attributes>
           <attribute name="script" valueType="text">var stage = &apos;clsa-dcs.ContraIndications:&apos;
 var sections={
-&apos;QAH_COM&apos;:[
-&apos;QAH_INT1_COM&apos;,
-&apos;QAH_INTIME_COM&apos;,
-&apos;QAH_TWOVIS_COM&apos;,
-&apos;QAH_18mo_COM&apos;,
-&apos;QAH_INSAS_COM&apos;,
-&apos;QAH_INKNO_COM&apos;,
-&apos;QAH_FRIEND_COM&apos;,
-&apos;QAH_INMED_COM&apos;,
-&apos;QAH_HIN_COM&apos;,
-&apos;QAH_INMEM_COM&apos;,
-&apos;QAH_COM_COM&apos;],
 &apos;ICQ_COM&apos;:[
-&apos;ICQ_DOMHAND_COM&apos;,
 &apos;ICQ_HNDSWL_COM&apos;,
 &apos;ICQ_HNDCST_COM&apos;,
 &apos;ICQ_HNDHMT_COM&apos;,
@@ -224,12 +211,6 @@ var sections={
 &apos;ICQ_SRGYABD_COM&apos;,
 &apos;ICQ_SRGYHRT_COM&apos;,
 &apos;ICQ_SRGYOT_COM&apos;,
-&apos;ICQ_SRGYOTSPE_COM&apos;,
-&apos;ICQ_PAINHND_COM&apos;,
-&apos;ICQ_RISEASSI_COM&apos;,
-&apos;ICQ_RISECANE_COM&apos;,
-&apos;ICQ_ABLESTND_COM&apos;,
-&apos;ICQ_ABLEWLK_COM&apos;,
 &apos;ICQ_PREGNT_COM&apos;,
 &apos;ICQ_PREGNTWK_COM&apos;,
 &apos;ICQ_ILLLUNG_COM&apos;,
@@ -288,15 +269,21 @@ var sections={
 &apos;ICQ_BLDTR24H_COM&apos;,
 &apos;ICQ_NUCLMED_COM&apos;,
 &apos;ICQ_NUCLMED_48H_COM&apos;,
-&apos;ICQ_NUCLMED_TEST_Q_COM&apos;,
 &apos;ICQ_NUCLMED_IV24H_COM&apos;,
 &apos;ICQ_BARSWAL_COM&apos;,
 &apos;ICQ_TINNIT_COM&apos;,
-&apos;ICQ_SMOKE_COM&apos;,
-&apos;ICQ_SMOKETIME_COM&apos;,
-&apos;ICQ_SMOKETIMEH_COM&apos;,
 &apos;ICQ_INHALERLONG_COM&apos;,
-&apos;ICQ_INHALERSHORT_COM&apos;]
+&apos;ICQ_INHALERSHORT_COM&apos;],
+&apos;QAH_COM&apos;:[
+&apos;QAH_INT1_COM&apos;,
+&apos;QAH_INTIME_COM&apos;,
+&apos;QAH_TWOVIS_COM&apos;,
+&apos;QAH_18mo_COM&apos;,
+&apos;QAH_INSAS_COM&apos;,
+&apos;QAH_INKNO_COM&apos;,
+&apos;QAH_FRIEND_COM&apos;,
+&apos;QAH_INMED_COM&apos;,
+&apos;QAH_HIN_COM&apos;]
 }
 
 var skip=[]
@@ -333,5 +320,5 @@ newSequence(str, &apos;decimal&apos;)</attribute>
     </variables>
   </variables>
   <created valueType="datetime">2019-04-11T13:36:51.479-04</created>
-  <updated valueType="datetime">2019-04-30T13:23:12.926-04</updated>
+  <updated valueType="datetime">2019-05-03T11:16:25.078-04</updated>
 </org.obiba.magma.views.View>

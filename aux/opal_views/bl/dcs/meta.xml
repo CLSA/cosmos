@@ -177,7 +177,7 @@ $(&apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;).asSequence().filt
         <attributes>
           <attribute name="script" valueType="text">var res=null
 if($(&apos;cosmos_dcs.QC_BL_ecg:contraindicated&apos;).not().and(
-   $(&apos;cosmos_dcs.QC_BL_ecg:xml_file_size&apos;).isNull().not()).value()) {
+   $(&apos;cosmos_dcs.QC_BL_ecg:file_size&apos;).isNull().not()).value()) {
   var ecg=newValue(null,&apos;datetime&apos;)
   try {
     ecg=newValue(
@@ -324,5 +324,5 @@ res</attribute>
     </variables>
   </variables>
   <created valueType="datetime">2019-04-23T15:04:23.246-04</created>
-  <updated valueType="datetime">2019-04-23T15:34:18.296-04</updated>
+  <updated valueType="datetime">2019-05-07T14:46:59.559-04</updated>
 </org.obiba.magma.views.View>

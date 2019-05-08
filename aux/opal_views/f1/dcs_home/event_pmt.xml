@@ -197,18 +197,12 @@ res</attribute>
         <attributes>
           <attribute name="script" valueType="text">var stage = &apos;clsa-dcs-f1.EventPMT:&apos;
 var sections = {
-&apos;PMT&apos;:[
+&apos;PMT&apos;:[  
 &apos;PMT_ABLE_COF1&apos;,
-&apos;PMT_FCT_COF1&apos;,
-&apos;PMT_TIM_COF1&apos;,
-&apos;PMT_NOCUE_COF1&apos;,
 &apos;PMT_ENV_COF1&apos;,
-&apos;PMT_ENV_OBS_COF1&apos;,
+&apos;PMT_FCT_COF1&apos;,
 &apos;PMT_MONEY_COF1&apos;,
-&apos;PMT_MONEY_OBS_COF1&apos;,
-&apos;PMT_ITP_COF1&apos;,
-&apos;PMT_ACR_COF1&apos;,
-&apos;PMT_REM_COF1&apos;]
+&apos;PMT_TIM_COF1&apos;]
 }
 
 var str = []
@@ -236,5 +230,5 @@ newSequence(str, &apos;decimal&apos;)</attribute>
     </variables>
   </variables>
   <created valueType="datetime">2019-04-16T14:19:40.276-04</created>
-  <updated valueType="datetime">2019-05-01T10:06:07.740-04</updated>
+  <updated valueType="datetime">2019-05-02T14:37:48.517-04</updated>
 </org.obiba.magma.views.View>

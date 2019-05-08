@@ -11,7 +11,10 @@
     </list>
   </from>
   <select class="org.obiba.magma.views.support.NoneClause"/>
-  <where class="org.obiba.magma.views.support.AllClause"/>
+  <where class="org.obiba.magma.js.views.JavascriptClause">
+    <scriptName>customScript</scriptName>
+    <script>$(&apos;clsa-dcs-f1.Participants:DCSatHOME&apos;).not().whenNull(true).and($(&apos;clsa-dcs-f1.Participants:DCS_PHONE&apos;).not().whenNull(true))</script>
+  </where>
   <variables class="org.obiba.magma.js.views.VariablesClause">
     <variables class="linked-hash-set">
       <variable name="technician" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
@@ -195,19 +198,11 @@ res</attribute>
           <attribute name="script" valueType="text">var stage = &apos;clsa-dcs-f1.TimeBasedProspectiveMemoryTask:&apos;
 var sections = {
 &apos;TMT&apos;:[
-&apos;TMT_PASS_COF1&apos;,
-&apos;TMT_TST_COF1&apos;,
-&apos;TMT_FCT_COF1&apos;,
-&apos;TMT_DOTIM_COF1&apos;,
-&apos;TMT_DOTIM_REP_COF1&apos;,
-&apos;TMT_DOTIM_OBS_COF1&apos;,
-&apos;TMT_DOENV_COF1&apos;,
-&apos;TMT_DOENV_OBS_COF1&apos;,
 &apos;TMT_DOCARD_COF1&apos;,
-&apos;TMT_DOCARD_OBS_COF1&apos;,
-&apos;TMT_ITPEXACT_COF1&apos;,
-&apos;TMT_ACC_COF1&apos;,
-&apos;TMT_RMD_COF1&apos;]
+&apos;TMT_DOENV_COF1&apos;,
+&apos;TMT_DOTIM_COF1&apos;,
+&apos;TMT_PASS_COF1&apos;,
+&apos;TMT_TST_COF1&apos;]
 }
 
 var str = []
@@ -235,5 +230,5 @@ newSequence(str, &apos;decimal&apos;)</attribute>
     </variables>
   </variables>
   <created valueType="datetime">2019-04-11T14:33:42.818-04</created>
-  <updated valueType="datetime">2019-04-30T13:35:22.276-04</updated>
+  <updated valueType="datetime">2019-05-07T15:03:39.256-04</updated>
 </org.obiba.magma.views.View>

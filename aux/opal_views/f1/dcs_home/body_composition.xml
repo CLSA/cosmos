@@ -190,49 +190,8 @@ res</attribute>
           <attribute name="script" valueType="text">newSequence($this(&apos;meta_stage_duration&apos;),&apos;integer&apos;).append($this(&apos;meta_module_duration&apos;))</attribute>
         </attributes>
       </variable>
-      <variable name="refusal_name" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0" repeatable="true" occurrenceGroup="">
-        <attributes>
-          <attribute name="script" valueType="text">$this(&apos;meta_module_name&apos;)</attribute>
-        </attributes>
-      </variable>
-      <variable name="refusal_value" valueType="decimal" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0" repeatable="true" occurrenceGroup="">
-        <attributes>
-          <attribute name="script" valueType="text">var stage = &apos;clsa-dcs-f1.BodyCompositionWeight:&apos;
-var sections = {
-&apos;S1&apos;:[
-&apos;TN_FOOD_COF1&apos;,
-&apos;TN_CAFF_COF1&apos;,
-&apos;TN_ALCO_COF1&apos;,
-&apos;TN_INEX_COF1&apos;,
-&apos;TN_DIUR_COF1&apos;,
-&apos;TN_WKTM_COF1&apos;,
-&apos;BODY_COMPOSITION&apos;]
-}
-
-var str = []
-for(var key in sections) {
-  var rcount = 0
-  var qcount = 0
-  var arr = sections[key]
-  for(var i = 0; i &lt; arr.length; i++) {
-    var j = $(stage + arr[i])
-    if(j.isNull().value()) {
-      continue
-    }  
-    qcount++
-    rcount += j.any(&apos;REFUSED&apos;).value() ? 1 : 0
-  }
-  if(0 == qcount) {
-    str.push(null)
-  } else {
-    str.push(100.0*rcount/qcount)
-  }
-}
-newSequence(str, &apos;decimal&apos;)</attribute>
-        </attributes>
-      </variable>
     </variables>
   </variables>
   <created valueType="datetime">2019-04-16T15:13:02.792-04</created>
-  <updated valueType="datetime">2019-04-30T15:55:23.105-04</updated>
+  <updated valueType="datetime">2019-05-02T13:17:05.013-04</updated>
 </org.obiba.magma.views.View>

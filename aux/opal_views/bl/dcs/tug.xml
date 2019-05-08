@@ -136,8 +136,23 @@ res</attribute>
           <attribute name="script" valueType="text">$(&apos;clsa-dcs.TUG:TUG_TIME&apos;).whenNull($(&apos;clsa-dcs.TUG:TUG_TIME_2&apos;))</attribute>
         </attributes>
       </variable>
+      <variable name="congruency" valueType="decimal" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var tt = $this(&apos;time&apos;)
+var res = null
+if(tt.isNull().not().value()) {
+  var ct = $(&apos;cosmos_dcs.QC_BL_chair_rise:time&apos;)
+  var wt = $(&apos;cosmos_dcs.QC_BL_walk:time&apos;)
+  if(wt.isNull().not().and(ct.isNull().not()).value()) {
+    var cv = ct.div($(&apos;clsa-dcs.ChairRise:CR_NB&apos;).whenNull(1))
+    res = tt.minus(wt.multiply(1.5).plus(cv)).abs()
+  }
+}
+res</attribute>
+        </attributes>
+      </variable>
     </variables>
   </variables>
   <created valueType="datetime">2019-04-11T13:55:28.675-04</created>
-  <updated valueType="datetime">2019-04-24T17:30:08.107-04</updated>
+  <updated valueType="datetime">2019-05-07T16:04:21.562-04</updated>
 </org.obiba.magma.views.View>
