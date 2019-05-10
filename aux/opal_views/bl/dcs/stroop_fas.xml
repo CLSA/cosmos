@@ -116,14 +116,6 @@ if(p.isNull().or(q.isNull(),q.sum().eq(0)).not().value()) {
 res</attribute>
         </attributes>
       </variable>
-      <variable name="missing" valueType="boolean" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
-        <attributes>
-          <attribute name="script" valueType="text">$this(&apos;contraindicated&apos;).not().and(
-  $this(&apos;skip&apos;).isNull(),
-  $this(&apos;qnaire_complete&apos;).isNull(),
-  $this(&apos;meta_stage_duration&apos;).isNull())</attribute>
-        </attributes>
-      </variable>
       <variable name="file_name" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0" repeatable="true" occurrenceGroup="">
         <attributes>
           <attribute name="script" valueType="text">newSequence([&apos;STP_dot&apos;,&apos;STF_word&apos;,&apos;STP_color&apos;,&apos;FAS_F&apos;,&apos;FAS_A&apos;,&apos;FAS_S&apos;],&apos;text&apos;)</attribute>
@@ -147,17 +139,20 @@ newSequence([
           <attribute name="script" valueType="text">$this(&apos;file_size&apos;).trimmer().size().div($this(&apos;file_name&apos;).size()).multiply(100)</attribute>
         </attributes>
       </variable>
-      <variable name="meta_module_name" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0" repeatable="true" occurrenceGroup="">
+      <variable name="missing" valueType="boolean" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">newSequence([&apos;FAS&apos;,&apos;SN&apos;,&apos;SPA&apos;,&apos;SSA&apos;,&apos;STP&apos;], &apos;text&apos;)</attribute>
+          <attribute name="script" valueType="text">$this(&apos;contraindicated&apos;).not().and(
+  $this(&apos;skip&apos;).isNull(),
+  $this(&apos;qnaire_complete&apos;).isNull(),
+  $this(&apos;duration&apos;).isNull())</attribute>
         </attributes>
       </variable>
       <variable name="duration_name" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0" repeatable="true" occurrenceGroup="">
         <attributes>
-          <attribute name="script" valueType="text">newSequence([&apos;stage&apos;], &apos;text&apos;).append($this(&apos;meta_module_name&apos;))</attribute>
+          <attribute name="script" valueType="text">newSequence([&apos;FAS&apos;,&apos;SN&apos;,&apos;SPA&apos;,&apos;SSA&apos;,&apos;STP&apos;], &apos;text&apos;)</attribute>
         </attributes>
       </variable>
-      <variable name="meta_stage_duration" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+      <variable name="duration" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">var stage = &apos;NeuropsychologicalBattery&apos;
 var res = null
@@ -176,12 +171,12 @@ if(res.eq(0).value()) res = null
 res</attribute>
         </attributes>
       </variable>
-      <variable name="meta_module_duration" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0" repeatable="true" occurrenceGroup="">
+      <variable name="duration_value" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0" repeatable="true" occurrenceGroup="">
         <attributes>
           <attribute name="script" valueType="text">var res = null
-if($this(&apos;meta_stage_duration&apos;).isNull().not().value()) {
+if($this(&apos;duration&apos;).isNull().not().value()) {
   var stage = &apos;NeuropsychologicalBattery&apos;
-  var list = $this(&apos;meta_module_name&apos;)
+  var list = $this(&apos;duration_name&apos;)
   var str = []
   var section = $(&apos;clsa-dcs.&apos;+stage+&apos;:QuestionnaireMetric.section&apos;).asSequence()
   var duration = $(&apos;clsa-dcs.&apos;+stage+&apos;:QuestionnaireMetric.duration&apos;).asSequence()
@@ -197,20 +192,15 @@ if($this(&apos;meta_stage_duration&apos;).isNull().not().value()) {
   res = newSequence(str, &apos;integer&apos;) 
 } else {
   var str = []
-  for(var i = 0; i &lt; $this(&apos;meta_module_name&apos;).size(); i++) str.push(null)
+  for(var i = 0; i &lt; $this(&apos;duration_name&apos;).size(); i++) str.push(null)
   res = newSequence(str,&apos;integer&apos;)
 }
 res</attribute>
         </attributes>
       </variable>
-      <variable name="duration_value" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0" repeatable="true" occurrenceGroup="">
-        <attributes>
-          <attribute name="script" valueType="text">newSequence($this(&apos;meta_stage_duration&apos;),&apos;integer&apos;).append($this(&apos;meta_module_duration&apos;))</attribute>
-        </attributes>
-      </variable>
       <variable name="refusal_name" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0" repeatable="true" occurrenceGroup="">
         <attributes>
-          <attribute name="script" valueType="text">$this(&apos;meta_module_name&apos;)</attribute>
+          <attribute name="script" valueType="text">newSequence([&apos;FAS&apos;,&apos;SN&apos;,&apos;SPA&apos;,&apos;SSA&apos;,&apos;STP&apos;], &apos;text&apos;)</attribute>
         </attributes>
       </variable>
       <variable name="refusal_value" valueType="decimal" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0" repeatable="true" occurrenceGroup="">
@@ -309,5 +299,5 @@ newSequence(str, &apos;decimal&apos;)</attribute>
     </variables>
   </variables>
   <created valueType="datetime">2019-04-11T13:53:53.447-04</created>
-  <updated valueType="datetime">2019-05-07T09:37:41.067-04</updated>
+  <updated valueType="datetime">2019-05-09T11:07:00.267-04</updated>
 </org.obiba.magma.views.View>

@@ -52,17 +52,7 @@
   &apos;victoria&apos;:&apos;Victoria DCS&apos;},null)</attribute>
         </attributes>
       </variable>
-      <variable name="duration_name" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0" repeatable="true" occurrenceGroup="">
-        <attributes>
-          <attribute name="script" valueType="text">newSequence([&apos;interview&apos;,&apos;stage&apos;],&apos;text&apos;)</attribute>
-        </attributes>
-      </variable>
-      <variable name="duration_value" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0" repeatable="true" occurrenceGroup="">
-        <attributes>
-          <attribute name="script" valueType="text">newSequence([$this(&apos;meta_interview_duration&apos;),$this(&apos;meta_stage_duration&apos;)],&apos;integer&apos;)</attribute>
-        </attributes>
-      </variable>
-      <variable name="meta_interview_duration" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+      <variable name="duration" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">var res = null
 var te = $(&apos;clsa-dcs-f2.Participants:Admin.Participant.captureEndDate&apos;).time()
@@ -74,7 +64,7 @@ if(te.isNull().not().and(tb.isNull().not()).value()) {
 res</attribute>
         </attributes>
       </variable>
-      <variable name="meta_stage_duration" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+      <variable name="stage_duration" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">var res = null
 var stages = $(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;).asSequence()
@@ -117,5 +107,5 @@ res</attribute>
     </variables>
   </variables>
   <created valueType="datetime">2019-04-10T14:43:31.350-04</created>
-  <updated valueType="datetime">2019-05-07T15:37:30.395-04</updated>
+  <updated valueType="datetime">2019-05-09T11:48:31.489-04</updated>
 </org.obiba.magma.views.View>

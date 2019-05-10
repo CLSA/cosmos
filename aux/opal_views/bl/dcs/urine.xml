@@ -121,20 +121,15 @@ res</attribute>
           <attribute name="script" valueType="text">$this(&apos;contraindicated&apos;).not().and(
   $this(&apos;skip&apos;).isNull(),
   $this(&apos;qnaire_complete&apos;).isNull(),
-  $this(&apos;meta_stage_duration&apos;).isNull())</attribute>
-        </attributes>
-      </variable>
-      <variable name="meta_module_name" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0" repeatable="true" occurrenceGroup="">
-        <attributes>
-          <attribute name="script" valueType="text">newSequence([&apos;URINE&apos;], &apos;text&apos;)</attribute>
+  $this(&apos;duration&apos;).isNull())</attribute>
         </attributes>
       </variable>
       <variable name="duration_name" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0" repeatable="true" occurrenceGroup="">
         <attributes>
-          <attribute name="script" valueType="text">newSequence([&apos;stage&apos;], &apos;text&apos;).append($this(&apos;meta_module_name&apos;))</attribute>
+          <attribute name="script" valueType="text">newSequence([&apos;URINE&apos;], &apos;text&apos;)</attribute>
         </attributes>
       </variable>
-      <variable name="meta_stage_duration" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+      <variable name="duration" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">var stage = &apos;Urine&apos;
 var res = null
@@ -153,12 +148,12 @@ if(res.eq(0).value()) res = null
 res</attribute>
         </attributes>
       </variable>
-      <variable name="meta_module_duration" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0" repeatable="true" occurrenceGroup="">
+      <variable name="duration_value" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0" repeatable="true" occurrenceGroup="">
         <attributes>
           <attribute name="script" valueType="text">var res = null
-if($this(&apos;meta_stage_duration&apos;).isNull().not().value()) {
+if($this(&apos;duration&apos;).isNull().not().value()) {
   var stage = &apos;Urine&apos;
-  var list = $this(&apos;meta_module_name&apos;)
+  var list = $this(&apos;duration_name&apos;)
   var str = []
   var section = $(&apos;clsa-dcs.&apos;+stage+&apos;:QuestionnaireMetric.section&apos;).asSequence()
   var duration = $(&apos;clsa-dcs.&apos;+stage+&apos;:QuestionnaireMetric.duration&apos;).asSequence()
@@ -174,19 +169,14 @@ if($this(&apos;meta_stage_duration&apos;).isNull().not().value()) {
   res = newSequence(str, &apos;integer&apos;) 
 } else {
   var str = []
-  for(var i = 0; i &lt; $this(&apos;meta_module_name&apos;).size(); i++) str.push(null)
+  for(var i = 0; i &lt; $this(&apos;duration_name&apos;).size(); i++) str.push(null)
   res = newSequence(str,&apos;integer&apos;)
 }
 res</attribute>
         </attributes>
       </variable>
-      <variable name="duration_value" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0" repeatable="true" occurrenceGroup="">
-        <attributes>
-          <attribute name="script" valueType="text">newSequence($this(&apos;meta_stage_duration&apos;),&apos;integer&apos;).append($this(&apos;meta_module_duration&apos;))</attribute>
-        </attributes>
-      </variable>
     </variables>
   </variables>
   <created valueType="datetime">2019-04-11T13:55:54.175-04</created>
-  <updated valueType="datetime">2019-05-03T11:41:23.608-04</updated>
+  <updated valueType="datetime">2019-05-09T11:08:36.209-04</updated>
 </org.obiba.magma.views.View>

@@ -312,32 +312,7 @@ foreach( $platform_list as $platform => $platform_id )
           foreach( $view_subobj->variables as $variable )
           {
             if( in_array( $variable->name, $stage_column_list ) ) {} // ignore columns which are in the stage table
-            else if( 'meta_' == substr( $variable->name, 0, 5 ) ) // use meta variables to search for repeatable column names
-            {
-              if( $variable->isRepeatable )
-              {
-                if( '_name' == substr( $variable->name, -5 ) ) // only process *_name columns
-                {
-                  // strip out the meta_ prefix and _name postfix
-                  $suffix = str_replace( array( 'meta_', '_name' ), '', $variable->name );
-                  if( property_exists( $variable, 'attributes' ) )
-                  {
-                    $attributes = current( $variable->attributes );
-                    if( preg_match( "/^newSequence\(\[(.*)\], *'text'\)$/", $attributes->value, $matches ) )
-                    {
-                      foreach( explode( ',', $matches[1] ) as $name )
-                      {
-                        $name = strtolower( substr( $name, 1, -1 ) );
-                        $indicators[$platform][$study_phase][$view][] = array(
-                          'name' => sprintf( '%s_%s', $name, $suffix ),
-                          'type' => get_type( $variable->valueType )
-                        );
-                      }
-                    }
-                  }
-                }
-              }
-            }
+            else if( 'meta_' == substr( $variable->name, 0, 5 ) ) {} // ignore meta columns
             else
             {
               if( $variable->isRepeatable )
@@ -349,9 +324,9 @@ foreach( $platform_list as $platform => $platform_id )
                   if( property_exists( $variable, 'attributes' ) )
                   {
                     $attributes = current( $variable->attributes );
-                    if( preg_match( "/^newSequence\(\[.*\],'text'\)$/", $attributes->value ) )
+                    if( preg_match( "/^newSequence\(\[(.*)\], *'text'\)$/", $attributes->value, $matches ) )
                     {
-                      foreach( explode( ',', substr( $attributes->value, 13, -9 ) ) as $name )
+                      foreach( explode( ',', $matches[1] ) as $name )
                       {
                         $name = strtolower( substr( $name, 1, -1 ) );
                         $indicators[$platform][$study_phase][$view][] = array(

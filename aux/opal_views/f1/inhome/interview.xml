@@ -42,17 +42,7 @@
           <attribute name="script" valueType="text">$(&apos;Admin.Interview.startDate&apos;)</attribute>
         </attributes>
       </variable>
-      <variable name="duration_name" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0" repeatable="true" occurrenceGroup="">
-        <attributes>
-          <attribute name="script" valueType="text">newSequence([&apos;interview&apos;,&apos;stage&apos;],&apos;text&apos;)</attribute>
-        </attributes>
-      </variable>
-      <variable name="duration_value" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0" repeatable="true" occurrenceGroup="">
-        <attributes>
-          <attribute name="script" valueType="text">newSequence([$this(&apos;meta_interview_duration&apos;),$this(&apos;meta_stage_duration&apos;)],&apos;integer&apos;)</attribute>
-        </attributes>
-      </variable>
-      <variable name="meta_interview_duration" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+      <variable name="duration" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">var res = null
 var te = $(&apos;clsa-inhome-f1.Participants:Admin.Participant.captureEndDate&apos;).time()
@@ -64,7 +54,7 @@ if(te.isNull().not().and(tb.isNull().not()).value()) {
 res</attribute>
         </attributes>
       </variable>
-      <variable name="meta_stage_duration" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+      <variable name="stage_duration" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">var res = null
 var stages = $(&apos;clsa-inhome-f1.Participants:Admin.StageInstance.stage&apos;).asSequence()
@@ -98,5 +88,5 @@ res</attribute>
     </variables>
   </variables>
   <created valueType="datetime">2019-04-12T11:35:13.479-04</created>
-  <updated valueType="datetime">2019-05-01T10:39:31.232-04</updated>
+  <updated valueType="datetime">2019-05-09T11:45:35.570-04</updated>
 </org.obiba.magma.views.View>
