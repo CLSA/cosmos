@@ -324,7 +324,7 @@ foreach( $platform_list as $platform => $platform_id )
                   if( property_exists( $variable, 'attributes' ) )
                   {
                     $attributes = current( $variable->attributes );
-                    if( preg_match( "/^newSequence\(\[(.*)\], *'text'\)$/", $attributes->value, $matches ) )
+                    if( preg_match( "/^newSequence\(\[(.*)\](, *'text')?\)$/", $attributes->value, $matches ) )
                     {
                       foreach( explode( ',', $matches[1] ) as $name )
                       {
