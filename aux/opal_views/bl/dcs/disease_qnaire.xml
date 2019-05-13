@@ -126,9 +126,7 @@ res</attribute>
       </variable>
       <variable name="duration_name" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0" repeatable="true" occurrenceGroup="">
         <attributes>
-          <attribute name="script" valueType="text">newSequence([&apos;CAO&apos;,&apos;CCC_CANCER&apos;,&apos;CCC_CARDIAC&apos;,&apos;CCC_GASTRO&apos;,&apos;CCC_INFECTION&apos;,
-  &apos;CCC_MENTAL&apos;,&apos;CCC_NEURO&apos;,&apos;CCC_OTHER&apos;,&apos;CCC_VISION&apos;,&apos;DEP&apos;,&apos;DIA&apos;,&apos;DPR&apos;,&apos;HBP&apos;,
-  &apos;HYP&apos;,&apos;IHD&apos;,&apos;OAR&apos;,&apos;OSA&apos;,&apos;OSH&apos;,&apos;OSK&apos;,&apos;OST&apos;,&apos;PKD&apos;,&apos;ROS&apos;,&apos;STR&apos;,&apos;TBI&apos;], &apos;text&apos;)</attribute>
+          <attribute name="script" valueType="text">newSequence([&apos;CAO&apos;,&apos;CCC_CANCER&apos;,&apos;CCC_CARDIAC&apos;,&apos;CCC_GASTRO&apos;,&apos;CCC_INFECTION&apos;,&apos;CCC_MENTAL&apos;,&apos;CCC_NEURO&apos;,&apos;CCC_OTHER&apos;,&apos;CCC_VISION&apos;,&apos;DEP&apos;,&apos;DIA&apos;,&apos;DPR&apos;,&apos;HBP&apos;,&apos;HYP&apos;,&apos;IHD&apos;,&apos;OAR&apos;,&apos;OSA&apos;,&apos;OSH&apos;,&apos;OSK&apos;,&apos;OST&apos;,&apos;PKD&apos;,&apos;ROS&apos;,&apos;STR&apos;,&apos;TBI&apos;],&apos;text&apos;)</attribute>
         </attributes>
       </variable>
       <variable name="duration" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
@@ -179,9 +177,7 @@ res</attribute>
       </variable>
       <variable name="refusal_name" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0" repeatable="true" occurrenceGroup="">
         <attributes>
-          <attribute name="script" valueType="text">newSequence([&apos;CAO&apos;,&apos;CCC_CANCER&apos;,&apos;CCC_CARDIAC&apos;,&apos;CCC_GASTRO&apos;,&apos;CCC_INFECTION&apos;,
-  &apos;CCC_MENTAL&apos;,&apos;CCC_NEURO&apos;,&apos;CCC_OTHER&apos;,&apos;CCC_VISION&apos;,&apos;DEP&apos;,&apos;DIA&apos;,&apos;DPR&apos;,&apos;HBP&apos;,
-  &apos;HYP&apos;,&apos;IHD&apos;,&apos;OAR&apos;,&apos;OSA&apos;,&apos;OSH&apos;,&apos;OSK&apos;,&apos;OST&apos;,&apos;PKD&apos;,&apos;ROS&apos;,&apos;STR&apos;,&apos;TBI&apos;], &apos;text&apos;)</attribute>
+          <attribute name="script" valueType="text">newSequence([&apos;CAO&apos;,&apos;CCC_CANCER&apos;,&apos;CCC_CARDIAC&apos;,&apos;CCC_GASTRO&apos;,&apos;CCC_INFECTION&apos;,&apos;CCC_MENTAL&apos;,&apos;CCC_NEURO&apos;,&apos;CCC_OTHER&apos;,&apos;CCC_VISION&apos;,&apos;DEP&apos;,&apos;DIA&apos;,&apos;DPR&apos;,&apos;HBP&apos;,&apos;HYP&apos;,&apos;IHD&apos;,&apos;OAR&apos;,&apos;OSA&apos;,&apos;OSH&apos;,&apos;OSK&apos;,&apos;OST&apos;,&apos;PKD&apos;,&apos;ROS&apos;,&apos;STR&apos;,&apos;TBI&apos;],&apos;text&apos;)</attribute>
         </attributes>
       </variable>
       <variable name="refusal_value" valueType="decimal" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0" repeatable="true" occurrenceGroup="">
@@ -876,5 +872,5 @@ newSequence(str, &apos;decimal&apos;)</attribute>
     </variables>
   </variables>
   <created valueType="datetime">2019-04-11T13:44:20.232-04</created>
-  <updated valueType="datetime">2019-05-09T11:02:34.789-04</updated>
+  <updated valueType="datetime">2019-05-13T08:58:02.638-04</updated>
 </org.obiba.magma.views.View>

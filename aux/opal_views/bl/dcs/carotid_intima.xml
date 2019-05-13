@@ -174,13 +174,7 @@ res
       </variable>
       <variable name="file_name" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0" repeatable="true" occurrenceGroup="">
         <attributes>
-          <attribute name="script" valueType="text">newSequence([
-  &apos;cineloop_1_left&apos;,&apos;cineloop_1_right&apos;,
-  &apos;cineloop_2_left&apos;,&apos;cineloop_2_right&apos;,
-  &apos;cineloop_3_left&apos;,&apos;cineloop_3_right&apos;,
-  &apos;still_1_left&apos;,&apos;still_1_right&apos;,
-  &apos;sr_1_left&apos;,&apos;sr_1_right&apos;
-  ],&apos;text&apos;)</attribute>
+          <attribute name="script" valueType="text">newSequence([&apos;cineloop_1_left&apos;,&apos;cineloop_1_right&apos;,&apos;cineloop_2_left&apos;,&apos;cineloop_2_right&apos;,&apos;cineloop_3_left&apos;,&apos;cineloop_3_right&apos;,&apos;still_1_left&apos;,&apos;still_1_right&apos;,&apos;sr_1_left&apos;,&apos;sr_1_right&apos;],&apos;text&apos;)</attribute>
         </attributes>
       </variable>
       <variable name="file_size" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0" repeatable="true" occurrenceGroup="">
@@ -207,5 +201,5 @@ res
     </variables>
   </variables>
   <created valueType="datetime">2019-04-10T14:32:30.352-04</created>
-  <updated valueType="datetime">2019-04-30T13:14:05.791-04</updated>
+  <updated valueType="datetime">2019-05-13T08:53:45.408-04</updated>
 </org.obiba.magma.views.View>
