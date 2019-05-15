@@ -430,7 +430,7 @@ array_pop( $template_filename_list ); // the last is an empty string
 $subject_list = array();
 $result = $db->query( sprintf(
   'SELECT '.
-    'study_phase.id, '.
+    'stage_type.id, '.
     'study_phase.code AS study_phase, '.
     'platform.name AS platform, '.
     'stage_type.name AS stage_type '.
@@ -465,11 +465,13 @@ while( $row = $result->fetch_assoc() )
       $carry .= sprintf(
         "      %s: {\n".
         "        title: '%s',\n".
-        "        type: '%s'\n".
+        "        type: '%s'%s\n".
         "      },\n",
         $column['name'],
         snake_to_title( $column['name'] ),
-        $column['type']
+        'boolean' == $column['type'] ? 'boolean' : 'string',
+        'integer' == $column['type'] || 'float' == $column['type'] ?
+          sprintf( ",\n        type: '%s'", $column['type'] ) : ''
       );
       return $carry;
     },
@@ -482,11 +484,13 @@ while( $row = $result->fetch_assoc() )
       $carry .= sprintf(
         "    %s: {\n".
         "      title: '%s',\n".
-        "      type: '%s'\n".
+        "      type: '%s'%s\n".
         "    },\n",
         $column['name'],
         snake_to_title( $column['name'] ),
-        $column['type']
+        'boolean' == $column['type'] ? 'boolean' : 'string',
+        'integer' == $column['type'] || 'float' == $column['type'] ?
+          sprintf( ",\n      format: '%s'", $column['type'] ) : ''
       );
       return $carry;
     },
