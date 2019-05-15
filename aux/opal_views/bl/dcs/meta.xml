@@ -195,7 +195,7 @@ if($(&apos;cosmos_dcs.QC_BL_ecg:contraindicated&apos;).not().and(
     var minPre=10000000000000000
     var minPost=minPre
     var stages=$(&apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;).asSequence().filter(function(v){
-      return v.isNull().not().and(v.any(&apos;ExtendedHIN&apos;,&apos;GeneralProxy&apos;).not()).value()
+      return v.isNull().or(v.any(&apos;ExtendedHIN&apos;,&apos;GeneralProxy&apos;)).not().value()
     })
 
     for(var i=0;i&lt;stages.size();i++) {
@@ -247,14 +247,22 @@ if($(&apos;cosmos_dcs.QC_BL_ecg:contraindicated&apos;).not().and(
       }
     }
     if(valid) {
-      var preStage=stages.valueAt(preIndex).value()
-      pre=(-1!=$this(&apos;group_questionnaire&apos;).indexOf(preStage)) ?
-        $(&apos;clsa-dcs.&apos;+preStage+&apos;:QuestionnaireRun.timeEnd&apos;) :
-        $(&apos;clsa-dcs.&apos;+preStage+&apos;:InstrumentRun.timeEnd&apos;)
+      var preStage=stages.valueAt(preIndex).value()      
+      if(&apos;Consent&apos;==preStage) {
+        pre=$(&apos;clsa-dcs.Consent:timeEnd&apos;)
+      } else {
+        pre=(-1!=$this(&apos;group_questionnaire&apos;).indexOf(preStage)) ?
+          $(&apos;clsa-dcs.&apos;+preStage+&apos;:QuestionnaireRun.timeEnd&apos;) :
+          $(&apos;clsa-dcs.&apos;+preStage+&apos;:InstrumentRun.timeEnd&apos;)
+      }    
       var postStage=stages.valueAt(postIndex).value()
-      post=(-1!=$this(&apos;group_questionnaire&apos;).indexOf(postStage)) ?
-        $(&apos;clsa-dcs.&apos;+postStage+&apos;:QuestionnaireRun.timeStart&apos;) :
-        $(&apos;clsa-dcs.&apos;+postStage+&apos;:InstrumentRun.timeStart&apos;)
+      if(&apos;Consent&apos;==postStage) {
+        post=$(&apos;clsa-dcs.Consent:timeStart&apos;)
+      } else {
+        post=(-1!=$this(&apos;group_questionnaire&apos;).indexOf(postStage)) ?
+          $(&apos;clsa-dcs.&apos;+postStage+&apos;:QuestionnaireRun.timeStart&apos;) :
+          $(&apos;clsa-dcs.&apos;+postStage+&apos;:InstrumentRun.timeStart&apos;)
+      }    
       if(post.after(pre).value()) {
         res=post.time().minus(pre.time()).div(1000)
       }
@@ -324,5 +332,5 @@ res</attribute>
     </variables>
   </variables>
   <created valueType="datetime">2019-04-23T15:04:23.246-04</created>
-  <updated valueType="datetime">2019-05-07T14:46:59.559-04</updated>
+  <updated valueType="datetime">2019-05-15T09:30:07.354-04</updated>
 </org.obiba.magma.views.View>
