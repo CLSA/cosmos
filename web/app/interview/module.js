@@ -18,6 +18,10 @@ define( function() {
         column: 'study_phase.name',
         title: 'Study Phase'
       },
+      platform: {
+        column: 'platform.name',
+        title: 'Platform'
+      },
       site: {
         column: 'site.name',
         title: 'Site'
@@ -53,6 +57,11 @@ define( function() {
     study_phase: {
       column: 'study_phase.name',
       title: 'Study Phase',
+      type: 'string'
+    },
+    platform: {
+      column: 'platform.name',
+      title: 'Platform',
       type: 'string'
     },
     site: {

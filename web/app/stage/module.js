@@ -18,18 +18,6 @@ define( dataModuleList.reduce( function( list, name ) {
       possessive: 'stage\'s'
     },
     columnList: {
-      uid: {
-        column: 'participant.uid',
-        title: 'UID'
-      },
-      study_phase: {
-        column: 'study_phase.code',
-        title: 'Phase'
-      },
-      platform: {
-        column: 'platform.name',
-        title: 'Platform'
-      },
       stage_type: {
         column: 'stage_type.name',
         title: 'Stage Type'
@@ -141,7 +129,9 @@ define( dataModuleList.reduce( function( list, name ) {
 
   /* ######################################################################################################## */
   var injectionList = [ 'CnBaseViewFactory' ];
-  injectionList = injectionList.concat( dataModuleList.map( dataModule => 'Cn' + dataModule.snakeToCamel( true ) + 'ModelFactory' ) );
+  injectionList = injectionList.concat(
+    dataModuleList.map( dataModule => 'Cn' + dataModule.snakeToCamel( true ) + 'ModelFactory' )
+  );
   cenozo.providers.factory( 'CnStageViewFactory',
     injectionList.concat( function( ...injected ) {
       var object = function( parentModel, root ) {
@@ -154,6 +144,8 @@ define( dataModuleList.reduce( function( list, name ) {
           return this.$$onView( force ).then( function() {
             var moduleName = [ self.record.study_phase, self.record.platform, self.record.stage_type, 'data' ].join( '_' );
             self.dataModel = injected[ dataModuleList.indexOf( moduleName ) + 1 ].root;
+            // we have to force since the state's subject doesn't match the model's subject
+            self.dataModel.viewModel.onView( true );
           } );
         };
       }
