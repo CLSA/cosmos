@@ -20,8 +20,10 @@ class module extends \cenozo\service\module
   {
     parent::prepare_read( $select, $modifier );
 
+    $modifier->join( 'stage_type', 'stage.stage_type_id', 'stage_type.id' );
+    $modifier->join( 'study_phase', 'stage_type.study_phase_id', 'study_phase.id' );
+    $modifier->join( 'platform', 'stage_type.platform_id', 'platform.id' );
     $modifier->join( 'interview', 'stage.interview_id', 'interview.id' );
     $modifier->join( 'participant', 'interview.participant_id', 'participant.id' );
-    $modifier->join( 'study_phase', 'interview.study_phase_id', 'study_phase.id' );
   }
 }
