@@ -1,0 +1,119 @@
+#!/usr/bin/php
+<?php
+/**
+ * This script downloads all opal views and overwrites those existing in the repository
+ * Author: Patrick Emond <emondpd@mcmaster.ca>
+ */
+
+define( 'TIMEOUT', 20 );
+define( 'OPAL_DELAY', 0.1 * 1000000 );
+chdir( dirname( __FILE__ ).'/../' );
+require_once 'settings.ini.php';
+require_once 'settings.local.ini.php';
+require_once $SETTINGS['path']['CENOZO'].'/src/initial.class.php';
+$initial = new \cenozo\initial();
+$settings = $initial->get_settings();
+$opal_headers = array(
+  sprintf( 'Authorization: X-Opal-Auth %s',
+           base64_encode( sprintf( '%s:%s', $settings['opal']['username'], $settings['opal']['password'] ) ) )
+);
+define( 'CENOZO_DB', sprintf( '%s%s', $settings['db']['database_prefix'], $settings['general']['framework_name'] ) );
+define( 'COSMOS_DB', sprintf( '%s%s', $settings['db']['database_prefix'], $settings['general']['instance_name'] ) );
+define( 'REDOWNLOAD_VIEWS', 1 < $argc );
+
+// logging functions
+function out( $message ) { printf( "%s\n", $message ); }
+function fatal( $message ) { out( sprintf( 'FATAL ERROR: %s', $message ) ); die(); }
+
+function opal_ws( $url, $decode = true, $xml = false )
+{
+  global $opal_headers;
+  $headers = $opal_headers;
+  $headers[] = $xml ? 'Accept application/xml' : 'Accept: application/json';
+  $curl = curl_init();
+  curl_setopt( $curl, CURLOPT_URL, $url );
+  curl_setopt( $curl, CURLOPT_HTTPHEADER, $headers );
+  curl_setopt( $curl, CURLOPT_SSL_VERIFYPEER, false );
+  curl_setopt( $curl, CURLOPT_RETURNTRANSFER, true );
+  curl_setopt( $curl, CURLOPT_CONNECTTIMEOUT, TIMEOUT );
+
+  // always wait before talking to Opal (it doesn't do well with being hammered)
+  usleep( OPAL_DELAY );
+  $response = curl_exec( $curl );
+  $code = curl_getinfo( $curl, CURLINFO_HTTP_CODE );
+  if( 0 == $code ) out( 'Cannot read from Opal (timeout).' );
+  else if( 200 != $code ) fatal( sprintf( 'Error "%s" while reading from Opal url "%s".', $code, $url ) );
+
+  return $decode ? json_decode( $response ) : $response;
+}
+
+$db = new mysqli(
+  $settings['db']['server'],
+  $settings['db']['username'],
+  $settings['db']['password'],
+  COSMOS_DB
+);
+
+$study_phase_list = array();
+$result = $db->query( sprintf( 'SELECT id, code FROM %s.study_phase', CENOZO_DB ) );
+if( !$result ) fatal( 'Cannot get list of study phases from Cenozo database.' );
+while( $row = $result->fetch_assoc() ) $study_phase_list[$row['code']] = $row['id'];
+$result->free();
+
+$platform_list = array();
+$result = $db->query( 'SELECT id, name FROM platform' );
+if( !$result ) fatal( 'Cannot get list of platforms from Cosmos database.' );
+while( $row = $result->fetch_assoc() ) $platform_list[$row['name']] = $row['id'];
+$result->free();
+
+$db->close();
+
+// remove all view files
+if( REDOWNLOAD_VIEWS ) exec( 'rm -rf aux/opal_views/*' );
+
+out( 'Downloading views from Opal' );
+
+foreach( $platform_list as $platform => $platform_id )
+{
+  out( sprintf( 'Processing platform "%s"', $platform ) );
+
+  $platform_url = sprintf(
+    'https://%s:%d/ws/datasource/cosmos_%s',
+    $settings['opal']['server'],
+    $settings['opal']['port'],
+    $platform
+  );
+
+  // loop through all views
+  $platform_obj = opal_ws( $platform_url );
+  foreach( $platform_obj->view as $view_name )
+  {
+    preg_match( '/^QC_(..)_(.+)$/', $view_name, $matches );
+    if( 0 == count( $matches ) ) continue; // ignore views that aren't named correctly
+    $study_phase = strtolower( $matches[1] );
+    $view = strtolower( $matches[2] );
+
+    // make sure the xml and json directory exists
+    $dir = sprintf( 'aux/opal_views/%s/%s', $study_phase, $platform );
+    if( !file_exists( $dir ) ) mkdir( $dir, 0755, true );
+
+    $json_filename = sprintf( '%s/%s.json', $dir, $view );
+    $xml_filename = sprintf( '%s/%s.xml', $dir, $view );
+    $view_url = sprintf( '%s/view/%s', $platform_url, $view_name );
+    $xml_url = sprintf( '%s/view/%s/xml', $platform_url, $view_name );
+
+    if( REDOWNLOAD_VIEWS ||
+        !file_exists( $json_filename ) || 0 == filesize( $json_filename ) ||
+        !file_exists( $xml_filename ) || 0 == filesize( $xml_filename ) )
+    {
+      // write the view's xml and json files to disk
+      out( sprintf( ' - downloading view "%s" ', $view_name ) );
+      file_put_contents( $json_filename, opal_ws( $view_url, false ) );
+      file_put_contents( $xml_filename, opal_ws( $xml_url, false, true ) );
+    }
+    else
+    {
+      out( sprintf( ' - keeping existing view "%s" ', $view_name ) );
+    }
+  }
+}
