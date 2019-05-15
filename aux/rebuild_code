@@ -5,8 +5,6 @@
  * Author: Patrick Emond <emondpd@mcmaster.ca>
  */
 
-define( 'TIMEOUT', 20 );
-define( 'OPAL_DELAY', 0.1 * 1000000 );
 chdir( dirname( __FILE__ ).'/../' );
 require_once 'settings.ini.php';
 require_once 'settings.local.ini.php';
@@ -15,6 +13,7 @@ $initial = new \cenozo\initial();
 $settings = $initial->get_settings();
 define( 'CENOZO_DB', sprintf( '%s%s', $settings['db']['database_prefix'], $settings['general']['framework_name'] ) );
 define( 'COSMOS_DB', sprintf( '%s%s', $settings['db']['database_prefix'], $settings['general']['instance_name'] ) );
+define( 'REBUILD_DATABASE', 1 < $argc );
 
 // logging functions
 function out( $message ) { printf( "%s\n", $message ); }
@@ -154,31 +153,34 @@ $result->free();
 out( 'Deleting existing automagic code' );
 
 // clean out stage_type and indicator records
-$result = $db->query( 'TRUNCATE indicator' );
-if( !$result ) fatal( 'Cannot delete rows in indicator table.' );
-$result = $db->query( 'DELETE FROM stage_type' );
-if( !$result ) fatal( 'Cannot delete rows in stage_type table.' );
-$result = $db->query( 'ALTER TABLE stage_type AUTO_INCREMENT = 1' );
-if( !$result ) fatal( 'Cannot delete rows in stage_type table.' );
-
-// drop all data tables
-$sql = sprintf(
-  'SELECT table_name '.
-  'FROM information_schema.TABLES '.
-  'WHERE table_schema = "%s" ',
-  COSMOS_DB
-);
-foreach( $study_phase_list as $study_phase => $study_phase_id )
-  $sql .= sprintf( 'AND table_name LIKE "%s_%%" ', $study_phase );
-
-$result = $db->query( $sql );
-if( !$result ) fatal( sprintf( 'Unable to get list of existing data tables.', $subject ) );
-while( $row = $result->fetch_assoc() )
+if( REBUILD_DATABASE )
 {
-  $result1 = $db->query( sprintf( 'DROP TABLE %s', $row['table_name'] ) );
-  if( !$result1 ) fatal( sprintf( 'Unable to drop %s table.', $row['table_name'] ) );
+  $result = $db->query( 'TRUNCATE indicator' );
+  if( !$result ) fatal( 'Cannot delete rows in indicator table.' );
+  $result = $db->query( 'DELETE FROM stage_type' );
+  if( !$result ) fatal( 'Cannot delete rows in stage_type table.' );
+  $result = $db->query( 'ALTER TABLE stage_type AUTO_INCREMENT = 1' );
+  if( !$result ) fatal( 'Cannot delete rows in stage_type table.' );
+
+  // drop all data tables
+  $sql = sprintf(
+    'SELECT table_name '.
+    'FROM information_schema.TABLES '.
+    'WHERE table_schema = "%s" ',
+    COSMOS_DB
+  );
+  foreach( $study_phase_list as $study_phase => $study_phase_id )
+    $sql .= sprintf( 'AND table_name LIKE "%s_%%" ', $study_phase );
+
+  $result = $db->query( $sql );
+  if( !$result ) fatal( sprintf( 'Unable to get list of existing data tables.', $subject ) );
+  while( $row = $result->fetch_assoc() )
+  {
+    $result1 = $db->query( sprintf( 'DROP TABLE %s', $row['table_name'] ) );
+    if( !$result1 ) fatal( sprintf( 'Unable to drop %s table.', $row['table_name'] ) );
+  }
+  $result->free();
 }
-$result->free();
 
 // delete all code
 $template_filename_list = explode( "\n", shell_exec( 'find doc/code_templates/ -type f' ) );
@@ -333,90 +335,93 @@ foreach( $study_phase_list as $study_phase => $study_phase_id )
 /**************************************************************************************************
  * PART 3: Write view details to the database
  *************************************************************************************************/
-out( 'Writing view details to the database' );
-
-$stage_type_count = 0;
-$indicator_count = 0;
-foreach( $indicators as $study_phase => $platforms )
+if( REBUILD_DATABASE )
 {
-  foreach( $platforms as $platform => $stage_types )
+  out( 'Writing view details to the database' );
+
+  $stage_type_count = 0;
+  $indicator_count = 0;
+  foreach( $indicators as $study_phase => $platforms )
   {
-    foreach( $stage_types as $stage_type => $columns )
+    foreach( $platforms as $platform => $stage_types )
     {
-      if( 0 < count( $columns ) )
+      foreach( $stage_types as $stage_type => $columns )
       {
-        // create services
-        $subject = sprintf( '%s_%s_%s_data', $study_phase, $platform, $stage_type );
-        $result = $db->query( sprintf( 'DELETE FROM service WHERE subject = "%s"', $subject ) );
-        if( !$result ) fatal( 'Cannot delete rows in service table.' );
+        if( 0 < count( $columns ) )
+        {
+          // create services
+          $subject = sprintf( '%s_%s_%s_data', $study_phase, $platform, $stage_type );
+          $result = $db->query( sprintf( 'DELETE FROM service WHERE subject = "%s"', $subject ) );
+          if( !$result ) fatal( 'Cannot delete rows in service table.' );
 
-        insert_rows(
-          'service',
-          array( 'method', 'subject', 'resource', 'restricted' ),
-          array(
-            array( 'GET', $subject, 0, 0 ),
-            array( 'GET', $subject, 1, 0 )
-          )
-        );
+          insert_rows(
+            'service',
+            array( 'method', 'subject', 'resource', 'restricted' ),
+            array(
+              array( 'GET', $subject, 0, 0 ),
+              array( 'GET', $subject, 1, 0 )
+            )
+          );
 
-        // create the stage type
-        $stage_type_id = insert_row(
-          'stage_type',
-          array( 'study_phase_id', 'platform_id', 'name' ),
-          array( $study_phase_list[$study_phase], $platform_list[$platform], $stage_type )
-        );
-        $stage_type_count++;
+          // create the stage type
+          $stage_type_id = insert_row(
+            'stage_type',
+            array( 'study_phase_id', 'platform_id', 'name' ),
+            array( $study_phase_list[$study_phase], $platform_list[$platform], $stage_type )
+          );
+          $stage_type_count++;
 
-        // create the indicators
-        $indicator_count += insert_rows(
-          'indicator',
-          array( 'stage_type_id', 'name', 'type' ),
-          array_map(
-            function( $column ) {
-              global $stage_type_id;
-              return array( $stage_type_id, $column['name'], $column['type'] );
-            },
-            $columns
-          )
-        );
+          // create the indicators
+          $indicator_count += insert_rows(
+            'indicator',
+            array( 'stage_type_id', 'name', 'type' ),
+            array_map(
+              function( $column ) {
+                global $stage_type_id;
+                return array( $stage_type_id, $column['name'], $column['type'] );
+              },
+              $columns
+            )
+          );
 
-        // now create the data table
-        $result = $db->query( sprintf( 'DROP TABLE IF EXISTS %s', $subject ) );
-        if( !$result ) fatal( sprintf( 'Unable to drop %s table.', $subject ) );
+          // now create the data table
+          $result = $db->query( sprintf( 'DROP TABLE IF EXISTS %s', $subject ) );
+          if( !$result ) fatal( sprintf( 'Unable to drop %s table.', $subject ) );
 
-        $sql = sprintf(
-          'CREATE TABLE %s ( '.
-          'id INT UNSIGNED NOT NULL AUTO_INCREMENT, '.
-          'update_timestamp TIMESTAMP NOT NULL, '.
-          'create_timestamp TIMESTAMP NOT NULL, '.
-          'stage_id INT UNSIGNED NOT NULL, '.
-          '%s, '.
-          'PRIMARY KEY (id), '.
-          'INDEX fk_stage_id (stage_id ASC), '.
-          'UNIQUE INDEX uq_stage_id (stage_id ASC), '.
-          'CONSTRAINT fk_%s_stage_id '.
-            'FOREIGN KEY (stage_id) '.
-            'REFERENCES stage (id) '.
-            'ON DELETE NO ACTION '.
-            'ON UPDATE NO ACTION) '.
-          'ENGINE = InnoDB',
-          $subject,
-          implode( ', ', array_map(
-            function( $column ) {
-              return sprintf( '%s %s NULL DEFAULT NULL', $column['name'], get_database_type( $column['type'] ) );
-            },
-            $columns
-          ) ),
-          $subject
-        );
-        $result = $db->query( $sql );
-        if( !$result ) fatal( sprintf( 'Unable to create %s table.', $subject ) );
+          $sql = sprintf(
+            'CREATE TABLE %s ( '.
+            'id INT UNSIGNED NOT NULL AUTO_INCREMENT, '.
+            'update_timestamp TIMESTAMP NOT NULL, '.
+            'create_timestamp TIMESTAMP NOT NULL, '.
+            'stage_id INT UNSIGNED NOT NULL, '.
+            '%s, '.
+            'PRIMARY KEY (id), '.
+            'INDEX fk_stage_id (stage_id ASC), '.
+            'UNIQUE INDEX uq_stage_id (stage_id ASC), '.
+            'CONSTRAINT fk_%s_stage_id '.
+              'FOREIGN KEY (stage_id) '.
+              'REFERENCES stage (id) '.
+              'ON DELETE NO ACTION '.
+              'ON UPDATE NO ACTION) '.
+            'ENGINE = InnoDB',
+            $subject,
+            implode( ', ', array_map(
+              function( $column ) {
+                return sprintf( '%s %s NULL DEFAULT NULL', $column['name'], get_database_type( $column['type'] ) );
+              },
+              $columns
+            ) ),
+            $subject
+          );
+          $result = $db->query( $sql );
+          if( !$result ) fatal( sprintf( 'Unable to create %s table.', $subject ) );
+        }
       }
     }
   }
-}
 
-out( sprintf( 'Done, wrote %d stage types and %d indicators', $stage_type_count, $indicator_count ) );
+  out( sprintf( 'Done, wrote %d stage types and %d indicators', $stage_type_count, $indicator_count ) );
+}
 
 /**************************************************************************************************
  * PART 4: Generate code
