@@ -448,8 +448,28 @@ $result = $db->query( sprintf(
 if( !$result ) fatal( 'Cannot get list of stage_types from Cosmos database.' );
 while( $row = $result->fetch_assoc() )
 {
-  $name = sprintf( '%s_%s_%s', $row['study_phase'], $row['platform'], $row['stage_type'] );
-  $subject = sprintf( '%s_data', $name );
+  $name = str_replace(
+    'dcs',
+    'DCS',
+    str_replace(
+      '_',
+      ' ',
+      sprintf(
+        '%s %s %s',
+        $row['study_phase'],
+        $row['platform'],
+        $row['stage_type']
+      )
+    )
+  );
+
+  $subject = sprintf(
+    '%s_%s_%s_data',
+    $row['study_phase'],
+    $row['platform'],
+    $row['stage_type']
+  );
+
   $subject_list[] = $subject;
 
   // get the indicators for this study_phase
