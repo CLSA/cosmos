@@ -76,6 +76,7 @@ INSERT INTO service ( subject, method, resource, restricted ) VALUES
 ( 'user', 'POST', 0, 1 ),
 
 -- application services
+( 'comment', 'GET', 0, 0 ),
 ( 'indicator', 'GET', 0, 0 ),
 ( 'indicator', 'GET', 1, 0 ),
 ( 'indicator', 'PATCH', 1, 1 ),
