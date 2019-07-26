@@ -25,5 +25,6 @@ class module extends \cenozo\service\module
     $modifier->join( 'platform', 'stage_type.platform_id', 'platform.id' );
     $modifier->join( 'interview', 'stage.interview_id', 'interview.id' );
     $modifier->join( 'participant', 'interview.participant_id', 'participant.id' );
+    $modifier->left_join( 'technician', 'stage.technician_id', 'technician.id' );
   }
 }

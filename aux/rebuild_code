@@ -490,13 +490,11 @@ while( $row = $result->fetch_assoc() )
       $carry .= sprintf(
         "      %s: {\n".
         "        title: '%s',\n".
-        "        type: '%s'%s\n".
+        "        type: '%s'\n".
         "      },\n",
         $column['name'],
         snake_to_title( $column['name'] ),
-        'boolean' == $column['type'] ? 'boolean' : 'string',
-        'integer' == $column['type'] || 'float' == $column['type'] ?
-          sprintf( ",\n        type: '%s'", $column['type'] ) : ''
+        in_array( $column['type'], ['boolean','float','integer'] ) ? $column['type'] : 'string'
       );
       return $carry;
     },

@@ -19,6 +19,7 @@ define( function() {
         title: 'Phase'
       },
 <COLUMN_LIST>
+      stage_id: { isIncluded: function() { return false; } }
     },
     defaultOrder: {
       column: 'id',
@@ -90,6 +91,10 @@ define( function() {
 
         this.getServiceResourcePath = function( resource ) {
           return self.module.subject.snake + '/stage_id=' + $state.params.identifier;
+        };
+
+        this.transitionToViewState = function( record ) {
+          $state.go( 'stage.view', { identifier: record.stage_id } );
         };
       };
 
