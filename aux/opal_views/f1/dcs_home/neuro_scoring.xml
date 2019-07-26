@@ -109,21 +109,95 @@ res</attribute>
       </variable>
       <variable name="qnaire_complete" valueType="decimal" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">var stage = &apos;NeuropsychologicalBatteryScoring&apos;
-var p = $(&apos;clsa-dcs-f1.&apos; + stage + &apos;:QuestionnaireMetric.missingCount&apos;).asSequence()
-var q = $(&apos;clsa-dcs-f1.&apos; + stage + &apos;:QuestionnaireMetric.questionCount&apos;).asSequence()
-var res = null
-if(p.isNull().or(q.isNull(),q.sum().eq(0)).not().value()) {
-  res = q.sum().minus(p.sum()).multiply(100).div(q.sum())
+          <attribute name="script" valueType="text">var stage = &apos;clsa-dcs-f1.NeuropsychologicalBatteryScoring:&apos;
+var list=[
+&apos;STP_DOTERRR_COF1.G_1_1&apos;,
+&apos;STP_DOTERRR_COF1.Y_1_2&apos;,
+&apos;STP_DOTERRR_COF1.B_1_3&apos;,
+&apos;STP_DOTERRR_COF1.B_1_4&apos;,
+&apos;STP_DOTERRR_COF1.R_1_5&apos;,
+&apos;STP_DOTERRR_COF1.Y_1_6&apos;,
+&apos;STP_DOTERRR_COF1.B_2_1&apos;,
+&apos;STP_DOTERRR_COF1.R_2_2&apos;,
+&apos;STP_DOTERRR_COF1.G_2_3&apos;,
+&apos;STP_DOTERRR_COF1.Y_2_4&apos;,
+&apos;STP_DOTERRR_COF1.G_2_5&apos;,
+&apos;STP_DOTERRR_COF1.G_2_6&apos;,
+&apos;STP_DOTERRR_COF1.Y_3_1&apos;,
+&apos;STP_DOTERRR_COF1.G_3_2&apos;,
+&apos;STP_DOTERRR_COF1.Y_3_3&apos;,
+&apos;STP_DOTERRR_COF1.R_3_4&apos;,
+&apos;STP_DOTERRR_COF1.B_3_5&apos;,
+&apos;STP_DOTERRR_COF1.B_3_6&apos;,
+&apos;STP_DOTERRR_COF1.R_4_1&apos;,
+&apos;STP_DOTERRR_COF1.B_4_2&apos;,
+&apos;STP_DOTERRR_COF1.R_4_3&apos;,
+&apos;STP_DOTERRR_COF1.G_4_4&apos;,
+&apos;STP_DOTERRR_COF1.Y_4_5&apos;,
+&apos;STP_DOTERRR_COF1.R_4_6&apos;,
+&apos;STP_WORERRR_COF1.G_1_1&apos;,
+&apos;STP_WORERRR_COF1.Y_1_2&apos;,
+&apos;STP_WORERRR_COF1.B_1_3&apos;,
+&apos;STP_WORERRR_COF1.B_1_4&apos;,
+&apos;STP_WORERRR_COF1.R_1_5&apos;,
+&apos;STP_WORERRR_COF1.Y_1_6&apos;,
+&apos;STP_WORERRR_COF1.B_2_1&apos;,
+&apos;STP_WORERRR_COF1.R_2_2&apos;,
+&apos;STP_WORERRR_COF1.G_2_3&apos;,
+&apos;STP_WORERRR_COF1.Y_2_4&apos;,
+&apos;STP_WORERRR_COF1.G_2_5&apos;,
+&apos;STP_WORERRR_COF1.G_2_6&apos;,
+&apos;STP_WORERRR_COF1.Y_3_1&apos;,
+&apos;STP_WORERRR_COF1.G_3_2&apos;,
+&apos;STP_WORERRR_COF1.Y_3_3&apos;,
+&apos;STP_WORERRR_COF1.R_3_4&apos;,
+&apos;STP_WORERRR_COF1.B_3_5&apos;,
+&apos;STP_WORERRR_COF1.B_3_6&apos;,
+&apos;STP_WORERRR_COF1.R_4_1&apos;,
+&apos;STP_WORERRR_COF1.B_4_2&apos;,
+&apos;STP_WORERRR_COF1.R_4_3&apos;,
+&apos;STP_WORERRR_COF1.G_4_4&apos;,
+&apos;STP_WORERRR_COF1.Y_4_5&apos;,
+&apos;STP_WORERRR_COF1.R_4_6&apos;,
+&apos;STP_COLERRR_COF1.G_1_1&apos;,
+&apos;STP_COLERRR_COF1.Y_1_2&apos;,
+&apos;STP_COLERRR_COF1.B_1_3&apos;,
+&apos;STP_COLERRR_COF1.B_1_4&apos;,
+&apos;STP_COLERRR_COF1.R_1_5&apos;,
+&apos;STP_COLERRR_COF1.Y_1_6&apos;,
+&apos;STP_COLERRR_COF1.B_2_1&apos;,
+&apos;STP_COLERRR_COF1.R_2_2&apos;,
+&apos;STP_COLERRR_COF1.G_2_3&apos;,
+&apos;STP_COLERRR_COF1.Y_2_4&apos;,
+&apos;STP_COLERRR_COF1.G_2_5&apos;,
+&apos;STP_COLERRR_COF1.G_2_6&apos;,
+&apos;STP_COLERRR_COF1.Y_3_1&apos;,
+&apos;STP_COLERRR_COF1.G_3_2&apos;,
+&apos;STP_COLERRR_COF1.Y_3_3&apos;,
+&apos;STP_COLERRR_COF1.R_3_4&apos;,
+&apos;STP_COLERRR_COF1.B_3_5&apos;,
+&apos;STP_COLERRR_COF1.B_3_6&apos;,
+&apos;STP_COLERRR_COF1.R_4_1&apos;,
+&apos;STP_COLERRR_COF1.B_4_2&apos;,
+&apos;STP_COLERRR_COF1.R_4_3&apos;,
+&apos;STP_COLERRR_COF1.G_4_4&apos;,
+&apos;STP_COLERRR_COF1.Y_4_5&apos;,
+&apos;STP_COLERRR_COF1.R_4_6&apos;
+]
+
+var qcount = 0
+for(var i=0; i&lt;list.length; i++) {
+  var j = $(stage + list[i])
+  if(j.isNull().not().value()) qcount++
 }
-res</attribute>
+
+newValue( 100.0 * qcount / list.length, &apos;decimal&apos;)</attribute>
         </attributes>
       </variable>
       <variable name="missing" valueType="boolean" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">$this(&apos;contraindicated&apos;).not().and(
   $this(&apos;skip&apos;).isNull(),
-  $this(&apos;qnaire_complete&apos;).isNull(),
   $this(&apos;duration&apos;).isNull())</attribute>
         </attributes>
       </variable>
@@ -146,8 +220,17 @@ if(res.eq(0).value()) res = null
 res</attribute>
         </attributes>
       </variable>
+      <variable name="recording_quality" valueType="decimal" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">newSequence([
+  $(&apos;clsa-dcs-f1.NeuropsychologicalBatteryScoring:STP_DOTQLTY_COF1&apos;),
+  $(&apos;clsa-dcs-f1.NeuropsychologicalBatteryScoring:STP_WORQLTY_COF1&apos;),
+  $(&apos;clsa-dcs-f1.NeuropsychologicalBatteryScoring:STP_COLQLTY_COF1&apos;)
+  ]).filter(function(v){return v.any(&apos;YES&apos;)}).trimmer().size().div(3.0).multiply(100).whenNull(0)</attribute>
+        </attributes>
+      </variable>
     </variables>
   </variables>
   <created valueType="datetime">2019-04-16T14:24:30.145-04</created>
-  <updated valueType="datetime">2019-05-09T09:11:35.902-04</updated>
+  <updated valueType="datetime">2019-06-20T15:28:02.496-04</updated>
 </org.obiba.magma.views.View>

@@ -175,8 +175,17 @@ if($this(&apos;duration&apos;).isNull().not().value()) {
 res</attribute>
         </attributes>
       </variable>
+      <variable name="recording_quality" valueType="decimal" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">newSequence([
+  $(&apos;clsa-dcs.NeuropsychologicalBatteryScoring:STP_DOTQLTY_DCS&apos;),
+  $(&apos;clsa-dcs.NeuropsychologicalBatteryScoring:STP_WORQLTY_DCS&apos;),
+  $(&apos;clsa-dcs.NeuropsychologicalBatteryScoring:STP_COLQLTY_DCS&apos;)
+  ]).filter(function(v){return v.any(&apos;YES&apos;)}).trimmer().size().div(3.0).multiply(100).whenNull(0)</attribute>
+        </attributes>
+      </variable>
     </variables>
   </variables>
   <created valueType="datetime">2019-04-11T13:49:04.978-04</created>
-  <updated valueType="datetime">2019-05-09T11:05:26.695-04</updated>
+  <updated valueType="datetime">2019-06-20T14:51:54.850-04</updated>
 </org.obiba.magma.views.View>
