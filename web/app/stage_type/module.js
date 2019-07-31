@@ -92,9 +92,77 @@ define( function() {
 
   /* ######################################################################################################## */
   cenozo.providers.factory( 'CnStageTypeViewFactory', [
-    'CnBaseViewFactory',
-    function( CnBaseViewFactory ) {
-      var object = function( parentModel, root ) { CnBaseViewFactory.construct( this, parentModel, root ); }
+    'CnBaseViewFactory', 'CnHttpFactory',
+    function( CnBaseViewFactory, CnHttpFactory ) {
+      var object = function( parentModel, root ) {
+        var self = this;
+        CnBaseViewFactory.construct( this, parentModel, root );
+        this.type = 'line';
+        this.chartLoading = false;
+        this.resetPlot = function() {
+          this.chartLoading = true;
+          this.plot = {
+            labels: [],
+            series: [],
+            data: [],
+            options: {
+              legend: { display: true },
+              scales: {
+                xAxes: [ {
+                  ticks: {
+                    autoSkip: true,
+                    maxTicksLimit: 40
+                  },
+                  scaleLabel: {
+                    display: true,
+                    labelString: 'Stage Duration in Minutes',
+                    fontFamily: 'sans-serif',
+                    fontSize: 15
+                  }
+                } ],
+                yAxes: [ {
+                  scaleLabel: {
+                    display: true,
+                    labelString: 'Number of Interviews',
+                    fontFamily: 'sans-serif',
+                    fontSize: 15
+                  }
+                } ]
+              }
+            }
+          };
+          for( var i = 1; i <= 60; i++ ) this.plot.labels.push( i );
+          this.plot.labels.push( '61+' );
+        };
+
+        this.resetPlot();
+
+        var baseData = [];
+        for( var i = 1; i <= 61; i++ ) baseData.push( 0 );
+
+        this.onView = function( force ) {
+          this.resetPlot();
+          return this.$$onView( force ).then( function() {
+            // get all values for the plot
+            CnHttpFactory.instance( {
+              path: self.parentModel.getServiceResourcePath() + '/stage?plot=1'
+            } ).query().then( function( response ) {
+              var lastSite = null;
+              var dataIndex = -1;
+              response.data.forEach( function( row ) {
+                if( row.site != lastSite ) {
+                  lastSite = row.site;
+                  dataIndex++;
+                  self.plot.series.push( row.site );
+                  self.plot.data.push( angular.copy( baseData ) );
+                }
+                self.plot.data[dataIndex][row.value-1] = row.count;
+              } );
+              self.chartLoading = false;
+            } );
+          } );
+        };
+      }
       return { instance: function( parentModel, root ) { return new object( parentModel, root ); } };
     }
   ] );

@@ -35,6 +35,24 @@ define( function() {
   } );
 
   module.addInputGroup( '', {
+    study_phase: {
+      column: 'study_phase.code',
+      title: 'Study Phase',
+      type: 'string',
+      constant: true
+    },
+    platform: {
+      column: 'platform.name',
+      title: 'Platform',
+      type: 'string',
+      constant: true
+    },
+    stage_type: {
+      column: 'stage_type.name',
+      title: 'Stage Type',
+      type: 'string',
+      constant: true
+    },
     name: {
       title: 'Name',
       type: 'string',
@@ -98,9 +116,67 @@ define( function() {
 
   /* ######################################################################################################## */
   cenozo.providers.factory( 'CnIndicatorViewFactory', [
-    'CnBaseViewFactory',
-    function( CnBaseViewFactory ) {
-      var object = function( parentModel, root ) { CnBaseViewFactory.construct( this, parentModel, root ); }
+    'CnBaseViewFactory', 'CnHttpFactory',
+    function( CnBaseViewFactory, CnHttpFactory ) {
+      var object = function( parentModel, root ) {
+        var self = this;
+        CnBaseViewFactory.construct( this, parentModel, root );
+        this.chartLoading = false;
+        this.resetPlot = function() {
+          this.chartLoading = true;
+          this.plot = {
+            labels: [],
+            data: [],
+            options: {
+              scales: {
+                xAxes: [ {
+                  ticks: {
+                    autoSkip: true,
+                    maxTicksLimit: 40,
+                    callback: function( value, index, values ) {
+                      return 1 < values.length && values.length == index+1 ? value + '+' : value;
+                    }
+                  },
+                  scaleLabel: {
+                    display: true,
+                    labelString: '',
+                    fontFamily: 'sans-serif',
+                    fontSize: 15
+                  }
+                } ],
+                yAxes: [ {
+                  scaleLabel: {
+                    display: true,
+                    labelString: 'Number of Interviews',
+                    fontFamily: 'sans-serif',
+                    fontSize: 15
+                  }
+                } ]
+              }
+            }
+          };
+        };
+
+        this.onView = function( force ) {
+          this.resetPlot();
+          return this.$$onView( force ).then( function() {
+            self.plot.options.scales.xAxes[0].scaleLabel.labelString = self.record.name;
+
+            // get all values for the plot
+            CnHttpFactory.instance( {
+              path: [ self.record.study_phase, self.record.platform, self.record.stage_type, 'data' ].join( '_' ) +
+                    '?plot=' + self.record.name
+            } ).query().then( function( response ) {
+              response.data.forEach( function( row ) {
+                self.plot.labels.push( row.value );
+                self.plot.data.push( row.count );
+              } );
+              self.plot.data = [ self.plot.data ];
+              self.chartLoading = false;
+            } );
+          } );
+        };
+      }
       return { instance: function( parentModel, root ) { return new object( parentModel, root ); } };
     }
   ] );
