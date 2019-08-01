@@ -124,6 +124,47 @@ function get_database_type( $type )
   fatal( sprintf( 'Cannot convert type "%s"', $type ) );
 }
 
+function get_stage_type_duration_range( $platform, $study_phase, $stage_type )
+{
+  // default from 0 to 1 hour
+  $range = array( 'low' => 0, 'high' => 3600 );
+
+  if( 'inhome' == $platform ) {}
+  else if( 'dcs' == $platform )
+  {
+    if( 'bl' == $study_phase ) {}
+    else if( 'f1' == $study_phase ) {}
+    else if( 'f2' == $study_phase )
+    {
+      if( 'contraindication_qnaire' == $stage_type ) { $range['low'] =  115; $range['high'] =  395; }
+      else if( 'weight' == $stage_type )             { $range['low'] =   23; $range['high'] =   80; }
+      else if( 'blood_pressure' == $stage_type )     { $range['low'] =  385; $range['high'] =  560; }
+      else if( 'spirometry' == $stage_type )         { $range['low'] =  190; $range['high'] =  690; }
+      else if( 'ecg' == $stage_type )                { $range['low'] =  260; $range['high'] = 1255; }
+      else if( 'event_pmt' == $stage_type )          { $range['low'] = 1800; $range['high'] = 1995; }
+      else if( 'hearing' == $stage_type )            { $range['low'] =  335; $range['high'] =  620; }
+      else if( 'cdtt' == $stage_type )               { $range['low'] =  205; $range['high'] =  515; }
+      else if( 'stroop_fas' == $stage_type )         { $range['low'] =  285; $range['high'] =  490; }
+      else if( 'cognitive_test' == $stage_type )     { $range['low'] =  120; $range['high'] =  210; }
+      else if( 'social_network' == $stage_type )     { $range['low'] =  405; $range['high'] =  865; }
+      else if( 'vision_acuity' == $stage_type )      { $range['low'] =  230; $range['high'] =  490; }
+      else if( 'retinal_scan_left' == $stage_type )  { $range['low'] =   44; $range['high'] =  147; }
+      else if( 'general_health' == $stage_type )     { $range['low'] =  275; $range['high'] =  545; }
+      else if( 'retinal_scan_right' == $stage_type ) { $range['low'] =   44; $range['high'] =  147; }
+      else if( 'tonometer' == $stage_type )          { $range['low'] =   56; $range['high'] =  174; }
+      else if( 'grip_strength' == $stage_type )      { $range['low'] =   90; $range['high'] =  182; }
+      else if( 'time_based_pmt' == $stage_type )     { $range['low'] =  900; $range['high'] = 1140; }
+      else if( 'disease_qnaire' == $stage_type )     { $range['low'] =  565; $range['high'] = 1440; }
+      else if( 'osipv' == $stage_type )              { $range['low'] =  280; $range['high'] =  620; }
+      else if( 'blood' == $stage_type )              { $range['low'] =  215; $range['high'] =  685; }
+    }
+  }
+  else if( 'dcs_home' == $platform ) {}
+  else if( 'dcs_phone' == $platform ) {}
+
+  return $range;
+}
+
 $db = new mysqli(
   $settings['db']['server'],
   $settings['db']['username'],
@@ -363,11 +404,14 @@ if( REBUILD_DATABASE )
             )
           );
 
+          // get the duration range
+          $range = get_stage_type_duration_range( $platform, $study_phase, $stage_type );
+
           // create the stage type
           $stage_type_id = insert_row(
             'stage_type',
-            array( 'study_phase_id', 'platform_id', 'name' ),
-            array( $study_phase_list[$study_phase], $platform_list[$platform], $stage_type )
+            array( 'study_phase_id', 'platform_id', 'name', 'duration_low', 'duration_high' ),
+            array( $study_phase_list[$study_phase], $platform_list[$platform], $stage_type, $range['low'], $range['high'] )
           );
           $stage_type_count++;
 

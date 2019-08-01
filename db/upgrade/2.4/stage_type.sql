@@ -16,6 +16,8 @@ CREATE PROCEDURE patch_interview()
         "study_phase_id INT UNSIGNED NOT NULL, ",
         "platform_id INT UNSIGNED NOT NULL, ",
         "name VARCHAR(45) NOT NULL, ",
+        "duration_low FLOAT NOT NULL DEFAULT 0 ",
+        "duration_high FLOAT NOT NULL DEFAULT 3600 ",
         "PRIMARY KEY (id), ",
         "INDEX fk_study_phase_id (study_phase_id ASC), ",
         "INDEX fk_platform_id (platform_id ASC), ",
