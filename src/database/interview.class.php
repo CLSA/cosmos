@@ -71,6 +71,9 @@ class interview extends \cenozo\database\record
 
           foreach( $values as $uid => $array )
           {
+            // ignore if the barcode is null (the interview hasn't been exported yet)
+            if( !$array['barcode'] ) continue;
+
             // get the participant_id
             $participant_sel = lib::create( 'database\select' );
             $participant_sel->add_column( 'id' );
@@ -93,6 +96,7 @@ class interview extends \cenozo\database\record
             $interview_mod = lib::create( 'database\modifier' );
             $interview_mod->where( 'participant_id', '=', $participant_id );
             $interview_mod->where( 'study_phase_id', '=', $db_study_phase->id );
+            $interview_mod->where( 'platform_id', '=', $db_platform->id );
             if( 0 == $interview_class_name::count( $interview_mod ) )
             {
               $db_interview = lib::create( 'database\interview' );
@@ -150,8 +154,8 @@ class interview extends \cenozo\database\record
               $db_stage->interview_id = $interview_id_list[$uid];
               $db_stage->stage_type_id = $stage_type['id'];
               $db_stage->technician_id = is_null( $db_technician ) ? NULL : $db_technician->id;
-              $db_stage->contraindicated = $array['contraindicated'];
-              $db_stage->missing = $array['missing'];
+              $db_stage->contraindicated = 'true' == $array['contraindicated'];
+              $db_stage->missing = 'true' == $array['missing'];
               $db_stage->skip = $array['skip'];
               $db_stage->duration = $array['duration'];
               $db_stage->save();
