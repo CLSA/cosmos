@@ -24,9 +24,8 @@ define( function() {
         column: 'platform.name',
         title: 'Platform'
       },
-      name: {
-        title: 'Name'
-      }
+      name: { column: 'stage_type.name', title: 'Name' },
+      stage_count: { title: 'Stages' }
     },
     defaultOrder: {
       column: 'study_phase.name',
@@ -38,57 +37,91 @@ define( function() {
     study_phase: {
       column: 'study_phase.name',
       title: 'Study Phase',
-      type: 'string'
+      type: 'string',
+      constant: true
     },
     platform: {
       column: 'platform.name',
       title: 'Platform',
-      type: 'string'
+      type: 'string',
+      constant: true
     },
     name: {
+      column: 'stage_type.name',
       title: 'Name',
-      type: 'string'
+      type: 'string',
+      constant: true
+    },
+    duration_low: {
+      title: 'Duration Low (seconds)',
+      type: 'string',
+      format: 'float'
+    },
+    duration_high: {
+      title: 'Duration High (seconds)',
+      type: 'string',
+      format: 'float'
+    },
+    stage_count: {
+      title: 'Stages',
+      type: 'string',
+      constant: true
+    },
+    contraindicated: {
+      title: 'Contraindicated',
+      type: 'string',
+      constant: true
+    },
+    missing: {
+      title: 'Missing',
+      type: 'string',
+      constant: true
+    },
+    skip: {
+      title: 'Skipped',
+      type: 'string',
+      constant: true
     }
-  } );
+} );
 
-  /* ######################################################################################################## */
-  cenozo.providers.directive( 'cnStageTypeList', [
-    'CnStageTypeModelFactory',
-    function( CnStageTypeModelFactory ) {
-      return {
-        templateUrl: module.getFileUrl( 'list.tpl.html' ),
-        restrict: 'E',
-        scope: { model: '=?' },
-        controller: function( $scope ) {
-          if( angular.isUndefined( $scope.model ) ) $scope.model = CnStageTypeModelFactory.root;
-        }
-      };
-    }
-  ] );
+/* ######################################################################################################## */
+cenozo.providers.directive( 'cnStageTypeList', [
+  'CnStageTypeModelFactory',
+  function( CnStageTypeModelFactory ) {
+    return {
+      templateUrl: module.getFileUrl( 'list.tpl.html' ),
+      restrict: 'E',
+      scope: { model: '=?' },
+      controller: function( $scope ) {
+        if( angular.isUndefined( $scope.model ) ) $scope.model = CnStageTypeModelFactory.root;
+      }
+    };
+  }
+] );
 
-  /* ######################################################################################################## */
-  cenozo.providers.directive( 'cnStageTypeView', [
-    'CnStageTypeModelFactory',
-    function( CnStageTypeModelFactory ) {
-      return {
-        templateUrl: module.getFileUrl( 'view.tpl.html' ),
-        restrict: 'E',
-        scope: { model: '=?' },
-        controller: function( $scope ) {
-          if( angular.isUndefined( $scope.model ) ) $scope.model = CnStageTypeModelFactory.root;
-        }
-      };
-    }
-  ] );
+/* ######################################################################################################## */
+cenozo.providers.directive( 'cnStageTypeView', [
+  'CnStageTypeModelFactory',
+  function( CnStageTypeModelFactory ) {
+    return {
+      templateUrl: module.getFileUrl( 'view.tpl.html' ),
+      restrict: 'E',
+      scope: { model: '=?' },
+      controller: function( $scope ) {
+        if( angular.isUndefined( $scope.model ) ) $scope.model = CnStageTypeModelFactory.root;
+      }
+    };
+  }
+] );
 
-  /* ######################################################################################################## */
-  cenozo.providers.factory( 'CnStageTypeListFactory', [
-    'CnBaseListFactory',
-    function( CnBaseListFactory ) {
-      var object = function( parentModel ) { CnBaseListFactory.construct( this, parentModel ); };
-      return { instance: function( parentModel ) { return new object( parentModel ); } };
-    }
-  ] );
+/* ######################################################################################################## */
+cenozo.providers.factory( 'CnStageTypeListFactory', [
+  'CnBaseListFactory',
+  function( CnBaseListFactory ) {
+    var object = function( parentModel ) { CnBaseListFactory.construct( this, parentModel ); };
+    return { instance: function( parentModel ) { return new object( parentModel ); } };
+  }
+] );
 
   /* ######################################################################################################## */
   cenozo.providers.factory( 'CnStageTypeViewFactory', [
@@ -131,36 +164,43 @@ define( function() {
               }
             }
           };
-          for( var i = 1; i <= 60; i++ ) this.plot.labels.push( i );
-          this.plot.labels.push( '61+' );
         };
+        this.buildPlot = function() {
+          var bins = Math.ceil( this.record.duration_high/60 );
+          var baseData = [];
+          for( var i = 1; i <= bins; i++ ) {
+            baseData.push( 0 );
+            this.plot.labels.push( i );
+          }
+          this.plot.labels[bins-1] += '+';
 
-        this.resetPlot();
-
-        var baseData = [];
-        for( var i = 1; i <= 61; i++ ) baseData.push( 0 );
+          // get all values for the plot
+          CnHttpFactory.instance( {
+            path: this.parentModel.getServiceResourcePath() + '/stage?plot=1'
+          } ).query().then( function( response ) {
+            var lastSite = null;
+            var dataIndex = -1;
+            response.data.forEach( function( row ) {
+              if( row.site != lastSite ) {
+                lastSite = row.site;
+                dataIndex++;
+                self.plot.series.push( row.site );
+                self.plot.data.push( angular.copy( baseData ) );
+              }
+              self.plot.data[dataIndex][row.value-1] = row.count;
+            } );
+            self.chartLoading = false;
+          } );
+        }
 
         this.onView = function( force ) {
           this.resetPlot();
-          return this.$$onView( force ).then( function() {
-            // get all values for the plot
-            CnHttpFactory.instance( {
-              path: self.parentModel.getServiceResourcePath() + '/stage?plot=1'
-            } ).query().then( function( response ) {
-              var lastSite = null;
-              var dataIndex = -1;
-              response.data.forEach( function( row ) {
-                if( row.site != lastSite ) {
-                  lastSite = row.site;
-                  dataIndex++;
-                  self.plot.series.push( row.site );
-                  self.plot.data.push( angular.copy( baseData ) );
-                }
-                self.plot.data[dataIndex][row.value-1] = row.count;
-              } );
-              self.chartLoading = false;
-            } );
-          } );
+          return this.$$onView( force ).then( function() { self.buildPlot(); } );
+        };
+
+        this.onPatch = function( data ) {
+          this.resetPlot();
+          return this.$$onPatch( data ).then( function() { self.buildPlot(); } );
         };
       }
       return { instance: function( parentModel, root ) { return new object( parentModel, root ); } };

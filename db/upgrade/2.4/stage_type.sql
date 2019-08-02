@@ -1,12 +1,12 @@
-DROP PROCEDURE IF EXISTS patch_interview;
+DROP PROCEDURE IF EXISTS patch_stage_type;
 DELIMITER //
-CREATE PROCEDURE patch_interview()
+CREATE PROCEDURE patch_stage_type()
   BEGIN
 
     -- determine the @cenozo database name
     SET @cenozo = ( SELECT REPLACE( DATABASE(), "cosmos", "cenozo" ) );
 
-    SELECT "Creating new interview table" AS "";
+    SELECT "Creating new stage_type table" AS "";
 
     SET @sql = CONCAT(
       "CREATE TABLE IF NOT EXISTS stage_type ( ",
@@ -16,8 +16,8 @@ CREATE PROCEDURE patch_interview()
         "study_phase_id INT UNSIGNED NOT NULL, ",
         "platform_id INT UNSIGNED NOT NULL, ",
         "name VARCHAR(45) NOT NULL, ",
-        "duration_low FLOAT NOT NULL DEFAULT 0 ",
-        "duration_high FLOAT NOT NULL DEFAULT 3600 ",
+        "duration_low FLOAT NOT NULL DEFAULT 0, ",
+        "duration_high FLOAT NOT NULL DEFAULT 3600, ",
         "PRIMARY KEY (id), ",
         "INDEX fk_study_phase_id (study_phase_id ASC), ",
         "INDEX fk_platform_id (platform_id ASC), ",
@@ -40,5 +40,5 @@ CREATE PROCEDURE patch_interview()
   END //
 DELIMITER ;
 
-CALL patch_interview();
-DROP PROCEDURE IF EXISTS patch_interview;
+CALL patch_stage_type();
+DROP PROCEDURE IF EXISTS patch_stage_type;

@@ -25,13 +25,17 @@ class module extends \cenozo\service\module
     {
       $select->remove_column_by_column( '*' );
       $select->add_table_column( 'site', 'name', 'site' );
-      $select->add_column( 'CEIL( IF( stage.duration>3600, 3601, stage.duration )/60 )', 'value', false );
+      $select->add_column(
+        'CEIL( IF( stage.duration > stage_type.duration_high, stage_type.duration_high+1, stage.duration )/60 )',
+        'value',
+        false
+      );
       $select->add_column( 'COUNT(*)', 'count', false, 'integer' );
       $modifier->join( 'interview', 'stage.interview_id', 'interview.id' );
       $modifier->join( 'site', 'interview.site_id', 'site.id' );
       $modifier->where( 'stage.duration', '!=', NULL );
       $modifier->group( 'site.name' );
-      $modifier->group( 'CEIL( IF( stage.duration>3600, 3601, stage.duration )/60 )' );
+      $modifier->group( 'CEIL( IF( stage.duration > stage_type.duration_high, stage_type.duration_high+1, stage.duration )/60 )' );
       $modifier->limit( 1000000 );
     }
     else
