@@ -126,44 +126,212 @@ function get_database_type( $type )
 
 function get_stage_type_duration_range( $platform, $study_phase, $stage_type )
 {
+  global $duration_ranges;
+
   // default from 0 to 1 hour
   $range = array( 'low' => 0, 'high' => 3600 );
 
-  if( 'inhome' == $platform ) {}
-  else if( 'dcs' == $platform )
+  if( array_key_exists( $stage_type, $duration_ranges[$platform][$study_phase] ) )
   {
-    if( 'bl' == $study_phase ) {}
-    else if( 'f1' == $study_phase ) {}
-    else if( 'f2' == $study_phase )
-    {
-      if( 'contraindication_qnaire' == $stage_type ) { $range['low'] =  115; $range['high'] =  395; }
-      else if( 'weight' == $stage_type )             { $range['low'] =   23; $range['high'] =   80; }
-      else if( 'blood_pressure' == $stage_type )     { $range['low'] =  385; $range['high'] =  560; }
-      else if( 'spirometry' == $stage_type )         { $range['low'] =  190; $range['high'] =  690; }
-      else if( 'ecg' == $stage_type )                { $range['low'] =  260; $range['high'] = 1255; }
-      else if( 'event_pmt' == $stage_type )          { $range['low'] = 1800; $range['high'] = 1995; }
-      else if( 'hearing' == $stage_type )            { $range['low'] =  335; $range['high'] =  620; }
-      else if( 'cdtt' == $stage_type )               { $range['low'] =  205; $range['high'] =  515; }
-      else if( 'stroop_fas' == $stage_type )         { $range['low'] =  285; $range['high'] =  490; }
-      else if( 'cognitive_test' == $stage_type )     { $range['low'] =  120; $range['high'] =  210; }
-      else if( 'social_network' == $stage_type )     { $range['low'] =  405; $range['high'] =  865; }
-      else if( 'vision_acuity' == $stage_type )      { $range['low'] =  230; $range['high'] =  490; }
-      else if( 'retinal_scan_left' == $stage_type )  { $range['low'] =   44; $range['high'] =  147; }
-      else if( 'general_health' == $stage_type )     { $range['low'] =  275; $range['high'] =  545; }
-      else if( 'retinal_scan_right' == $stage_type ) { $range['low'] =   44; $range['high'] =  147; }
-      else if( 'tonometer' == $stage_type )          { $range['low'] =   56; $range['high'] =  174; }
-      else if( 'grip_strength' == $stage_type )      { $range['low'] =   90; $range['high'] =  182; }
-      else if( 'time_based_pmt' == $stage_type )     { $range['low'] =  900; $range['high'] = 1140; }
-      else if( 'disease_qnaire' == $stage_type )     { $range['low'] =  565; $range['high'] = 1440; }
-      else if( 'osipv' == $stage_type )              { $range['low'] =  280; $range['high'] =  620; }
-      else if( 'blood' == $stage_type )              { $range['low'] =  215; $range['high'] =  685; }
-    }
+    $array = $duration_ranges[$platform][$study_phase][$stage_type];
+    $range['low'] = $array[0];
+    $range['high'] = $array[1];
   }
-  else if( 'dcs_home' == $platform ) {}
-  else if( 'dcs_phone' == $platform ) {}
 
   return $range;
 }
+
+// used by the get_stage_type_duration_range function above
+$duration_ranges = [
+  'inhome' => [
+    'bl' => [
+      'inhome_1' =>                   [   55, 3315 ],
+      'inhome_2' =>                   [   52, 3153 ],
+      'inhome_3' =>                   [   51, 3108 ],
+      'inhome_cognition_recording' => [   18, 1092 ],
+      'inhome_id' =>                  [    1,   93 ],
+      'inhome_scoring' =>             [   23, 1395 ]
+    ],
+    'f1' => [
+      'inhome_1' =>                   [   64, 3888 ],
+      'inhome_2' =>                   [   49, 2991 ],
+      'inhome_3' =>                   [   48, 2913 ],
+      'inhome_4' =>                   [   88, 5304 ],
+      'inhome_cognition_recording' => [   24, 1473 ]
+    ],
+    'f2' => [
+      'inhome_1' =>                   [   64, 3855 ],
+      'inhome_2' =>                   [   52, 3147 ],
+      'inhome_3' =>                   [   44, 2646 ],
+      'inhome_4' =>                   [   60, 3618 ],
+      'inhome_cognition_recording' => [   22, 1338 ]
+    ]
+  ],
+  'dcs' => [
+    'bl' => [
+      'blood' =>                   [   22, 1326 ],
+      'blood_pressure' =>          [   21, 1293 ],
+      'carotid_intima' =>          [    0,   60 ],
+      'chair_rise' =>              [    2,  156 ],
+      'cognitive_test' =>          [    7,  444 ],
+      'contraindication_qnaire' => [   14,  867 ],
+      'dexa' =>                    [   72, 4320 ],
+      'dexa_forearm' =>            [    1,   96 ],
+      'dexa_hip' =>                [    1,  111 ],
+      'dexa_lateral' =>            [    0,   57 ],
+      'dexa_qnaire' =>             [    2,  120 ],
+      'dexa_whole_body' =>         [    5,  303 ],
+      'disease_qnaire' =>          [   52, 3120 ],
+      'ecg' =>                     [   44, 2673 ],
+      'event_pmt' =>               [    6,  393 ],
+      'functional_status' =>       [    4,  276 ],
+      'grip_strength' =>           [    6,  399 ],
+      'hearing' =>                 [   23, 1386 ],
+      'hips_waist' =>              [    2,  168 ],
+      'neuro_scoring' =>           [   22, 1362 ],
+      'retinal_scan' =>            [    7,  468 ],
+      'sitting_height' =>          [    1,  117 ],
+      'spirometry' =>              [   20, 1230 ],
+      'standing_balance' =>        [    6,  360 ],
+      'standing_height' =>         [    2,  150 ],
+      'stroop_fas' =>              [   66, 3996 ],
+      'time_based_pmt' =>          [   49, 2952 ],
+      'tonometer' =>               [    4,  276 ],
+      'tug' =>                     [    1,  102 ],
+      'urine' =>                   [    0,   18 ],
+      'vision_acuity' =>           [   11,  699 ],
+      'walk' =>                    [    2,  129 ],
+      'weight' =>                  [    2,  123 ]
+    ],
+    'f1' => [
+      'blood' =>                   [   22, 1356 ],
+      'blood_pressure' =>          [   21, 1314 ],
+      'carotid_intima' =>          [    0,   60 ],
+      'chair_rise' =>              [    2,  156 ],
+      'cognitive_test' =>          [    7,  456 ],
+      'contraindication_qnaire' => [   12,  735 ],
+      'deviation_aecrf' =>         [    0,   33 ],
+      'dexa' =>                    [   79, 4749 ],
+      'dexa_forearm' =>            [    1,  102 ],
+      'dexa_hip' =>                [    1,  111 ],
+      'dexa_lateral' =>            [    1,   60 ],
+      'dexa_qnaire' =>             [    2,  129 ],
+      'dexa_spine' =>              [    1,   81 ],
+      'dexa_whole_body' =>         [    5,  330 ],
+      'disease_qnaire' =>          [   49, 2955 ],
+      'ecg' =>                     [   34, 2082 ],
+      'event_pmt' =>               [   94, 5694 ],
+      'frax' =>                    [    0,   39 ],
+      'functional_status' =>       [    0,   51 ],
+      'general_health' =>          [   15,  906 ],
+      'grip_strength' =>           [    6,  384 ],
+      'hearing' =>                 [   22, 1359 ],
+      'hips_waist' =>              [    2,  168 ],
+      'inhome_qa' =>               [    3,  192 ],
+      'neuro_scoring' =>           [    4,  291 ],
+      'osea' =>                    [   18, 1110 ],
+      'retinal_scan' =>            [    7,  444 ],
+      'retinal_scan_left' =>       [    3,  186 ],
+      'retinal_scan_right' =>      [    4,  243 ],
+      'spirometry' =>              [   18, 1110 ],
+      'standing_balance' =>        [    6,  372 ],
+      'standing_height' =>         [    2,  150 ],
+      'stroop_fas' =>              [   65, 3951 ],
+      'time_based_pmt' =>          [   48, 2886 ],
+      'tonometer' =>               [    4,  270 ],
+      'tug' =>                     [    1,   96 ],
+      'urine' =>                   [    0,   18 ],
+      'vision_acuity' =>           [   11,  672 ],
+      'walk' =>                    [    2,  129 ],
+      'weight' =>                  [    1,  111 ]
+    ],
+    'f2' => [
+      'blood' =>                   [  215,  685 ],
+      'blood_pressure' =>          [  385,  560 ],
+      'carotid_intima' =>          [    0,   60 ],
+      'cdtt' =>                    [  205,  515 ],
+      'chair_rise' =>              [    2,  165 ],
+      'cognitive_test' =>          [  120,  210 ],
+      'contraindication_qnaire' => [  115,  395 ],
+      'deviation_aecrf' =>         [    0,   33 ],
+      'dexa' =>                    [   75, 4500 ],
+      'dexa_forearm' =>            [    1,  108 ],
+      'dexa_hip' =>                [    1,  105 ],
+      'dexa_lateral' =>            [    1,   63 ],
+      'dexa_qnaire' =>             [    3,  204 ],
+      'dexa_spine' =>              [    1,   87 ],
+      'dexa_whole_body' =>         [    5,  354 ],
+      'disease_qnaire' =>          [  565, 1440 ],
+      'ecg' =>                     [  260, 1255 ],
+      'event_pmt' =>               [ 1800, 1995 ],
+      'frax' =>                    [    0,   45 ],
+      'general_health' =>          [  275,  545 ],
+      'grip_strength' =>           [   90,  182 ],
+      'hearing' =>                 [  335,  620 ],
+      'hips_waist' =>              [    2,  165 ],
+      'inhome_qa' =>               [    2,  162 ],
+      'neuro_scoring' =>           [    5,  300 ],
+      'osipv' =>                   [  280,  620 ],
+      'retinal_scan' =>            [    7,  426 ],
+      'retinal_scan_left' =>       [   44,  147 ],
+      'retinal_scan_right' =>      [   44,  147 ],
+      'sitting_height' =>          [    1,  108 ],
+      'social_network' =>          [  405,  865 ],
+      'spirometry' =>              [  190,  690 ],
+      'standing_balance' =>        [    5,  351 ],
+      'standing_height' =>         [    2,  147 ],
+      'stroop_fas' =>              [  285,  490 ],
+      'time_based_pmt' =>          [  900, 1140 ],
+      'tonometer' =>               [   56,  174 ],
+      'tug' =>                     [    1,  111 ],
+      'urine' =>                   [    0,   21 ],
+      'vision_acuity' =>           [  230,  490 ],
+      'walk' =>                    [    2,  144 ],
+      'weight' =>                  [   23,   80 ]
+    ]
+  ],
+  'dcs_home' => [
+    'bl' => [],
+    'f1' => [
+      'blood_pressure' =>          [   24, 1458 ],
+      'body_composition' =>        [   11,  675 ],
+      'contraindication_qnaire' => [   18, 1125 ],
+      'disease_qnaire' =>          [   71, 4311 ],
+      'event_pmt' =>               [   97, 5826 ],
+      'functional_status' =>       [    9,  555 ],
+      'general_health' =>          [   21, 1314 ],
+      'grip_strength' =>           [    9,  597 ],
+      'hips_waist' =>              [    3,  198 ],
+      'neuro_scoring' =>           [    8,  501 ],
+      'osonly' =>                  [   21, 1263 ],
+      'spirometry' =>              [   17, 1065 ],
+      'standing_height' =>         [    3,  195 ],
+      'stroop_fas' =>              [   75, 4536 ],
+      'time_based_pmt' =>          [   49, 2976 ]
+    ],
+    'f2' => []
+  ],
+  'dcs_phone' => [
+    'bl' => [],
+    'f1' => [
+      'contraindication_qnaire' => [   13,  786 ],
+      'disease_qnaire' =>          [   49, 2979 ],
+      'functional_status' =>       [    6,  360 ],
+      'general_health' =>          [   15,  915 ],
+      'height_weight' =>           [    1,   96 ],
+      'osea' =>                    [   19, 1161 ],
+      'stroop_fas' =>              [   32, 1929 ]
+    ],
+    'f2' => [
+      'contraindication_qnaire' => [   16,  990 ],
+      'disease_qnaire' =>          [   59, 3585 ],
+      'general_health' =>          [   24, 1464 ],
+      'height_weight' =>           [    2,  126 ],
+      'os' =>                      [   16, 1002 ],
+      'social_network' =>          [   37, 2271 ]
+    ]
+  ]
+];
 
 $db = new mysqli(
   $settings['db']['server'],
@@ -325,7 +493,7 @@ foreach( $study_phase_list as $study_phase => $study_phase_id )
                   {
                     // strip out the _name postfix
                     $suffix = substr( $variable->name, 0, -5 );
-                    
+
                     // find the indicator and set its type
                     foreach( $indicators[$study_phase][$platform][$view] as $index => $indicator  )
                       if( false !== strpos( $indicator['name'], sprintf( '_%s', $suffix ) ) )
@@ -335,7 +503,7 @@ foreach( $study_phase_list as $study_phase => $study_phase_id )
                   {
                     // strip out the _name postfix
                     $suffix = substr( $variable->name, 0, -6 );
-                    
+
                     // find the indicator and set its type
                     foreach( $indicators[$study_phase][$platform][$view] as $index => $indicator  )
                       if( false !== strpos( $indicator['name'], sprintf( '_%s', $suffix ) ) )
