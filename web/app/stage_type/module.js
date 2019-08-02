@@ -125,83 +125,140 @@ cenozo.providers.factory( 'CnStageTypeListFactory', [
 
   /* ######################################################################################################## */
   cenozo.providers.factory( 'CnStageTypeViewFactory', [
-    'CnBaseViewFactory', 'CnHttpFactory',
-    function( CnBaseViewFactory, CnHttpFactory ) {
+    'CnBaseViewFactory', 'CnHttpFactory', '$q',
+    function( CnBaseViewFactory, CnHttpFactory, $q ) {
       var object = function( parentModel, root ) {
         var self = this;
         CnBaseViewFactory.construct( this, parentModel, root );
-        this.type = 'line';
-        this.chartLoading = false;
-        this.resetPlot = function() {
-          this.chartLoading = true;
-          this.plot = {
-            labels: [],
-            series: [],
-            data: [],
-            options: {
-              legend: { display: true },
-              scales: {
-                xAxes: [ {
-                  ticks: {
-                    autoSkip: true,
-                    maxTicksLimit: 40
-                  },
-                  scaleLabel: {
-                    display: true,
-                    labelString: 'Stage Duration in Minutes',
-                    fontFamily: 'sans-serif',
-                    fontSize: 15
+        angular.extend( this, {
+          outlierLoading: false,
+          histogramLoading: false,
+
+          resetPlots: function() {
+            this.outlierLoading = true;
+            this.histogramLoading = true;
+
+            this.outlier = {
+              labels: [],
+              series: [],
+              data: [],
+              options: {
+                legend: { display: true },
+                tooltips: {
+                  callbacks: {
+                    label: function( item, data ) {
+                      return data.datasets[item.datasetIndex].label +': ' + item.yLabel + '%';
+                    }
                   }
-                } ],
-                yAxes: [ {
-                  scaleLabel: {
-                    display: true,
-                    labelString: 'Number of Interviews',
-                    fontFamily: 'sans-serif',
-                    fontSize: 15
-                  }
-                } ]
+                },
+                scales: {
+                  yAxes: [ {
+                    scaleLabel: {
+                      display: true,
+                      labelString: 'Percent of Interviews',
+                      fontFamily: 'sans-serif',
+                      fontSize: 15
+                    },
+                    ticks: {
+                      callback: function( value ) { return value + '%'; }
+                    }
+                  } ]
+                }
               }
+            };
+
+            this.histogram = {
+              labels: [],
+              series: [],
+              data: [],
+              options: {
+                legend: { display: true },
+                scales: {
+                  xAxes: [ {
+                    ticks: {
+                      autoSkip: true,
+                      maxTicksLimit: 40
+                    },
+                    scaleLabel: {
+                      display: true,
+                      labelString: 'Stage Duration in Minutes',
+                      fontFamily: 'sans-serif',
+                      fontSize: 15
+                    }
+                  } ],
+                  yAxes: [ {
+                    scaleLabel: {
+                      display: true,
+                      labelString: 'Number of Interviews',
+                      fontFamily: 'sans-serif',
+                      fontSize: 15
+                    }
+                  } ]
+                }
+              }
+            };
+          },
+
+          buildPlots: function() {
+            var bins = Math.ceil( this.record.duration_high/60 );
+            var baseData = [];
+            for( var i = 1; i <= bins; i++ ) {
+              baseData.push( 0 );
+              this.histogram.labels.push( i );
             }
-          };
-        };
-        this.buildPlot = function() {
-          var bins = Math.ceil( this.record.duration_high/60 );
-          var baseData = [];
-          for( var i = 1; i <= bins; i++ ) {
-            baseData.push( 0 );
-            this.plot.labels.push( i );
+            this.histogram.labels[bins-1] += '+';
+
+            this.outlier.labels = [
+              'Low (<' + self.record.duration_low + 's)',
+              'On Target',
+              'High (>' + self.record.duration_high + 's)'
+            ];
+
+            return $q.all( [
+              // get all values for the line plot
+              CnHttpFactory.instance( {
+                path: this.parentModel.getServiceResourcePath() + '/stage?plot=histogram'
+              } ).query().then( function( response ) {
+                var lastSite = null;
+                var dataIndex = -1;
+                response.data.forEach( function( row ) {
+                  if( row.site != lastSite ) {
+                    lastSite = row.site;
+                    dataIndex++;
+                    self.histogram.series.push( row.site );
+                    self.histogram.data.push( angular.copy( baseData ) );
+                  }
+                  self.histogram.data[dataIndex][row.value-1] = row.count;
+                } );
+                self.histogramLoading = false;
+              } ),
+
+              // get all values for the doughnut plot
+              CnHttpFactory.instance( {
+                path: this.parentModel.getServiceResourcePath() + '/stage?plot=outlier'
+              } ).query().then( function( response ) {
+                response.data.forEach( function( row ) {
+                  self.outlier.series.push( row.site );
+                  self.outlier.data.push( [ (100*row.low).toFixed(1), (100*row.middle).toFixed(1), (100*row.high).toFixed(1) ] );
+                } );
+                console.log( self.outlier );
+                self.outlierLoading = false;
+              } )
+
+            ] );
+              
+          },
+
+          onView: function( force ) {
+            this.resetPlots();
+            return this.$$onView( force ).then( function() { self.buildPlots(); } );
+          },
+
+          onPatch: function( data ) {
+            this.resetPlots();
+            return this.$$onPatch( data ).then( function() { self.buildPlots(); } );
           }
-          this.plot.labels[bins-1] += '+';
-
-          // get all values for the plot
-          CnHttpFactory.instance( {
-            path: this.parentModel.getServiceResourcePath() + '/stage?plot=1'
-          } ).query().then( function( response ) {
-            var lastSite = null;
-            var dataIndex = -1;
-            response.data.forEach( function( row ) {
-              if( row.site != lastSite ) {
-                lastSite = row.site;
-                dataIndex++;
-                self.plot.series.push( row.site );
-                self.plot.data.push( angular.copy( baseData ) );
-              }
-              self.plot.data[dataIndex][row.value-1] = row.count;
-            } );
-            self.chartLoading = false;
-          } );
-        }
-
-        this.onView = function( force ) {
-          this.resetPlot();
-          return this.$$onView( force ).then( function() { self.buildPlot(); } );
-        };
-
-        this.onPatch = function( data ) {
-          this.resetPlot();
-          return this.$$onPatch( data ).then( function() { self.buildPlot(); } );
-        };
+        } );
       }
       return { instance: function( parentModel, root ) { return new object( parentModel, root ); } };
     }

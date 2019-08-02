@@ -21,7 +21,7 @@ class module extends \cenozo\service\module
     parent::prepare_read( $select, $modifier );
 
     $plot = $this->get_argument( 'plot', false );
-    if( $plot )
+    if( 'histogram' == $plot )
     {
       $select->remove_column_by_column( '*' );
       $select->add_table_column( 'site', 'name', 'site' );
@@ -36,6 +36,34 @@ class module extends \cenozo\service\module
       $modifier->where( 'stage.duration', '!=', NULL );
       $modifier->group( 'site.name' );
       $modifier->group( 'CEIL( IF( stage.duration > stage_type.duration_high, stage_type.duration_high+1, stage.duration )/60 )' );
+      $modifier->limit( 1000000 );
+    }
+    else if( 'outlier' == $plot )
+    {
+      $select->remove_column_by_column( '*' );
+      $select->add_table_column( 'site', 'name', 'site' );
+      $select->add_column(
+        'SUM( IF( stage.duration < stage_type.duration_low, 1, 0 ) ) / COUNT(*)',
+        'low',
+        false,
+        'float'
+      );
+      $select->add_column(
+        'SUM( IF( stage_type.duration_low <= stage.duration AND stage.duration <= stage_type.duration_high, 1, 0 ) ) / COUNT(*)',
+        'middle',
+        false,
+        'float'
+      );
+      $select->add_column(
+        'SUM( IF( stage.duration > stage_type.duration_high, 1, 0 ) ) / COUNT(*)',
+        'high',
+        false,
+        'float'
+      );
+      $modifier->join( 'interview', 'stage.interview_id', 'interview.id' );
+      $modifier->join( 'site', 'interview.site_id', 'site.id' );
+      $modifier->where( 'stage.duration', '!=', NULL );
+      $modifier->group( 'site.name' );
       $modifier->limit( 1000000 );
     }
     else
