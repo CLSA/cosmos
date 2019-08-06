@@ -93,3 +93,15 @@ INSERT INTO service ( subject, method, resource, restricted ) VALUES
 ( 'technician', 'GET', 0, 1 ),
 ( 'technician', 'GET', 1, 1 ),
 ( 'technician', 'PATCH', 1, 1 );
+
+INSERT INTO service ( subject, method, resource, restricted )
+SELECT DISTINCT table_name, 'GET', 0, 0
+FROM information_schema.TABLES
+JOIN platform ON table_name LIKE CONCAT( "%_", platform.name, "_%_data" )
+WHERE table_schema = DATABASE();
+
+INSERT INTO service ( subject, method, resource, restricted )
+SELECT DISTINCT table_name, 'GET', 1, 0
+FROM information_schema.TABLES
+JOIN platform ON table_name LIKE CONCAT( "%_", platform.name, "_%_data" )
+WHERE table_schema = DATABASE();
