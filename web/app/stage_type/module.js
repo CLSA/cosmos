@@ -241,9 +241,11 @@ cenozo.providers.factory( 'CnStageTypeListFactory', [
           },
 
           buildPlots: function( reset ) {
-            var histogramBins = Math.ceil( this.record.duration_high/60 );
+            var minBin = Math.ceil( this.record.duration_low/60 );
+            var maxBin = Math.ceil( this.record.duration_high/60 ) + 1;
+            console.log( minBin, maxBin );
             var baseData = [];
-            for( var i = 1; i <= histogramBins; i++ ) baseData.push( 0 );
+            for( var i = minBin; i <= maxBin; i++ ) baseData.push( 0 );
 
             if( true === reset ) {
               this.resetPlots();
@@ -259,8 +261,9 @@ cenozo.providers.factory( 'CnStageTypeListFactory', [
               self.outlier.series = self.rawData.map( catData => catData.category );
 
               // set the histogram labels
-              for( var i = 1; i <= histogramBins; i++ ) this.histogram.labels.push( i );
-              this.histogram.labels[histogramBins-1] += '+';
+              for( var i = minBin; i <= maxBin; i++ ) this.histogram.labels.push( i );
+              if( minBin > 0 ) this.histogram.labels[0] += '-';
+              this.histogram.labels[maxBin-minBin] += '+';
 
               // initialize the histogram series
               self.histogram.series = self.rawData.map( catData => catData.category );
@@ -283,8 +286,9 @@ cenozo.providers.factory( 'CnStageTypeListFactory', [
 
                 // histogram data
                 var bin = Math.ceil( datum.value/60 );
-                if( bin > histogramBins ) bin = histogramBins;
-                self.histogram.data[catIndex][bin-1]++;
+                if( bin < minBin ) bin = minBin;
+                else if( bin > maxBin ) bin = maxBin;
+                self.histogram.data[catIndex][bin-minBin]++;
               } );
             } );
           },
