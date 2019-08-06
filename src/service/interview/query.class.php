@@ -16,6 +16,17 @@ class query extends \cenozo\service\query
   /**
    * Extends parent method
    */
+  protected function validate()
+  {
+    parent::validate();
+
+    if( $this->get_argument( 'update', false ) && 3 > lib::create( 'business\session' )->get_role()->tier )
+      $this->status->set_code( 403 );
+  }
+
+  /**
+   * Extends parent method
+   */
   protected function execute()
   {
     parent::execute();

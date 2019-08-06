@@ -46,6 +46,25 @@ CREATE PROCEDURE patch_role_has_service()
     EXECUTE statement;
     DEALLOCATE PREPARE statement;
 
+    -- coordinator
+    SET @sql = CONCAT(
+      "INSERT INTO role_has_service( role_id, service_id ) ",
+      "SELECT role.id, service.id ",
+      "FROM ", @cenozo, ".role, service ",
+      "WHERE role.name = 'coordinator' ",
+      "AND service.restricted = 1 ",
+      "AND service.id NOT IN ( ",
+        "SELECT id FROM service ",
+        "WHERE subject IN( 'access', 'activity', 'technician', 'report', 'system_message', 'user' ) ",
+        "OR ( subject = 'report_restriction' AND method IN( 'DELETE', 'PATCH', 'POST' ) ) ",
+        "OR ( subject = 'report_type' AND method IN( 'DELETE', 'PATCH', 'POST' ) ) ",
+        "OR ( subject = 'setting' AND method = 'GET' ) ",
+        "OR ( subject = 'site' AND method IN ( 'DELETE', 'POST' ) ) ",
+      ")" );
+    PREPARE statement FROM @sql;
+    EXECUTE statement;
+    DEALLOCATE PREPARE statement;
+
   END //
 DELIMITER ;
 
