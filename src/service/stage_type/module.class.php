@@ -38,9 +38,9 @@ class module extends \cenozo\service\module
         if( $select->has_column( 'skip' ) )
           $select->add_column( 'SUM( IF( skip IS NOT NULL, 1, 0 ) )', 'skip', false );
         if( $select->has_column( 'min_date' ) )
-          $select->add_column( 'MIN( start_date )', 'min_date', false );
+          $select->add_column( 'MIN( interview.start_date )', 'min_date', false );
         if( $select->has_column( 'max_date' ) )
-          $select->add_column( 'MAX( start_date )', 'max_date', false );
+          $select->add_column( 'MAX( interview.start_date )', 'max_date', false );
         $modifier->where( 'stage.duration', '!=', NULL );
       }
     }

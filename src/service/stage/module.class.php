@@ -47,7 +47,7 @@ class module extends \cenozo\service\site_restricted_module
       }
 
       $select->add_table_column( 'interview', 'start_date', 'date' );
-      $select->add_column( 'duration' );
+      $select->add_column( 'duration', 'value' );
       $modifier->where( 'stage.duration', '!=', NULL );
       $modifier->order( 'interview.start_date' );
       $modifier->limit( 1000000 );

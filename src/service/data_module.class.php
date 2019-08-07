@@ -11,7 +11,7 @@ use cenozo\lib, cenozo\log, cosmos\util;
 /**
  * Performs operations which effect how this module is used in a service
  */
-class data_module extends \cenozo\service\module
+class data_module extends \cenozo\service\site_restricted_module
 {
   /**
    * Extend parent method
@@ -20,58 +20,42 @@ class data_module extends \cenozo\service\module
   {
     parent::prepare_read( $select, $modifier );
 
+    $all_sites = lib::create( 'business\session' )->get_role()->all_sites;
+
+    $modifier->join( 'stage', $this->get_subject().'.stage_id', 'stage.id' );
+    $modifier->join( 'interview', 'stage.interview_id', 'interview.id' );
+
+    // restrict by site
+    $db_restricted_site = $this->get_restricted_site();
+    if( !is_null( $db_restricted_site ) )
+      $modifier->where( 'interview.site_id', '=', $db_restricted_site->id );
+
     $plot = $this->get_argument( 'plot', false );
     if( $plot )
     {
-      // use the median to determine the bins to put data into
-      $class_name = lib::get_class_name( 'database\\'.$this->get_subject() );
-      $stats = $class_name::get_statistics( $plot );
+      $select->remove_column_by_column( '*' );
 
-      $min_spread = $stats['median'] - $stats['minimum'];
-      $max_spread = $stats['maximum'] - $stats['median'];
-      if( $min_spread < $max_spread )
+      if( $all_sites )
       {
-        $min = $stats['minimum'];
-        $max = $min + 3*$stats['median'];
-        if( $max > $stats['maximum'] ) $max = $stats['maximum'];
-        $boundary = $max;
+        $select->add_table_column( 'site', 'name', 'category' );
+        $modifier->join( 'site', 'interview.site_id', 'site.id' );
+        $modifier->order( 'site.name' );
       }
       else
       {
-        $max = $stats['maximum'];
-        $min = $max - 3*$stats['median'];
-        if( $min < $stats['minimum'] ) $min = $stats['minimum'];
-        $boundary = $min;
+        $select->add_table_column( 'technician', 'name', 'category' );
+        $modifier->join( 'technician', 'stage.technician_id', 'technician.id' );
+        $modifier->order( 'technician.name' );
       }
 
-      $bin = ( $max - $min ) / 50;
-
-      $column = $plot;
-      if( 0 < $bin )
-      { // only divide up the values if we have bins to divide them into
-        $column = sprintf(
-          $min_spread < $max_spread ? 'CEIL( IF( %s>%f, %f+1, %s)/%f )*%f' : 'CEIL( IF( %s<%f, %f-1, %s)/%f )*%f',
-          $plot,
-          $boundary,
-          $boundary,
-          $plot,
-          $bin,
-          $bin
-        );
-      }
-
-      $select->remove_column_by_column( '*' );
-      $select->add_column( $column, 'value', false, 'integer' );
-      $select->add_column( 'COUNT(*)', 'count', false, 'integer' );
+      $select->add_table_column( 'interview', 'start_date', 'date' );
+      $select->add_column( $plot, 'value' );
       $modifier->where( $plot, '!=', NULL );
-      $modifier->group( $column );
-      $modifier->order( $plot );
+      $modifier->order( 'interview.start_date' );
       $modifier->limit( 1000000 );
     }
     else
     {
-      $modifier->join( 'stage', $this->get_subject().'.stage_id', 'stage.id' );
-      $modifier->join( 'interview', 'stage.interview_id', 'interview.id' );
       $modifier->join( 'participant', 'interview.participant_id', 'participant.id' );
       $modifier->join( 'study_phase', 'interview.study_phase_id', 'study_phase.id' );
     }

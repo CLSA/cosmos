@@ -63,16 +63,30 @@ define( function() {
       type: 'string',
       constant: true
     },
-    minimum: {
-      title: 'Minimum',
+    median: {
+      title: 'Median Value',
       type: 'string',
-      format: 'integer'
+      format: 'float',
+      constant: true
+    },
+    minimum: {
+      title: 'Minimum Threshold',
+      type: 'string',
+      format: 'float'
     },
     maximum: {
-      title: 'Maximum',
+      title: 'Maximum Threshold',
       type: 'string',
-      format: 'integer'
+      format: 'float'
     },
+    min_date: {
+      type: 'date',
+      exclude: true
+    },
+    max_date: {
+      type: 'date',
+      exclude: true
+    }
   } );
 
   /* ######################################################################################################## */
@@ -116,66 +130,29 @@ define( function() {
 
   /* ######################################################################################################## */
   cenozo.providers.factory( 'CnIndicatorViewFactory', [
-    'CnBaseViewFactory', 'CnHttpFactory',
-    function( CnBaseViewFactory, CnHttpFactory ) {
+    'CnBaseViewFactory', 'CnPlotHelperFactory',
+    function( CnBaseViewFactory, CnPlotHelperFactory ) {
       var object = function( parentModel, root ) {
         var self = this;
         CnBaseViewFactory.construct( this, parentModel, root );
-        this.chartLoading = false;
-        this.resetPlot = function() {
-          this.chartLoading = true;
-          this.plot = {
-            labels: [],
-            data: [],
-            options: {
-              scales: {
-                xAxes: [ {
-                  ticks: {
-                    autoSkip: true,
-                    maxTicksLimit: 40,
-                    callback: function( value, index, values ) {
-                      return 1 < values.length && values.length == index+1 ? value + '+' : value;
-                    }
-                  },
-                  scaleLabel: {
-                    display: true,
-                    labelString: '',
-                    fontFamily: 'sans-serif',
-                    fontSize: 15
-                  }
-                } ],
-                yAxes: [ {
-                  scaleLabel: {
-                    display: true,
-                    labelString: 'Number of Interviews',
-                    fontFamily: 'sans-serif',
-                    fontSize: 15
-                  }
-                } ]
-              }
-            }
-          };
-        };
 
-        this.onView = function( force ) {
-          this.resetPlot();
-          return this.$$onView( force ).then( function() {
-            self.plot.options.scales.xAxes[0].scaleLabel.labelString = self.record.name;
-
-            // get all values for the plot
-            CnHttpFactory.instance( {
-              path: [ self.record.study_phase, self.record.platform, self.record.stage_type, 'data' ].join( '_' ) +
-                    '?plot=' + self.record.name
-            } ).query().then( function( response ) {
-              response.data.forEach( function( row ) {
-                self.plot.labels.push( row.value );
-                self.plot.data.push( row.count );
-              } );
-              self.plot.data = [ self.plot.data ];
-              self.chartLoading = false;
-            } );
-          } );
-        };
+        // use the plot helper to set up an outlier and histogram plot for this indicator
+        CnPlotHelperFactory.addPlot( this, {
+          getPath: function() {
+            return [
+              self.record.study_phase,
+              self.record.platform,
+              self.record.stage_type,
+              'data'
+            ].join( '_' ) + '?plot=' + self.record.name;
+          },
+          onView: function() {
+            self.histogram.options.scales.xAxes[0].scaleLabel.labelString = self.record.name;
+          },
+          getBinSize: function() {
+            return Math.ceil( ( self.record.maximum - self.record.minimum )/100 );
+          }
+        } );
       }
       return { instance: function( parentModel, root ) { return new object( parentModel, root ); } };
     }
