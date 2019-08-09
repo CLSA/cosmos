@@ -198,13 +198,12 @@ define( function() {
 
         // use the plot helper to set up an outlier and histogram plot for this indicator
         CnPlotHelperFactory.addPlot( this, {
-          getPath: function() {
-            return self.parentModel.getServiceResourcePath() + '/stage?plot=1'
-          },
-          xAxesLabel: 'Stage Duration in Seconds',
+          getType: function() { return 'time'; },
+          getPath: function() { return self.parentModel.getServiceResourcePath() + '/stage?plot=1' },
+          getXLabel: function() { return 'Stage Duration'; },
+          getBinSize: function() { return 30; },
           minName: 'duration_low',
-          maxName: 'duration_high',
-          getBinSize: function() { return 30; }
+          maxName: 'duration_high'
         } );
       }
       return { instance: function( parentModel, root ) { return new object( parentModel, root ); } };

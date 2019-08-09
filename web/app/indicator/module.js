@@ -139,6 +139,17 @@ define( function() {
 
         // use the plot helper to set up an outlier and histogram plot for this indicator
         CnPlotHelperFactory.addPlot( this, {
+          getType: function() {
+            // determine if the indicator has a special data type
+            if( 'file_size' == self.record.name || null != self.record.name.match( /_file$/ ) ) { 
+              return 'file';
+            } else if( null != self.record.name.match( /_duration$/ ) ) {
+              return 'time';
+            } else if( null != self.record.name.match( /_complete$/ ) ) {
+              return 'precent';
+            }
+            return '';
+          },
           getPath: function() {
             return [
               self.record.study_phase,
@@ -147,12 +158,11 @@ define( function() {
               'data'
             ].join( '_' ) + '?plot=' + self.record.name;
           },
-          onView: function() {
-            self.histogram.options.scales.xAxes[0].scaleLabel.labelString = self.record.name;
+          getXLabel: function() {
+            return ( self.record.study_phase ? self.record.study_phase.toUpperCase() + ': ' : '' ) +
+                   [self.record.platform, self.record.stage_type, self.record.name].join( '/' )
           },
-          getBinSize: function() {
-            return Math.ceil( ( self.record.maximum - self.record.minimum )/100 );
-          }
+          getBinSize: function() { return Math.ceil( ( self.record.maximum - self.record.minimum )/100 ); }
         } );
       }
       return { instance: function( parentModel, root ) { return new object( parentModel, root ); } };
