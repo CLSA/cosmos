@@ -195,6 +195,7 @@ cenozo.service( 'CnPlotHelperFactory', [
               date.day( 1 );
               var endDate = moment( new Date( model.record.max_date ) );
               endDate.day( 1 );
+              model.dateSpan.list = [];
               while( date.isSameOrBefore( endDate ) )
               {
                 model.dateSpan.list.push( {
