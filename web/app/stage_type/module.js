@@ -84,46 +84,109 @@ define( function() {
       type: 'date',
       exclude: true
     }
-} );
+  } );
 
-/* ######################################################################################################## */
-cenozo.providers.directive( 'cnStageTypeList', [
-  'CnStageTypeModelFactory',
-  function( CnStageTypeModelFactory ) {
-    return {
-      templateUrl: module.getFileUrl( 'list.tpl.html' ),
-      restrict: 'E',
-      scope: { model: '=?' },
-      controller: function( $scope ) {
-        if( angular.isUndefined( $scope.model ) ) $scope.model = CnStageTypeModelFactory.root;
-      }
-    };
-  }
-] );
+  module.addInputGroup( 'Skip Types', {
+    interviewer_decision: {
+      title: 'Interviewer Decision',
+      type: 'string',
+      constant: true
+    },
+    participant_decision: {
+      title: 'Participant Decision',
+      type: 'string',
+      constant: true
+    },
+    interviewer_lack_of_time: {
+      title: 'Interviewer Lack Of Time',
+      type: 'string',
+      constant: true
+    },
+    interviewer_refused_health_safety: {
+      title: 'Interviewer Refused Health Safety',
+      type: 'string',
+      constant: true
+    },
+    participant_lack_of_time: {
+      title: 'Participant Lack Of Time',
+      type: 'string',
+      constant: true
+    },
+    participant_refused_health_safety: {
+      title: 'Participant Refused Health Safety',
+      type: 'string',
+      constant: true
+    },
+    participant_refused_other: {
+      title: 'Participant Refused Other',
+      type: 'string',
+      constant: true
+    },
+    participant_unable_to_complete: {
+      title: 'Participant Unable To Complete',
+      type: 'string',
+      constant: true
+    },
+    see_comment: {
+      title: 'See Comment',
+      type: 'string',
+      constant: true
+    },
+    technical_issue: {
+      title: 'Technical Issue',
+      type: 'string',
+      constant: true
+    },
+    technical_problem: {
+      title: 'Technical Problem',
+      type: 'string',
+      constant: true
+    },
+    other: {
+      title: 'Other',
+      type: 'string',
+      constant: true
+    }
+  } );
 
-/* ######################################################################################################## */
-cenozo.providers.directive( 'cnStageTypeView', [
-  'CnStageTypeModelFactory',
-  function( CnStageTypeModelFactory ) {
-    return {
-      templateUrl: module.getFileUrl( 'view.tpl.html' ),
-      restrict: 'E',
-      scope: { model: '=?' },
-      controller: function( $scope ) {
-        if( angular.isUndefined( $scope.model ) ) $scope.model = CnStageTypeModelFactory.root;
-      }
-    };
-  }
-] );
+  /* ######################################################################################################## */
+  cenozo.providers.directive( 'cnStageTypeList', [
+    'CnStageTypeModelFactory',
+    function( CnStageTypeModelFactory ) {
+      return {
+        templateUrl: module.getFileUrl( 'list.tpl.html' ),
+        restrict: 'E',
+        scope: { model: '=?' },
+        controller: function( $scope ) {
+          if( angular.isUndefined( $scope.model ) ) $scope.model = CnStageTypeModelFactory.root;
+        }
+      };
+    }
+  ] );
 
-/* ######################################################################################################## */
-cenozo.providers.factory( 'CnStageTypeListFactory', [
-  'CnBaseListFactory',
-  function( CnBaseListFactory ) {
-    var object = function( parentModel ) { CnBaseListFactory.construct( this, parentModel ); };
-    return { instance: function( parentModel ) { return new object( parentModel ); } };
-  }
-] );
+  /* ######################################################################################################## */
+  cenozo.providers.directive( 'cnStageTypeView', [
+    'CnStageTypeModelFactory',
+    function( CnStageTypeModelFactory ) {
+      return {
+        templateUrl: module.getFileUrl( 'view.tpl.html' ),
+        restrict: 'E',
+        scope: { model: '=?' },
+        controller: function( $scope ) {
+          if( angular.isUndefined( $scope.model ) ) $scope.model = CnStageTypeModelFactory.root;
+        }
+      };
+    }
+  ] );
+
+  /* ######################################################################################################## */
+  cenozo.providers.factory( 'CnStageTypeListFactory', [
+    'CnBaseListFactory',
+    function( CnBaseListFactory ) {
+      var object = function( parentModel ) { CnBaseListFactory.construct( this, parentModel ); };
+      return { instance: function( parentModel ) { return new object( parentModel ); } };
+    }
+  ] );
 
   /* ######################################################################################################## */
   cenozo.providers.factory( 'CnStageTypeViewFactory', [
