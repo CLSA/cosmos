@@ -16,6 +16,7 @@ define( function() {
     },
     columnList: {
       name: {
+        column: 'indicator.name',
         title: 'Name'
       },
       type: {
