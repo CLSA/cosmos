@@ -90,8 +90,8 @@ INSERT INTO service ( subject, method, resource, restricted ) VALUES
 ( 'stage_type', 'GET', 0, 0 ),
 ( 'stage_type', 'GET', 1, 0 ),
 ( 'stage_type', 'PATCH', 1, 1 ),
-( 'technician', 'GET', 0, 1 ),
-( 'technician', 'GET', 1, 1 ),
+( 'technician', 'GET', 0, 0 ),
+( 'technician', 'GET', 1, 0 ),
 ( 'technician', 'PATCH', 1, 1 );
 
 INSERT INTO service ( subject, method, resource, restricted )
