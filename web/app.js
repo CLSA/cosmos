@@ -146,6 +146,8 @@ cenozo.service( 'CnPlotHelperFactory', [
 
             var minValue = parseInt( this.record[parameters.minName] );
             var maxValue = parseInt( this.record[parameters.maxName] );
+            var minValueLabel = minValue;
+            var maxValueLabel = maxValue;
             var minBin = Math.ceil( minValue / binSize ) - 1;
             var maxBin = Math.ceil( maxValue / binSize ) + 1;
             var baseData = [];
@@ -172,16 +174,16 @@ cenozo.service( 'CnPlotHelperFactory', [
                 var kilo = Math.pow( 2, 10 );
 
                 // outlier low label
-                if( minValue > giga ) minValue = ( minValue/giga ).toFixed(1) + ' GB';
-                else if( minValue > mega ) minValue = ( minValue/mega ).toFixed(1) + ' MB';
-                else if( minValue > kilo ) minValue = ( minValue/kilo ).toFixed(1) + ' KB';
-                else minValue = minValue + ' bytes';
+                if( minValue > giga ) minValueLabel = ( minValue/giga ).toFixed(1) + ' GB';
+                else if( minValue > mega ) minValueLabel = ( minValue/mega ).toFixed(1) + ' MB';
+                else if( minValue > kilo ) minValueLabel = ( minValue/kilo ).toFixed(1) + ' KB';
+                else minValueLabel = minValue + ' bytes';
 
                 // outlier high label
-                if( maxValue > giga ) maxValue = ( maxValue/giga ).toFixed(1) + ' GB';
-                else if( maxValue > mega ) maxValue = ( maxValue/mega ).toFixed(1) + ' MB';
-                else if( maxValue > kilo ) maxValue = ( maxValue/kilo ).toFixed(1) + ' KB';
-                else maxValue = maxValue + ' bytes';
+                if( maxValue > giga ) maxValueLabel = ( maxValue/giga ).toFixed(1) + ' GB';
+                else if( maxValue > mega ) maxValueLabel = ( maxValue/mega ).toFixed(1) + ' MB';
+                else if( maxValue > kilo ) maxValueLabel = ( maxValue/kilo ).toFixed(1) + ' KB';
+                else maxValueLabel = maxValue + ' bytes';
 
                 // histogram bin size label
                 if( middleValue > giga ) {
@@ -202,16 +204,16 @@ cenozo.service( 'CnPlotHelperFactory', [
                 var minute = 60;
 
                 // outlier low label
-                if( minValue > day ) minValue = ( minValue/day ).toFixed(1) + ' days';
-                else if( minValue > hour ) minValue = ( minValue/hour ).toFixed(1) + ' hours';
-                else if( minValue > minute ) minValue = ( minValue/minute ).toFixed(1) + ' mins';
-                else minValue = minValue + ' secs';
+                if( minValue > day ) minValueLabel = ( minValue/day ).toFixed(1) + ' days';
+                else if( minValue > hour ) minValueLabel = ( minValue/hour ).toFixed(1) + ' hours';
+                else if( minValue > minute ) minValueLabel = ( minValue/minute ).toFixed(1) + ' mins';
+                else minValueLabel = minValue + ' secs';
 
                 // outlier high label
-                if( maxValue > day ) maxValue = ( maxValue/day ).toFixed(1) + ' days';
-                else if( maxValue > hour ) maxValue = ( maxValue/hour ).toFixed(1) + ' hours';
-                else if( maxValue > minute ) maxValue = ( maxValue/minute ).toFixed(1) + ' mins';
-                else maxValue = maxValue + ' secs';
+                if( maxValue > day ) maxValueLabel = ( maxValue/day ).toFixed(1) + ' days';
+                else if( maxValue > hour ) maxValueLabel = ( maxValue/hour ).toFixed(1) + ' hours';
+                else if( maxValue > minute ) maxValueLabel = ( maxValue/minute ).toFixed(1) + ' mins';
+                else maxValueLabel = maxValue + ' secs';
 
                 // histogram bin size label
                 if( middleValue > day ) {
@@ -226,12 +228,16 @@ cenozo.service( 'CnPlotHelperFactory', [
                 } else {
                   histogramUnit = 'secs';
                 }
+              } else if( 'percent' == type ) {
+                histogramUnit = '%';
+                minValueLabel += '%';
+                maxValueLabel += '%';
               }
 
               this.outlier.labels = [
-                'Low (<' + minValue + ')',
+                'Low (<' + minValueLabel + ')',
                 'On Target',
-                'High (>' + maxValue + ')'
+                'High (>' + maxValueLabel + ')'
               ];
 
               // initialize the outlier series

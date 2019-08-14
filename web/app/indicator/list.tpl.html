@@ -1,1 +1,28 @@
+<div class="vertical-spacer">
+  <div class="record-view rounded">
+    <div class="container-fluid bg-primary rounded-top">
+      <h4>Interview Date Span</h4>
+    </div>
+    <div class="form-body spacer" style="padding-top: 0;">
+      <div class="row">
+        <div class="col-sm-6">
+          <select ng-model="model.dateSpan.low"
+                  ng-change="model.listModel.onSetDateSpan()"
+                  ng-options="item.value as item.name for item in model.dateSpan.lowList"
+                  class="form-control">
+          </select>
+        </div>
+        <div class="col-sm-6">
+          <select ng-model="model.dateSpan.high"
+                  ng-change="model.listModel.onSetDateSpan()"
+                  ng-options="item.value as item.name for item in model.dateSpan.highList"
+                  class="form-control">
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="form-footer text-right rounded-bottom bg-info">
+    </div>
+  </div>
+</div>
 <cn-record-list model="model"></cn-record-list>

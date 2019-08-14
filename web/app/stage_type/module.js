@@ -205,6 +205,10 @@ define( function() {
           minName: 'duration_low',
           maxName: 'duration_high'
         } );
+
+        this.deferred.promise.then( function() {
+          if( angular.isDefined( self.indicatorModel ) ) self.indicatorModel.listModel.heading = 'Indicator List';
+        } );
       }
       return { instance: function( parentModel, root ) { return new object( parentModel, root ); } };
     }

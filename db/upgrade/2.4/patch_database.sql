@@ -20,7 +20,10 @@ SOURCE stage_type.sql
 SOURCE stage.sql
 SOURCE comment.sql
 SOURCE indicator.sql
+SOURCE outlier.sql
 
+SOURCE update_outlier.sql
+SOURCE update_outliers.sql
 SOURCE update_version_number.sql
 
 COMMIT;

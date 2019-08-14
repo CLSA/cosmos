@@ -223,6 +223,9 @@ class interview extends \cenozo\database\record
       }
     }
 
+    // update all outliers since we now have new data
+    if( 0 < $max_count ) self::db()->execute( 'CALL update_outliers()' );
+
     return $max_count;
   }
 }
