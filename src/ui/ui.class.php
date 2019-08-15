@@ -58,5 +58,23 @@ class ui extends \cenozo\ui\ui
     $this->add_listitem( 'Technicians', 'technician' );
     $this->add_listitem( 'Interviews', 'interview' );
     $this->add_listitem( 'Outliers', 'indicator' );
+
+    $this->remove_listitem( 'Languages' );
+  }
+
+  /**
+   * Extends the sparent method
+   */
+  protected function get_utility_items()
+  {
+    $list = parent::get_utility_items();
+
+    // remove participant utilities
+    unset( $list['Participant Export'] );
+    unset( $list['Participant Multiedit'] );
+    unset( $list['Participant Search'] );
+    unset( $list['Tracing'] );
+
+    return $list;
   }
 }
