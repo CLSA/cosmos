@@ -15,6 +15,18 @@ define( function() {
       possessive: 'indicator\'s'
     },
     columnList: {
+      study_phase: {
+        column: 'study_phase.code',
+        title: 'Study Phase'
+      },
+      platform: {
+        column: 'platform.name',
+        title: 'Platform'
+      },
+      stage_type: {
+        column: 'stage_type.name',
+        title: 'Stage Type'
+      },
       name: {
         column: 'indicator.name',
         title: 'Name'

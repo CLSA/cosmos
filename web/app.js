@@ -29,7 +29,38 @@ cenozo.service( 'CnPlotHelperFactory', [
           rawData: [],
           dataLoading: false,
           dateSpan: { low: null, high: null, list: [], lowList: [], highList: [] },
-          outlier: {
+          outlierGroups: {
+            labels: [],
+            series: [],
+            data: [],
+            colors: [
+              '#FFAA44', '#FF44AA', '#AAFF44', '#AA44FF', '#44FFAA', '#44AAFF',
+              '#FF4444', '#44FF44', '#4444FF', '#AAAA44', '#FF44FF', '#44FFFF',
+              '#884444', '#448844', '#444488', '#666644', '#884488', '#448888'
+            ],
+            options: {
+              legend: { display: true },
+              scales: {
+                xAxes: [ {
+                  scaleLabel: {
+                    display: true,
+                    labelString: parameters.getXLabel(),
+                    fontFamily: 'sans-serif',
+                    fontSize: 15
+                  }
+                } ],
+                yAxes: [ {
+                  scaleLabel: {
+                    display: true,
+                    labelString: parameters.getYLabel(),
+                    fontFamily: 'sans-serif',
+                    fontSize: 15
+                  }
+                } ]
+              }
+            }
+          },
+          outlierDistribution: {
             labels: [],
             series: [],
             data: [],
@@ -158,9 +189,12 @@ cenozo.service( 'CnPlotHelperFactory', [
               this.histogram.labels = [];
               this.histogram.series = [];
               this.histogram.data = [];
-              this.outlier.labels = [];
-              this.outlier.series = [];
-              this.outlier.data = [];
+              this.outlierGroups.labels = [];
+              this.outlierGroups.series = [];
+              this.outlierGroups.data = [];
+              this.outlierDistribution.labels = [];
+              this.outlierDistribution.series = [];
+              this.outlierDistribution.data = [];
 
               // set the labels
               var type = parameters.getType();
@@ -173,13 +207,13 @@ cenozo.service( 'CnPlotHelperFactory', [
                 var mega = Math.pow( 2, 20 );
                 var kilo = Math.pow( 2, 10 );
 
-                // outlier low label
+                // outlierGroups low label
                 if( minValue > giga ) minValueLabel = ( minValue/giga ).toFixed(1) + ' GB';
                 else if( minValue > mega ) minValueLabel = ( minValue/mega ).toFixed(1) + ' MB';
                 else if( minValue > kilo ) minValueLabel = ( minValue/kilo ).toFixed(1) + ' KB';
                 else minValueLabel = minValue + ' bytes';
 
-                // outlier high label
+                // outlierGroups high label
                 if( maxValue > giga ) maxValueLabel = ( maxValue/giga ).toFixed(1) + ' GB';
                 else if( maxValue > mega ) maxValueLabel = ( maxValue/mega ).toFixed(1) + ' MB';
                 else if( maxValue > kilo ) maxValueLabel = ( maxValue/kilo ).toFixed(1) + ' KB';
@@ -203,13 +237,13 @@ cenozo.service( 'CnPlotHelperFactory', [
                 var hour = 60*60;
                 var minute = 60;
 
-                // outlier low label
+                // outlierGroups low label
                 if( minValue > day ) minValueLabel = ( minValue/day ).toFixed(1) + ' days';
                 else if( minValue > hour ) minValueLabel = ( minValue/hour ).toFixed(1) + ' hours';
                 else if( minValue > minute ) minValueLabel = ( minValue/minute ).toFixed(1) + ' mins';
                 else minValueLabel = minValue + ' secs';
 
-                // outlier high label
+                // outlierGroups high label
                 if( maxValue > day ) maxValueLabel = ( maxValue/day ).toFixed(1) + ' days';
                 else if( maxValue > hour ) maxValueLabel = ( maxValue/hour ).toFixed(1) + ' hours';
                 else if( maxValue > minute ) maxValueLabel = ( maxValue/minute ).toFixed(1) + ' mins';
@@ -234,14 +268,19 @@ cenozo.service( 'CnPlotHelperFactory', [
                 maxValueLabel += '%';
               }
 
-              this.outlier.labels = [
+              this.outlierGroups.labels = [
                 'Low (<' + minValueLabel + ')',
                 'On Target',
                 'High (>' + maxValueLabel + ')'
               ];
 
-              // initialize the outlier series
-              this.outlier.series = this.rawData.map( catData => catData.category );
+              this.outlierDistribution.labels = [ 'Outlier Count' ];
+
+              // initialize the outlierGroups series
+              this.outlierGroups.series = this.rawData.map( catData => catData.category );
+
+              // initialize the outlierDistribution series
+              this.outlierDistribution.series = this.rawData.map( catData => catData.category );
 
               // set the histogram labels
               for( var i = minBin; i <= maxBin; i++ ) this.histogram.labels.push( (i*binLabelSize).toFixed(1) );
@@ -252,16 +291,20 @@ cenozo.service( 'CnPlotHelperFactory', [
               this.histogram.series = this.rawData.map( catData => catData.category );
 
               // set the axis labels
-              this.outlier.options.scales.xAxes[0].scaleLabel.labelString = parameters.getXLabel();
-              this.outlier.options.scales.yAxes[0].scaleLabel.labelString = parameters.getYLabel();
+              this.outlierGroups.options.scales.xAxes[0].scaleLabel.labelString = parameters.getXLabel();
+              this.outlierGroups.options.scales.yAxes[0].scaleLabel.labelString = parameters.getYLabel();
+              this.outlierDistribution.options.scales.xAxes[0].scaleLabel.labelString = parameters.getXLabel();
+              this.outlierDistribution.options.scales.yAxes[0].scaleLabel.labelString = parameters.getYLabel();
               this.histogram.options.scales.xAxes[0].scaleLabel.labelString = parameters.getXLabel() +
                 ( null != histogramUnit ?  ' (' + histogramUnit + ')' : '' );
               this.histogram.options.scales.yAxes[0].scaleLabel.labelString = parameters.getYLabel();
             }
 
             // initialize the data
-            this.outlier.data = [];
-            for( var i = 0; i < this.outlier.series.length; i++ ) this.outlier.data.push( angular.copy( [ 0, 0, 0 ] ) );
+            this.outlierGroups.data = [];
+            for( var i = 0; i < this.outlierGroups.series.length; i++ ) this.outlierGroups.data.push( angular.copy( [ 0, 0, 0 ] ) );
+            this.outlierDistribution.data = [];
+            for( var i = 0; i < this.outlierDistribution.series.length; i++ ) this.outlierDistribution.data.push( angular.copy( [0] ) );
             this.histogram.data = [];
             for( var i = 0; i < this.histogram.series.length; i++ ) this.histogram.data.push( angular.copy( baseData ) );
 
@@ -269,8 +312,11 @@ cenozo.service( 'CnPlotHelperFactory', [
             this.rawData.forEach( function( catData, catIndex ) {
               catData.data.filter( datum => self.dateSpan.low <= datum.date && datum.date <= self.dateSpan.high )
                            .forEach( function( datum ) {
-                // outlier data
-                self.outlier.data[catIndex][minValue > datum.value ? 0 : maxValue < datum.value ? 2 : 1]++;
+                // outlierGroups data
+                self.outlierGroups.data[catIndex][minValue > datum.value ? 0 : maxValue < datum.value ? 2 : 1]++;
+
+                // outlierDistribution data
+                if( minValue > datum.value || maxValue < datum.value ) self.outlierDistribution.data[catIndex][0]++;
 
                 // histogram data
                 var bin = Math.ceil( datum.value / binSize );

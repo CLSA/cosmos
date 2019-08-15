@@ -8,11 +8,22 @@
                   model="model.viewModel[child.subject.camel+'Model']"></cn-record-list>
 </div>
 <div class="vertical-spacer">
-  <cn-chart identifier="outlier"
-            type="bar"
-            plot="model.viewModel.outlier"
-            heading="Outliers"
-            loading="model.viewModel.dataLoading"></cn-chart>
+  <div class="row">
+    <div class="col-md-6" style="padding-right: 3px;">
+      <cn-chart identifier="outlierGroups"
+                type="bar"
+                plot="model.viewModel.outlierGroups"
+                heading="Outlier Groups"
+                loading="model.viewModel.dataLoading"></cn-chart>
+    </div>
+    <div class="col-md-6" style="padding-left: 3px;">
+      <cn-chart identifier="outlierDistribution"
+                type="bar"
+                plot="model.viewModel.outlierDistribution"
+                heading="Outlier Distribution"
+                loading="model.viewModel.dataLoading"></cn-chart>
+    </div>
+  </div>
 </div>
 <div class="vertical-spacer">
   <div class="record-view rounded">
