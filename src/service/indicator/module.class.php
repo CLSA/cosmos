@@ -49,6 +49,11 @@ class module extends \cenozo\service\site_restricted_module
       $join_mod->left_join( 'outlier', 'indicator.id', 'outlier.indicator_id' );
       $join_mod->group( 'indicator.id' );
 
+      // restrict by site
+      $db_restricted_site = $this->get_restricted_site();
+      if( !is_null( $db_restricted_site ) )
+        $join_mod->where( 'outlier.site_id', '=', $db_restricted_site->id );
+
       $modifier->join(
         sprintf( '( %s %s ) AS outlier_join', $join_sel->get_sql(), $join_mod->get_sql() ),
         'indicator.id',
