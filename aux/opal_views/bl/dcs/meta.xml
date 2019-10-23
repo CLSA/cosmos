@@ -163,11 +163,13 @@ $(&apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;).asSequence().filt
 &apos;Plaque&apos;,
 &apos;RetinalScan&apos;,
 &apos;Spirometry&apos;,
+&apos;SittingHeight&apos;,
 &apos;StandingHeight&apos;,
 &apos;Tonometer&apos;,
 &apos;Weight&apos;,
 &apos;WholeBodyBoneDensity&apos;
 ]
+
 $(&apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;).asSequence().filter(function(v){
   return -1!=list.indexOf(v.value())
 })</attribute>
@@ -175,121 +177,116 @@ $(&apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;).asSequence().filt
       </variable>
       <variable name="group_duration_ecg" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">var res=null
-if($(&apos;cosmos_dcs.QC_BL_ecg:contraindicated&apos;).not().and(
-   $(&apos;cosmos_dcs.QC_BL_ecg:file_size&apos;).isNull().not()).value()) {
-  var ecg=newValue(null,&apos;datetime&apos;)
-  try {
-    ecg=newValue(
+          <attribute name="script" valueType="text">var res = null
+if($(&apos;clsa-dcs.ECG:RES_MEASUREMENT_DATE&apos;).isNull().not().and(
+   $(&apos;clsa-dcs.ECG:RES_MEASUREMENT_TIME&apos;).isNull().not()).value()) {
+  var ecg = newValue(
     $(&apos;clsa-dcs.ECG:RES_MEASUREMENT_DATE&apos;).value() + &apos; &apos; +
     $(&apos;clsa-dcs.ECG:RES_MEASUREMENT_TIME&apos;).value(), &apos;datetime&apos;)
-  } catch(e) {
+    
+  var ecgTime = ecg.time()
+  var preIndex = -1
+  var postIndex = -1    
+  var pre = newValue(null, &apos;datetime&apos;)
+  var post = newValue(null, &apos;datetime&apos;)
+  var minPre = 10000000000000000
+  var minPost = minPre  
+  var stages = $(&apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;).asSequence().filter(function(v) {
+    return v.matches(/ECG/).not().value()
+  }) 
+  var times = {&apos;pre&apos;:null,&apos;post&apos;:null}
+
+  for(var i = 0; i &lt; stages.size(); i++) {
+    var stage = stages.valueAt(i).value()    
+    
+    if(-1 != $this(&apos;group_questionnaire&apos;).indexOf(stage)) {
+      pre = $(&apos;clsa-dcs.&apos;+stage+&apos;:QuestionnaireRun.timeEnd&apos;)      
+    } else if(-1 != $this(&apos;group_instrument&apos;).indexOf(stage)) {
+      pre = $(&apos;clsa-dcs.&apos;+stage+&apos;:InstrumentRun.timeEnd&apos;)      
+    } else if(-1 != $this(&apos;group_other&apos;).indexOf(stage)) {
+      pre = $(&apos;clsa-dcs.&apos;+stage+&apos;:timeEnd&apos;) 
+    } else {
+      continue
+    }
+    if(ecg.after(pre).value()) {
+      var p = ecgTime.minus(pre.time()).value()
+      if(p &lt; minPre) {
+        minPre = p
+        preIndex = i
+        times[&apos;pre&apos;] = pre.time()
+      }        
+    } else {
+      if(-1 != $this(&apos;group_questionnaire&apos;).indexOf(stage)) {        
+        post = $(&apos;clsa-dcs.&apos;+stage+&apos;:QuestionnaireRun.timeStart&apos;)
+      } else if(-1 != $this(&apos;group_instrument&apos;).indexOf(stage)) {        
+        post = $(&apos;clsa-dcs.&apos;+stage+&apos;:InstrumentRun.timeStart&apos;)
+      } else if(-1 != $this(&apos;group_other&apos;).indexOf(stage)) {        
+        post = $(&apos;clsa-dcs.&apos;+stage+&apos;:timeStart&apos;)
+      } else {
+        continue
+      }     
+      if (ecg.before(post).value()) {
+        var p = post.time().minus(ecgTime).value()
+        if(p &lt; minPost) {
+          minPost = p
+          postIndex = i
+          times[&apos;post&apos;] = post.time()
+        }
+      }
+    }
   }
-
-  if(ecg.isNull().not().and(ecg.time().gt(0)).value()) {
-    var ecgTime=ecg.time()
-    var preIndex=-1
-    var postIndex=-1
-    var pre=newValue(null,&apos;datetime&apos;)
-    var post=newValue(null,&apos;datetime&apos;)
-    var minPre=10000000000000000
-    var minPost=minPre
-    var stages=$(&apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;).asSequence().filter(function(v){
-      return v.isNull().or(v.any(&apos;ExtendedHIN&apos;,&apos;GeneralProxy&apos;)).not().value()
-    })
-
-    for(var i=0;i&lt;stages.size();i++) {
-      var stage=stages.valueAt(i).value()
-      if(&apos;ECG&apos;==stage) continue
-      var isQ = -1==$this(&apos;group_questionnaire&apos;).indexOf(stage) ? false : true
-      var isI = -1==$this(&apos;group_instrument&apos;).indexOf(stage) ? false : true
-      if(!(isQ || isI)) continue
-      if(isQ) {
-        pre=$(&apos;clsa-dcs.&apos;+stage+&apos;:QuestionnaireRun.timeEnd&apos;)
-      } else  {
-        pre=$(&apos;clsa-dcs.&apos;+stage+&apos;:InstrumentRun.timeEnd&apos;)
-      }
-      if(ecg.after(pre).value()) {
-        var p=ecgTime.minus(pre.time()).value()
-        if(p&lt;minPre) {
-          minPre=p
-          preIndex=i
-        }
-      } else {
-        if(isQ) {
-          post=$(&apos;clsa-dcs.&apos;+stage+&apos;:QuestionnaireRun.timeStart&apos;)
-        } else {
-          post=$(&apos;clsa-dcs.&apos;+stage+&apos;:InstrumentRun.timeStart&apos;)
-        }
-        if(ecg.before(post).value()) {
-          var p=post.time().minus(ecgTime).value()
-          if(p&lt;minPost) {
-            minPost=p
-            postIndex=i
-          }
-        }
-      }
-    }// end for loop
-    var valid = false
-    if(-1!=preIndex &amp;&amp; (postIndex-preIndex)==2) {
-      valid = &apos;ECG&apos; == stages.valueAt(preIndex+1).value()
-    }
-    else
-    {
-      var preCandidates = [&apos;BloodPressure&apos;,&apos;Spirometry&apos;,&apos;SittingHeight&apos;,&apos;StandingHeight&apos;,&apos;HipsWaist&apos;,&apos;Weight&apos;]
-      for(var i=0;i&lt;preCandidates.length &amp;&amp; !valid;i++) {
-        preIndex = stages.indexOf(preCandidates[i])
-        postIndex = preIndex+1
-        if(&apos;ECG&apos;==stages.valueAt(postIndex).value()) {
-          while(&apos;ECG&apos;==stages.valueAt(++postIndex).value()) {}
-          valid = 1 &lt; (postIndex-preIndex)
-        }
-      }
-    }
-    if(valid) {
-      var preStage=stages.valueAt(preIndex).value()      
-      if(&apos;Consent&apos;==preStage) {
-        pre=$(&apos;clsa-dcs.Consent:timeEnd&apos;)
-      } else {
-        pre=(-1!=$this(&apos;group_questionnaire&apos;).indexOf(preStage)) ?
-          $(&apos;clsa-dcs.&apos;+preStage+&apos;:QuestionnaireRun.timeEnd&apos;) :
-          $(&apos;clsa-dcs.&apos;+preStage+&apos;:InstrumentRun.timeEnd&apos;)
-      }    
-      var postStage=stages.valueAt(postIndex).value()
-      if(&apos;Consent&apos;==postStage) {
-        post=$(&apos;clsa-dcs.Consent:timeStart&apos;)
-      } else {
-        post=(-1!=$this(&apos;group_questionnaire&apos;).indexOf(postStage)) ?
-          $(&apos;clsa-dcs.&apos;+postStage+&apos;:QuestionnaireRun.timeStart&apos;) :
-          $(&apos;clsa-dcs.&apos;+postStage+&apos;:InstrumentRun.timeStart&apos;)
-      }    
-      if(post.after(pre).value()) {
-        res=post.time().minus(pre.time()).div(1000)
-      }
-    }
+  if(1&lt;(postIndex-preIndex)) {
+    res = times[&apos;post&apos;].minus(times[&apos;pre&apos;]).div(1000)    
   }
 }
+
+if(null == res) {
+  var post = $(&apos;clsa-dcs.ECG:InstrumentRun.timeEnd&apos;)
+  var pre = $(&apos;clsa-dcs.ECG:InstrumentRun.timeStart&apos;)
+  if(pre.before(post).value()) {
+    res = post.time().minus(pre.time()).div(1000)
+  }
+  if(null == res) {
+    res = $group(
+      &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
+      &apos;ECG&apos;,
+      &apos;Admin.StageInstance.duration&apos;).asSequence().sum()
+  }
+  if(res.eq(0).value()) res = null
+}
+
 res</attribute>
         </attributes>
       </variable>
       <variable name="group_duration_dexa" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">var list = [&apos;LateralBoneDensity&apos;,&apos;ForearmBoneDensity&apos;,&apos;WholeBodyBoneDensity&apos;,&apos;DualHipBoneDensity&apos;]
-var stages = $(&apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;).asSequence()
-var dexa = stages.filter(function(v) {
-    return -1 !== list.indexOf(v.value())
+var stages = $(&apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;).asSequence().filter(function(v) {
+    return -1!=list.indexOf(v.value())
   })
 var res = null
-if(dexa.empty().not().value()) {
+if(stages.empty().not().value()) {
   // bracket the actual bone density acquisitions
   // 
   var pre = $(&apos;clsa-dcs.QuestionnaireBoneDensity:QuestionnaireRun.timeEnd&apos;)
-  var post = $(&apos;clsa-dcs.EventPMT:QuestionnaireRun.timeStart&apos;)
-  
+  var post = $(&apos;clsa-dcs.EventPMT:QuestionnaireRun.timeStart&apos;)  
   if(pre.before(post).value()) {    
     res = post.time().minus(pre.time()).div(1000)
   }  
 }
+
+if(null == res) {
+  res = newValue(0,&apos;integer&apos;)
+  list.forEach(function(stage) {
+    var pre = $(&apos;clsa-dcs.&apos;+stage+&apos;:InstrumentRun.timeEnd&apos;)
+    var post = $(&apos;clsa-dcs.&apos;+stage+&apos;:InstrumentRun.timeStart&apos;)  
+    if(pre.before(post).value()) {    
+      res = res.plus(post.time().minus(pre.time()).div(1000))
+    }    
+  })
+  if(res.eq(0).value()) res = null
+}
+
 res</attribute>
         </attributes>
       </variable>
@@ -329,8 +326,76 @@ if(p &amp;&amp; !(q || r)) {
 res</attribute>
         </attributes>
       </variable>
+      <variable name="group_other" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0" repeatable="true" occurrenceGroup="">
+        <attributes>
+          <attribute name="script" valueType="text">var list=[
+&apos;Consent&apos;
+]
+$(&apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;).asSequence().filter(function(v){
+  return -1!=list.indexOf(v.value())
+})</attribute>
+        </attributes>
+      </variable>
+      <variable name="group_carotid" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">// the expected stages in room 1
+room1_dependent = [&apos;HipsWaist&apos;,&apos;Weight&apos;,&apos;SittingHeight&apos;,&apos;StandingHeight&apos;,&apos;BloodPressure&apos;,&apos;ECG&apos;,&apos;CarotidIntima&apos;,&apos;Plaque&apos;,&apos;Spirometry&apos;,&apos;QuestionnaireBoneDensity&apos;]
+
+stages = $(&apos;Admin.Action.stage&apos;).asSequence().filter(function(v){
+  return -1!=room1_dependent.indexOf(v.value())
+}).filter(function(v,i){
+    return i==this.indexOf(v)
+  }).asSequence()
+  
+var res = null
+var i = stages.indexOf(&apos;CarotidIntima&apos;)
+var j = i-1
+var k = i+1
+if( -1&lt;j &amp;&amp; k&lt;stages.size().value() ) {
+  var pre = newValue(null, &apos;datetime&apos;)
+  var post = newValue(null, &apos;datetime&apos;)
+  
+  var prev = stages.valueAt(j)
+  var next = stages.valueAt(k)
+  if(-1 != $this(&apos;group_questionnaire&apos;).indexOf(prev)) {
+    pre = $(&apos;clsa-dcs.&apos;+prev+&apos;:QuestionnaireRun.timeEnd&apos;)      
+  } else if(-1 != $this(&apos;group_instrument&apos;).indexOf(prev)) {
+    pre = $(&apos;clsa-dcs.&apos;+prev+&apos;:InstrumentRun.timeEnd&apos;)      
+  } else if(-1 != $this(&apos;group_other&apos;).indexOf(prev)) {
+    pre = $(&apos;clsa-dcs.&apos;+prev+&apos;:timeEnd&apos;) 
+  } 
+  if(-1 != $this(&apos;group_questionnaire&apos;).indexOf(next)) {
+    post = $(&apos;clsa-dcs.&apos;+next+&apos;:QuestionnaireRun.timeStart&apos;)
+  } else if(-1 != $this(&apos;group_instrument&apos;).indexOf(next)) {
+    post = $(&apos;clsa-dcs.&apos;+next+&apos;:InstrumentRun.timeStart&apos;)
+  } else if(-1 != $this(&apos;group_other&apos;).indexOf(next)) {
+    post = $(&apos;clsa-dcs.&apos;+next+&apos;:timeStart&apos;)
+  }
+  if(pre.before(post).value()) {
+    res = post.time().minus(pre.time()).div(1000)
+  }
+}
+
+if(null == res) {
+  var post = $(&apos;clsa-dcs.CarotidIntima:InstrumentRun.timeEnd&apos;)
+  var pre = $(&apos;clsa-dcs.CarotidIntima:InstrumentRun.timeStart&apos;)
+  if(pre.before(post).value()) {
+    res = post.time().minus(pre.time()).div(1000)
+  }
+  if(null == res) {
+    res = $group(
+      &apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,
+      &apos;CarotidIntima&apos;,
+      &apos;Admin.StageInstance.duration&apos;).asSequence().sum()
+  }
+  if(res.eq(0).value()) res = null
+}
+
+res</attribute>
+        </attributes>
+      </variable>
     </variables>
   </variables>
   <created valueType="datetime">2019-04-23T15:04:23.246-04</created>
-  <updated valueType="datetime">2019-05-15T11:55:20.266-04</updated>
+  <updated valueType="datetime">2019-10-23T09:49:25.001-04</updated>
 </org.obiba.magma.views.View>

@@ -20,18 +20,6 @@
   $group(&apos;Admin.Action.stage&apos;,&apos;InHome_2&apos;,&apos;Admin.Action.user&apos;).asSequence().last()).lowerCase()</attribute>
         </attributes>
       </variable>
-      <variable name="skip" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
-        <attributes>
-          <attribute name="script" valueType="text">var action = $group(&apos;Admin.Action.stage&apos;,&apos;InHome_2&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
-var res = $group(&apos;Admin.Action.stage&apos;,&apos;InHome_2&apos;,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
-  return i == action.indexOf(&apos;SKIP&apos;)
-  }).last()
-if(res.isNull().not().value()) {
-  res = newValue(res.value().slice(14),&apos;text&apos;)  
-}
-res</attribute>
-        </attributes>
-      </variable>
       <variable name="contraindicated" valueType="boolean" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">$group(&apos;clsa-inhome-f1.Participants:Admin.StageInstance.stage&apos;,&apos;InHome_2&apos;,
@@ -81,7 +69,7 @@ if(c_seq.size().eq(e_seq.size()).value())
       if(undefined === arr[e_str[i]])
         arr[e_str[i]] = []
 
-      if(-1===arr[e_str[i]].indexOf(key_orig[key_lower]))
+      if(-1==arr[e_str[i]].indexOf(key_orig[key_lower]))
         arr[e_str[i]].push(key_orig[key_lower])
     }
 
@@ -111,7 +99,9 @@ var duration = $(&apos;clsa-inhome-f1.InHome_2:QuestionnaireMetric.duration&apos
     function(v, k) {
       return &apos;COG&apos; == section.valueAt(k).value()
     }
-  ).asSequence()   
+  ).asSequence().filter(function(v) {
+        return v.ge(0)
+      }) 
 res = duration.sum()
 if(res.isNull().not().and(res.eq(0)).value()) res = null
 res</attribute>
@@ -120,7 +110,7 @@ res</attribute>
       <variable name="missing" valueType="boolean" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">$this(&apos;contraindicated&apos;).not().and(
-  $this(&apos;skip&apos;).isNull(),
+  $this(&apos;skip_value&apos;).trimmer().isNull(),
   $this(&apos;qnaire_complete&apos;).isNull(),
   $this(&apos;file_complete&apos;).isNull())</attribute>
         </attributes>
@@ -137,9 +127,7 @@ if(s.size().eq(q.size()).and(p.size().eq(q.size())).value()) {
   while(j&gt;=0 &amp;&amp; s.valueAt(j).matches(/COG/).value()) { j-- }
   var qsum = q.subset(j+1,i+1).sum()
   var psum = p.subset(j+1,i+1).sum()
-  if(qsum.gt(0).value()) {
-    res = q.sum().minus(p.sum()).multiply(100).div(q.sum())
-  }
+  res = qsum.minus(psum).multiply(100).div(qsum)  
 }
 res</attribute>
         </attributes>
@@ -166,8 +154,31 @@ res</attribute>
           <attribute name="script" valueType="text">$this(&apos;file_size&apos;).trimmer().size().div($this(&apos;file_name&apos;).size()).multiply(100)</attribute>
         </attributes>
       </variable>
+      <variable name="skip_name" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0" repeatable="true" occurrenceGroup="">
+        <attributes>
+          <attribute name="script" valueType="text">newSequence([&apos;InterviewerDecision&apos;,
+&apos;ParticipantDecision&apos;,
+&apos;SeeComment&apos;,
+&apos;TechnicalProblem&apos;],&apos;text&apos;)</attribute>
+        </attributes>
+      </variable>
+      <variable name="skip_value" valueType="boolean" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0" repeatable="true" occurrenceGroup="">
+        <attributes>
+          <attribute name="script" valueType="text">var stage = &apos;InHome_2&apos;
+var action = $group(&apos;Admin.Action.stage&apos;,stage,&apos;Admin.Action.actionType&apos;).asSequence()
+var type = $group(&apos;Admin.Action.stage&apos;,stage,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
+  return i == action.indexOf(&apos;SKIP&apos;)
+  }).last().whenNull(&apos;&apos;).value().slice(14)
+  
+var arr = []
+for(var i=0; i &lt; $this(&apos;skip_name&apos;).size(); i++) {
+  arr.push($this(&apos;skip_name&apos;).valueAt(i).eq(type).value()?true:null)
+} 
+newSequence(arr,&apos;boolean&apos;)</attribute>
+        </attributes>
+      </variable>
     </variables>
   </variables>
   <created valueType="datetime">2019-04-15T14:38:30.147-04</created>
-  <updated valueType="datetime">2019-05-01T10:44:35.731-04</updated>
+  <updated valueType="datetime">2019-10-21T13:28:51.400-04</updated>
 </org.obiba.magma.views.View>

@@ -23,19 +23,6 @@
   $group(&apos;Admin.Action.stage&apos;,&apos;SocialNetwork&apos;,&apos;Admin.Action.user&apos;).asSequence().last()).lowerCase()</attribute>
         </attributes>
       </variable>
-      <variable name="skip" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
-        <attributes>
-          <attribute name="script" valueType="text">var stage = &apos;SocialNetwork&apos;
-var action = $group(&apos;Admin.Action.stage&apos;,stage,&apos;Admin.Action.actionType&apos;).asSequence()
-var res = $group(&apos;Admin.Action.stage&apos;,stage,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
-  return i == action.indexOf(&apos;SKIP&apos;)
-  }).last()
-if(res.isNull().not().value()) {
-  res = newValue(res.value().slice(14),&apos;text&apos;)  
-}
-res</attribute>
-        </attributes>
-      </variable>
       <variable name="contraindicated" valueType="boolean" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,&apos;SocialNetwork&apos;,
@@ -85,7 +72,7 @@ if(c_seq.size().eq(e_seq.size()).value())
       if(undefined === arr[e_str[i]])
         arr[e_str[i]] = []
 
-      if(-1===arr[e_str[i]].indexOf(key_orig[key_lower]))
+      if(-1==arr[e_str[i]].indexOf(key_orig[key_lower]))
         arr[e_str[i]].push(key_orig[key_lower])
     }
 
@@ -110,19 +97,15 @@ res</attribute>
       <variable name="qnaire_complete" valueType="decimal" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">var stage = &apos;SocialNetwork&apos;
-var p = $(&apos;clsa-dcs-f2.&apos; + stage + &apos;:QuestionnaireMetric.missingCount&apos;).asSequence()
-var q = $(&apos;clsa-dcs-f2.&apos; + stage + &apos;:QuestionnaireMetric.questionCount&apos;).asSequence()
-var res = null
-if(p.isNull().or(q.isNull(),q.sum().eq(0)).not().value()) {
-  res = q.sum().minus(p.sum()).multiply(100).div(q.sum())
-}
-res</attribute>
+var p = $(&apos;clsa-dcs-f2.&apos; + stage + &apos;:QuestionnaireMetric.missingCount&apos;).asSequence().sum()
+var q = $(&apos;clsa-dcs-f2.&apos; + stage + &apos;:QuestionnaireMetric.questionCount&apos;).asSequence().sum()
+q.minus(p).multiply(100).div(q)</attribute>
         </attributes>
       </variable>
       <variable name="missing" valueType="boolean" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">$this(&apos;contraindicated&apos;).not().and(
-  $this(&apos;skip&apos;).isNull(),
+  $this(&apos;skip_value&apos;).trimmer().isNull(),
   $this(&apos;qnaire_complete&apos;).isNull(),
   $this(&apos;duration&apos;).isNull())</attribute>
         </attributes>
@@ -166,7 +149,9 @@ if($this(&apos;duration&apos;).isNull().not().value()) {
         function(v, k) {
           return list.valueAt(i).eq(section.valueAt(k))
         }
-      ).asSequence().sum()
+      ).asSequence().filter(function(v) {
+        return v.ge(0)
+      }).sum()
     )
   }
   res = newSequence(str, &apos;integer&apos;) 
@@ -178,108 +163,39 @@ if($this(&apos;duration&apos;).isNull().not().value()) {
 res</attribute>
         </attributes>
       </variable>
-      <variable name="refusal_name" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0" repeatable="true" occurrenceGroup="">
+      <variable name="skip_name" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0" repeatable="true" occurrenceGroup="">
         <attributes>
-          <attribute name="script" valueType="text">newSequence([&apos;GAD7&apos;,&apos;SN&apos;,&apos;SPA&apos;,&apos;SSA&apos;], &apos;text&apos;)</attribute>
+          <attribute name="script" valueType="text">newSequence([&apos;InterviewerDecision&apos;,
+&apos;InterviewerLackOfTime&apos;,
+&apos;InterviewerRefusedHealthSafety&apos;,
+&apos;Other&apos;,
+&apos;ParticipantDecision&apos;,
+&apos;ParticipantLackOfTime&apos;,
+&apos;ParticipantRefusedHealthSafety&apos;,
+&apos;ParticipantRefusedOther&apos;,
+&apos;ParticipantUnableToComplete&apos;,
+&apos;SeeComment&apos;,
+&apos;TechnicalIssue&apos;,
+&apos;TechnicalProblem&apos;],&apos;text&apos;)</attribute>
         </attributes>
       </variable>
-      <variable name="refusal_value" valueType="decimal" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0" repeatable="true" occurrenceGroup="">
+      <variable name="skip_value" valueType="boolean" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0" repeatable="true" occurrenceGroup="">
         <attributes>
-          <attribute name="script" valueType="text">var stage = &apos;clsa-dcs-f2.SocialNetwork:&apos;
-var sections = {
-&apos;GAD7&apos;:[
-&apos;GAD_NERV_COF2&apos;,
-&apos;GAD_STPWOR_COF2&apos;,
-&apos;GAD_WORRTO_COF2&apos;,
-&apos;GAD_RELAX_COF2&apos;,
-&apos;GAD_RESTLS_COF2&apos;,
-&apos;GAD_ANNOY_COF2&apos;,
-&apos;GAD_AFRAID_COF2&apos;,
-&apos;GAD_TOTAL2_COF2&apos;],
-&apos;SN&apos;:[
-&apos;SN_LIVHF2_NB_COF2&apos;,
-&apos;SN_CHILDSTP_COF2&apos;,
-&apos;SN_DGHTRLIV_COF2&apos;,
-&apos;SN_SONLIV_COF2&apos;,
-&apos;SN_SEECHILD_COF2&apos;,
-&apos;SN_SIBLIV_COF2&apos;,
-&apos;SN_SEESIB_COF2&apos;,
-&apos;SN_RELLIV_COF2&apos;,
-&apos;SN_SEEREL_COF2&apos;,
-&apos;SN_FRND_COF2&apos;,
-&apos;SN_SEEFRND_COF2&apos;,
-&apos;SN_SEENEIBR_COF2&apos;,
-&apos;SN_CHILDSTP2_COF2&apos;,
-&apos;SN_CHILDSTPNEW_COF2&apos;],
-&apos;SPA&apos;:[
-&apos;SPA_SOAC_COF2&apos;,
-&apos;SPA_OUTS_COF2&apos;,
-&apos;SPA_CHRCH_COF2&apos;,
-&apos;SPA_SPORT_COF2&apos;,
-&apos;SPA_EDUC_COF2&apos;,
-&apos;SPA_CLUB_COF2&apos;,
-&apos;SPA_NEIBR_COF2&apos;,
-&apos;SPA_VOLUN_COF2&apos;,
-&apos;SPA_OTACT_COF2&apos;,
-&apos;SPA_MORAC_COF2&apos;,
-&apos;SPA_PREVAC_COF2&apos;,
-&apos;SPA_COHES_COF2&apos;],
-&apos;SSA&apos;:[
-&apos;SSA_CONFBED_COF2&apos;,
-&apos;SSA_NDTLK_COF2&apos;,
-&apos;SSA_CRISIS_COF2&apos;,
-&apos;SSA_TYTDR_COF2&apos;,
-&apos;SSA_SHLOV_COF2&apos;,
-&apos;SSA_GOODT_COF2&apos;,
-&apos;SSA_INFO_COF2&apos;,
-&apos;SSA_CONFID_COF2&apos;,
-&apos;SSA_HUGS_COF2&apos;,
-&apos;SSA_RELAX_COF2&apos;,
-&apos;SSA_MEALS_COF2&apos;,
-&apos;SSA_ADVCE_COF2&apos;,
-&apos;SSA_MINDOFF_COF2&apos;,
-&apos;SSA_CHORES_COF2&apos;,
-&apos;SSA_SHFEAR_COF2&apos;,
-&apos;SSA_SUGG_COF2&apos;,
-&apos;SSA_ENJOY_COF2&apos;,
-&apos;SSA_PROBLM_COF2&apos;,
-&apos;SSA_LOVU_COF2&apos;,
-&apos;SSA_PET_COF2&apos;]
-}
-
-var skip = []
-if($(stage+&apos;QuestionnaireRun.version&apos;).any(&apos;4.0&apos;).value()) {
-  skip.push(&apos;GAD7&apos;)
-}
-
-var str = []
-for(var key in sections) {
-  if(-1 != skip.indexOf(key)) {
-    str.push(null)
-    continue
-  }  
-  var rcount = 0
-  var qcount = 0
-  var arr = sections[key]
-  for(var i = 0; i &lt; arr.length; i++) {
-    var j = $(stage + arr[i])
-    if(j.isNull().value()) {
-      continue
-    }  
-    qcount++
-    rcount += j.any(&apos;REFUSED&apos;).value() ? 1 : 0
-  }
-  if(0 == qcount) {
-    str.push(null)
-  } else {
-    str.push(100.0*rcount/qcount)
-  }
-}
-newSequence(str, &apos;decimal&apos;)</attribute>
+          <attribute name="script" valueType="text">var stage = &apos;SocialNetwork&apos;
+var action = $group(&apos;Admin.Action.stage&apos;,stage,&apos;Admin.Action.actionType&apos;).asSequence()
+var type = $group(&apos;Admin.Action.stage&apos;,stage,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
+  return i == action.indexOf(&apos;SKIP&apos;)
+  }).last().whenNull(&apos;&apos;).value().slice(14)
+  
+var arr = []
+for(var i=0; i &lt; $this(&apos;skip_name&apos;).size(); i++) {
+  arr.push($this(&apos;skip_name&apos;).valueAt(i).eq(type).value()?true:null)
+} 
+newSequence(arr,&apos;boolean&apos;)</attribute>
         </attributes>
       </variable>
     </variables>
   </variables>
   <created valueType="datetime">2019-04-11T13:21:03.818-04</created>
-  <updated valueType="datetime">2019-05-09T10:05:44.409-04</updated>
+  <updated valueType="datetime">2019-10-21T15:03:44.710-04</updated>
 </org.obiba.magma.views.View>

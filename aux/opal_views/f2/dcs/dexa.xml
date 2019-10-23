@@ -47,7 +47,6 @@ for(var i=0; i&lt;list.length; i++) {
 res  </attribute>
         </attributes>
       </variable>
-      <variable name="skip" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0"/>
       <variable name="contraindicated" valueType="boolean" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">$(&apos;cosmos_dcs.QC_F2_dexa_lateral:contraindicated&apos;).and(
@@ -60,6 +59,7 @@ res  </attribute>
       <variable name="missing" valueType="boolean" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">$this(&apos;contraindicated&apos;).not().and(
+  $this(&apos;skip_value&apos;).trimmer().isNull(),
   $this(&apos;file_complete&apos;).isNull())</attribute>
         </attributes>
       </variable>
@@ -108,8 +108,46 @@ if($this(&apos;contraindicated&apos;).not().value()) {
 res</attribute>
         </attributes>
       </variable>
+      <variable name="skip_name" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0" repeatable="true" occurrenceGroup="">
+        <attributes>
+          <attribute name="script" valueType="text">newSequence([&apos;InterviewerDecision&apos;,
+&apos;InterviewerLackOfTime&apos;,
+&apos;InterviewerRefusedHealthSafety&apos;,
+&apos;Other&apos;,
+&apos;ParticipantDecision&apos;,
+&apos;ParticipantLackOfTime&apos;,
+&apos;ParticipantRefusedHealthSafety&apos;,
+&apos;ParticipantRefusedOther&apos;,
+&apos;ParticipantUnableToComplete&apos;,
+&apos;SeeComment&apos;,
+&apos;TechnicalIssue&apos;,
+&apos;TechnicalProblem&apos;],&apos;text&apos;)</attribute>
+        </attributes>
+      </variable>
+      <variable name="skip_value" valueType="boolean" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0" repeatable="true" occurrenceGroup="">
+        <attributes>
+          <attribute name="script" valueType="text">var stages = [&apos;ForearmBoneDensity&apos;,&apos;DualHipBoneDensity&apos;,&apos;LateralBoneDensity&apos;,&apos;SpineBoneDensity&apos;,
+&apos;WholeBodyBoneDensity&apos;]
+var arr = []
+for(var i=0; i &lt; $this(&apos;skip_name&apos;).size(); i++) {
+  arr.push(null)
+}
+stages.forEach(function(stage) {
+  var action = $group(&apos;Admin.Action.stage&apos;,stage,&apos;Admin.Action.actionType&apos;).asSequence()
+  var type = $group(&apos;Admin.Action.stage&apos;,stage,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
+    return i == action.indexOf(&apos;SKIP&apos;)
+    }).last().whenNull(&apos;&apos;).value().slice(14)
+  
+  for(var i=0; i &lt; $this(&apos;skip_name&apos;).size(); i++) {
+    arr[i] = $this(&apos;skip_name&apos;).valueAt(i).eq(type).value()?true:arr[i]
+  }
+})  
+newSequence(arr,&apos;boolean&apos;)</attribute>
+        </attributes>
+      </variable>
+      <variable name="comment" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0"/>
     </variables>
   </variables>
   <created valueType="datetime">2019-04-11T13:00:31.942-04</created>
-  <updated valueType="datetime">2019-05-07T15:28:17.792-04</updated>
+  <updated valueType="datetime">2019-10-18T13:25:45.253-04</updated>
 </org.obiba.magma.views.View>

@@ -20,18 +20,6 @@
   $group(&apos;Admin.Action.stage&apos;,&apos;InHome_3&apos;,&apos;Admin.Action.user&apos;).asSequence().last()).lowerCase()</attribute>
         </attributes>
       </variable>
-      <variable name="skip" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
-        <attributes>
-          <attribute name="script" valueType="text">var action = $group(&apos;Admin.Action.stage&apos;,&apos;InHome_3&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
-var res = $group(&apos;Admin.Action.stage&apos;,&apos;InHome_3&apos;,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
-  return i == action.indexOf(&apos;SKIP&apos;)
-  }).last()
-if(res.isNull().not().value()) {
-  res = newValue(res.value().slice(14),&apos;text&apos;)  
-}
-res</attribute>
-        </attributes>
-      </variable>
       <variable name="contraindicated" valueType="boolean" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">$group(&apos;clsa-inhome-f2.Participants:Admin.StageInstance.stage&apos;,&apos;InHome_3&apos;,
@@ -81,7 +69,7 @@ if(c_seq.size().eq(e_seq.size()).value())
       if(undefined === arr[e_str[i]])
         arr[e_str[i]] = []
 
-      if(-1===arr[e_str[i]].indexOf(key_orig[key_lower]))
+      if(-1==arr[e_str[i]].indexOf(key_orig[key_lower]))
         arr[e_str[i]].push(key_orig[key_lower])
     }
 
@@ -106,357 +94,17 @@ res</attribute>
       <variable name="qnaire_complete" valueType="decimal" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">var stage = &apos;InHome_3&apos;
-var p = $(&apos;clsa-inhome-f2.&apos; + stage + &apos;:QuestionnaireMetric.missingCount&apos;).asSequence()
-var q = $(&apos;clsa-inhome-f2.&apos; + stage + &apos;:QuestionnaireMetric.questionCount&apos;).asSequence()
-var res = null
-if(p.isNull().or(q.isNull(),q.sum().eq(0)).not().value()) {
-  res = q.sum().minus(p.sum()).multiply(100).div(q.sum())
-}
-res</attribute>
+var p = $(&apos;clsa-inhome-f2.&apos; + stage + &apos;:QuestionnaireMetric.missingCount&apos;).asSequence().sum()
+var q = $(&apos;clsa-inhome-f2.&apos; + stage + &apos;:QuestionnaireMetric.questionCount&apos;).asSequence().sum()
+q.minus(p).multiply(100).div(q)</attribute>
         </attributes>
       </variable>
       <variable name="missing" valueType="boolean" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">$this(&apos;contraindicated&apos;).not().and(
-  $this(&apos;skip&apos;).isNull(),
+  $this(&apos;skip_value&apos;).trimmer().isNull(),
   $this(&apos;qnaire_complete&apos;).isNull(),
   $this(&apos;duration&apos;).isNull())</attribute>
-        </attributes>
-      </variable>
-      <variable name="refusal_name" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0" repeatable="true" occurrenceGroup="">
-        <attributes>
-          <attribute name="script" valueType="text">newSequence([&apos;CAG&apos;,&apos;CR1&apos;,&apos;CR2&apos;,&apos;FAL&apos;,&apos;INC&apos;,&apos;INJ&apos;,&apos;LBF&apos;,&apos;LFP&apos;,&apos;MEDI&apos;,&apos;RET&apos;,&apos;RPL&apos;,&apos;WLQ&apos;], &apos;text&apos;)</attribute>
-        </attributes>
-      </variable>
-      <variable name="refusal_value" valueType="decimal" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0" repeatable="true" occurrenceGroup="">
-        <attributes>
-          <attribute name="script" valueType="text">var stage = &apos;clsa-inhome-f2.InHome_3:&apos;
-var sections = {
-&apos;CAG&apos;:[
-&apos;CAG_HLT_COF2&apos;,
-&apos;CAG_PPL_COF2&apos;,
-&apos;CAG_PERS_COF2&apos;,
-&apos;CAG_GNDR_COF2&apos;,
-&apos;CAG_RELN_COF2&apos;,
-&apos;CAG_WEEK_COF2&apos;,
-&apos;CAG_HRWK_COF2&apos;],
-&apos;CR1&apos;:[
-&apos;CR1_PRO_COF2&apos;,
-&apos;CR1_IMPT_COF2&apos;,
-&apos;CR1_MOST_COF2&apos;,
-&apos;CR1_PAY_COF2&apos;,
-&apos;CR1_PAY_COST1_COF2&apos;,
-&apos;CR1_FRQ_COF2&apos;,
-&apos;CR1_HOUR_COF2&apos;],
-&apos;CR2&apos;:[
-&apos;CR2_FAM_COF2&apos;,
-&apos;CR2_NMBR_COF2&apos;,
-&apos;CR2_WKALL_COF2&apos;,
-&apos;CR2_HOUR_COF2&apos;,
-&apos;CR2_MOST_COF2&apos;,
-&apos;CR2_PERS_COF2&apos;,
-&apos;CR2_PERS_FAR_COF2&apos;,
-&apos;CR2_GNDR_COF2&apos;,
-&apos;CR2_NAME_COF2&apos;,
-&apos;CR2_AGE_COF2&apos;,
-&apos;CR2_RELN_COF2&apos;,
-&apos;CR2_DUR_COF2&apos;,
-&apos;CR2_WKMST_COF2&apos;,
-&apos;CR2_HRWK_COF2&apos;,
-&apos;CR2_DEVC_COF2&apos;,
-&apos;CR2_HIP_COF2&apos;],
-&apos;FAL&apos;:[
-&apos;FAL_NMBR_COF2&apos;,
-&apos;FAL_MOST_COF2&apos;,
-&apos;FAL_ATTN_COF2&apos;,
-&apos;FAL_HOSP_COF2&apos;,
-&apos;FAL_FU_COF2&apos;,
-&apos;FAL_WHERE_COF2&apos;,
-&apos;FAL_HOW_COF2&apos;,
-&apos;FAL_HOW2_COF2&apos;],
-&apos;INC&apos;:[
-&apos;INC_SRCE_COF2&apos;,
-&apos;INC_FRST_COF2&apos;,
-&apos;INC_TOT_COF2&apos;,
-&apos;INC_PSRCE_COF2&apos;,
-&apos;INC_PFRST_COF2&apos;,
-&apos;INC_PTOT_COF2&apos;],
-&apos;INJ&apos;:[
-&apos;INJ_OCC_COF2&apos;,
-&apos;INJ_NMBR_COF2&apos;,
-&apos;INJ_CAUS_COF2&apos;,
-&apos;INJ_HOW_COF2&apos;,
-&apos;INJ_WHR_COF2&apos;,
-&apos;INJ_ACT_COF2&apos;,
-&apos;INJ_TYPE_COF2&apos;,
-&apos;INJ_BRKN_COF2&apos;,
-&apos;INJ_SITE_COF2&apos;],
-&apos;LBF&apos;:[
-&apos;LBF_CURR_COF2&apos;,
-&apos;LBF_MANY_COF2&apos;,
-&apos;LBF_STTS_COF2&apos;,
-&apos;LBF_SCHD_COF2&apos;,
-&apos;LBF_TYPE_COF2&apos;,
-&apos;LBF_IND_COF2&apos;,
-&apos;LBF_DURN_COF2&apos;,
-&apos;LBF_RSN_COF2&apos;,
-&apos;LBF_UNEM_COF2&apos;],
-&apos;LFP&apos;:[
-&apos;LFP_LAST_NB_COF2&apos;,
-&apos;LFP_YRS_COF2&apos;,
-&apos;LFP_HRWK_COF2&apos;,
-&apos;LFP_SCHD_COF2&apos;,
-&apos;LFP_TYPE_SP_COF2&apos;,
-&apos;LFP_IND_SP_COF2&apos;],
-&apos;MEDI&apos;:[
-&apos;MEDI_PRES_1_COF2&apos;,
-&apos;MEDI_Q_1_COF2&apos;,
-&apos;MEDI_DOSE_FRQ_1_COF2&apos;,
-&apos;MEDI_PRES_2_COF2&apos;,
-&apos;MEDI_Q_2_COF2&apos;,
-&apos;MEDI_DOSE_FRQ_2_COF2&apos;,
-&apos;MEDI_USE2_2_COF2&apos;,
-&apos;MEDI_REASON_2_COF2&apos;,
-&apos;MEDI_PRES_3_COF2&apos;,
-&apos;MEDI_Q_3_COF2&apos;,
-&apos;MEDI_DOSE_FRQ_3_COF2&apos;,
-&apos;MEDI_USE2_3_COF2&apos;,
-&apos;MEDI_REASON_3_COF2&apos;,
-&apos;MEDI_PRES_4_COF2&apos;,
-&apos;MEDI_Q_4_COF2&apos;,
-&apos;MEDI_DOSE_FRQ_4_COF2&apos;,
-&apos;MEDI_USE2_4_COF2&apos;,
-&apos;MEDI_REASON_4_COF2&apos;,
-&apos;MEDI_PRES_5_COF2&apos;,
-&apos;MEDI_Q_5_COF2&apos;,
-&apos;MEDI_DOSE_FRQ_5_COF2&apos;,
-&apos;MEDI_USE2_5_COF2&apos;,
-&apos;MEDI_REASON_5_COF2&apos;,
-&apos;MEDI_PRES_6_COF2&apos;,
-&apos;MEDI_Q_6_COF2&apos;,
-&apos;MEDI_DOSE_FRQ_6_COF2&apos;,
-&apos;MEDI_USE2_6_COF2&apos;,
-&apos;MEDI_REASON_6_COF2&apos;,
-&apos;MEDI_PRES_7_COF2&apos;,
-&apos;MEDI_Q_7_COF2&apos;,
-&apos;MEDI_DOSE_FRQ_7_COF2&apos;,
-&apos;MEDI_USE2_7_COF2&apos;,
-&apos;MEDI_REASON_7_COF2&apos;,
-&apos;MEDI_PRES_8_COF2&apos;,
-&apos;MEDI_Q_8_COF2&apos;,
-&apos;MEDI_DOSE_FRQ_8_COF2&apos;,
-&apos;MEDI_USE2_8_COF2&apos;,
-&apos;MEDI_REASON_8_COF2&apos;,
-&apos;MEDI_PRES_9_COF2&apos;,
-&apos;MEDI_Q_9_COF2&apos;,
-&apos;MEDI_DOSE_FRQ_9_COF2&apos;,
-&apos;MEDI_USE2_9_COF2&apos;,
-&apos;MEDI_REASON_9_COF2&apos;,
-&apos;MEDI_PRES_10_COF2&apos;,
-&apos;MEDI_Q_10_COF2&apos;,
-&apos;MEDI_DOSE_FRQ_10_COF2&apos;,
-&apos;MEDI_USE2_10_COF2&apos;,
-&apos;MEDI_REASON_10_COF2&apos;,
-&apos;MEDI_PRES_11_COF2&apos;,
-&apos;MEDI_Q_11_COF2&apos;,
-&apos;MEDI_DOSE_FRQ_11_COF2&apos;,
-&apos;MEDI_USE2_11_COF2&apos;,
-&apos;MEDI_REASON_11_COF2&apos;,
-&apos;MEDI_PRES_12_COF2&apos;,
-&apos;MEDI_Q_12_COF2&apos;,
-&apos;MEDI_DOSE_FRQ_12_COF2&apos;,
-&apos;MEDI_USE2_12_COF2&apos;,
-&apos;MEDI_REASON_12_COF2&apos;,
-&apos;MEDI_PRES_13_COF2&apos;,
-&apos;MEDI_Q_13_COF2&apos;,
-&apos;MEDI_DOSE_FRQ_13_COF2&apos;,
-&apos;MEDI_USE2_13_COF2&apos;,
-&apos;MEDI_REASON_13_COF2&apos;,
-&apos;MEDI_PRES_14_COF2&apos;,
-&apos;MEDI_Q_14_COF2&apos;,
-&apos;MEDI_DOSE_FRQ_14_COF2&apos;,
-&apos;MEDI_USE2_14_COF2&apos;,
-&apos;MEDI_REASON_14_COF2&apos;,
-&apos;MEDI_PRES_15_COF2&apos;,
-&apos;MEDI_Q_15_COF2&apos;,
-&apos;MEDI_DOSE_FRQ_15_COF2&apos;,
-&apos;MEDI_USE2_15_COF2&apos;,
-&apos;MEDI_REASON_15_COF2&apos;,
-&apos;MEDI_PRES_16_COF2&apos;,
-&apos;MEDI_Q_16_COF2&apos;,
-&apos;MEDI_DOSE_FRQ_16_COF2&apos;,
-&apos;MEDI_USE2_16_COF2&apos;,
-&apos;MEDI_REASON_16_COF2&apos;,
-&apos;MEDI_PRES_17_COF2&apos;,
-&apos;MEDI_Q_17_COF2&apos;,
-&apos;MEDI_DOSE_FRQ_17_COF2&apos;,
-&apos;MEDI_USE2_17_COF2&apos;,
-&apos;MEDI_REASON_17_COF2&apos;,
-&apos;MEDI_PRES_18_COF2&apos;,
-&apos;MEDI_Q_18_COF2&apos;,
-&apos;MEDI_DOSE_FRQ_18_COF2&apos;,
-&apos;MEDI_USE2_18_COF2&apos;,
-&apos;MEDI_REASON_18_COF2&apos;,
-&apos;MEDI_PRES_19_COF2&apos;,
-&apos;MEDI_Q_19_COF2&apos;,
-&apos;MEDI_DOSE_FRQ_19_COF2&apos;,
-&apos;MEDI_USE2_19_COF2&apos;,
-&apos;MEDI_REASON_19_COF2&apos;,
-&apos;MEDI_PRES_20_COF2&apos;,
-&apos;MEDI_Q_20_COF2&apos;,
-&apos;MEDI_DOSE_FRQ_20_COF2&apos;,
-&apos;MEDI_USE2_20_COF2&apos;,
-&apos;MEDI_REASON_20_COF2&apos;,
-&apos;MEDI_PRES_21_COF2&apos;,
-&apos;MEDI_Q_21_COF2&apos;,
-&apos;MEDI_DOSE_FRQ_21_COF2&apos;,
-&apos;MEDI_USE2_21_COF2&apos;,
-&apos;MEDI_REASON_21_COF2&apos;,
-&apos;MEDI_PRES_22_COF2&apos;,
-&apos;MEDI_Q_22_COF2&apos;,
-&apos;MEDI_DOSE_FRQ_22_COF2&apos;,
-&apos;MEDI_USE2_22_COF2&apos;,
-&apos;MEDI_REASON_22_COF2&apos;,
-&apos;MEDI_PRES_23_COF2&apos;,
-&apos;MEDI_Q_23_COF2&apos;,
-&apos;MEDI_DOSE_FRQ_23_COF2&apos;,
-&apos;MEDI_USE2_23_COF2&apos;,
-&apos;MEDI_REASON_23_COF2&apos;,
-&apos;MEDI_PRES_24_COF2&apos;,
-&apos;MEDI_Q_24_COF2&apos;,
-&apos;MEDI_DOSE_FRQ_24_COF2&apos;,
-&apos;MEDI_USE2_24_COF2&apos;,
-&apos;MEDI_REASON_24_COF2&apos;,
-&apos;MEDI_PRES_25_COF2&apos;,
-&apos;MEDI_Q_25_COF2&apos;,
-&apos;MEDI_DOSE_FRQ_25_COF2&apos;,
-&apos;MEDI_USE2_25_COF2&apos;,
-&apos;MEDI_REASON_25_COF2&apos;,
-&apos;MEDI_PRES_26_COF2&apos;,
-&apos;MEDI_Q_26_COF2&apos;,
-&apos;MEDI_DOSE_FRQ_26_COF2&apos;,
-&apos;MEDI_USE2_26_COF2&apos;,
-&apos;MEDI_REASON_26_COF2&apos;,
-&apos;MEDI_PRES_27_COF2&apos;,
-&apos;MEDI_Q_27_COF2&apos;,
-&apos;MEDI_DOSE_FRQ_27_COF2&apos;,
-&apos;MEDI_USE2_27_COF2&apos;,
-&apos;MEDI_REASON_27_COF2&apos;,
-&apos;MEDI_PRES_28_COF2&apos;,
-&apos;MEDI_Q_28_COF2&apos;,
-&apos;MEDI_DOSE_FRQ_28_COF2&apos;,
-&apos;MEDI_USE2_28_COF2&apos;,
-&apos;MEDI_REASON_28_COF2&apos;,
-&apos;MEDI_PRES_29_COF2&apos;,
-&apos;MEDI_Q_29_COF2&apos;,
-&apos;MEDI_DOSE_FRQ_29_COF2&apos;,
-&apos;MEDI_USE2_29_COF2&apos;,
-&apos;MEDI_REASON_29_COF2&apos;,
-&apos;MEDI_PRES_30_COF2&apos;,
-&apos;MEDI_Q_30_COF2&apos;,
-&apos;MEDI_DOSE_FRQ_30_COF2&apos;,
-&apos;MEDI_USE2_30_COF2&apos;,
-&apos;MEDI_REASON_30_COF2&apos;,
-&apos;MEDI_PRES_31_COF2&apos;,
-&apos;MEDI_Q_31_COF2&apos;,
-&apos;MEDI_DOSE_FRQ_31_COF2&apos;,
-&apos;MEDI_USE2_31_COF2&apos;,
-&apos;MEDI_REASON_31_COF2&apos;,
-&apos;MEDI_PRES_32_COF2&apos;,
-&apos;MEDI_Q_32_COF2&apos;,
-&apos;MEDI_DOSE_FRQ_32_COF2&apos;,
-&apos;MEDI_USE2_32_COF2&apos;,
-&apos;MEDI_REASON_32_COF2&apos;,
-&apos;MEDI_PRES_33_COF2&apos;,
-&apos;MEDI_Q_33_COF2&apos;,
-&apos;MEDI_DOSE_FRQ_33_COF2&apos;,
-&apos;MEDI_USE2_33_COF2&apos;,
-&apos;MEDI_REASON_33_COF2&apos;,
-&apos;MEDI_PRES_34_COF2&apos;,
-&apos;MEDI_Q_34_COF2&apos;,
-&apos;MEDI_DOSE_FRQ_34_COF2&apos;,
-&apos;MEDI_USE2_34_COF2&apos;,
-&apos;MEDI_REASON_34_COF2&apos;,
-&apos;MEDI_PRES_35_COF2&apos;,
-&apos;MEDI_Q_35_COF2&apos;,
-&apos;MEDI_DOSE_FRQ_35_COF2&apos;,
-&apos;MEDI_USE2_35_COF2&apos;,
-&apos;MEDI_REASON_35_COF2&apos;,
-&apos;MEDI_PRES_36_COF2&apos;,
-&apos;MEDI_Q_36_COF2&apos;,
-&apos;MEDI_DOSE_FRQ_36_COF2&apos;,
-&apos;MEDI_USE2_36_COF2&apos;,
-&apos;MEDI_REASON_36_COF2&apos;,
-&apos;MEDI_PRES_37_COF2&apos;,
-&apos;MEDI_Q_37_COF2&apos;,
-&apos;MEDI_DOSE_FRQ_37_COF2&apos;,
-&apos;MEDI_USE2_37_COF2&apos;,
-&apos;MEDI_REASON_37_COF2&apos;,
-&apos;MEDI_PRES_38_COF2&apos;,
-&apos;MEDI_Q_38_COF2&apos;,
-&apos;MEDI_DOSE_FRQ_38_COF2&apos;,
-&apos;MEDI_USE2_38_COF2&apos;,
-&apos;MEDI_REASON_38_COF2&apos;,
-&apos;MEDI_PRES_39_COF2&apos;,
-&apos;MEDI_Q_39_COF2&apos;,
-&apos;MEDI_DOSE_FRQ_39_COF2&apos;,
-&apos;MEDI_USE2_39_COF2&apos;,
-&apos;MEDI_REASON_39_COF2&apos;,
-&apos;MEDI_PRES_40_COF2&apos;,
-&apos;MEDI_Q_40_COF2&apos;,
-&apos;MEDI_DOSE_FRQ_40_COF2&apos;,
-&apos;MEDI_USE2_40_COF2&apos;,
-&apos;MEDI_REASON_40_COF2&apos;],
-&apos;RET&apos;:[
-&apos;RET_RTRD_COF2&apos;,
-&apos;RET_RTRN_COF2&apos;,
-&apos;RET_SPSE_COF2&apos;,
-&apos;RET_AGE_COF2&apos;,
-&apos;RET_WHY_COF2&apos;],
-&apos;RPL&apos;:[
-&apos;RPL_AGE_COF2&apos;,
-&apos;RPL_WHYNT_COF2&apos;],
-&apos;WLQ&apos;:[
-&apos;WLQ_PHEMGO_COF2&apos;,
-&apos;WLQ_PHEMBGN_COF2&apos;,
-&apos;WLQ_STY_COF2&apos;,
-&apos;WLQ_REPMOTION_COF2&apos;,
-&apos;WLQ_PHEMCON_COF2&apos;,
-&apos;WLQ_PYSEMSPK_COF2&apos;,
-&apos;WLQ_PHEMWRK_COF2&apos;,
-&apos;WLQ_PHEMFIN_COF2&apos;]
-}
-
-var skip=[]
-if($(stage+&apos;QuestionnaireRun.version&apos;).any(&apos;5.3&apos;).value()) {
-  skip.push(&apos;CR1&apos;)
-  skip.push(&apos;FAL&apos;)
-}
-
-var str = []
-for(var key in sections) {
-  if(-1!=skip.indexOf(key)) {
-    str.push(null)
-    continue
-  }   
-  var rcount = 0
-  var qcount = 0
-  var arr = sections[key]
-  for(var i = 0; i &lt; arr.length; i++) {
-    var j = $(stage + arr[i])
-    if(j.isNull().value()) {
-      continue
-    }  
-    qcount++
-    rcount += j.any(&apos;REFUSED&apos;).value() ? 1 : 0
-  }
-  if(0 == qcount) {
-    str.push(null)
-  } else {
-    str.push(100.0*rcount/qcount)
-  }
-}
-newSequence(str, &apos;decimal&apos;)</attribute>
         </attributes>
       </variable>
       <variable name="duration_value" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0" repeatable="true" occurrenceGroup="">
@@ -474,7 +122,9 @@ if($this(&apos;duration&apos;).isNull().not().value()) {
         function(v, k) {
           return list.valueAt(i).eq(section.valueAt(k))
         }
-      ).asSequence().sum()
+      ).asSequence().filter(function(v) {
+        return v.ge(0)
+      }).sum()
     )
   }
   res = newSequence(str, &apos;integer&apos;)
@@ -510,8 +160,39 @@ res</attribute>
           <attribute name="script" valueType="text">newSequence([&apos;CAG&apos;,&apos;CR1&apos;,&apos;CR2&apos;,&apos;FAL&apos;,&apos;INC&apos;,&apos;INJ&apos;,&apos;LBF&apos;,&apos;LFP&apos;,&apos;MEDI&apos;,&apos;RET&apos;,&apos;RPL&apos;,&apos;WLQ&apos;], &apos;text&apos;)</attribute>
         </attributes>
       </variable>
+      <variable name="skip_name" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0" repeatable="true" occurrenceGroup="">
+        <attributes>
+          <attribute name="script" valueType="text">newSequence([&apos;InterviewerDecision&apos;,
+&apos;InterviewerLackOfTime&apos;,
+&apos;InterviewerRefusedHealthSafety&apos;,
+&apos;Other&apos;,
+&apos;ParticipantDecision&apos;,
+&apos;ParticipantLackOfTime&apos;,
+&apos;ParticipantRefusedHealthSafety&apos;,
+&apos;ParticipantRefusedOther&apos;,
+&apos;ParticipantUnableToComplete&apos;,
+&apos;SeeComment&apos;,
+&apos;TechnicalIssue&apos;,
+&apos;TechnicalProblem&apos;],&apos;text&apos;)</attribute>
+        </attributes>
+      </variable>
+      <variable name="skip_value" valueType="boolean" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0" repeatable="true" occurrenceGroup="">
+        <attributes>
+          <attribute name="script" valueType="text">var stage = &apos;InHome_3&apos;
+var action = $group(&apos;Admin.Action.stage&apos;,stage,&apos;Admin.Action.actionType&apos;).asSequence()
+var type = $group(&apos;Admin.Action.stage&apos;,stage,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
+  return i == action.indexOf(&apos;SKIP&apos;)
+  }).last().whenNull(&apos;&apos;).value().slice(14)
+  
+var arr = []
+for(var i=0; i &lt; $this(&apos;skip_name&apos;).size(); i++) {
+  arr.push($this(&apos;skip_name&apos;).valueAt(i).eq(type).value()?true:null)
+} 
+newSequence(arr,&apos;boolean&apos;)</attribute>
+        </attributes>
+      </variable>
     </variables>
   </variables>
   <created valueType="datetime">2019-04-15T14:59:50.922-04</created>
-  <updated valueType="datetime">2019-05-08T16:51:03.169-04</updated>
+  <updated valueType="datetime">2019-10-21T13:27:28.359-04</updated>
 </org.obiba.magma.views.View>

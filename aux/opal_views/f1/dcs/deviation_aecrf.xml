@@ -23,19 +23,6 @@
   $group(&apos;Admin.Action.stage&apos;,&apos;Deviation_AE_CRF&apos;,&apos;Admin.Action.user&apos;).asSequence().last()).lowerCase()</attribute>
         </attributes>
       </variable>
-      <variable name="skip" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
-        <attributes>
-          <attribute name="script" valueType="text">var stage = &apos;Deviation_AE_CRF&apos;
-var action = $group(&apos;Admin.Action.stage&apos;,stage,&apos;Admin.Action.actionType&apos;).asSequence()
-var res = $group(&apos;Admin.Action.stage&apos;,stage,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
-  return i == action.indexOf(&apos;SKIP&apos;)
-  }).last()
-if(res.isNull().not().value()) {
-  res = newValue(res.value().slice(14),&apos;text&apos;)  
-}
-res</attribute>
-        </attributes>
-      </variable>
       <variable name="contraindicated" valueType="boolean" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f1.Participants:Admin.StageInstance.stage&apos;,&apos;Deviation_AE_CRF&apos;,
@@ -85,7 +72,7 @@ if(c_seq.size().eq(e_seq.size()).value())
       if(undefined === arr[e_str[i]])
         arr[e_str[i]] = []
 
-      if(-1===arr[e_str[i]].indexOf(key_orig[key_lower]))
+      if(-1==arr[e_str[i]].indexOf(key_orig[key_lower]))
         arr[e_str[i]].push(key_orig[key_lower])
     }
 
@@ -110,20 +97,19 @@ res</attribute>
       <variable name="qnaire_complete" valueType="decimal" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">var stage = &apos;Deviation_AE_CRF&apos;
-var p = $(&apos;clsa-dcs-f1.&apos; + stage + &apos;:QuestionnaireMetric.missingCount&apos;).asSequence()
-var q = $(&apos;clsa-dcs-f1.&apos; + stage + &apos;:QuestionnaireMetric.questionCount&apos;).asSequence()
-var res = null
-if(p.isNull().or(q.isNull(),q.sum().eq(0)).not().value()) {
-  res = q.sum().minus(p.sum()).multiply(100).div(q.sum())
-}
-res</attribute>
+var p = $(&apos;clsa-dcs-f1.&apos; + stage + &apos;:QuestionnaireMetric.missingCount&apos;).asSequence().sum()
+var q = $(&apos;clsa-dcs-f1.&apos; + stage + &apos;:QuestionnaireMetric.questionCount&apos;).asSequence().sum()
+q.minus(p).multiply(100).div(q)</attribute>
         </attributes>
       </variable>
       <variable name="missing" valueType="boolean" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">$this(&apos;contraindicated&apos;).not().and(
-  $this(&apos;skip&apos;).isNull(),
+  $this(&apos;skip_value&apos;).trimmer().isNull(),
   $this(&apos;qnaire_complete&apos;).isNull(),
+  $this(&apos;ae_count&apos;).isNull(),
+  $this(&apos;aefu_count&apos;).isNull(),
+  $this(&apos;dev_count&apos;).isNull(),
   $this(&apos;duration&apos;).isNull())</attribute>
         </attributes>
       </variable>
@@ -166,7 +152,9 @@ if($this(&apos;duration&apos;).isNull().not().value()) {
         function(v, k) {
           return list.valueAt(i).eq(section.valueAt(k))
         }
-      ).asSequence().sum()
+      ).asSequence().filter(function(v) {
+        return v.ge(0)
+      }).sum()
     )
   }
   res = newSequence(str, &apos;integer&apos;) 
@@ -178,8 +166,258 @@ if($this(&apos;duration&apos;).isNull().not().value()) {
 res</attribute>
         </attributes>
       </variable>
+      <variable name="ae_name" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0" repeatable="true" occurrenceGroup="">
+        <attributes>
+          <attribute name="script" valueType="text">newSequence([&apos;FAINTED&apos;,
+&apos;SEIZURE&apos;,
+&apos;DIZZY&apos;,
+&apos;VOMITED&apos;,
+&apos;BLOODEX&apos;,
+&apos;DISTRESS&apos;,
+&apos;TRIPPED&apos;,
+&apos;HEAD&apos;,
+&apos;FELL&apos;,
+&apos;BP220&apos;,
+&apos;BP110&apos;,
+&apos;OTHERAE&apos;],&apos;text&apos;)</attribute>
+        </attributes>
+      </variable>
+      <variable name="ae_value" valueType="boolean" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0" repeatable="true" occurrenceGroup="">
+        <attributes>
+          <attribute name="script" valueType="text">var arr = []
+for(var i=0; i &lt; $this(&apos;ae_name&apos;).size(); i++) {
+  var v = $this(&apos;ae_name&apos;).valueAt(i)
+  arr.push($(&apos;DAE_WHAT_COF1&apos;).any(v).value()?true:null)
+}  
+newSequence(arr,&apos;boolean&apos;)</attribute>
+        </attributes>
+      </variable>
+      <variable name="aefu_name" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0" repeatable="true" occurrenceGroup="">
+        <attributes>
+          <attribute name="script" valueType="text">newSequence([
+  &apos;SNACK&apos;,&apos;ICE&apos;,&apos;HOSPITAL&apos;,&apos;RETURN&apos;,&apos;NOTIFY&apos;,&apos;ETHICS&apos;,&apos;FOLLOW&apos;,
+  &apos;RECOMDHOS&apos;,&apos;RECOMDDR&apos;,&apos;NOTNECES&apos;,&apos;OTHERAE&apos;
+],&apos;text&apos;)</attribute>
+        </attributes>
+      </variable>
+      <variable name="aefu_value" valueType="boolean" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0" repeatable="true" occurrenceGroup="">
+        <attributes>
+          <attribute name="script" valueType="text">var arr = []
+for(var i=0; i &lt; $this(&apos;aefu_name&apos;).size(); i++) {
+  var v = $this(&apos;aefu_name&apos;).valueAt(i)
+  arr.push($(&apos;DAE_FLWUP_COF1&apos;).any(v).value()?true:null)
+}  
+newSequence(arr,&apos;boolean&apos;)</attribute>
+        </attributes>
+      </variable>
+      <variable name="dev_name" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0" repeatable="true" occurrenceGroup="">
+        <attributes>
+          <attribute name="script" valueType="text">newSequence([&apos;reception&apos;,&apos;room1&apos;,&apos;dxa&apos;,&apos;room2&apos;,&apos;hallway&apos;,&apos;room3&apos;,&apos;room4&apos;],&apos;text&apos;)</attribute>
+        </attributes>
+      </variable>
+      <variable name="dev_value" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0" repeatable="true" occurrenceGroup="">
+        <attributes>
+          <attribute name="script" valueType="text">// filter out repeated completed stages
+//
+var completed = $group(&apos;Admin.Action.actionType&apos;,&apos;COMPLETE&apos;,&apos;Admin.Action.stage&apos;).asSequence()
+var stages = $(&apos;Admin.Action.stage&apos;).asSequence().trimmer().filter(function(v){
+  return -1!=completed.indexOf(v)
+  }).filter(function(v,i){
+    return i==this.indexOf(v)
+  }).asSequence()
+  
+var joined_stages = [&apos;first&apos;]
+
+// get the stages found in the complete list of non-repeated stages in the expected order
+var reception_stages = []
+reception_dependent = [&apos;Consent&apos;,&apos;GeneralProxy&apos;,&apos;ContraIndications&apos;]
+reception_dependent.forEach(function(v){
+  if(-1!=stages.indexOf(v)) {
+    reception_stages.push(v)
+    joined_stages.push(v)
+  }
+})
+
+var room1_stages = []
+room1_dependent = [&apos;HipsWaist&apos;,&apos;Weight&apos;,&apos;StandingHeight&apos;,&apos;BloodPressure&apos;,&apos;ECG&apos;,&apos;CarotidIntima&apos;,&apos;Spirometry&apos;]
+room1_dependent.forEach(function(v){
+  if(-1!=stages.indexOf(v)) {
+    room1_stages.push(v)
+    joined_stages.push(v)
+  }
+})
+
+var dxa_stages = []
+dxa_dependent = [&apos;QuestionnaireBoneDensity&apos;,&apos;ForearmBoneDensity&apos;,&apos;DualHipBoneDensity&apos;,&apos;SpineBoneDensity&apos;,&apos;LateralBoneDensity&apos;,
+&apos;WholeBodyBoneDensity&apos;,&apos;Frax&apos;]
+dxa_dependent.forEach(function(v){
+  if(-1!=stages.indexOf(v)) {
+    dxa_stages.push(v)
+    joined_stages.push(v)
+  }
+})
+
+var room2_stages = []
+room2_dependent = [&apos;EventPMT&apos;,&apos;Hearing&apos;,&apos;HearingQuestionnaire&apos;,&apos;NeuropsychologicalBattery&apos;,&apos;CognitiveTest&apos;]
+room2_dependent.forEach(function(v){
+  if(-1!=stages.indexOf(v)) {
+    room2_stages.push(v)
+    joined_stages.push(v)
+  }
+})
+
+var hallway_stages = []
+hallway_dependent = [&apos;4mWalk&apos;,&apos;TUG&apos;,&apos;StandingBalance&apos;,&apos;ChairRise&apos;]
+hallway_dependent.forEach(function(v){
+  if(-1!=stages.indexOf(v)) {
+    hallway_stages.push(v)
+    joined_stages.push(v)
+  }
+})
+
+var room3_stages = []
+var room3_dependent = [&apos;VisionAcuity&apos;,&apos;RetinalScanRight&apos;,&apos;GeneralHealth&apos;,&apos;RetinalScanLeft&apos;,&apos;Tonometer&apos;,&apos;GripStrength&apos;]
+room3_dependent.forEach(function(v){
+  if(-1!=stages.indexOf(v)) {
+    room3_stages.push(v)
+    joined_stages.push(v)
+  }
+})
+
+var room4_stages = []
+room4_dependent = [&apos;TimeBasedProspectiveMemoryTask&apos;,&apos;DiseaseSymptoms&apos;,&apos;OSEA&apos;,&apos;Blood&apos;,&apos;Blood2&apos;]
+room4_dependent.forEach(function(v){
+  if(-1!=stages.indexOf(v)) {
+    room4_stages.push(v)
+    joined_stages.push(v)
+  }
+})
+
+joined_stages.push(&apos;last&apos;)
+
+var group_stages = {
+  &quot;reception&quot; : reception_stages,
+  &quot;room1&quot; : room1_stages,
+  &quot;dxa&quot; : dxa_stages, 
+  &quot;room2&quot; : room2_stages,
+  &quot;hallway&quot; : hallway_stages,
+  &quot;room3&quot; : room3_stages,
+  &quot;room4&quot; : room4_stages
+}
+
+var order_counts = {
+  &quot;reception&quot; : 0,
+  &quot;room1&quot; : 0,
+  &quot;dxa&quot; : 0, 
+  &quot;room2&quot; : 0,
+  &quot;hallway&quot; : 0,
+  &quot;room3&quot; : 0,
+  &quot;room4&quot; : 0
+}
+
+// map stage names to the room they belong to
+var stage_rooms = {}
+for( var key in group_stages ) {
+  var room_stages = group_stages[key]  
+  for(var j = 0; j&lt;room_stages.length; j++) {    
+    stage_rooms[room_stages[j]] = key
+  } 
+} 
+
+// expected order of stages with prev and next stage attributes
+var connected_stages = {}
+for(var i = 1; i &lt; joined_stages.length-1; i++ ) {
+  var prev = joined_stages[i-1]
+  var curr = joined_stages[i]
+  var next = joined_stages[i+1]
+  connected_stages[curr] = {&apos;prev&apos;:prev, &apos;next&apos;:next}
+}
+
+stages = stages.insertAt(0,&apos;first&apos;)
+stages = stages.push(&apos;last&apos;)
+
+// remove all stages that are not pertinent to the search
+stages = stages.filter(function(v) {
+  return -1 != joined_stages.indexOf(v.value())
+})
+
+for( var key in connected_stages )
+{
+  var curr = key
+  var prev = connected_stages[curr][&apos;prev&apos;]
+  var next = connected_stages[curr][&apos;next&apos;]
+  // find the index of curr, prev, next    
+  var h = stages.indexOf(prev)
+  var i = stages.indexOf(curr)
+  var j = stages.indexOf(next)  
+  
+  // which room does this stage come from
+  var room = stage_rooms[curr]
+  
+  // if out of order, then increment the room count 
+  order_counts[room] += (h != (i-1) &amp;&amp; j != (i+1)) ? 1 : 0
+}
+
+var res = []
+for( var key in order_counts ) {
+  var count = order_counts[key]
+  if(0==count) {
+    var room_stages = group_stages[key]
+    var filtered_stages = stages.filter(function(v) {
+        return -1 != room_stages.indexOf(v.value())
+      }).filter(function(v,i) {
+        return i!=room_stages.indexOf(v.value())
+        }).asSequence()
+
+    count = filtered_stages.size().whenNull(0)
+  }
+  res.push(0&lt;count?count:null)
+}
+
+newSequence(res, &apos;integer&apos;)</attribute>
+        </attributes>
+      </variable>
+      <variable name="skip_name" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0" repeatable="true" occurrenceGroup="">
+        <attributes>
+          <attribute name="script" valueType="text">newSequence([&apos;InterviewerDecision&apos;,
+&apos;ParticipantDecision&apos;,
+&apos;SeeComment&apos;,
+&apos;TechnicalProblem&apos;],&apos;text&apos;)
+					</attribute>
+        </attributes>
+      </variable>
+      <variable name="skip_value" valueType="boolean" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0" repeatable="true" occurrenceGroup="">
+        <attributes>
+          <attribute name="script" valueType="text">var stage = &apos;Deviation_AE_CRF&apos;
+var action = $group(&apos;Admin.Action.stage&apos;,stage,&apos;Admin.Action.actionType&apos;).asSequence()
+var type = $group(&apos;Admin.Action.stage&apos;,stage,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
+  return i == action.indexOf(&apos;SKIP&apos;)
+  }).last().whenNull(&apos;&apos;).value().slice(14)
+  
+var arr = []
+for(var i=0; i &lt; $this(&apos;skip_name&apos;).size(); i++) {
+  arr.push($this(&apos;skip_name&apos;).valueAt(i).eq(type).value()?true:null)
+} 
+newSequence(arr,&apos;boolean&apos;)</attribute>
+        </attributes>
+      </variable>
+      <variable name="ae_count" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$this(&apos;ae_value&apos;).trimmer().size()</attribute>
+        </attributes>
+      </variable>
+      <variable name="aefu_count" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$this(&apos;aefu_value&apos;).trimmer().size()</attribute>
+        </attributes>
+      </variable>
+      <variable name="dev_count" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$this(&apos;dev_value&apos;).trimmer().sum()</attribute>
+        </attributes>
+      </variable>
     </variables>
   </variables>
   <created valueType="datetime">2019-04-11T14:03:43.250-04</created>
-  <updated valueType="datetime">2019-05-09T11:13:55.704-04</updated>
+  <updated valueType="datetime">2019-10-21T15:11:14.936-04</updated>
 </org.obiba.magma.views.View>

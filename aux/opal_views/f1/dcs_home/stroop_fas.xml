@@ -23,19 +23,6 @@
   $group(&apos;Admin.Action.stage&apos;,&apos;NeuropsychologicalBattery&apos;,&apos;Admin.Action.user&apos;).asSequence().last()).lowerCase()</attribute>
         </attributes>
       </variable>
-      <variable name="skip" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
-        <attributes>
-          <attribute name="script" valueType="text">var stage = &apos;NeuropsychologicalBattery&apos;
-var action = $group(&apos;Admin.Action.stage&apos;,stage,&apos;Admin.Action.actionType&apos;).asSequence()
-var res = $group(&apos;Admin.Action.stage&apos;,stage,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
-  return i == action.indexOf(&apos;SKIP&apos;)
-  }).last()
-if(res.isNull().not().value()) {
-  res = newValue(res.value().slice(14),&apos;text&apos;)  
-}
-res</attribute>
-        </attributes>
-      </variable>
       <variable name="contraindicated" valueType="boolean" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f1.Participants:Admin.StageInstance.stage&apos;,&apos;NeuropsychologicalBattery&apos;,
@@ -85,7 +72,7 @@ if(c_seq.size().eq(e_seq.size()).value())
       if(undefined === arr[e_str[i]])
         arr[e_str[i]] = []
 
-      if(-1===arr[e_str[i]].indexOf(key_orig[key_lower]))
+      if(-1==arr[e_str[i]].indexOf(key_orig[key_lower]))
         arr[e_str[i]].push(key_orig[key_lower])
     }
 
@@ -110,18 +97,14 @@ res</attribute>
       <variable name="qnaire_complete" valueType="decimal" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">var stage = &apos;NeuropsychologicalBattery&apos;
-var p = $(&apos;clsa-dcs-f1.&apos; + stage + &apos;:QuestionnaireMetric.missingCount&apos;).asSequence()
-var q = $(&apos;clsa-dcs-f1.&apos; + stage + &apos;:QuestionnaireMetric.questionCount&apos;).asSequence()
-var res = null
-if(p.isNull().or(q.isNull(),q.sum().eq(0)).not().value()) {
-  res = q.sum().minus(p.sum()).multiply(100).div(q.sum())
-}
-res</attribute>
+var p = $(&apos;clsa-dcs-f1.&apos; + stage + &apos;:QuestionnaireMetric.missingCount&apos;).asSequence().sum()
+var q = $(&apos;clsa-dcs-f1.&apos; + stage + &apos;:QuestionnaireMetric.questionCount&apos;).asSequence().sum()
+q.minus(p).multiply(100).div(q)</attribute>
         </attributes>
       </variable>
       <variable name="file_name" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0" repeatable="true" occurrenceGroup="">
         <attributes>
-          <attribute name="script" valueType="text">newSequence([&apos;STP_dot&apos;,&apos;STF_word&apos;,&apos;STP_color&apos;,&apos;FAS_F&apos;,&apos;FAS_A&apos;,&apos;FAS_S&apos;],&apos;text&apos;)</attribute>
+          <attribute name="script" valueType="text">newSequence([&apos;STP_dot&apos;,&apos;STP_word&apos;,&apos;STP_color&apos;,&apos;FAS_F&apos;,&apos;FAS_A&apos;,&apos;FAS_S&apos;],&apos;text&apos;)</attribute>
         </attributes>
       </variable>
       <variable name="file_size" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0" repeatable="true" occurrenceGroup="">
@@ -145,7 +128,7 @@ newSequence([
       <variable name="missing" valueType="boolean" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">$this(&apos;contraindicated&apos;).not().and(
-  $this(&apos;skip&apos;).isNull(),
+  $this(&apos;skip_value&apos;).trimmer().isNull(),
   $this(&apos;qnaire_complete&apos;).isNull(),
   $this(&apos;duration&apos;).isNull())</attribute>
         </attributes>
@@ -189,7 +172,9 @@ if($this(&apos;duration&apos;).isNull().not().value()) {
         function(v, k) {
           return list.valueAt(i).eq(section.valueAt(k))
         }
-      ).asSequence().sum()
+      ).asSequence().filter(function(v) {
+        return v.ge(0)
+      }).sum()
     )
   }
   res = newSequence(str, &apos;integer&apos;) 
@@ -201,116 +186,32 @@ if($this(&apos;duration&apos;).isNull().not().value()) {
 res</attribute>
         </attributes>
       </variable>
-      <variable name="refusal_name" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0" repeatable="true" occurrenceGroup="">
+      <variable name="skip_name" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0" repeatable="true" occurrenceGroup="">
         <attributes>
-          <attribute name="script" valueType="text">newSequence([&apos;FAS&apos;,&apos;SN&apos;,&apos;SPA&apos;,&apos;SSA&apos;,&apos;STP&apos;], &apos;text&apos;)</attribute>
+          <attribute name="script" valueType="text">newSequence([&apos;InterviewerDecision&apos;,
+&apos;ParticipantDecision&apos;,
+&apos;SeeComment&apos;,
+&apos;TechnicalProblem&apos;],&apos;text&apos;)
+					</attribute>
         </attributes>
       </variable>
-      <variable name="refusal_value" valueType="decimal" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0" repeatable="true" occurrenceGroup="">
+      <variable name="skip_value" valueType="boolean" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0" repeatable="true" occurrenceGroup="">
         <attributes>
-          <attribute name="script" valueType="text">var stage = &apos;clsa-dcs-f1.NeuropsychologicalBattery:&apos;
-var sections={
-&apos;FAS&apos;:[
-&apos;FAS_INSTRDY_COF1&apos;,
-&apos;FAS_INSTRPT_COF1&apos;],
-&apos;SN&apos;:[
-&apos;SN_CHILDADP_COF1&apos;,
-&apos;SN_CHILDBIO_COF1&apos;,
-&apos;SN_CHILDPR_COF1&apos;,
-&apos;SN_CHILDSTPPR_COF1&apos;,
-&apos;SN_CHILDSTP_COF1&apos;,
-&apos;SN_CHILD_COF1&apos;,
-&apos;SN_DGHTRLIV_COF1&apos;,
-&apos;SN_FRND_COF1&apos;,
-&apos;SN_NEIBR_COF1&apos;,
-&apos;SN_PERACT_COF1&apos;,
-&apos;SN_PERCOM_COF1&apos;,
-&apos;SN_PERWSCH_COF1&apos;,
-&apos;SN_RELLIV_COF1&apos;,
-&apos;SN_SEECHILD_COF1&apos;,
-&apos;SN_SEEFRND_COF1&apos;,
-&apos;SN_SEENEIBR_COF1&apos;,
-&apos;SN_SEEREL_COF1&apos;,
-&apos;SN_SEESIB_COF1&apos;,
-&apos;SN_SIBLIV_COF1&apos;,
-&apos;SN_SONLIV_COF1&apos;],
-&apos;SPA&apos;:[
-&apos;SPA_CHRCH_COF1&apos;,
-&apos;SPA_CLUB_COF1&apos;,
-&apos;SPA_COHES_COF1&apos;,
-&apos;SPA_EDUC_COF1&apos;,
-&apos;SPA_MORAC_COF1&apos;,
-&apos;SPA_NEIBR_COF1&apos;,
-&apos;SPA_OTACT_COF1&apos;,
-&apos;SPA_OUTS_COF1&apos;,
-&apos;SPA_PREVAC_COF1&apos;,
-&apos;SPA_SOAC_COF1&apos;,
-&apos;SPA_SPORT_COF1&apos;,
-&apos;SPA_VOLUN_COF1&apos;],
-&apos;SSA&apos;:[
-&apos;SSA_ADVCE_COF1&apos;,
-&apos;SSA_CHORES_COF1&apos;,
-&apos;SSA_CONFBED_COF1&apos;,
-&apos;SSA_CONFID_COF1&apos;,
-&apos;SSA_CRISIS_COF1&apos;,
-&apos;SSA_ENJOY_COF1&apos;,
-&apos;SSA_GOODT_COF1&apos;,
-&apos;SSA_HUGS_COF1&apos;,
-&apos;SSA_INFO_COF1&apos;,
-&apos;SSA_LOVU_COF1&apos;,
-&apos;SSA_MEALS_COF1&apos;,
-&apos;SSA_MINDOFF_COF1&apos;,
-&apos;SSA_NDTLK_COF1&apos;,
-&apos;SSA_PET_COF1&apos;,
-&apos;SSA_PROBLM_COF1&apos;,
-&apos;SSA_RELAX_COF1&apos;,
-&apos;SSA_SHFEAR_COF1&apos;,
-&apos;SSA_SHLOV_COF1&apos;,
-&apos;SSA_SUGG_COF1&apos;,
-&apos;SSA_TYTDR_COF1&apos;],
-&apos;STP&apos;:[
-&apos;NEUR_CONSREC_COF1&apos;,
-&apos;STP_COLRPT_COF1&apos;,
-&apos;STP_COL_COF1&apos;,
-&apos;STP_DOTRPT_COF1&apos;,
-&apos;STP_DOT_COF1&apos;,
-&apos;STP_WORRPT_COF1&apos;,
-&apos;STP_WOR_COF1&apos;]
-}
-
-var skip=[]
-if($(stage+&apos;QuestionnaireRun.version&apos;).any(&apos;4.0&apos;).value()) {
-  skip.push(&apos;STP&apos;)
-}
-
-var str = []
-for(var key in sections) {
-  if(-1!=skip.indexOf(key)) {
-    str.push(null)
-    continue
-  }
-  var rcount = 0
-  var qcount = 0
-  var arr = sections[key]
-  for(var i = 0; i &lt; arr.length; i++) {
-    var j = $(stage + arr[i])
-    if(j.isNull().value()) {
-      continue
-    }  
-    qcount++
-    rcount += j.any(&apos;REFUSED&apos;).value() ? 1 : 0
-  }
-  if(0 == qcount) {
-    str.push(null)
-  } else {
-    str.push(100.0*rcount/qcount)
-  }
-}
-newSequence(str, &apos;decimal&apos;)</attribute>
+          <attribute name="script" valueType="text">var stage = &apos;NeuropsychologicalBattery&apos;
+var action = $group(&apos;Admin.Action.stage&apos;,stage,&apos;Admin.Action.actionType&apos;).asSequence()
+var type = $group(&apos;Admin.Action.stage&apos;,stage,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
+  return i == action.indexOf(&apos;SKIP&apos;)
+  }).last().whenNull(&apos;&apos;).value().slice(14)
+  
+var arr = []
+for(var i=0; i &lt; $this(&apos;skip_name&apos;).size(); i++) {
+  arr.push($this(&apos;skip_name&apos;).valueAt(i).eq(type).value()?true:null)
+} 
+newSequence(arr,&apos;boolean&apos;)</attribute>
         </attributes>
       </variable>
     </variables>
   </variables>
   <created valueType="datetime">2019-05-01T10:10:11.546-04</created>
-  <updated valueType="datetime">2019-05-08T17:23:48.463-04</updated>
+  <updated valueType="datetime">2019-10-21T13:56:20.290-04</updated>
 </org.obiba.magma.views.View>

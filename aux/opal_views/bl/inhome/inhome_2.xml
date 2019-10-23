@@ -20,18 +20,6 @@
   $group(&apos;Admin.Action.stage&apos;,&apos;InHome_2&apos;,&apos;Admin.Action.user&apos;).asSequence().last()).lowerCase()</attribute>
         </attributes>
       </variable>
-      <variable name="skip" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
-        <attributes>
-          <attribute name="script" valueType="text">var action = $group(&apos;Admin.Action.stage&apos;,&apos;InHome_2&apos;,&apos;Admin.Action.actionType&apos;).asSequence()
-var res = $group(&apos;Admin.Action.stage&apos;,&apos;InHome_2&apos;,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
-  return i == action.indexOf(&apos;SKIP&apos;)
-  }).last()
-if(res.isNull().not().value()) {
-  res = newValue(res.value().slice(14),&apos;text&apos;)  
-}
-res</attribute>
-        </attributes>
-      </variable>
       <variable name="contraindicated" valueType="boolean" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">$group(&apos;clsa-inhome.Participants:Admin.StageInstance.stage&apos;,&apos;InHome_2&apos;,
@@ -81,7 +69,7 @@ if(c_seq.size().eq(e_seq.size()).value())
       if(undefined === arr[e_str[i]])
         arr[e_str[i]] = []
 
-      if(-1===arr[e_str[i]].indexOf(key_orig[key_lower]))
+      if(-1==arr[e_str[i]].indexOf(key_orig[key_lower]))
         arr[e_str[i]].push(key_orig[key_lower])
     }
 
@@ -106,181 +94,17 @@ res</attribute>
       <variable name="qnaire_complete" valueType="decimal" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">var stage = &apos;InHome_2&apos;
-var p = $(&apos;clsa-inhome.&apos; + stage + &apos;:QuestionnaireMetric.missingCount&apos;).asSequence()
-var q = $(&apos;clsa-inhome.&apos; + stage + &apos;:QuestionnaireMetric.questionCount&apos;).asSequence()
-var res = null
-if(p.isNull().or(q.isNull(),q.sum().eq(0)).not().value()) {
-  res = q.sum().minus(p.sum()).multiply(100).div(q.sum())
-}
-res</attribute>
+var p = $(&apos;clsa-inhome.&apos; + stage + &apos;:QuestionnaireMetric.missingCount&apos;).asSequence().sum()
+var q = $(&apos;clsa-inhome.&apos; + stage + &apos;:QuestionnaireMetric.questionCount&apos;).asSequence().sum()
+q.minus(p).multiply(100).div(q)</attribute>
         </attributes>
       </variable>
       <variable name="missing" valueType="boolean" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">$this(&apos;contraindicated&apos;).not().and(
-  $this(&apos;skip&apos;).isNull(),
+  $this(&apos;skip_value&apos;).trimmer().isNull(),
   $this(&apos;qnaire_complete&apos;).isNull(),
   $this(&apos;duration&apos;).isNull())</attribute>
-        </attributes>
-      </variable>
-      <variable name="refusal_name" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0" repeatable="true" occurrenceGroup="">
-        <attributes>
-          <attribute name="script" valueType="text">newSequence([&apos;ADL&apos;,&apos;COG&apos;,&apos;HRG&apos;,&apos;IAL&apos;,&apos;LSI&apos;,&apos;PSD&apos;,&apos;SLE&apos;,&apos;SLS&apos;,&apos;VIS&apos;,&apos;WHO&apos;],&apos;text&apos;)</attribute>
-        </attributes>
-      </variable>
-      <variable name="refusal_value" valueType="decimal" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0" repeatable="true" occurrenceGroup="">
-        <attributes>
-          <attribute name="script" valueType="text">var stage = &apos;clsa-inhome.InHome_2:&apos;
-var sections = {
-&apos;ADL&apos;:[
-&apos;ADL_ABLDR_COM&apos;,
-&apos;ADL_HPDR_COM&apos;,
-&apos;ADL_UNDR_COM&apos;,
-&apos;ADL_ABLFD&apos;,
-&apos;ADL_HPFD_COM&apos;,
-&apos;ADL_UNFD_COM&apos;,
-&apos;ADL_ABLAP_COM&apos;,
-&apos;ADL_HPAP_COM&apos;,
-&apos;ADL_UNAP_COM&apos;,
-&apos;ADL_ABLWK_COM&apos;,
-&apos;ADL_HPWK_COM&apos;,
-&apos;ADL_UNWK_COM&apos;,
-&apos;ADL_ABLBD_COM&apos;,
-&apos;ADL_HPBD_COM&apos;,
-&apos;ADL_UNBD_COM&apos;,
-&apos;ADL_ABLBT_COM&apos;,
-&apos;ADL_HPBT_COM&apos;,
-&apos;ADL_UNBT_COM&apos;,
-&apos;ADL_BATH_COM&apos;,
-&apos;ADL_INCNT_COM&apos;],
-&apos;COG&apos;:[
-&apos;COG_REC_COM&apos;,
-&apos;COG_RDY_COM&apos;,
-&apos;COG_WRDRPT_COM&apos;,
-&apos;COG_ANMLRPT_COM&apos;,
-&apos;COG_CNTRPT_COM&apos;,
-&apos;COG_CNTLST_COM&apos;,
-&apos;COG_ALPRPT_COM&apos;,
-&apos;COG_ALPLST_COM&apos;,
-&apos;COG_ALTRPT_COM&apos;,
-&apos;COG_ALTLST_COM&apos;],
-&apos;HRG&apos;:[
-&apos;HRG_HRG_COM&apos;,
-&apos;HRG_NOIS_COM&apos;,
-&apos;HRG_USE_COM&apos;,
-&apos;HRG_AID_COM&apos;],
-&apos;IAL&apos;:[
-&apos;IAL_ABLTEL_COM&apos;,
-&apos;IAL_HPTEL_COM&apos;,
-&apos;IAL_UNTEL_COM&apos;,
-&apos;IAL_ABLTRV_COM&apos;,
-&apos;IAL_HPTRV_COM&apos;,
-&apos;IAL_UNTRV_COM&apos;,
-&apos;IAL_ABLGRO_COM&apos;,
-&apos;IAL_HPGRO_COM&apos;,
-&apos;IAL_UNGRO_COM&apos;,
-&apos;IAL_ABLFD_COM&apos;,
-&apos;IAL_HPFD_COM&apos;,
-&apos;IAL_UNFD_COM&apos;,
-&apos;IAL_ABLWK_COM&apos;,
-&apos;IAL_HPWK_COM&apos;,
-&apos;IAL_UNWK_COM&apos;,
-&apos;IAL_ABLMED_COM&apos;,
-&apos;IAL_HPMED_COM&apos;,
-&apos;IAL_UNMED_COM&apos;,
-&apos;IAL_ABLMO_COM&apos;,
-&apos;IAL_HPMO_COM&apos;,
-&apos;IAL_UNMO_COM&apos;],
-&apos;LSI&apos;:[
-&apos;LSI_ROOM_COM&apos;,
-&apos;LSI_OUT_COM&apos;,
-&apos;LSI_NGHB_COM&apos;,
-&apos;LSI_TOWN_COM&apos;,
-&apos;LSI_FAR_COM&apos;,
-&apos;LSI_RMFQ_COM&apos;,
-&apos;LSI_OUTFQ_COM&apos;,
-&apos;LSI_NGHBFQ_COM&apos;,
-&apos;LSI_TWNFQ_COM&apos;,
-&apos;LSI_FARFQ_COM&apos;,
-&apos;LSI_RMAID_COM&apos;,
-&apos;LSI_OUTAID_COM&apos;,
-&apos;LSI_NGHBAID_COM&apos;,
-&apos;LSI_TWNAID_COM&apos;,
-&apos;LSI_FARAID_COM&apos;],
-&apos;PSD&apos;:[
-&apos;PSD_NGHTM_COM&apos;,
-&apos;PSD_AVOID_COM&apos;,
-&apos;PSD_GUARD_COM&apos;,
-&apos;PSD_DETACH_COM&apos;],
-&apos;SLE&apos;:[
-&apos;SLE_QLTY_COM&apos;,
-&apos;SLE_HOUR_COM&apos;,
-&apos;SLE_30MIN_COM&apos;,
-&apos;SLE_30DUR_COM&apos;,
-&apos;SLE_30INTRF_COM&apos;,
-&apos;SLE_MIDFQ_COM&apos;,
-&apos;SLE_MIDDUR_COM&apos;,
-&apos;SLE_MIDINTRF_COM&apos;,
-&apos;SLE_STAYFQ_COM&apos;,
-&apos;SLE_STAYDUR_COM&apos;,
-&apos;SLE_STAYINTRF_COM&apos;,
-&apos;SLE_DREAM_COM&apos;,
-&apos;SLE_DRMDUR_COM&apos;,
-&apos;SLE_LEGS_COM&apos;,
-&apos;SLE_LGURG_COM&apos;,
-&apos;SLE_LGDUR_COM&apos;,
-&apos;SLE_LGFQ_COM&apos;,
-&apos;SLE_LGIMPR_COM&apos;,
-&apos;SLE_LGEVE_COM&apos;],
-&apos;SLS&apos;:[
-&apos;SLS_LIFE_COM&apos;,
-&apos;SLS_LIFENEG_COM&apos;,
-&apos;SLS_LIFEPOS_COM&apos;,
-&apos;SLS_COND_COM&apos;,
-&apos;SLS_CONDNEG_COM&apos;,
-&apos;SLS_CONDPOS_COM&apos;,
-&apos;SLS_SATS_COM&apos;,
-&apos;SLS_SATSNEG_COM&apos;,
-&apos;SLS_SATSPOS_COM&apos;,
-&apos;SLS_IMP_COM&apos;,
-&apos;SLS_IMPNEG_COM&apos;,
-&apos;SLS_IMPPOS_COM&apos;,
-&apos;SLS_OVER_COM&apos;,
-&apos;SLS_OVERNEG_COM&apos;,
-&apos;SLS_OVERPOS_COM&apos;],
-&apos;VIS&apos;:[
-&apos;VIS_SGHT_COM&apos;,
-&apos;VIS_AID_COM&apos;,
-&apos;VIS_USE_COM&apos;],
-&apos;WHO&apos;:[
-&apos;WHO_MENOP_COM&apos;,
-&apos;WHO_MPAG_COM&apos;,
-&apos;WHO_HRT_COM&apos;,
-&apos;WHO_TYPE_COM&apos;,
-&apos;WHO_HRTAG_COM&apos;,
-&apos;WHO_HRTDR_COM&apos;]
-}
-
-var str = []
-for(var key in sections) {
-  var rcount = 0
-  var qcount = 0
-  var arr = sections[key]
-  for(var i = 0; i &lt; arr.length; i++) {
-    var j = $(stage + arr[i])
-    if(j.isNull().value()) {
-      continue
-    }  
-    qcount++
-    rcount += j.any(&apos;REFUSED&apos;).value() ? 1 : 0
-  }
-  if(0 == qcount) {
-    str.push(null)
-  } else {
-    str.push(100.0*rcount/qcount)
-  }
-}
-newSequence(str, &apos;decimal&apos;)</attribute>
         </attributes>
       </variable>
       <variable name="duration_value" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0" repeatable="true" occurrenceGroup="">
@@ -298,7 +122,9 @@ if($this(&apos;duration&apos;).isNull().not().value()) {
         function(v, k) {
           return list.valueAt(i).eq(section.valueAt(k))
         }
-      ).asSequence().sum()
+      ).asSequence().filter(function(v) {
+        return v.ge(0)
+      }).sum()
     )
   }
   res = newSequence(str, &apos;integer&apos;)
@@ -334,8 +160,31 @@ res</attribute>
           <attribute name="script" valueType="text">newSequence([&apos;ADL&apos;,&apos;COG&apos;,&apos;HRG&apos;,&apos;IAL&apos;,&apos;LSI&apos;,&apos;PSD&apos;,&apos;SLE&apos;,&apos;SLS&apos;,&apos;VIS&apos;,&apos;WHO&apos;],&apos;text&apos;)</attribute>
         </attributes>
       </variable>
+      <variable name="skip_name" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0" repeatable="true" occurrenceGroup="">
+        <attributes>
+          <attribute name="script" valueType="text">newSequence([&apos;InterviewerDecision&apos;,
+&apos;ParticipantDecision&apos;,
+&apos;SeeComment&apos;,
+&apos;TechnicalProblem&apos;],&apos;text&apos;)</attribute>
+        </attributes>
+      </variable>
+      <variable name="skip_value" valueType="boolean" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0" repeatable="true" occurrenceGroup="">
+        <attributes>
+          <attribute name="script" valueType="text">var stage = &apos;InHome_2&apos;
+var action = $group(&apos;Admin.Action.stage&apos;,stage,&apos;Admin.Action.actionType&apos;).asSequence()
+var type = $group(&apos;Admin.Action.stage&apos;,stage,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
+  return i == action.indexOf(&apos;SKIP&apos;)
+  }).last().whenNull(&apos;&apos;).value().slice(14)
+  
+var arr = []
+for(var i=0; i &lt; $this(&apos;skip_name&apos;).size(); i++) {
+  arr.push($this(&apos;skip_name&apos;).valueAt(i).eq(type).value()?true:null)
+} 
+newSequence(arr,&apos;boolean&apos;)</attribute>
+        </attributes>
+      </variable>
     </variables>
   </variables>
   <created valueType="datetime">2019-04-10T16:29:03.609-04</created>
-  <updated valueType="datetime">2019-05-08T16:26:56.183-04</updated>
+  <updated valueType="datetime">2019-10-21T13:17:34.181-04</updated>
 </org.obiba.magma.views.View>

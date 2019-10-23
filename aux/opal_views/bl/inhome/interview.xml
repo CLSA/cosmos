@@ -79,7 +79,9 @@ for(var i = 0; i &lt; unique.size(); i++  ) {
     v = $group(
       &apos;clsa-inhome.Participants:Admin.StageInstance.stage&apos;,
       stage,
-      &apos;Admin.StageInstance.duration&apos;).asSequence()
+      &apos;Admin.StageInstance.duration&apos;).asSequence().filter(function(v) {
+        return v.ge(0)
+      })
   }
   if(null == v) continue
   t = t.plus(v.sum())
@@ -93,5 +95,5 @@ res</attribute>
     </variables>
   </variables>
   <created valueType="datetime">2019-04-24T10:24:37.227-04</created>
-  <updated valueType="datetime">2019-05-09T11:46:16.616-04</updated>
+  <updated valueType="datetime">2019-08-07T14:13:50.041-04</updated>
 </org.obiba.magma.views.View>

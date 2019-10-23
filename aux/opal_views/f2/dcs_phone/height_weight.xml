@@ -23,19 +23,6 @@
   $group(&apos;Admin.Action.stage&apos;,&apos;HeightWeight&apos;,&apos;Admin.Action.user&apos;).asSequence().last()).lowerCase()</attribute>
         </attributes>
       </variable>
-      <variable name="skip" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
-        <attributes>
-          <attribute name="script" valueType="text">var stage = &apos;HeightWeight&apos;
-var action = $group(&apos;Admin.Action.stage&apos;,stage,&apos;Admin.Action.actionType&apos;).asSequence()
-var res = $group(&apos;Admin.Action.stage&apos;,stage,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
-  return i == action.indexOf(&apos;SKIP&apos;)
-  }).last()
-if(res.isNull().not().value()) {
-  res = newValue(res.value().slice(14),&apos;text&apos;)  
-}
-res</attribute>
-        </attributes>
-      </variable>
       <variable name="contraindicated" valueType="boolean" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,&apos;HeightWeight&apos;,
@@ -85,7 +72,7 @@ if(c_seq.size().eq(e_seq.size()).value())
       if(undefined === arr[e_str[i]])
         arr[e_str[i]] = []
 
-      if(-1===arr[e_str[i]].indexOf(key_orig[key_lower]))
+      if(-1==arr[e_str[i]].indexOf(key_orig[key_lower]))
         arr[e_str[i]].push(key_orig[key_lower])
     }
 
@@ -128,27 +115,62 @@ res</attribute>
       </variable>
       <variable name="qnaire_complete" valueType="decimal" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
-          <attribute name="script" valueType="text">var p = $(&apos;clsa-dcs-f2.HeightWeight:HEIGHT&apos;)
-var q = $(&apos;clsa-dcs-f2.HeightWeight:WEIGHT&apos;)
-var res = null
-if(p.isNull().or(q.isNull()).not().value()) {
-  var sum = p.isNull().not().value() ? 1 : 0
-  sum += q.isNull().not().value() ? 1 : 0
-  res = newValue(50.0*sum,&apos;decimal&apos;)
-}
-res</attribute>
+          <attribute name="script" valueType="text">newSequence(
+  [$(&apos;clsa-dcs-f2.HeightWeight:HEIGHT&apos;).gt(0),$(&apos;clsa-dcs-f2.HeightWeight:WEIGHT&apos;).gt(0)],&apos;boolean&apos;).trimmer().size().multiply(50)</attribute>
         </attributes>
       </variable>
       <variable name="missing" valueType="boolean" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">$this(&apos;contraindicated&apos;).not().and(
-  $this(&apos;skip&apos;).isNull(),
+  $this(&apos;skip_value&apos;).trimmer().isNull(),
   $this(&apos;qnaire_complete&apos;).isNull(),
   $this(&apos;duration&apos;).isNull())</attribute>
+        </attributes>
+      </variable>
+      <variable name="height_change" valueType="decimal" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var prev = $(&apos;clsa-dcs-f1.HeightWeight:HEIGHT&apos;).whenNull($(&apos;clsa-dcs-f1.StandingHeight:RES_HEIGHT&apos;))
+var curr = $(&apos;clsa-dcs-f2.HeightWeight:HEIGHT&apos;)
+var res = null
+if(prev.isNull().not().and(curr.isNull().not())) {
+  res = curr.minus(prev)
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="skip_name" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0" repeatable="true" occurrenceGroup="">
+        <attributes>
+          <attribute name="script" valueType="text">newSequence([&apos;InterviewerDecision&apos;,
+&apos;InterviewerLackOfTime&apos;,
+&apos;InterviewerRefusedHealthSafety&apos;,
+&apos;Other&apos;,
+&apos;ParticipantDecision&apos;,
+&apos;ParticipantLackOfTime&apos;,
+&apos;ParticipantRefusedHealthSafety&apos;,
+&apos;ParticipantRefusedOther&apos;,
+&apos;ParticipantUnableToComplete&apos;,
+&apos;SeeComment&apos;,
+&apos;TechnicalIssue&apos;,
+&apos;TechnicalProblem&apos;],&apos;text&apos;)</attribute>
+        </attributes>
+      </variable>
+      <variable name="skip_value" valueType="boolean" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0" repeatable="true" occurrenceGroup="">
+        <attributes>
+          <attribute name="script" valueType="text">var stage = &apos;Heightweight&apos;
+var action = $group(&apos;Admin.Action.stage&apos;,stage,&apos;Admin.Action.actionType&apos;).asSequence()
+var type = $group(&apos;Admin.Action.stage&apos;,stage,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
+  return i == action.indexOf(&apos;SKIP&apos;)
+  }).last().whenNull(&apos;&apos;).value().slice(14)
+  
+var arr = []
+for(var i=0; i &lt; $this(&apos;skip_name&apos;).size(); i++) {
+  arr.push($this(&apos;skip_name&apos;).valueAt(i).eq(type).value()?true:null)
+} 
+newSequence(arr,&apos;boolean&apos;)</attribute>
         </attributes>
       </variable>
     </variables>
   </variables>
   <created valueType="datetime">2019-04-11T14:44:40.291-04</created>
-  <updated valueType="datetime">2019-04-30T15:48:15.750-04</updated>
+  <updated valueType="datetime">2019-10-21T13:44:10.757-04</updated>
 </org.obiba.magma.views.View>

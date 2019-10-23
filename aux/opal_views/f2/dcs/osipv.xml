@@ -23,19 +23,6 @@
   $group(&apos;Admin.Action.stage&apos;,&apos;OSIPV&apos;,&apos;Admin.Action.user&apos;).asSequence().last()).lowerCase()</attribute>
         </attributes>
       </variable>
-      <variable name="skip" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
-        <attributes>
-          <attribute name="script" valueType="text">var stage = &apos;OSIPV&apos;
-var action = $group(&apos;Admin.Action.stage&apos;,stage,&apos;Admin.Action.actionType&apos;).asSequence()
-var res = $group(&apos;Admin.Action.stage&apos;,stage,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
-  return i == action.indexOf(&apos;SKIP&apos;)
-  }).last()
-if(res.isNull().not().value()) {
-  res = newValue(res.value().slice(14),&apos;text&apos;)  
-}
-res</attribute>
-        </attributes>
-      </variable>
       <variable name="contraindicated" valueType="boolean" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f2.Participants:Admin.StageInstance.stage&apos;,&apos;OSIPV&apos;,
@@ -85,7 +72,7 @@ if(c_seq.size().eq(e_seq.size()).value())
       if(undefined === arr[e_str[i]])
         arr[e_str[i]] = []
 
-      if(-1===arr[e_str[i]].indexOf(key_orig[key_lower]))
+      if(-1==arr[e_str[i]].indexOf(key_orig[key_lower]))
         arr[e_str[i]].push(key_orig[key_lower])
     }
 
@@ -110,19 +97,15 @@ res</attribute>
       <variable name="qnaire_complete" valueType="decimal" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">var stage = &apos;OSIPV&apos;
-var p = $(&apos;clsa-dcs-f2.&apos; + stage + &apos;:QuestionnaireMetric.missingCount&apos;).asSequence()
-var q = $(&apos;clsa-dcs-f2.&apos; + stage + &apos;:QuestionnaireMetric.questionCount&apos;).asSequence()
-var res = null
-if(p.isNull().or(q.isNull(),q.sum().eq(0)).not().value()) {
-  res = q.sum().minus(p.sum()).multiply(100).div(q.sum())
-}
-res</attribute>
+var p = $(&apos;clsa-dcs-f2.&apos; + stage + &apos;:QuestionnaireMetric.missingCount&apos;).asSequence().sum()
+var q = $(&apos;clsa-dcs-f2.&apos; + stage + &apos;:QuestionnaireMetric.questionCount&apos;).asSequence().sum()
+q.minus(p).multiply(100).div(q)</attribute>
         </attributes>
       </variable>
       <variable name="missing" valueType="boolean" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
         <attributes>
           <attribute name="script" valueType="text">$this(&apos;contraindicated&apos;).not().and(
-  $this(&apos;skip&apos;).isNull(),
+  $this(&apos;skip_value&apos;).trimmer().isNull(),
   $this(&apos;qnaire_complete&apos;).isNull(),
   $this(&apos;duration&apos;).isNull())</attribute>
         </attributes>
@@ -166,7 +149,9 @@ if($this(&apos;duration&apos;).isNull().not().value()) {
         function(v, k) {
           return list.valueAt(i).eq(section.valueAt(k))
         }
-      ).asSequence().sum()
+      ).asSequence().filter(function(v) {
+        return v.ge(0)
+      }).sum()
     )
   }
   res = newSequence(str, &apos;integer&apos;) 
@@ -178,400 +163,39 @@ if($this(&apos;duration&apos;).isNull().not().value()) {
 res</attribute>
         </attributes>
       </variable>
-      <variable name="refusal_name" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0" repeatable="true" occurrenceGroup="">
+      <variable name="skip_name" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0" repeatable="true" occurrenceGroup="">
         <attributes>
-          <attribute name="script" valueType="text">newSequence([&apos;IPV&apos;,&apos;ORH&apos;,&apos;PSY_PHY_FIN&apos;,&apos;SLE&apos;], &apos;text&apos;)</attribute>
+          <attribute name="script" valueType="text">newSequence([&apos;InterviewerDecision&apos;,
+&apos;InterviewerLackOfTime&apos;,
+&apos;InterviewerRefusedHealthSafety&apos;,
+&apos;Other&apos;,
+&apos;ParticipantDecision&apos;,
+&apos;ParticipantLackOfTime&apos;,
+&apos;ParticipantRefusedHealthSafety&apos;,
+&apos;ParticipantRefusedOther&apos;,
+&apos;ParticipantUnableToComplete&apos;,
+&apos;SeeComment&apos;,
+&apos;TechnicalIssue&apos;,
+&apos;TechnicalProblem&apos;],&apos;text&apos;)</attribute>
         </attributes>
       </variable>
-      <variable name="refusal_value" valueType="decimal" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0" repeatable="true" occurrenceGroup="">
+      <variable name="skip_value" valueType="boolean" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0" repeatable="true" occurrenceGroup="">
         <attributes>
-          <attribute name="script" valueType="text">var stage = &apos;clsa-dcs-f2.OSIPV:&apos;
-var sections={
-&apos;IPV&apos;:[
-&apos;IPV_ADULTINT_COF2&apos;,
-&apos;IPV_RELATN_COF2&apos;,
-&apos;IPV_AFRAID_COF2&apos;,
-&apos;IPV_PASTFRAID_COF2&apos;,
-&apos;IPV_BLAME_COF2&apos;,
-&apos;IPV_BLAMEAMT_COF2&apos;,
-&apos;IPV_SHOOK_COF2&apos;,
-&apos;IPV_SHOOKAMT_COF2&apos;,
-&apos;IPV_CRAZY_COF2&apos;,
-&apos;IPV_CRAZYAMT_COF2&apos;,
-&apos;IPV_THREAT_COF2&apos;,
-&apos;IPV_THREATAMT_COF2&apos;,
-&apos;IPV_PERFORM_COF2&apos;,
-&apos;IPV_PERFORMAMT_COF2&apos;,
-&apos;IPV_FOLLOW_COF2&apos;,
-&apos;IPV_FOLLOWAMT_COF2&apos;,
-&apos;IPV_HARM_COF2&apos;,
-&apos;IPV_HARMAMT_COF2&apos;,
-&apos;IPV_CHOKE_COF2&apos;,
-&apos;IPV_CHOKEAMT_COF2&apos;,
-&apos;IPV_FORCE_COF2&apos;,
-&apos;IPV_FORCEAMT_COF2&apos;,
-&apos;IPV_HARASS_COF2&apos;,
-&apos;IPV_HARASSAMT_COF2&apos;,
-&apos;IPV_STUPID_COF2&apos;,
-&apos;IPV_STUPIDAMT_COF2&apos;,
-&apos;IPV_HIT_COF2&apos;,
-&apos;IPV_HITAMT_COF2&apos;,
-&apos;IPV_KEPT_COF2&apos;,
-&apos;IPV_KEPTAMT_COF2&apos;,
-&apos;IPV_LOCK_COF2&apos;,
-&apos;IPV_LOCKAMT_COF2&apos;,
-&apos;IPV_ACCESS_COF2&apos;,
-&apos;IPV_ACCESSAMT_COF2&apos;],
-&apos;ORH&apos;:[
-&apos;ORH_HLTH_COF2&apos;,
-&apos;ORH_TEETH_COF2&apos;,
-&apos;ORH_TEETHCHANGE_COF2&apos;,
-&apos;ORH_TETH20_COF2&apos;,
-&apos;ORH_DENT_COF2&apos;,
-&apos;ORH_DNUSE_COF2&apos;,
-&apos;ORH_UNCEAT_COF2&apos;,
-&apos;ORH_EXP_DNB_COF2&apos;,
-&apos;ORH_EXP_DNBTTH_COF2&apos;,
-&apos;ORH_DNVST_COF2&apos;,
-&apos;ORH_WYNDN_COF2&apos;,
-&apos;ORH_TYPINS_COF2&apos;,
-&apos;ORH_COST_COF2&apos;,
-&apos;ORH_PRBHT_COF2&apos;,
-&apos;ORH_BRUSDN_COF2&apos;,
-&apos;ORH_WHO_COF2&apos;,
-&apos;ORH_OFTN_COF2&apos;,
-&apos;ORH_FLSFQ_COF2&apos;],
-&apos;PSY_PHY_FIN&apos;:[
-&apos;PSY_CRT_COF2&apos;,
-&apos;PSY_OFTNCRT_COF2&apos;,
-&apos;PSY_WHOCRT_COF2&apos;,
-&apos;PSY_SEXCRT_COF2&apos;,
-&apos;PSY_LIVCRT_COF2&apos;,
-&apos;PSY_SEXCRT2_PRT_COF2&apos;,
-&apos;PSY_SEXCRT2_SIB_COF2&apos;,
-&apos;PSY_SEXCRT2_CHD_COF2&apos;,
-&apos;PSY_SEXCRT2_GRC_COF2&apos;,
-&apos;PSY_SEXCRT2_FML_COF2&apos;,
-&apos;PSY_SEXCRT2_FRD_COF2&apos;,
-&apos;PSY_SEXCRT2_CGV_COF2&apos;,
-&apos;PSY_SEXCRT2_OT_COF2&apos;,
-&apos;PSY_LIVCRT2_PRT_COF2&apos;,
-&apos;PSY_LIVCRT2_SIB_COF2&apos;,
-&apos;PSY_LIVCRT2_CHD_COF2&apos;,
-&apos;PSY_LIVCRT2_GRC_COF2&apos;,
-&apos;PSY_LIVCRT2_FML_COF2&apos;,
-&apos;PSY_LIVCRT2_FRD_COF2&apos;,
-&apos;PSY_LIVCRT2_CGV_COF2&apos;,
-&apos;PSY_LIVCRT2_OT_COF2&apos;,
-&apos;PSY_ISU_COF2&apos;,
-&apos;PSY_OFTNISU_COF2&apos;,
-&apos;PSY_WHOISU_COF2&apos;,
-&apos;PSY_SEXISU_COF2&apos;,
-&apos;PSY_LIVISU_COF2&apos;,
-&apos;PSY_SEXISU2_PAR_COF2&apos;,
-&apos;PSY_SEXISU2_SIB_COF2&apos;,
-&apos;PSY_SEXISU2_CHILD_COF2&apos;,
-&apos;PSY_SEXISU2_GRAN_COF2&apos;,
-&apos;PSY_SEXISU2_FAM_COF2&apos;,
-&apos;PSY_SEXISU2_FRI_COF2&apos;,
-&apos;PSY_SEXISU2_PAID_COF2&apos;,
-&apos;PSY_SEXISU2_OTSP_COF2&apos;,
-&apos;PSY_LIVISU2_PAR_COF2&apos;,
-&apos;PSY_LIVISU2_SIB_COF2&apos;,
-&apos;PSY_LIVISU2_CHILD_COF2&apos;,
-&apos;PSY_LIVISU2_GRAND_COF2&apos;,
-&apos;PSY_LIVISU2_FAM_COF2&apos;,
-&apos;PSY_LIVISU2_FRI_COF2&apos;,
-&apos;PSY_LIVISU2_PAID_COF2&apos;,
-&apos;PSY_LIVISU2_OTSP_COF2&apos;,
-&apos;PSY_THR_COF2&apos;,
-&apos;PSY_OFTNTHR_COF2&apos;,
-&apos;PSY_WHOTHR_COF2&apos;,
-&apos;PSY_SEXTHR_COF2&apos;,
-&apos;PSY_LIVTHR_COF2&apos;,
-&apos;PSY_SEXTHR2_PAR_COF2&apos;,
-&apos;PSY_SEXTHR2_SIB_COF2&apos;,
-&apos;PSY_SEXTHR2_CHILD_COF2&apos;,
-&apos;PSY_SEXTHR2_GRAND_COF2&apos;,
-&apos;PSY_SEXTHR2_FAM_COF2&apos;,
-&apos;PSY_SEXTHR2_FRI_COF2&apos;,
-&apos;PSY_SEXTHR2_PAID_COF2&apos;,
-&apos;PSY_SEXTHR2_OTSP_COF2&apos;,
-&apos;PSY_LIVTHR2_PAR_COF2&apos;,
-&apos;PSY_LIVTHR2_SIB_COF2&apos;,
-&apos;PSY_LIVTHR2_CHILD_COF2&apos;,
-&apos;PSY_LIVTHR2_GRAN_COF2&apos;,
-&apos;PSY_LIVTHR2_FAM_COF2&apos;,
-&apos;PSY_LIVTHR2_FRI_COF2&apos;,
-&apos;PSY_LIVTHR2_PAID_COF2&apos;,
-&apos;PSY_LIVTHR2_OTSP_COF2&apos;,
-&apos;PSY_IGN_COF2&apos;,
-&apos;PSY_OFTNIGN_COF2&apos;,
-&apos;PSY_WHOIGN_COF2&apos;,
-&apos;PSY_SEXIGN_COF2&apos;,
-&apos;PSY_LIVNIGN_COF2&apos;,
-&apos;PSY_SEXIGN2_PAR_COF2&apos;,
-&apos;PSY_SEXIGN2_SIB_COF2&apos;,
-&apos;PSY_SEXIGN2_CHILD_COF2&apos;,
-&apos;PSY_SEXIGN2_GRAN_COF2&apos;,
-&apos;PSY_SEXIGN2_FAM_COF2&apos;,
-&apos;PSY_SEXIGN2_FRI_COF2&apos;,
-&apos;PSY_SEXIGN2_PAID_COF2&apos;,
-&apos;PSY_SEXIGN2_OTSP_COF2&apos;,
-&apos;PSY_LIVIGN2_PAR_COF2&apos;,
-&apos;PSY_LIVNIGN2_SIB_COF2&apos;,
-&apos;PSY_LIVNIGN2_CHILD_COF2&apos;,
-&apos;PSY_LIVNIGN2_GRAN_COF2&apos;,
-&apos;PSY_LIVNIGN2_FAM_COF2&apos;,
-&apos;PSY_LIVNIGN2_FRI_COF2&apos;,
-&apos;PSY_LIVNIGN2_PAID_COF2&apos;,
-&apos;PSY_LIVNIGN2_OTSP_COF2&apos;,
-&apos;PHY_PUSH_COF2&apos;,
-&apos;PHY_OFTNPUSH_COF2&apos;,
-&apos;PHY_WHOPUSH_COF2&apos;,
-&apos;PHY_SEXPUSH_COF2&apos;,
-&apos;PHY_LIVPUSH_COF2&apos;,
-&apos;PHY_SEXPUSH2_PAR_COF2&apos;,
-&apos;PHY_SEXPUSH2_SIB_COF2&apos;,
-&apos;PHY_SEXPUSH2_CHILD_COF2&apos;,
-&apos;PHY_SEXPUSH2_GRAN_COF2&apos;,
-&apos;PHY_SEXPUSH2_FAM_COF2&apos;,
-&apos;PHY_SEXPUSH2_FRI_COF2&apos;,
-&apos;PHY_SEXPUSH2_PAID_COF2&apos;,
-&apos;PHY_SEXPUSH2_OTSP_COF2&apos;,
-&apos;PHY_LIVPUSH2_PAR_COF2&apos;,
-&apos;PHY_LIVPUSH2_SIB_COF2&apos;,
-&apos;PHY_LIVPUSH2_CHILD_COF2&apos;,
-&apos;PHY_LIVPUSH2_GRAN_COF2&apos;,
-&apos;PHY_LIVPUSH2_FAM_COF2&apos;,
-&apos;PHY_LIVPUSH2_FRI_COF2&apos;,
-&apos;PHY_LIVPUSH2_PAID_COF2&apos;,
-&apos;PHY_LIVPUSH2_OTSP_COF2&apos;,
-&apos;PHY_THRN_COF2&apos;,
-&apos;PHY_OFTNTHRN_COF2&apos;,
-&apos;PHY_WHOTHRN_COF2&apos;,
-&apos;PHY_SEXTHRN_COF2&apos;,
-&apos;PHY_LIVTHRN_COF2&apos;,
-&apos;PHY_SEXTHRN2_PAR_COF2&apos;,
-&apos;PHY_SEXTHRN2_SIB_COF2&apos;,
-&apos;PHY_SEXTHRN2_CHILD_COF2&apos;,
-&apos;PHY_SEXTHRN2_GRAN_COF2&apos;,
-&apos;PHY_SEXTHRN2_FAM_COF2&apos;,
-&apos;PHY_SEXTHRN2_FRI_COF2&apos;,
-&apos;PHY_SEXTHRN2_PAID_COF2&apos;,
-&apos;PHY_SEXTHRN2_OTSP_COF2&apos;,
-&apos;PHY_LIVTHRN2_PAR_COF2&apos;,
-&apos;PHY_LIVTHRN2_SIB_COF2&apos;,
-&apos;PHY_LIVTHRN2_CHILD_COF2&apos;,
-&apos;PHY_LIVTHRN2_GRAN_COF2&apos;,
-&apos;PHY_LIVTHRN2_FAM_COF2&apos;,
-&apos;PHY_LIVTHRN2_FRI_COF2&apos;,
-&apos;PHY_LIVTHRN2_PAID_COF2&apos;,
-&apos;PHY_LIVTHRN2_OTHSP_COF2&apos;,
-&apos;PHY_HIT_COF2&apos;,
-&apos;PHY_OFTNHIT_COF2&apos;,
-&apos;PHY_WHOHIT_COF2&apos;,
-&apos;PHY_SEXHIT_COF2&apos;,
-&apos;PHY_LIVHIT_COF2&apos;,
-&apos;PHY_SEXHIT2_PAR_COF2&apos;,
-&apos;PHY_SEXHIT2_SIB_COF2&apos;,
-&apos;PHY_SEXHIT2_CHILD_COF2&apos;,
-&apos;PHY_SEXHIT2_GRAN_COF2&apos;,
-&apos;PHY_SEXHIT2_FAM_COF2&apos;,
-&apos;PHY_SEXHIT2_FRI_COF2&apos;,
-&apos;PHY_SEXHIT2_PAID_COF2&apos;,
-&apos;PHY_SEXHIT2_OTSP_COF2&apos;,
-&apos;PHY_LIVHIT2_PAR_COF2&apos;,
-&apos;PHY_LIVHIT2_SIB_COF2&apos;,
-&apos;PHY_LIVHIT2_CHILD_COF2&apos;,
-&apos;PHY_LIVHIT2_GRAN_COF2&apos;,
-&apos;PHY_LIVHIT2_FAM_COF2&apos;,
-&apos;PHY_LIVHIT2_FRI_COF2&apos;,
-&apos;PHY_LIVHIT2_PAID_COF2&apos;,
-&apos;PHY_LIVHIT2_OTSP_COF2&apos;,
-&apos;PHY_THT_COF2&apos;,
-&apos;PHY_OFTNTHT_COF2&apos;,
-&apos;PHY_WHOTHT_COF2&apos;,
-&apos;PHY_SEXTHT_COF2&apos;,
-&apos;PHY_LIVTHT_COF2&apos;,
-&apos;PHY_SEXTHT2_PAR_COF2&apos;,
-&apos;PHY_SEXTHT2_SIB_COF2&apos;,
-&apos;PHY_SEXTHT2_CHILD_COF2&apos;,
-&apos;PHY_SEXTHT2_GRAN_COF2&apos;,
-&apos;PHY_SEXTHT2_FAM_COF2&apos;,
-&apos;PHY_SEXTHT2_FRI_COF2&apos;,
-&apos;PHY_SEXTHT2_PAID_COF2&apos;,
-&apos;PHY_SEXTHT2_OTSP_COF2&apos;,
-&apos;PHY_LIVTHT2_PAR_COF2&apos;,
-&apos;PHY_LIVTHT2_SIB_COF2&apos;,
-&apos;PHY_LIVTHT2_CHILD_COF2&apos;,
-&apos;PHY_LIVTHT2_GRAN_COF2&apos;,
-&apos;PHY_LIVTHT2_FAM_COF2&apos;,
-&apos;PHY_LIVTHT2_FRI_COF2&apos;,
-&apos;PHY_LIVTHT2_PAID_COF2&apos;,
-&apos;PHY_LIVTHT2_OTSP_COF2&apos;,
-&apos;PHY_CHK_COF2&apos;,
-&apos;PHY_OFTNCHK_COF2&apos;,
-&apos;PHY_WHOCHK_COF2&apos;,
-&apos;PHY_SEXCHK_COF2&apos;,
-&apos;PHY_LIVCHK_COF2&apos;,
-&apos;PHY_SEXCHK2_PAR_COF2&apos;,
-&apos;PHY_SEXCHK2_SIB_COF2&apos;,
-&apos;PHY_SEXCHK2_CHILD_COF2&apos;,
-&apos;PHY_SEXCHK2_GRAN_COF2&apos;,
-&apos;PHY_SEXCHK2_FAM_COF2&apos;,
-&apos;PHY_SEXCHK2_FRI_COF2&apos;,
-&apos;PHY_SEXCHK2_PAID_COF2&apos;,
-&apos;PHY_SEXCHK2_OTSP_COF2&apos;,
-&apos;PHY_LIVCHK2_PAR_COF2&apos;,
-&apos;PHY_LIVCHK2_SIB_COF2&apos;,
-&apos;PHY_LIVCHK2_CHILD_COF2&apos;,
-&apos;PHY_LIVCHK2_GRAN_COF2&apos;,
-&apos;PHY_LIVCHK2_FAM_COF2&apos;,
-&apos;PHY_LIVCHK2_FRI_COF2&apos;,
-&apos;PHY_LIVCHK2_PAID_COF2&apos;,
-&apos;PHY_LIVCHK2_OTSP_COF2&apos;,
-&apos;PHY_WPN_COF2&apos;,
-&apos;PHY_OFTNWPN_COF2&apos;,
-&apos;PHY_WHOWPN_COF2&apos;,
-&apos;PHY_SEXWPN_COF2&apos;,
-&apos;PHY_LIVWPN_COF2&apos;,
-&apos;PHY_SEXWPN2_PAR_COF2&apos;,
-&apos;PHY_SEXWPN2_SIB_COF2&apos;,
-&apos;PHY_SEXWPN2_CHILD_COF2&apos;,
-&apos;PHY_SEXWPN2_GRAN_COF2&apos;,
-&apos;PHY_SEXWPN2_FAM_COF2&apos;,
-&apos;PHY_SEXWPN2_FRI_COF2&apos;,
-&apos;PHY_SEXWPN2_PAID_COF2&apos;,
-&apos;PHY_SEXWPN2_OTSP_COF2&apos;,
-&apos;PHY_LIVWPN2_PAR_COF2&apos;,
-&apos;PHY_LIVWPN2_SIB_COF2&apos;,
-&apos;PHY_LIVWPN2_CHILD_COF2&apos;,
-&apos;PHY_LIVWPN2_GRAN_COF2&apos;,
-&apos;PHY_LIVWPN2_FAM_COF2&apos;,
-&apos;PHY_LIVWPN2_FRI_COF2&apos;,
-&apos;PHY_LIVWPN2_PAID_COF2&apos;,
-&apos;PHY_LIVWPN2_OTSP_COF2&apos;,
-&apos;FIN_MNY_COF2&apos;,
-&apos;FIN_OFTN_COF2&apos;,
-&apos;FIN_WHOMNY_COF2&apos;,
-&apos;FIN_SEXMNY_COF2&apos;,
-&apos;FIN_LIVMNY_COF2&apos;,
-&apos;FIN_SEXMNY2_PAR_COF2&apos;,
-&apos;FIN_SEXMNY2_SIB_COF2&apos;,
-&apos;FIN_SEXMNY2_CHILD_COF2&apos;,
-&apos;FIN_SEXMNY2_GRAN_COF2&apos;,
-&apos;FIN_SEXMNY2_FAM_COF2&apos;,
-&apos;FIN_SEXMNY2_FRI_COF2&apos;,
-&apos;FIN_SEXMNY2_PAID_COF2&apos;,
-&apos;FIN_SEXMNY2_OTSP_COF2&apos;,
-&apos;FIN_LIVMNY2_PAR_COF2&apos;,
-&apos;FIN_LIVMNY2_SIB_COF2&apos;,
-&apos;FIN_LIVMNY2_CHILD_COF2&apos;,
-&apos;FIN_LIVMNY2_GRAN_COF2&apos;,
-&apos;FIN_LIVMNY2_FAM_COF2&apos;,
-&apos;FIN_LIVMNY2_FRI_COF2&apos;,
-&apos;FIN_LIVMNY2_PAID_COF2&apos;,
-&apos;FIN_LIVMNY2_OTSP_COF2&apos;,
-&apos;FIN_POS_COF2&apos;,
-&apos;FIN_OFTNPOS_COF2&apos;,
-&apos;FIN_WHOPOS_COF2&apos;,
-&apos;FIN_SEXPOS_COF2&apos;,
-&apos;FIN_LIVPOS_COF2&apos;,
-&apos;FIN_SEXPOS2_PAR_COF2&apos;,
-&apos;FIN_SEXPOS2_SIB_COF2&apos;,
-&apos;FIN_SEXPOS2_CHILD_COF2&apos;,
-&apos;FIN_SEXPOS2_GRAN_COF2&apos;,
-&apos;FIN_SEXPOS2_FAM_COF2&apos;,
-&apos;FIN_SEXPOS2_FRI_COF2&apos;,
-&apos;FIN_SEXPOS2_PAID_COF2&apos;,
-&apos;FIN_SEXPOS2_OTSP_COF2&apos;,
-&apos;FIN_LIVPOS2_PAR_COF2&apos;,
-&apos;FIN_LIVPOS2_SIB_COF2&apos;,
-&apos;FIN_LIVPOS2_CHILD_COF2&apos;,
-&apos;FIN_LIVPOS2_GRAN_COF2&apos;,
-&apos;FIN_LIVPOS2_FAM_COF2&apos;,
-&apos;FIN_LIVPOS2_FRI_COF2&apos;,
-&apos;FIN_LIVPOS2_PAID_COF2&apos;,
-&apos;FIN_LIVPOS2_OTSP_COF2&apos;,
-&apos;FIN_PRV_COF2&apos;,
-&apos;FIN_OFTNPRV_COF2&apos;,
-&apos;FIN_WHOPRV_COF2&apos;,
-&apos;FIN_SEXPRV_COF2&apos;,
-&apos;FIN_LIVPRV_COF2&apos;,
-&apos;FIN_SEXPRV2_PAR_COF2&apos;,
-&apos;FIN_SEXPRV2_SIB_COF2&apos;,
-&apos;FIN_SEXPRV2_CHILD_COF2&apos;,
-&apos;FIN_SEXPRV2_GRAN_COF2&apos;,
-&apos;FIN_SEXPRV2_FAM_COF2&apos;,
-&apos;FIN_SEXPRV2_FRI_COF2&apos;,
-&apos;FIN_SEXPRV2_PAID_COF2&apos;,
-&apos;FIN_SEXPRV2_OTSP_COF2&apos;,
-&apos;FIN_LIVPRV2_PAR_COF2&apos;,
-&apos;FIN_LIVPRV2_SIB_COF2&apos;,
-&apos;FIN_LIVPRV2_CHILD_COF2&apos;,
-&apos;FIN_LIVPRV2_GRAN_COF2&apos;,
-&apos;FIN_LIVPRV2_FAM_COF2&apos;,
-&apos;FIN_LIVPRV2_FRI_COF2&apos;,
-&apos;FIN_LIVPRV2_PAID_COF2&apos;,
-&apos;FIN_LIVPRV2_OTSP_COF2&apos;],
-&apos;SLE&apos;:[
-&apos;SLE_QLTY_COF2&apos;,
-&apos;SLS_HOUR_COF2&apos;,
-&apos;SLE_30MIN_COF2&apos;,
-&apos;SLE_30DUR_COF2&apos;,
-&apos;SLE_30INTRF_COF2&apos;,
-&apos;SLE_MIDFQ_COF2&apos;,
-&apos;SLE_MIDDUR_COF2&apos;,
-&apos;SLE_MIDINTRF_COF2&apos;,
-&apos;SLE_STAYFQ_COF2&apos;,
-&apos;SLE_STAYDUR_COF2&apos;,
-&apos;SLE_STAYINTRF_COF2&apos;,
-&apos;SLE_DREAM_COF2&apos;,
-&apos;SLE_DRMDUR_COF2&apos;,
-&apos;SLE_LEGS_COF2&apos;,
-&apos;SLE_LGURG_COF2&apos;,
-&apos;SLE_LGDUR_COF2&apos;,
-&apos;SLE_LGFQ_COF2&apos;,
-&apos;SLE_LGIMPR_COF2&apos;,
-&apos;SLE_LGEVE_COF2&apos;,
-&apos;SNO_SNORE_COF2&apos;,
-&apos;SNO_STOPBREATH_COF2&apos;] 
-}
-
-var skip=[]
-if($(stage+&apos;QuestionnaireRun.version&apos;).eq(&apos;2.0&apos;).value()) {
-  skip.push(&apos;IPV&apos;)
-}
-
-var str = []
-for(var key in sections) {
-  if(-1!=skip.indexOf(key)) {
-    str.push(null)
-    continue
-  }    
-  var rcount = 0
-  var qcount = 0
-  var arr = sections[key]
-  for(var i = 0; i &lt; arr.length; i++) {
-    var j = $(stage + arr[i])
-    if(j.isNull().value()) {
-      continue
-    }  
-    qcount++
-    rcount += j.any(&apos;REFUSED&apos;).value() ? 1 : 0
-  }
-  if(0 == qcount) {
-    str.push(null)
-  } else {
-    str.push(100.0*rcount/qcount)
-  }
-}
-newSequence(str, &apos;decimal&apos;)</attribute>
+          <attribute name="script" valueType="text">var stage = &apos;OSIPV&apos;
+var action = $group(&apos;Admin.Action.stage&apos;,stage,&apos;Admin.Action.actionType&apos;).asSequence()
+var type = $group(&apos;Admin.Action.stage&apos;,stage,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
+  return i == action.indexOf(&apos;SKIP&apos;)
+  }).last().whenNull(&apos;&apos;).value().slice(14)
+  
+var arr = []
+for(var i=0; i &lt; $this(&apos;skip_name&apos;).size(); i++) {
+  arr.push($this(&apos;skip_name&apos;).valueAt(i).eq(type).value()?true:null)
+} 
+newSequence(arr,&apos;boolean&apos;)</attribute>
         </attributes>
       </variable>
     </variables>
   </variables>
   <created valueType="datetime">2019-04-11T13:17:40.021-04</created>
-  <updated valueType="datetime">2019-05-09T11:24:56.303-04</updated>
+  <updated valueType="datetime">2019-10-21T15:03:13.231-04</updated>
 </org.obiba.magma.views.View>
