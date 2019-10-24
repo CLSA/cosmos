@@ -9,7 +9,6 @@ CREATE TABLE IF NOT EXISTS stage (
   technician_id INT UNSIGNED NULL DEFAULT NULL,
   contraindicated TINYINT(1) NULL DEFAULT NULL,
   missing TINYINT(1) NULL DEFAULT NULL,
-  skip VARCHAR(127) NULL DEFAULT NULL,
   duration FLOAT NULL DEFAULT NULL,
   PRIMARY KEY (id),
   INDEX fk_interview_id (interview_id ASC),
