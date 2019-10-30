@@ -364,12 +364,14 @@ out( 'Deleting existing automagic code' );
 // clean out stage_type and indicator records
 if( REBUILD_DATABASE )
 {
-  $result = $db->query( 'TRUNCATE indicator' );
+  $result = $db->query( 'DELETE FROM indicator' );
   if( !$result ) fatal( 'Cannot delete rows in indicator table.' );
+  $result = $db->query( 'ALTER TABLE indicator AUTO_INCREMENT = 1' );
+  if( !$result ) fatal( 'Cannot reset indicator table\'s auto increment value.' );
   $result = $db->query( 'DELETE FROM stage_type' );
   if( !$result ) fatal( 'Cannot delete rows in stage_type table.' );
   $result = $db->query( 'ALTER TABLE stage_type AUTO_INCREMENT = 1' );
-  if( !$result ) fatal( 'Cannot delete rows in stage_type table.' );
+  if( !$result ) fatal( 'Cannot reset stage_type table\'s auto increment value.' );
 
   // drop all data tables
   $sql = sprintf(
@@ -476,11 +478,15 @@ foreach( $study_phase_list as $study_phase => $study_phase_id )
                     if( property_exists( $variable, 'attributes' ) )
                     {
                       $attributes = current( $variable->attributes );
-                      if( preg_match( "/^newSequence\(\[(.*)\](, *'text')?\)$/", $attributes->value, $matches ) )
+                      if( preg_match(
+                        "/^newSequence\(\[(.*)\](, *'text')?\)$/",
+                        trim( str_replace( "\n", " ", $attributes->value ) ),
+                        $matches
+                      ) )
                       {
                         foreach( explode( ',', $matches[1] ) as $name )
                         {
-                          $name = strtolower( substr( $name, 1, -1 ) );
+                          $name = strtolower( substr( trim( $name ), 1, -1 ) );
                           $indicators[$study_phase][$platform][$view][] = array(
                             'name' => sprintf( '%s_%s', $name, $suffix ),
                             'type' => get_type( $variable->valueType )

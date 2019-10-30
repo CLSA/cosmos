@@ -71,11 +71,6 @@ define( function() {
       type: 'string',
       constant: true
     },
-    skip: {
-      title: 'Skipped',
-      type: 'string',
-      constant: true
-    },
     min_date: {
       type: 'date',
       exclude: true
@@ -83,69 +78,6 @@ define( function() {
     max_date: {
       type: 'date',
       exclude: true
-    }
-  } );
-
-  module.addInputGroup( 'Skip Types', {
-    interviewer_decision: {
-      title: 'Interviewer Decision',
-      type: 'string',
-      constant: true
-    },
-    participant_decision: {
-      title: 'Participant Decision',
-      type: 'string',
-      constant: true
-    },
-    interviewer_lack_of_time: {
-      title: 'Interviewer Lack Of Time',
-      type: 'string',
-      constant: true
-    },
-    interviewer_refused_health_safety: {
-      title: 'Interviewer Refused Health Safety',
-      type: 'string',
-      constant: true
-    },
-    participant_lack_of_time: {
-      title: 'Participant Lack Of Time',
-      type: 'string',
-      constant: true
-    },
-    participant_refused_health_safety: {
-      title: 'Participant Refused Health Safety',
-      type: 'string',
-      constant: true
-    },
-    participant_refused_other: {
-      title: 'Participant Refused Other',
-      type: 'string',
-      constant: true
-    },
-    participant_unable_to_complete: {
-      title: 'Participant Unable To Complete',
-      type: 'string',
-      constant: true
-    },
-    see_comment: {
-      title: 'See Comment',
-      type: 'string',
-      constant: true
-    },
-    technical_issue: {
-      title: 'Technical Issue',
-      type: 'string',
-      constant: true
-    },
-    technical_problem: {
-      title: 'Technical Problem',
-      type: 'string',
-      constant: true
-    },
-    other: {
-      title: 'Other',
-      type: 'string',
-      constant: true
     }
   } );
 

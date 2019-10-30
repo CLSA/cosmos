@@ -33,6 +33,7 @@ class query extends \cenozo\service\query
 
     if( $this->get_argument( 'update', false ) )
     {
+      set_time_limit( 600 ); // set time limit to 10 minutes
       $interview_class_name = lib::get_class_name( 'database\interview' );
       $this->set_data( $interview_class_name::update_interview_list() );
     }
