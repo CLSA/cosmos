@@ -167,12 +167,8 @@ class interview extends \cenozo\database\record
                 $db_stage->save();
 
                 // store the stage data
-                $db_stage_data = lib::create( sprintf(
-                  'database\%s_%s_%s_data',
-                  $db_study_phase->code,
-                  $db_platform->name,
-                  $stage_type['name']
-                ) );
+                $stage_data_table_name = implode( '_', $db_study_phase->code, $db_platform->name, $stage_type['name'], 'data' );
+                $db_stage_data = lib::create( sprintf( 'database\%s', $stage_data_table_name ) );
                 $db_stage_data->stage_id = $db_stage->id;
 
                 foreach( $array as $key => $value )
@@ -184,7 +180,8 @@ class interview extends \cenozo\database\record
                   else if( $db_stage_data->column_exists( $key ) )
                   {
                     // if the column is in the data table then write it
-                    $db_stage_data->$key = $value;
+                    $type = $db_stage_data::db()->get_column_variable_type( $stage_data_table_name, $key );
+                    $db_stage_data->$key = 'boolean' == $type ? 'true' == $value : $value;
                   }
                   else if( '_value' == substr( $key, -6 ) )
                   {
@@ -192,7 +189,9 @@ class interview extends \cenozo\database\record
                     foreach( $array[str_replace( '_value', '_name', $key )] as $index => $name )
                     {
                       $column = sprintf( '%s_%s', strtolower( $name ), substr( $key, 0, -6 ) );
-                      if( array_key_exists( $index, $value ) ) $db_stage_data->$column = $value[$index];
+                      $type = $db_stage_data::db()->get_column_variable_type( $stage_data_table_name, $column );
+                      if( array_key_exists( $index, $value ) )
+                        $db_stage_data->$column = 'boolean' == $type ? 'true' == $value[$index] : $value[$index];
                     }
                   }
                   else if( '_size' == substr( $key, -5 ) )
