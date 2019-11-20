@@ -58,35 +58,35 @@ define( function() {
       column: 'study_phase.code',
       title: 'Study Phase',
       type: 'string',
-      constant: true
+      isConstant: true
     },
     platform: {
       column: 'platform.name',
       title: 'Platform',
       type: 'string',
-      constant: true
+      isConstant: true
     },
     stage_type: {
       column: 'stage_type.name',
       title: 'Stage Type',
       type: 'string',
-      constant: true
+      isConstant: true
     },
     name: {
       title: 'Name',
       type: 'string',
-      constant: true
+      isConstant: true
     },
     type: {
       title: 'Type',
       type: 'string',
-      constant: true
+      isConstant: true
     },
     median: {
       title: 'Median Value',
       type: 'string',
       format: 'float',
-      constant: true
+      isConstant: true
     },
     minimum: {
       title: 'Minimum Threshold',
@@ -100,11 +100,11 @@ define( function() {
     },
     min_date: {
       type: 'date',
-      exclude: true
+      isExcluded: true
     },
     max_date: {
       type: 'date',
-      exclude: true
+      isExcluded: true
     }
   } );
 

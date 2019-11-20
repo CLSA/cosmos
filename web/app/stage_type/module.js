@@ -37,19 +37,19 @@ define( function() {
       column: 'study_phase.name',
       title: 'Study Phase',
       type: 'string',
-      constant: true
+      isConstant: true
     },
     platform: {
       column: 'platform.name',
       title: 'Platform',
       type: 'string',
-      constant: true
+      isConstant: true
     },
     name: {
       column: 'stage_type.name',
       title: 'Name',
       type: 'string',
-      constant: true
+      isConstant: true
     },
     duration_low: {
       title: 'Duration Low (seconds)',
@@ -64,20 +64,20 @@ define( function() {
     contraindicated: {
       title: 'Contraindicated',
       type: 'string',
-      constant: true
+      isConstant: true
     },
     missing: {
       title: 'Missing',
       type: 'string',
-      constant: true
+      isConstant: true
     },
     min_date: {
       type: 'date',
-      exclude: true
+      isExcluded: true
     },
     max_date: {
       type: 'date',
-      exclude: true
+      isExcluded: true
     }
   } );
 
