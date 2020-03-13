@@ -20,6 +20,10 @@ class module extends \cenozo\service\module
   {
     parent::prepare_read( $select, $modifier );
 
+    $modifier->join( 'opal_view', 'stage_type.opal_view_id', 'opal_view.id' );
+    $modifier->join( 'study_phase', 'opal_view.study_phase_id', 'study_phase.id' );
+    $modifier->join( 'platform', 'opal_view.platform_id', 'platform.id' );
+
     $db_stage_type = $this->get_resource();
     if( !is_null( $db_stage_type ) )
     {

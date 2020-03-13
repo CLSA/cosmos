@@ -20,13 +20,14 @@ class interview extends \cenozo\database\record
    */
   public static function update_interview_list()
   {
-    $platform_class_name = lib::get_class_name( 'database\platform' );
-    $study_phase_class_name = lib::get_class_name( 'database\study_phase' );
+    $opal_view_class_name = lib::get_class_name( 'database\opal_view' );
     $participant_class_name = lib::get_class_name( 'database\participant' );
-    $site_class_name = lib::get_class_name( 'database\site' );
     $interview_class_name = lib::get_class_name( 'database\interview' );
+    $stage_class_name = lib::get_class_name( 'database\stage' );
+    $stage_type_class_name = lib::get_class_name( 'database\stage_type' );
     $technician_class_name = lib::get_class_name( 'database\technician' );
     $user_class_name = lib::get_class_name( 'database\user' );
+    $indicator_class_name = lib::get_class_name( 'database\indicator' );
 
     $opal_manager = lib::create( 'business\opal_manager' );
     $db_application = lib::create( 'business\session' )->get_application();
@@ -37,189 +38,154 @@ class interview extends \cenozo\database\record
     $site_id_list = array();
     foreach( $db_application->get_site_list( $site_sel ) as $site ) $site_id_list[$site['name']] = $site['id'];
 
-    $max_count = 0;
-
-    // loop through all study phases (bl, f1, f2, etc)
-    foreach( $study_phase_class_name::select_objects() as $db_study_phase )
+    $max_new_interviews = 0;
+    foreach( $opal_view_class_name::select_objects() as $db_opal_view )
     {
-      log::debug( sprintf( 'Processing %s phase', $db_study_phase->name ) );
+      $project_name = $db_opal_view->get_project_name();
+      $view_name = $db_opal_view->get_view_name();
 
-      // loop through all data sources (inhome, dcs, dcs_home, dcs_phone)
-      foreach( $platform_class_name::select_objects() as $db_platform )
+      if( 'cosmos_inhome' != $project_name ) continue; // TODO: remove this once views are ready
+
+      $count = $opal_manager->count( $project_name, $view_name );
+      if( $count > $db_opal_view->total )
       {
-        // get a list of all stages for this study-phase and platform
-        $stage_type_sel = lib::create( 'database\select' );
-        $stage_type_sel->add_column( 'id' );
-        $stage_type_sel->add_column( 'name' );
-        
-        $stage_type_mod = lib::create( 'database\modifier' );
-        $stage_type_mod->where( 'platform_id', '=', $db_platform->id );
-        $stage_type_list = $db_study_phase->get_stage_type_list( $stage_type_sel, $stage_type_mod );
+        $new_interviews = $count - $db_opal_view->total;
+        if( $new_interviews > $max_new_interviews ) $max_new_interviews = $new_interviews;
 
-        log::debug( sprintf( 'Processing %s platform containing %d stage types', $db_platform->name, count( $stage_type_list ) ) );
-
-        if( 0 < count( $stage_type_list ) )
+        log::debug( sprintf( 'Found %s missing records in %s/%s', $new_interviews, $project_name, $view_name ) );
+        $values = $opal_manager->get_all_values( $project_name, $view_name, 1000, $db_opal_view->total );
+        foreach( $values as $uid => $data )
         {
-          // an array to keep track of uid=>interview_id
-          $interview_id_list = array();
+          $data = util::json_decode( $data['data'] ); // opal has to put the data in a column
 
-          // an array to keep track of uid->technician_site_id
-          $technician_site_id_list = array();
+          $participant_id = $participant_class_name::get_unique_record( 'uid', $uid )->id;
+          $site_id = $site_id_list[$data->site];
 
-          $project_name = sprintf( 'cosmos_%s', $db_platform->name );
-          $opal_interview_view = sprintf( 'QC_%s_interview', strtoupper( $db_study_phase->code ) );
-
-          // get interview data
-          log::debug( sprintf( 'Reading data from %s view', $opal_interview_view ) );
-          $values = $opal_manager->get_all_values( $project_name, $opal_interview_view );
-          log::debug( sprintf( 'Done, found %d values', count( $values ) ) );
-
-          foreach( $values as $uid => $array )
+          // only add the interview record if it doesn't already exist
+          $db_interview = $interview_class_name::get_unique_record(
+            array( 'participant_id', 'study_phase_id', 'platform_id' ),
+            array( $participant_id, $db_opal_view->study_phase_id, $db_opal_view->platform_id )
+          );
+          if( is_null( $db_interview ) )
           {
-            // ignore if the barcode is null (the interview hasn't been exported yet)
-            if( !$array['barcode'] ) continue;
-
-            // get the participant_id
-            $participant_sel = lib::create( 'database\select' );
-            $participant_sel->add_column( 'id' );
-            $participant_mod = lib::create( 'database\modifier' );
-            $participant_mod->where( 'uid', '=', $uid );
-            $participant_id = current( $participant_class_name::select( $participant_sel, $participant_mod ) )['id'];
-            if( false === $participant_id )
-              throw lib::create( 'exception\runtime',
-                sprintf( 'Invalid UID "%s" returned from Opal view "%s"', $uid, $opal_interview_view ),
-                __METHOD__ );
-
-            // get the site_id
-            if( !array_key_exists( $array['site'], $site_id_list ) )
-              throw lib::create( 'exception\runtime',
-                sprintf( 'Invalid site name "%s" returned from Opal view "%s"', $array['site'], $opal_interview_view ),
-                __METHOD__ );
-            $site_id = $site_id_list[$array['site']];
-
-            // only add the interview record if it doesn't already exist
-            $interview_mod = lib::create( 'database\modifier' );
-            $interview_mod->where( 'participant_id', '=', $participant_id );
-            $interview_mod->where( 'study_phase_id', '=', $db_study_phase->id );
-            $interview_mod->where( 'platform_id', '=', $db_platform->id );
-            if( 0 == $interview_class_name::count( $interview_mod ) )
-            {
-              $db_interview = lib::create( 'database\interview' );
-              $db_interview->participant_id = $participant_id;
-              $db_interview->study_phase_id = $db_study_phase->id;
-              $db_interview->platform_id = $db_platform->id;
-              $db_interview->site_id = $site_id;
-              $db_interview->start_date = $array['start_date'];
-              $db_interview->barcode = $array['barcode'];
-              $db_interview->duration = $array['duration'];
-              $db_interview->total_stage_duration = $array['stage_duration'];
-              $db_interview->save();
-              $interview_id_list[$uid] = $db_interview->id;
-              $technician_site_id_list[$uid] = $site_id;
-            }
+            $db_interview = lib::create( 'database\interview' );
+            $db_interview->participant_id = $participant_id;
+            $db_interview->study_phase_id = $db_opal_view->study_phase_id;
+            $db_interview->platform_id = $db_opal_view->platform_id;
+            $db_interview->site_id = $site_id;
+            $db_interview->start_date = $data->start_date;
+            $db_interview->barcode = $data->barcode;
+            $db_interview->duration = $data->duration;
+            $db_interview->total_stage_duration = $data->stage_duration;
+            $db_interview->save();
           }
 
-          if( $max_count < count( $interview_id_list ) ) $max_count = count( $interview_id_list );
-
-          // now read the data from all stage type views (but only if interviews were found)
-          if( 0 < count( $interview_id_list ) )
+          foreach( get_object_vars( $data->stages ) as $stage_name => $stage_data )
           {
-            foreach( $stage_type_list as $stage_type )
+            $db_stage_type = $stage_type_class_name::get_unique_record(
+              array( 'opal_view_id', 'name' ),
+              array( $db_opal_view->id, $stage_name )
+            );
+            if( is_null( $db_stage_type ) )
             {
-              $opal_stage_view = sprintf( 'QC_%s_%s', strtoupper( $db_study_phase->code ), $stage_type['name'] );
-              $values = $opal_manager->get_all_values( $project_name, $opal_stage_view );
+              $db_stage_type = lib::create( 'database\stage_type' );
+              $db_stage_type->opal_view_id = $db_opal_view->id;
+              $db_stage_type->name = $stage_name;
+              $db_stage_type->save();
+            }
 
-              foreach( $values as $uid => $array )
+            // see if the stage record already exists
+            $db_stage = $stage_class_name::get_unique_record(
+              array( 'interview_id', 'stage_type_id' ),
+              array( $db_interview->id, $db_stage_type->id )
+            );
+
+            if( is_null( $db_stage ) )
+            {
+              $db_technician = NULL;
+              if( property_exists( $stage_data, 'technician' ) )
               {
-                // ignore UIDs which already exist
-                if( !array_key_exists( $uid, $interview_id_list ) ) continue;
+                // get the technician or create one if they don't already exist
+                $db_technician = $technician_class_name::get_unique_record(
+                  array( 'site_id', 'name' ),
+                  array( $site_id, $stage_data->technician )
+                );
 
-                $db_technician = NULL;
-                if( !is_null( $array['technician'] ) )
+                if( is_null( $db_technician ) )
                 {
-                  // get the technician or create one if they don't already exist
-                  $db_technician = $technician_class_name::get_unique_record(
-                    array( 'site_id', 'name' ),
-                    array( $technician_site_id_list[$uid], $array['technician'] )
+                  $db_technician = lib::create( 'database\technician' );
+                  $db_technician->site_id = $site_id;
+                  $db_technician->name = $stage_data->technician;
+
+                  // if the user name matches a cenozo user name then link them
+                  $db_user = $user_class_name::get_unique_record( 'name', $stage_data->technician );
+                  if( !is_null( $db_user ) ) $db_technician->user_id = $db_user->id;
+
+                  $db_technician->save();
+                }
+                unset( $stage_data->technician );
+              }
+
+              $db_stage = lib::create( 'database\stage' );
+              $db_stage->interview_id = $db_interview->id;
+              $db_stage->stage_type_id = $db_stage_type->id;
+              if( !is_null( $db_technician ) ) $db_stage->technician_id = $db_technician->id;
+
+              $db_stage->contraindicated = $stage_data->contraindicated;
+              unset( $stage_data->contraindicated );
+              
+              $db_stage->missing = $stage_data->missing;
+              unset( $stage_data->missing );
+              
+              if( property_exists( $stage_data, 'skip' ) )
+              {
+                $db_stage->skip = $stage_data->skip;
+                unset( $stage_data->skip );
+              }
+
+              if( property_exists( $stage_data, 'duration' ) )
+              {
+                $db_stage->duration = $stage_data->duration;
+                unset( $stage_data->duration );
+              }
+
+              // encode all remaining data into the JSON data column
+              $db_stage->data = util::json_encode( $stage_data );
+              $db_stage->save();
+
+              // now create any new indicators in the stage data
+              foreach( get_object_vars( $stage_data ) as $name => $value )
+              {
+                $type = gettype( $value );
+                if( 'double' == $type ) $type = 'float';
+
+                $indicator_list = array();
+                if( 'object' == $type )
+                {
+                  // add each individual array element as its own indicator
+                  foreach( get_object_vars( $value ) as $k => $v )
+                  {
+                    $type = gettype( $v );
+                    if( 'double' == $type ) $type = 'float';
+                    if( 'array' != $type ) $indicator_list[] = array( 'name' => sprintf( '%s.%s', $name, $k ), 'type' => $type );
+                  }
+                }
+                else if( 'array' != $type ) $indicator_list[] = array( 'name' => $name, 'type' => $type );
+
+                foreach( $indicator_list as $indicator )
+                {
+                  $db_indicator = $indicator_class_name::get_unique_record(
+                    array( 'stage_type_id', 'name' ),
+                    array( $db_stage_type->id, $indicator['name'] )
                   );
-                  if( is_null( $db_technician ) )
-                  {
-                    $db_technician = lib::create( 'database\technician' );
-                    $db_technician->site_id = $technician_site_id_list[$uid];
-                    $db_technician->name = $array['technician'];
 
-                    // if the user name matches a cenozo user name then link them
-                    $db_user = $user_class_name::get_unique_record( 'name', $array['technician'] );
-                    if( !is_null( $db_user ) ) $db_technician->user_id = $db_user->id;
-
-                    $db_technician->save();
-                  }
-                }
-
-                // create the stage entry
-                $db_stage = lib::create( 'database\stage' );
-                $db_stage->interview_id = $interview_id_list[$uid];
-                $db_stage->stage_type_id = $stage_type['id'];
-                $db_stage->technician_id = is_null( $db_technician ) ? NULL : $db_technician->id;
-                $db_stage->contraindicated = 'true' == $array['contraindicated'];
-                $db_stage->missing = 'true' == $array['missing'];
-                $db_stage->duration = $array['duration'];
-                $db_stage->save();
-
-                // store the stage data
-                $stage_data_table_name = implode( '_', $db_study_phase->code, $db_platform->name, $stage_type['name'], 'data' );
-                $db_stage_data = lib::create( sprintf( 'database\%s', $stage_data_table_name ) );
-                $db_stage_data->stage_id = $db_stage->id;
-
-                foreach( $array as $key => $value )
-                {
-                  if( 'meta_' == substr( $key, 0, 5 ) || '_name' == substr( $key, -5 ) || is_null( $value ) )
+                  if( is_null( $db_indicator ) )
                   {
-                    // ignore meta and name data, and empty values
-                  }
-                  else if( $db_stage_data->column_exists( $key ) )
-                  {
-                    // if the column is in the data table then write it
-                    $type = $db_stage_data::db()->get_column_variable_type( $stage_data_table_name, $key );
-                    $db_stage_data->$key = 'boolean' == $type ? 'true' == $value : $value;
-                  }
-                  else if( '_value' == substr( $key, -6 ) )
-                  {
-                    // process all values using the corresponding *_name column for the column names
-                    foreach( $array[str_replace( '_value', '_name', $key )] as $index => $name )
-                    {
-                      $column = sprintf( '%s_%s', strtolower( $name ), substr( $key, 0, -6 ) );
-                      $type = $db_stage_data::db()->get_column_variable_type( $stage_data_table_name, $column );
-                      if( array_key_exists( $index, $value ) )
-                        $db_stage_data->$column = 'boolean' == $type ? 'true' == $value[$index] : $value[$index];
-                    }
-                  }
-                  else if( '_size' == substr( $key, -5 ) )
-                  {
-                    // process all values using the corresponding *_name column for the column names
-                    foreach( $array[str_replace( '_size', '_name', $key )] as $index => $name )
-                    {
-                      $column = sprintf( '%s_%s', strtolower( $name ), substr( $key, 0, -5 ) );
-                      if( array_key_exists( $index, $value ) ) $db_stage_data->$column = $value[$index];
-                    }
-                  }
-                }
-                $db_stage_data->save();
-
-                // store any stage comments
-                if( array_key_exists( 'comment', $array ) && !is_null( $array['comment'] ) )
-                {
-                  $comment_obj = util::json_decode( $array['comment'] );
-                  foreach( $comment_obj as $type => $note_list )
-                  {
-                    foreach( $note_list as $note )
-                    {
-                      $db_comment = lib::create( 'database\comment' );
-                      $db_comment->stage_id = $db_stage->id;
-                      $db_comment->type = $type;
-                      $db_comment->note = $note;
-                      $db_comment->save();
-                    }
+                    $db_indicator = lib::create( 'database\indicator' );
+                    $db_indicator->stage_type_id = $db_stage_type->id;
+                    $db_indicator->name = $indicator['name'];
+                    $db_indicator->type = $indicator['type'];
+                    $db_indicator->save();
                   }
                 }
               }
@@ -230,8 +196,8 @@ class interview extends \cenozo\database\record
     }
 
     // update all outliers since we now have new data
-    if( 0 < $max_count ) self::db()->execute( 'CALL update_outliers()' );
+    if( 0 < $max_new_interviews ) self::db()->execute( 'CALL update_outliers()' );
 
-    return $max_count;
+    return $max_new_interviews;
   }
 }

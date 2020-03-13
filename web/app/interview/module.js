@@ -35,11 +35,11 @@ define( function() {
       },
       duration: {
         title: 'Duration',
-        type: 'time'
+        type: 'number'
       },
       total_stage_duration: {
         title: 'Total Stage Duration',
-        type: 'time'
+        type: 'number'
       }
     },
     defaultOrder: {
@@ -79,13 +79,11 @@ define( function() {
     },
     duration: {
       title: 'Duration',
-      type: 'string',
-      format: 'time'
+      type: 'string'
     },
     total_stage_duration: {
       title: 'Total Stage Duration',
-      type: 'string',
-      format: 'time'
+      type: 'string'
     }
   } );
 

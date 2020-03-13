@@ -29,7 +29,8 @@ class module extends \cenozo\service\site_restricted_module
     if( !is_null( $db_restricted_site ) )
       $modifier->where( 'interview.site_id', '=', $db_restricted_site->id );
 
-    if( $this->get_argument( 'plot', false ) )
+    $plot = $this->get_argument( 'plot', false );
+    if( $plot )
     {
       $select->remove_column_by_column( '*' );
 
@@ -47,16 +48,26 @@ class module extends \cenozo\service\site_restricted_module
       }
 
       $select->add_table_column( 'interview', 'start_date', 'date' );
-      $select->add_column( 'duration', 'value' );
-      $modifier->where( 'stage.duration', '!=', NULL );
+      if( 'duration' == $plot )
+      {
+        $select->add_column( 'duration', 'value' );
+        $modifier->where( 'stage.duration', '!=', NULL );
+      }
+      else
+      {
+        $select->add_column( sprintf( 'JSON_VALUE( data, "$.%s" )', $plot ), 'value', false );
+        $modifier->where( sprintf( 'JSON_EXISTS( data, "$.%s" )', $plot ), '=', true );
+      }
+
       $modifier->order( 'interview.start_date' );
       $modifier->limit( 1000000 );
     }
     else
     {
       $modifier->join( 'stage_type', 'stage.stage_type_id', 'stage_type.id' );
-      $modifier->join( 'study_phase', 'stage_type.study_phase_id', 'study_phase.id' );
-      $modifier->join( 'platform', 'stage_type.platform_id', 'platform.id' );
+      $modifier->join( 'opal_view', 'stage_type.opal_view_id', 'opal_view.id' );
+      $modifier->join( 'study_phase', 'opal_view.study_phase_id', 'study_phase.id' );
+      $modifier->join( 'platform', 'opal_view.platform_id', 'platform.id' );
       $modifier->join( 'participant', 'interview.participant_id', 'participant.id' );
       $modifier->left_join( 'technician', 'stage.technician_id', 'technician.id' );
     }

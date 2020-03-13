@@ -21,8 +21,9 @@ class module extends \cenozo\service\site_restricted_module
     parent::prepare_read( $select, $modifier );
 
     $modifier->join( 'stage_type', 'indicator.stage_type_id', 'stage_type.id' );
-    $modifier->join( 'study_phase', 'stage_type.study_phase_id', 'study_phase.id' );
-    $modifier->join( 'platform', 'stage_type.platform_id', 'platform.id' );
+    $modifier->join( 'opal_view', 'stage_type.opal_view_id', 'opal_view.id' );
+    $modifier->join( 'study_phase', 'opal_view.study_phase_id', 'study_phase.id' );
+    $modifier->join( 'platform', 'opal_view.platform_id', 'platform.id' );
 
     if( $modifier->has_where( 'outlier.date' ) )
     {
@@ -81,11 +82,7 @@ class module extends \cenozo\service\site_restricted_module
     {
       if( $select->has_column( 'median' ) )
       {
-        $class_name = lib::get_class_name( sprintf(
-          'database\%s',
-          $db_indicator->get_stage_type()->get_data_table_name()
-        ) );
-        $select->add_constant( $class_name::get_statistics( $db_indicator->name )['median'], 'median', 'float' );
+        $select->add_constant( $db_indicator->get_median(), 'median', 'float' );
       }
     }
   }

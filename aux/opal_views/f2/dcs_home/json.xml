@@ -1,0 +1,13 @@
+<org.obiba.magma.views.View>
+  <name>QC_F2_json</name>
+  <from class="org.obiba.magma.security.SudoValueTableReference">
+    <reference>clsa-dcs-f2.Participants</reference>
+  </from>
+  <select class="org.obiba.magma.views.support.NoneClause"/>
+  <where class="org.obiba.magma.views.support.AllClause"/>
+  <variables class="org.obiba.magma.js.views.VariablesClause">
+    <variables class="linked-hash-set"/>
+  </variables>
+  <created valueType="datetime">2020-03-10T15:33:57.695-04</created>
+  <updated valueType="datetime">2020-03-10T15:33:57.695-04</updated>
+</org.obiba.magma.views.View>

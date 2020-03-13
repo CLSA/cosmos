@@ -3,13 +3,7 @@ define( function() {
 
   try { var module = cenozoApp.module( 'stage_type', true ); } catch( err ) { console.warn( err ); return; }
   angular.extend( module, {
-    identifier: {
-      parent: {
-        subject: 'platform',
-        column: 'platform_id',
-        friendly: 'name'
-      }
-    },
+    identifier: {},
     name: {
       singular: 'stage type',
       plural: 'stage types',
@@ -131,7 +125,7 @@ define( function() {
         // use the plot helper to set up an outlier and histogram plot for this indicator
         CnPlotHelperFactory.addPlot( this, {
           getType: function() { return 'time'; },
-          getPath: function() { return self.parentModel.getServiceResourcePath() + '/stage?plot=1' },
+          getPath: function() { return self.parentModel.getServiceResourcePath() + '/stage?plot=duration' },
           getXLabel: function() { return 'Stage Duration'; },
           getBinSize: function() { return 30; },
           minName: 'duration_low',

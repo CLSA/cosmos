@@ -169,26 +169,21 @@ define( function() {
         CnPlotHelperFactory.addPlot( this, {
           getType: function() {
             // determine if the indicator has a special data type
-            if( 'file_size' == self.record.name || null != self.record.name.match( /_file$/ ) ) { 
+            if( null != self.record.name.match( /^[a-zA-Z0-9_]+_size\./ ) ) { 
               return 'file';
-            } else if( null != self.record.name.match( /_duration$/ ) ) {
+            } else if( null != self.record.name.match( /[a-zA-Z0-9_]+_duration\./ ) ) {
               return 'time';
-            } else if( null != self.record.name.match( /_complete$/ ) ) {
+            } else if( null != self.record.name.match( /[a-zA-Z0-9_]+_complete\./ ) ) {
               return 'percent';
             }
             return '';
           },
           getPath: function() {
-            return [
-              self.record.study_phase,
-              self.record.platform,
-              self.record.stage_type,
-              'data'
-            ].join( '_' ) + '?plot=' + self.record.name;
+            return 'stage?plot=' + self.record.name;
           },
           getXLabel: function() {
             return ( self.record.study_phase ? self.record.study_phase.toUpperCase() + ': ' : '' ) +
-                   [self.record.platform, self.record.stage_type, self.record.name].join( '/' )
+                   [self.record.platform, self.record.stage_type, self.record.name].join( '/' );
           },
           getBinSize: function() { return Math.ceil( ( self.record.maximum - self.record.minimum )/100 ); }
         } );
