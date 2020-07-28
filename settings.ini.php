@@ -12,7 +12,7 @@ global $SETTINGS;
 // tagged version
 $SETTINGS['general']['application_name'] = 'cosmos';
 $SETTINGS['general']['instance_name'] = $SETTINGS['general']['application_name'];
-$SETTINGS['general']['version'] = '2.5';
+$SETTINGS['general']['version'] = '2.6';
 $SETTINGS['general']['build'] = 'd102aaa';
 
 // the location of the application's internal path
