@@ -44,8 +44,6 @@ define( 'SYSTEM_COSMOS_BASE_ERRNO',     720000 );
 /**
  * "runtime" error codes
  */
-define( 'RUNTIME__COSMOS_DATABASE_INTERVIEW__UPDATE_INTERVIEW_LIST__ERRNO',
-        RUNTIME_COSMOS_BASE_ERRNO + 1 );
 
 /**
  * "system" error codes

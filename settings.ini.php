@@ -12,8 +12,8 @@ global $SETTINGS;
 // tagged version
 $SETTINGS['general']['application_name'] = 'cosmos';
 $SETTINGS['general']['instance_name'] = $SETTINGS['general']['application_name'];
-$SETTINGS['general']['version'] = '2.6';
-$SETTINGS['general']['build'] = '65e6ec7';
+$SETTINGS['general']['version'] = '2.8';
+$SETTINGS['general']['build'] = '9f9a808';
 
 // the location of the application's internal path
 $SETTINGS['path']['APPLICATION'] = str_replace( '/settings.ini.php', '', __FILE__ );
