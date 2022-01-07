@@ -1,7 +1,5 @@
-define( function() {
-  'use strict';
+cenozoApp.defineModule( { name: 'indicator', models: ['list', 'view'], create: module => {
 
-  try { var module = cenozoApp.module( 'indicator', true ); } catch( err ) { console.warn( err ); return; }
   angular.extend( module, {
     identifier: {
       parent: {
@@ -107,36 +105,6 @@ define( function() {
       isExcluded: true
     }
   } );
-
-  /* ######################################################################################################## */
-  cenozo.providers.directive( 'cnIndicatorList', [
-    'CnIndicatorModelFactory',
-    function( CnIndicatorModelFactory ) {
-      return {
-        templateUrl: module.getFileUrl( 'list.tpl.html' ),
-        restrict: 'E',
-        scope: { model: '=?' },
-        controller: function( $scope ) {
-          if( angular.isUndefined( $scope.model ) ) $scope.model = CnIndicatorModelFactory.root;
-        }
-      };
-    }
-  ] );
-
-  /* ######################################################################################################## */
-  cenozo.providers.directive( 'cnIndicatorView', [
-    'CnIndicatorModelFactory',
-    function( CnIndicatorModelFactory ) {
-      return {
-        templateUrl: module.getFileUrl( 'view.tpl.html' ),
-        restrict: 'E',
-        scope: { model: '=?' },
-        controller: function( $scope ) {
-          if( angular.isUndefined( $scope.model ) ) $scope.model = CnIndicatorModelFactory.root;
-        }
-      };
-    }
-  ] );
 
   /* ######################################################################################################## */
   cenozo.providers.factory( 'CnIndicatorListFactory', [
@@ -307,4 +275,4 @@ define( function() {
     }
   ] );
 
-} );
+} } );
