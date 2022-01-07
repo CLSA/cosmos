@@ -1,0 +1,364 @@
+<org.obiba.magma.views.View>
+  <name>QC_F3_deviation_aecrf</name>
+  <from class="org.obiba.magma.views.JoinTable">
+    <list>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs-f3.Participants</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs-f3.Deviation_AE_CRF</reference>
+      </table>
+    </list>
+  </from>
+  <select class="org.obiba.magma.views.support.NoneClause"/>
+  <where class="org.obiba.magma.views.support.AllClause"/>
+  <variables class="org.obiba.magma.js.views.VariablesClause">
+    <variables class="linked-hash-set">
+      <variable name="technician" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;clsa-dcs-f3.Deviation_AE_CRF:QuestionnaireRun.user&apos;).whenNull(
+  $group(&apos;Admin.Action.stage&apos;,&apos;Deviation_AE_CRF&apos;,&apos;Admin.Action.user&apos;).asSequence().last()).lowerCase()</attribute>
+        </attributes>
+      </variable>
+      <variable name="contraindicated" valueType="boolean" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$group(&apos;clsa-dcs-f3.Participants:Admin.StageInstance.stage&apos;,&apos;Deviation_AE_CRF&apos;,
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;)</attribute>
+        </attributes>
+      </variable>
+      <variable name="comment" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">// this script compounds repeated comments by using lowercase comment strings as array keys
+//
+var stage = &apos;Deviation_AE_CRF&apos;
+var c_seq = $group(&apos;Admin.Action.stage&apos;,stage,&apos;Admin.Action.comment&apos;).asSequence()
+var e_seq = $group(&apos;Admin.Action.stage&apos;,stage,&apos;Admin.Action.eventReason&apos;).asSequence()
+var res = null
+if(c_seq.size().eq(e_seq.size()).value())
+{
+  var c_str = []  // string array of comments
+  var e_str = []  // string array of event reasons
+
+  for(var i = 0; i &lt; c_seq.size(); i++) {
+    var c = c_seq.valueAt(i).value()
+    if(null == c) continue
+    c = c.replace(/[^a-zA-Z0-9 àâäèéêëîïôœùûüÿçÀÂÄÈÉÊËÎÏÔŒÙÛÜŸÇ]/g,&quot;&quot;)
+    var e = e_seq.valueAt(i).value()
+    if(0 &lt; c.length) {
+      c_str.push(c)
+      if(null != e &amp;&amp; 0 &lt; e.length) {
+        e = e.slice(14)
+      } else {
+        e = &apos;SeeComment&apos;
+      }
+      e_str.push(e)
+    }
+  }
+
+  if(0 &lt; c_str.length) {
+    var arr = []  // array of event reasons
+    var key_orig = []  // array of lower cased comments as unique keys
+    for(var i = 0; i &lt; c_str.length; i++) {
+      var key = c_str[i]
+      var key_lower = key.toLowerCase()
+      // retain the first encountered instance of the comment
+      //
+      if(undefined === key_orig[key_lower])
+        key_orig[key_lower] = key
+
+      if(undefined === arr[e_str[i]])
+        arr[e_str[i]] = []
+
+      if(-1==arr[e_str[i]].indexOf(key_orig[key_lower]))
+        arr[e_str[i]].push(key_orig[key_lower])
+    }
+
+    // loop over the final array of event reasons and their sets of comments
+    //
+    var str = &apos;{&apos;
+    for(var key in arr) {
+      str += &apos;&quot;&apos; + key + &apos;&quot;:[&apos;
+      var t = []
+      for(var i = 0; i &lt; arr[key].length; i++) {
+        t.push(&apos;&quot;&apos; + arr[key][i] + &apos;&quot;&apos;)
+      }
+      str += t.join(&apos;,&apos;) + &apos;],&apos;
+    }
+
+    res = newValue(str.substring(0,str.length-1)+&apos;}&apos;,&apos;text&apos;)
+  }
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="qnaire_complete" valueType="decimal" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var stage = &apos;Deviation_AE_CRF&apos;
+var p = $(&apos;clsa-dcs-f3.&apos; + stage + &apos;:QuestionnaireMetric.missingCount&apos;).asSequence().sum()
+var q = $(&apos;clsa-dcs-f3.&apos; + stage + &apos;:QuestionnaireMetric.questionCount&apos;).asSequence().sum()
+q.minus(p).multiply(100).div(q)</attribute>
+        </attributes>
+      </variable>
+      <variable name="missing" valueType="boolean" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$this(&apos;contraindicated&apos;).not().and(
+  $this(&apos;skip&apos;).isNull(),
+  $this(&apos;qnaire_complete&apos;).isNull(),
+  $this(&apos;duration&apos;).isNull())</attribute>
+        </attributes>
+      </variable>
+      <variable name="duration" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var stage = &apos;Deviation_AE_CRF&apos;
+var res = newValue(0,&apos;integer&apos;)
+var r = $group(&apos;Admin.Action.stage&apos;,stage,&apos;Admin.Action.dateTime&apos;).asSequence()
+for(var k=0; k&lt;r.size();k+=2) {      
+  if(r.valueAt(k+1).format(&apos;yyyyMMdd&apos;).eq(r.valueAt(k).format(&apos;yyyyMMdd&apos;)).value()) {
+    res = res.plus(r.valueAt(k+1).time().minus(r.valueAt(k).time()).div(1000).whenNull(0))
+  }
+}  
+if(res.le(0).value()) {
+ res = $group(&apos;Admin.StageInstance.stage&apos;,stage,&apos;Admin.StageInstance.duration&apos;).asSequence().sum().whenNull(0)
+}
+res.gt(0).value()?res:null</attribute>
+        </attributes>
+      </variable>
+      <variable name="skip" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var stage = &apos;Deviation_AE_CRF&apos;
+var action = $group(&apos;clsa-dcs-f3.Participants:Admin.Action.stage&apos;,stage,&apos;Admin.Action.actionType&apos;).asSequence()
+var res = $group(&apos;clsa-dcs-f3.Participants:Admin.Action.stage&apos;,stage,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
+  return i == action.indexOf(&apos;SKIP&apos;)
+  }).last()
+if(res.isNull().not().value()) {
+  res = newValue(res.value().slice(14),&apos;text&apos;)  
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="module_duration" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var stage = &apos;Deviation_AE_CRF&apos;
+var str = []
+var section = $(&apos;clsa-dcs-f3.&apos;+stage+&apos;:QuestionnaireMetric.section&apos;).asSequence()
+var module = section.filter(function(v,i){ return i==this.indexOf(v) })
+var duration = $(&apos;clsa-dcs-f3.&apos;+stage+&apos;:QuestionnaireMetric.duration&apos;).asSequence()  
+for(var i = 0; i &lt; module.size(); i++) {
+  var m = module.valueAt(i).value()
+  var v = duration.filter(function(v,k) {
+      return section.valueAt(k).eq(m)
+      }).sum()
+  if(v.isNull().or(v.le(0)).value()) continue
+  str.push(&apos;&quot;&apos; + m + &apos;&quot;:&apos; + v.value())
+}
+0&lt;str.length?newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;):null</attribute>
+        </attributes>
+      </variable>
+      <variable name="adverse_event" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var list = [&apos;FAINTED&apos;,&apos;SEIZURE&apos;,&apos;DIZZY&apos;,&apos;VOMITED&apos;,&apos;BLOODEX&apos;,&apos;DISTRESS&apos;,
+&apos;TRIPPED&apos;,&apos;HEAD&apos;,&apos;FELL&apos;,&apos;BP220&apos;,&apos;BP110&apos;,&apos;OTHERAE&apos;]
+
+var ae = $(&apos;DAE_WHAT_COF3&apos;).filter(function(v,i){
+  return v.eq(list[i]).value() 
+  }).filter(function(v,j){ 
+    return this.indexOf(v)==j})
+    
+var res = null    
+if(ae.isNull().not().value()) {
+  res = newValue(&apos;[&quot;&apos;+ae.join(&apos;&quot;,&quot;&apos;).value()+&apos;&quot;]&apos;, &apos;text&apos;)
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="followup_event" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var list = [&apos;SNACK&apos;,&apos;ICE&apos;,&apos;HOSPITAL&apos;,&apos;RETURN&apos;,&apos;NOTIFY&apos;,&apos;ETHICS&apos;,&apos;FOLLOW&apos;,
+  &apos;RECOMDHOS&apos;,&apos;RECOMDDR&apos;,&apos;NOTNECES&apos;,&apos;OTHERAE&apos;]
+
+var fu = $(&apos;DAE_FLWUP_COF3&apos;).filter(function(v,i){
+  return v.eq(list[i]).value() 
+  }).filter(function(v,j){ 
+    return this.indexOf(v)==j})
+    
+var res = null    
+if(fu.isNull().not().value()) {
+  res = newValue(&apos;[&quot;&apos;+fu.join(&apos;&quot;,&quot;&apos;).value()+&apos;&quot;]&apos;, &apos;text&apos;)
+}
+res </attribute>
+        </attributes>
+      </variable>
+      <variable name="deviation_count" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">// filter out repeated completed stages
+//
+var completed = $group(&apos;Admin.Action.actionType&apos;,&apos;COMPLETE&apos;,&apos;Admin.Action.stage&apos;).asSequence()
+var stages = $(&apos;Admin.Action.stage&apos;).asSequence().trimmer().filter(function(v){
+  return -1!=completed.indexOf(v)
+  }).filter(function(v,i){
+    return i==this.indexOf(v)
+  }).asSequence()
+  
+var joined_stages = [&apos;first&apos;]
+
+// get the stages found in the complete list of non-repeated stages in the expected order
+var reception_stages = []
+reception_dependent = [&apos;ExtendedHIN&apos;,&apos;GeneralProxy&apos;,&apos;ContraIndications&apos;]
+reception_dependent.forEach(function(v){
+  if(-1!=stages.indexOf(v)) {
+    reception_stages.push(v)
+    joined_stages.push(v)
+  }
+})
+
+var room1_stages = []
+room1_dependent = [&apos;HipsWaist&apos;,&apos;Weight&apos;,&apos;StandingHeight&apos;,&apos;SittingHeight&apos;,
+&apos;BloodPressure&apos;,&apos;ECG&apos;,&apos;CarotidIntima&apos;,&apos;Spirometry&apos;]
+room1_dependent.forEach(function(v){
+  if(-1!=stages.indexOf(v)) {
+    room1_stages.push(v)
+    joined_stages.push(v)
+  }
+})
+
+var dxa_stages = []
+dxa_dependent = [&apos;QuestionnaireBoneDensity&apos;,&apos;ForearmBoneDensity&apos;,&apos;DualHipBoneDensity&apos;,&apos;SpineBoneDensity&apos;,&apos;LateralBoneDensity&apos;,
+&apos;WholeBodyBoneDensity&apos;,&apos;Frax&apos;]
+dxa_dependent.forEach(function(v){
+  if(-1!=stages.indexOf(v)) {
+    dxa_stages.push(v)
+    joined_stages.push(v)
+  }
+})
+
+var room2_stages = []
+room2_dependent = [&apos;EventPMT&apos;,&apos;Hearing&apos;,&apos;CDTT&apos;,&apos;HearingQuestionnaire&apos;,&apos;StroopFAS&apos;,&apos;CognitiveTest&apos;,&apos;SocialNetwork&apos;]
+room2_dependent.forEach(function(v){
+  if(-1!=stages.indexOf(v)) {
+    room2_stages.push(v)
+    joined_stages.push(v)
+  }
+})
+
+var hallway_stages = []
+hallway_dependent = [&apos;4mWalk&apos;,&apos;TUG&apos;,&apos;StandingBalance&apos;,&apos;ChairRise&apos;]
+hallway_dependent.forEach(function(v){
+  if(-1!=stages.indexOf(v)) {
+    hallway_stages.push(v)
+    joined_stages.push(v)
+  }
+})
+
+var room3_stages = []
+var room3_dependent = [&apos;VisionAcuity&apos;,&apos;RetinalScanRight&apos;,&apos;GeneralHealth&apos;,&apos;RetinalScanLeft&apos;,&apos;Tonometer&apos;,&apos;GripStrength&apos;]
+room3_dependent.forEach(function(v){
+  if(-1!=stages.indexOf(v)) {
+    room3_stages.push(v)
+    joined_stages.push(v)
+  }
+})
+
+var room4_stages = []
+room4_dependent = [&apos;TimeBasedProspectiveMemoryTask&apos;,&apos;DiseaseSymptoms&apos;,&apos;OSIPV&apos;,&apos;Blood&apos;]
+room4_dependent.forEach(function(v){
+  if(-1!=stages.indexOf(v)) {
+    room4_stages.push(v)
+    joined_stages.push(v)
+  }
+})
+
+joined_stages.push(&apos;last&apos;)
+
+var group_stages = {
+  &quot;reception&quot; : reception_stages,
+  &quot;room1&quot; : room1_stages,
+  &quot;dxa&quot; : dxa_stages, 
+  &quot;room2&quot; : room2_stages,
+  &quot;hallway&quot; : hallway_stages,
+  &quot;room3&quot; : room3_stages,
+  &quot;room4&quot; : room4_stages
+}
+
+var order_counts = {
+  &quot;reception&quot; : 0,
+  &quot;room1&quot; : 0,
+  &quot;dxa&quot; : 0, 
+  &quot;room2&quot; : 0,
+  &quot;hallway&quot; : 0,
+  &quot;room3&quot; : 0,
+  &quot;room4&quot; : 0
+}
+
+// map stage names to the room they belong to
+var stage_rooms = {}
+for( var key in group_stages ) {
+  var room_stages = group_stages[key]  
+  for(var j = 0; j&lt;room_stages.length; j++) {    
+    stage_rooms[room_stages[j]] = key
+  } 
+} 
+
+// expected order of stages with prev and next stage attributes
+var connected_stages = {}
+for(var i = 1; i &lt; joined_stages.length-1; i++ ) {
+  var prev = joined_stages[i-1]
+  var curr = joined_stages[i]
+  var next = joined_stages[i+1]
+  connected_stages[curr] = {&apos;prev&apos;:prev, &apos;next&apos;:next}
+}
+
+stages = stages.insertAt(0,&apos;first&apos;)
+stages = stages.push(&apos;last&apos;)
+
+// remove all stages that are not pertinent to the search
+stages = stages.filter(function(v) {
+  return -1 != joined_stages.indexOf(v.value())
+})
+
+for( var key in connected_stages )
+{
+  var curr = key
+  var prev = connected_stages[curr][&apos;prev&apos;]
+  var next = connected_stages[curr][&apos;next&apos;]
+  // find the index of curr, prev, next    
+  var h = stages.indexOf(prev)
+  var i = stages.indexOf(curr)
+  var j = stages.indexOf(next)  
+  
+  // which room does this stage come from
+  var room = stage_rooms[curr]
+  
+  // if out of order, then increment the room count 
+  order_counts[room] += (h != (i-1) &amp;&amp; j != (i+1)) ? 1 : 0
+}
+
+var str = []
+for( var key in order_counts ) {
+  var count = order_counts[key]
+  if(0==count) {
+    var room_stages = group_stages[key]
+    var filtered_stages = stages.filter(function(v) {
+        return -1 != room_stages.indexOf(v.value())
+      }).filter(function(v,i) {
+        return i!=room_stages.indexOf(v.value())
+        }).asSequence()
+
+    count = filtered_stages.size().whenNull(0)
+  }
+  if(0&lt;count) {
+    str.push(&apos;&quot;&apos;+key+&apos;&quot;:&apos;+count)
+  }
+}
+
+var res = null
+if(0&lt;str.length) {
+  res = newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)
+}
+res</attribute>
+        </attributes>
+      </variable>
+    </variables>
+  </variables>
+  <created valueType="datetime">2021-11-08T11:46:40.228-05</created>
+  <updated valueType="datetime">2021-11-08T11:48:29.694-05</updated>
+</org.obiba.magma.views.View>

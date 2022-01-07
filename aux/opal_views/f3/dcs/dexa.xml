@@ -1,0 +1,122 @@
+<org.obiba.magma.views.View>
+  <name>QC_F3_dexa</name>
+  <from class="org.obiba.magma.views.JoinTable">
+    <list>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs-f3.Participants</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs-images-f3.DualHipBoneDensity</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs-images-f3.ForearmBoneDensity</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs-images-f3.LateralBoneDensity</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs-images-f3.SpineBoneDensity</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs-images-f3.WholeBodyBoneDensity</reference>
+      </table>
+    </list>
+  </from>
+  <select class="org.obiba.magma.views.support.NoneClause"/>
+  <where class="org.obiba.magma.views.support.AllClause"/>
+  <variables class="org.obiba.magma.js.views.VariablesClause">
+    <variables class="linked-hash-set">
+      <variable name="technician" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var list = [&apos;LateralBoneDensity&apos;,&apos;WholeBodyBoneDensity&apos;,&apos;DualHipBoneDensity&apos;,&apos;ForearmBoneDensity&apos;,&apos;SpineBoneDensity&apos;]
+var res = null
+for(var i=0; i&lt;list.length; i++) {
+  var str = $(&apos;clsa-dcs-images-f3.&apos;+list[i]+&apos;:InstrumentRun.user&apos;).whenNull(
+    $group(&apos;Admin.Action.stage&apos;,list[i],&apos;Admin.Action.user&apos;).asSequence().last()).lowerCase()
+  if(str.isNull().not().value()) {
+    var v = str.value()
+    if(0&lt;v.length) {
+      res = newValue(v)
+      break
+    }  
+  }  
+}
+res  </attribute>
+        </attributes>
+      </variable>
+      <variable name="contraindicated" valueType="boolean" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;cosmos_dcs.QC_F3_dexa_lateral:contraindicated&apos;).and(
+  $(&apos;cosmos_dcs.QC_F3_dexa_spine:contraindicated&apos;),
+  $(&apos;cosmos_dcs.QC_F3_dexa_whole_body:contraindicated&apos;),
+  $(&apos;cosmos_dcs.QC_F3_dexa_forearm:contraindicated&apos;),
+  $(&apos;cosmos_dcs.QC_F3_dexa_hip:contraindicated&apos;))</attribute>
+        </attributes>
+      </variable>
+      <variable name="missing" valueType="boolean" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$this(&apos;contraindicated&apos;).not().and($this(&apos;file_complete&apos;).eq(0))</attribute>
+        </attributes>
+      </variable>
+      <variable name="duration" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;cosmos_dcs.QC_F3_meta:group_duration_dexa&apos;)</attribute>
+        </attributes>
+      </variable>
+      <variable name="file_size" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var res = null
+var list = [&apos;hip_left&apos;,&apos;hip_right&apos;,&apos;whole_body&apos;,&apos;spine&apos;,&apos;lateral&apos;,&apos;forearm&apos;]
+var sz = $this(&apos;file_meta&apos;)
+var str = []  
+for(var i = 0; i &lt; list.length; i++) {
+  var v = sz.valueAt(i)
+  if(v.isNull().value()) continue
+  str.push(&apos;&quot;&apos; + list[i] + &apos;&quot;:&apos; + v.value())
+}
+if(0&lt;str.length) {
+  res = newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="file_complete" valueType="decimal" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var c = newSequence([
+  $(&apos;cosmos_dcs.QC_F3_dexa_hip:contraindicated&apos;),
+  $(&apos;cosmos_dcs.QC_F3_dexa_hip:contraindicated&apos;),
+  $(&apos;cosmos_dcs.QC_F3_dexa_whole_body:contraindicated&apos;),
+  $(&apos;cosmos_dcs.QC_F3_dexa_spine:contraindicated&apos;),
+  $(&apos;cosmos_dcs.QC_F3_dexa_lateral:contraindicated&apos;),
+  $(&apos;cosmos_dcs.QC_F3_dexa_forearm:contraindicated&apos;)
+  ], &apos;boolean&apos;)
+  
+var sz = newSequence([
+  $(&apos;cosmos_dcs.QC_F3_dexa_hip:file_meta&apos;).valueAt(0),
+  $(&apos;cosmos_dcs.QC_F3_dexa_hip:file_meta&apos;).valueAt(1),
+  $(&apos;clsa-dcs-images-f3.WholeBodyBoneDensity:RES_WB_DICOM_1&apos;).length(),
+  $(&apos;clsa-dcs-images-f3.SpineBoneDensity:RES_SP_DICOM&apos;).length(),
+  $(&apos;clsa-dcs-images-f3.LateralBoneDensity:RES_SEL_DICOM_MEASURE&apos;).length(),
+  $(&apos;clsa-dcs-images-f3.ForearmBoneDensity:RES_FA_DICOM&apos;).asSequence().last().length()
+  ], &apos;integer&apos;).filter(function(v,i){ return c.valueAt(i).not()})
+  
+sz.trimmer().size().div(sz.size()).multiply(100).whenNull(0) </attribute>
+        </attributes>
+      </variable>
+      <variable name="file_meta" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0" repeatable="true" occurrenceGroup="">
+        <attributes>
+          <attribute name="script" valueType="text">newSequence([
+  $(&apos;cosmos_dcs.QC_F3_dexa_hip:file_meta&apos;).valueAt(0),
+  $(&apos;cosmos_dcs.QC_F3_dexa_hip:file_meta&apos;).valueAt(1),
+  $(&apos;clsa-dcs-images-f3.WholeBodyBoneDensity:RES_WB_DICOM_1&apos;).length(),
+  $(&apos;clsa-dcs-images-f3.SpineBoneDensity:RES_SP_DICOM&apos;).length(),  
+  $(&apos;clsa-dcs-images-f3.LateralBoneDensity:RES_SEL_DICOM_MEASURE&apos;).length(),
+  $(&apos;clsa-dcs-images-f3.ForearmBoneDensity:RES_FA_DICOM&apos;).asSequence().last().length()
+  ], &apos;integer&apos;)</attribute>
+        </attributes>
+      </variable>
+    </variables>
+  </variables>
+  <created valueType="datetime">2021-11-08T12:06:56.021-05</created>
+  <updated valueType="datetime">2021-11-08T12:06:56.021-05</updated>
+</org.obiba.magma.views.View>

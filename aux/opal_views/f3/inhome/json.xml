@@ -1,0 +1,59 @@
+<org.obiba.magma.views.View>
+  <name>QC_F3_json</name>
+  <from class="org.obiba.magma.security.SudoValueTableReference">
+    <reference>clsa-inhome-f3.Participants</reference>
+  </from>
+  <select class="org.obiba.magma.views.support.NoneClause"/>
+  <where class="org.obiba.magma.views.support.AllClause"/>
+  <variables class="org.obiba.magma.js.views.VariablesClause">
+    <variables class="linked-hash-set">
+      <variable name="data" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var prj = &apos;cosmos_inhome.QC_F3_&apos;
+var qnaire_arr = [&apos;technician&apos;,&apos;contraindicated&apos;,&apos;comment&apos;,&apos;duration&apos;,&apos;missing&apos;,&apos;qnaire_complete&apos;,&apos;skip&apos;,&apos;module_duration&apos;]
+var view_list = {
+  &apos;interview&apos;:
+    [&apos;barcode&apos;,&apos;start_date&apos;,&apos;site&apos;,&apos;duration&apos;,&apos;stage_duration&apos;,&apos;type&apos;],
+  &apos;inhome_1&apos;:qnaire_arr,
+  &apos;inhome_2&apos;:qnaire_arr,
+  &apos;inhome_3&apos;:qnaire_arr,
+  &apos;inhome_4&apos;:qnaire_arr,
+  &apos;inhome_cognition_recording&apos;:
+    [&apos;technician&apos;,&apos;contraindicated&apos;,&apos;comment&apos;,&apos;duration&apos;,&apos;missing&apos;,&apos;qnaire_complete&apos;,&apos;skip&apos;,&apos;file_complete&apos;,&apos;file_size&apos;]  
+}
+
+var inter_str = null
+var stage_str = []
+for( var key in view_list ) {  
+  var var_str = prj + key + &apos;:&apos;
+  var var_arr = view_list[key]  
+  key_str = []
+  for(var i=0;i&lt;var_arr.length;i++) {
+    var var_i = var_arr[i]
+    var v = $(var_str + var_i)
+    if(v.isNull().value()) continue;    
+    if(&apos;module_duration&apos;==var_i || &apos;file_size&apos;==var_i) {  
+      key_str.push(&apos;&quot;&apos; + var_i + &apos;&quot;:&apos; + v.value())
+    } else {
+      if(v.type().eq(&apos;text&apos;).and(&apos;comment&apos;!=var_i).value()) {
+        key_str.push(&apos;&quot;&apos; + var_i + &apos;&quot;:&quot;&apos; + v.value() + &apos;&quot;&apos;)
+      } else {
+        key_str.push(&apos;&quot;&apos; + var_i + &apos;&quot;:&apos; + v.value())
+      }  
+    }
+  }
+  if(&apos;interview&apos;==key) {
+    inter_str = &apos;{&apos; + key_str.join(&apos;,&apos;) + &apos;,&quot;stages&quot;:{&apos;
+  } else {
+    stage_str.push( &apos;&quot;&apos; + key + &apos;&quot;:{&apos; + key_str.join(&apos;,&apos;) + &apos;}&apos;)
+  }    
+}
+
+newValue( inter_str + stage_str.join(&apos;,&apos;) +&apos;}}&apos;,&apos;text&apos;)</attribute>
+        </attributes>
+      </variable>
+    </variables>
+  </variables>
+  <created valueType="datetime">2021-09-10T12:51:44.029-04</created>
+  <updated valueType="datetime">2021-09-10T12:51:44.029-04</updated>
+</org.obiba.magma.views.View>

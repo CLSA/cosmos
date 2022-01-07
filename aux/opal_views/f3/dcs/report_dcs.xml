@@ -1,0 +1,23 @@
+<org.obiba.magma.views.View>
+  <name>QC_F3_report_dcs</name>
+  <from class="org.obiba.magma.security.SudoValueTableReference">
+    <reference>cosmos_dcs.QC_F3_json</reference>
+  </from>
+  <select class="org.obiba.magma.views.support.NoneClause"/>
+  <where class="org.obiba.magma.js.views.JavascriptClause">
+    <scriptName>customScript</scriptName>
+    <script>$lastupdate().after(newValue(&apos;2021-08-31&apos;,&apos;date&apos;)).and($lastupdate().before(newValue(&apos;2021-11-01&apos;,&apos;date&apos;)),$(&apos;clsa-dcs-f3.Participants:DCS_PHONE&apos;).isNull())</script>
+  </where>
+  <variables class="org.obiba.magma.js.views.VariablesClause">
+    <variables class="linked-hash-set">
+      <variable name="data" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;data&apos;)</attribute>
+          <attribute name="derivedFrom" namespace="opal" valueType="text">/datasource/cosmos_dcs/table/QC_F3_json/variable/data</attribute>
+        </attributes>
+      </variable>
+    </variables>
+  </variables>
+  <created valueType="datetime">2021-11-24T14:31:49.779-05</created>
+  <updated valueType="datetime">2021-11-24T14:33:23.867-05</updated>
+</org.obiba.magma.views.View>

@@ -1,0 +1,23 @@
+<org.obiba.magma.views.View>
+  <name>QC_F2_report_dcs</name>
+  <from class="org.obiba.magma.security.SudoValueTableReference">
+    <reference>cosmos_dcs.QC_F2_json</reference>
+  </from>
+  <select class="org.obiba.magma.views.support.NoneClause"/>
+  <where class="org.obiba.magma.js.views.JavascriptClause">
+    <scriptName>customScript</scriptName>
+    <script>$(&apos;clsa-dcs-f2.Participants:DCS_PHONE&apos;).isNull().and($(&apos;clsa-dcs-f2.Participants:DCSatHOME&apos;).isNull())</script>
+  </where>
+  <variables class="org.obiba.magma.js.views.VariablesClause">
+    <variables class="linked-hash-set">
+      <variable name="data" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;data&apos;)</attribute>
+          <attribute name="derivedFrom" namespace="opal" valueType="text">/datasource/cosmos_dcs/table/QC_F2_json/variable/data</attribute>
+        </attributes>
+      </variable>
+    </variables>
+  </variables>
+  <created valueType="datetime">2021-11-24T15:43:14.117-05</created>
+  <updated valueType="datetime">2021-11-24T15:46:11.505-05</updated>
+</org.obiba.magma.views.View>
