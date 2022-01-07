@@ -54,6 +54,7 @@ class ui extends \cenozo\ui\ui
     $this->add_listitem( 'Platforms', 'platform' );
     $this->add_listitem( 'Technicians', 'technician' );
     $this->add_listitem( 'Interviews', 'interview' );
+    $this->add_listitem( 'Opal Views', 'opal_view' );
     $this->add_listitem( 'Outliers', 'indicator' );
 
     $this->remove_listitem( 'Languages' );

@@ -10,6 +10,8 @@ SOURCE stage.sql
 SOURCE update_outlier.sql
 SOURCE update_outliers.sql
 SOURCE outlier.sql
+SOURCE service.sql
+SOURCE role_has_service.sql
 
 SOURCE update_version_number.sql
 

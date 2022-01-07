@@ -46,7 +46,11 @@ CREATE PROCEDURE patch_opal_view()
       "INSERT IGNORE INTO opal_view( platform_id, study_phase_id, total ) ",
       "SELECT platform.id, study_phase.id, 0 ",
       "FROM platform, ", @cenozo, ".study_phase ",
-      "WHERE NOT( platform.name = 'dcs_home' OR platform.name = 'dcs_phone' ) OR study_phase.code != 'bl' ",
+      "JOIN ", @cenozo, ".study ON study_phase.study_id = study.id ",
+      "WHERE study.name = 'CLSA' ",
+      "AND NOT ( platform.name = 'dcs_home' AND study_phase.code = 'bl' ) ",
+      "AND NOT ( platform.name = 'dcs_phone' AND study_phase.code = 'bl' ) ",
+      "AND NOT ( platform.name = 'dcs_home' AND study_phase.code = 'f3'  ) ",
       "ORDER BY platform.name, study_phase.rank"
     );
     PREPARE statement FROM @sql;
