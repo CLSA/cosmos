@@ -8,9 +8,7 @@ cenozoApp.defineModule( { name: 'technician', models: ['add', 'list', 'view'], c
       possessive: 'technician\'s'
     },
     columnList: {
-      name: {
-        title: 'Name'
-      }
+      name: { title: 'Name' }
     },
     defaultOrder: {
       column: 'name',

@@ -8,37 +8,14 @@ cenozoApp.defineModule( { name: 'interview', models: ['list', 'view'], create: m
       possessive: 'interview\'s'
     },
     columnList: {
-      uid: {
-        column: 'participant.uid',
-        title: 'UID'
-      },
-      study_phase: {
-        column: 'study_phase.name',
-        title: 'Study Phase'
-      },
-      platform: {
-        column: 'platform.name',
-        title: 'Platform'
-      },
-      site: {
-        column: 'site.name',
-        title: 'Site'
-      },
-      start_date: {
-        title: 'Date',
-        type: 'date'
-      },
-      barcode: {
-        title: 'Barcode'
-      },
-      duration: {
-        title: 'Duration',
-        type: 'number'
-      },
-      total_stage_duration: {
-        title: 'Total Stage Duration',
-        type: 'number'
-      }
+      uid: { column: 'participant.uid', title: 'UID' },
+      study_phase: { column: 'study_phase.name', title: 'Study Phase' },
+      platform: { column: 'platform.name', title: 'Platform' },
+      site: { column: 'site.name', title: 'Site' },
+      start_date: { title: 'Date', type: 'date' },
+      barcode: { title: 'Barcode' },
+      duration: { title: 'Duration', type: 'number' },
+      total_stage_duration: { title: 'Total Stage Duration', type: 'number' }
     },
     defaultOrder: {
       column: 'start_date',
@@ -90,13 +67,14 @@ cenozoApp.defineModule( { name: 'interview', models: ['list', 'view'], create: m
     'CnBaseModelFactory', 'CnInterviewListFactory', 'CnInterviewViewFactory',
     function( CnBaseModelFactory, CnInterviewListFactory, CnInterviewViewFactory ) {
       var object = function( root ) {
-        var self = this;
         CnBaseModelFactory.construct( this, module );
-        this.listModel = CnInterviewListFactory.instance( this );
-        this.viewModel = CnInterviewViewFactory.instance( this, root );
 
-        // override the edit functionality (it's used to update data in a nightly script only)
-        this.getEditEnabled = function() { return false; }
+        angular.extend( this, {
+          listModel: CnInterviewListFactory.instance( this ),
+          viewModel: CnInterviewViewFactory.instance( this, root ),
+          // override the edit functionality (it's used to update data in a nightly script only)
+          getEditEnabled: function() { return false; }
+        } );
       };
 
       return {

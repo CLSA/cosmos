@@ -8,14 +8,8 @@ cenozoApp.defineModule( { name: 'stage_type', models: ['list', 'view'], create: 
       possessive: 'stage type\'s'
     },
     columnList: {
-      study_phase: {
-        column: 'study_phase.name',
-        title: 'Study Phase'
-      },
-      platform: {
-        column: 'platform.name',
-        title: 'Platform'
-      },
+      study_phase: { column: 'study_phase.name', title: 'Study Phase' },
+      platform: { column: 'platform.name', title: 'Platform' },
       name: { column: 'stage_type.name', title: 'Name' }
     },
     defaultOrder: {
@@ -78,10 +72,10 @@ cenozoApp.defineModule( { name: 'stage_type', models: ['list', 'view'], create: 
     'CnBaseViewFactory', 'CnPlotHelperFactory',
     function( CnBaseViewFactory, CnPlotHelperFactory ) {
       var object = function( parentModel, root ) {
-        var self = this;
         CnBaseViewFactory.construct( this, parentModel, root );
 
         // use the plot helper to set up an outlier and histogram plot for this indicator
+        var self = this;
         CnPlotHelperFactory.addPlot( this, {
           getType: function() { return 'time'; },
           getPath: function() { return self.parentModel.getServiceResourcePath() + '/stage?plot=duration' },
@@ -91,9 +85,12 @@ cenozoApp.defineModule( { name: 'stage_type', models: ['list', 'view'], create: 
           maxName: 'duration_high'
         } );
 
-        this.deferred.promise.then( function() {
-          if( angular.isDefined( self.indicatorModel ) ) self.indicatorModel.listModel.heading = 'Indicator List';
-        } );
+        async function init( object ) {
+          await object.deferred.promise;
+          if( angular.isDefined( object.indicatorModel ) ) object.indicatorModel.listModel.heading = 'Indicator List';
+        }
+
+        init( this );
       }
       return { instance: function( parentModel, root ) { return new object( parentModel, root ); } };
     }

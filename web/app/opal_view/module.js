@@ -135,45 +135,48 @@ cenozoApp.defineModule( { name: 'opal_view', models: ['add', 'list', 'view'], cr
     function( CnBaseModelFactory, CnOpalViewListFactory, CnOpalViewAddFactory, CnOpalViewViewFactory, CnHttpFactory ) {
       var object = function( root ) {
         CnBaseModelFactory.construct( this, module );
-        this.addModel = CnOpalViewAddFactory.instance( this );
-        this.listModel = CnOpalViewListFactory.instance( this );
-        this.viewModel = CnOpalViewViewFactory.instance( this, root );
 
-        // never allow patching (it is only allowed for uploading entries)
-        this.getEditEnabled = function() { return false; };
+        angular.extend( this, {
+          addModel: CnOpalViewAddFactory.instance( this ),
+          listModel: CnOpalViewListFactory.instance( this ),
+          viewModel: CnOpalViewViewFactory.instance( this, root ),
 
-        // extend getMetadata
-        this.getMetadata = async function() {
-          await this.$$getMetadata();
+          // never allow patching (it is only allowed for uploading entries)
+          getEditEnabled: function() { return false; },
 
-          var [platformResponse, studyPhaseResponse] = await Promise.all( [
-            CnHttpFactory.instance( {
-              path: 'platform',
-              data: {
-                select: { column: [ 'id', 'name' ] },
-                modifier: { order: 'name', limit: 1000 }
-              }
-            } ).query(),
+          // extend getMetadata
+          getMetadata: async function() {
+            await this.$$getMetadata();
 
-            CnHttpFactory.instance( {
-              path: 'study_phase',
-              data: {
-                select: { column: [ 'id', 'name', { table: 'study', column: 'name', alias: 'study' } ] },
-                modifier: { order: ['study.name', 'study_phase.rank'], limit: 1000 }
-              }
-            } ).query()
-          ] );
+            var [platformResponse, studyPhaseResponse] = await Promise.all( [
+              CnHttpFactory.instance( {
+                path: 'platform',
+                data: {
+                  select: { column: [ 'id', 'name' ] },
+                  modifier: { order: 'name', limit: 1000 }
+                }
+              } ).query(),
 
-          this.metadata.columnList.platform_id.enumList = platformResponse.data.reduce( ( list, item ) => {
-            list.push( { value: item.id, name: item.name } );
-            return list;
-          }, [] );
+              CnHttpFactory.instance( {
+                path: 'study_phase',
+                data: {
+                  select: { column: [ 'id', 'name', { table: 'study', column: 'name', alias: 'study' } ] },
+                  modifier: { order: ['study.name', 'study_phase.rank'], limit: 1000 }
+                }
+              } ).query()
+            ] );
 
-          this.metadata.columnList.study_phase_id.enumList = studyPhaseResponse.data.reduce( ( list, item ) => {
-            list.push( { value: item.id, name: item.study + ': ' + item.name } );
-            return list;
-          }, [] );
-        };
+            this.metadata.columnList.platform_id.enumList = platformResponse.data.reduce( ( list, item ) => {
+              list.push( { value: item.id, name: item.name } );
+              return list;
+            }, [] );
+
+            this.metadata.columnList.study_phase_id.enumList = studyPhaseResponse.data.reduce( ( list, item ) => {
+              list.push( { value: item.id, name: item.study + ': ' + item.name } );
+              return list;
+            }, [] );
+          }
+        } );
       };
 
       return {
