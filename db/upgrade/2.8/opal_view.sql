@@ -45,7 +45,7 @@ CREATE PROCEDURE patch_opal_view()
     -- NOTE: dcs_home and dcs_phone do not have baseline views
     SET @sql = CONCAT(
       "INSERT IGNORE INTO opal_view( platform_id, study_phase_id, keep_updated, total ) ",
-      "SELECT platform.id, study_phase.id, 'f3' = study_phase.code. 0 ",
+      "SELECT platform.id, study_phase.id, 'f3' = study_phase.code, 0 ",
       "FROM platform, ", @cenozo, ".study_phase ",
       "JOIN ", @cenozo, ".study ON study_phase.study_id = study.id ",
       "WHERE study.name = 'CLSA' ",
