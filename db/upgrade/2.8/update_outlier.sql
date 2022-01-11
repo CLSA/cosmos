@@ -5,7 +5,7 @@ DELIMITER $$
 CREATE PROCEDURE update_outlier(IN proc_indicator_id INT(10) UNSIGNED)
 BEGIN
 
-  DELETE FROM outlier WHERE indicator_id = indicator_id_val;
+  DELETE FROM outlier WHERE indicator_id = proc_indicator_id;
 
   INSERT INTO outlier( indicator_id, stage_id, create_timestamp, site_id, technician_id, date, type )
   SELECT indicator.id, stage.id, NULL, interview.site_id, stage.technician_id, interview.start_date,
@@ -16,7 +16,7 @@ BEGIN
     JSON_EXTRACT( stage.data, CONCAT( "$.", indicator.name ) ) > indicator.maximum
   )
   JOIN interview on stage.interview_id = interview.id
-  WHERE indicator.id = indicator_id_val;
+  WHERE indicator.id = proc_indicator_id;
 
 END$$
 DELIMITER ;

@@ -23,7 +23,7 @@ cenozo.service( 'CnPlotHelperFactory', [
         if( angular.isUndefined( parameters.minName ) ) parameters.minName = 'minimum';
         if( angular.isUndefined( parameters.maxName ) ) parameters.maxName = 'maximum';
         if( angular.isUndefined( parameters.getBinSize ) ) parameters.getBinSize = function() { return 60; };
-        if( angular.isUndefined( parameters.onView ) ) parameters.onView = function() {};
+        if( angular.isUndefined( parameters.onView ) ) parameters.onView = async function() {};
 
         angular.extend( model, {
           rawData: [],
@@ -128,35 +128,33 @@ cenozo.service( 'CnPlotHelperFactory', [
           },
 
           // reset and reread all data from the server
-          readRawData: function() {
-            var self = this;
+          readRawData: async function() {
             this.dataLoading = true;
-            return CnHttpFactory.instance( {
+            var response = await CnHttpFactory.instance( {
               path: parameters.getPath()
-            } ).query().then( function( response ) {
-              // group data into categories (cats or technicians)
-              var lastSite = null;
-              var dataIndex = -1;
-              self.rawData = [];
-              response.data.forEach( function( row ) {
-                if( row.category != lastSite ) {
-                  lastSite = row.category;
-                  dataIndex++;
-                  self.rawData.push( { category: row.category, data: [] } );
-                }
-                self.rawData[dataIndex].data.push( {
-                  date: parseInt( moment( new Date( row.date ) ).format( 'YYYYMM' ) ),
-                  value: row.value
-                } );
-              } );
+            } ).query();
 
-              self.dataLoading = false;
+            // group data into categories (cats or technicians)
+            var lastSite = null;
+            var dataIndex = -1;
+            this.rawData = [];
+            response.data.forEach( row => {
+              if( row.category != lastSite ) {
+                lastSite = row.category;
+                dataIndex++;
+                this.rawData.push( { category: row.category, data: [] } );
+              }
+              this.rawData[dataIndex].data.push( {
+                date: parseInt( moment( new Date( row.date ) ).format( 'YYYYMM' ) ),
+                value: row.value
+              } );
             } );
+
+            this.dataLoading = false;
           },
 
           // updates the plots based on the selected date span
           updateDateSpan: function() {
-            var self = this;
             var type = parameters.getType();
             var binSize = parameters.getBinSize();
             if( 0 >= binSize ) binSize = 1;
@@ -165,18 +163,18 @@ cenozo.service( 'CnPlotHelperFactory', [
             if( null == this.dateSpan.high ) this.dateSpan.high = this.dateSpan.list[this.dateSpan.list.length-1].value;
 
             // change the low/high lists based on the selected values
-            this.dateSpan.lowList = this.dateSpan.list.filter( item => item.value < self.dateSpan.high );
-            this.dateSpan.highList = this.dateSpan.list.filter( item => item.value > self.dateSpan.low );
+            this.dateSpan.lowList = this.dateSpan.list.filter( item => item.value < this.dateSpan.high );
+            this.dateSpan.highList = this.dateSpan.list.filter( item => item.value > this.dateSpan.low );
           },
 
           // builds the plots (reset will rebuild the plot's details as well)
           buildPlot: function( reset ) {
-            var self = this;
             var binSize = parameters.getBinSize();
             if( 0 >= binSize ) binSize = 1;
 
             var minValue = parseInt( this.record[parameters.minName] );
             var maxValue = parseInt( this.record[parameters.maxName] );
+
             var minValueLabel = minValue;
             var maxValueLabel = maxValue;
             var minBin = Math.ceil( minValue / binSize ) - 1;
@@ -309,49 +307,46 @@ cenozo.service( 'CnPlotHelperFactory', [
             for( var i = 0; i < this.histogram.series.length; i++ ) this.histogram.data.push( angular.copy( baseData ) );
 
             // put the data into the appropriate bins
-            this.rawData.forEach( function( catData, catIndex ) {
-              catData.data.filter( datum => self.dateSpan.low <= datum.date && datum.date <= self.dateSpan.high )
-                           .forEach( function( datum ) {
+            this.rawData.forEach( ( catData, catIndex ) => {
+              catData.data.filter( datum => this.dateSpan.low <= datum.date && datum.date <= this.dateSpan.high )
+                           .forEach( datum => {
                 // outlierGroups data
-                self.outlierGroups.data[catIndex][minValue > datum.value ? 0 : maxValue < datum.value ? 2 : 1]++;
+                this.outlierGroups.data[catIndex][minValue > datum.value ? 0 : maxValue < datum.value ? 2 : 1]++;
 
                 // outlierDistribution data
-                if( minValue > datum.value || maxValue < datum.value ) self.outlierDistribution.data[catIndex][0]++;
+                if( minValue > datum.value || maxValue < datum.value ) this.outlierDistribution.data[catIndex][0]++;
 
                 // histogram data
                 var bin = Math.ceil( datum.value / binSize );
                 if( bin < minBin ) bin = minBin;
                 else if( bin > maxBin ) bin = maxBin;
-                self.histogram.data[catIndex][bin-minBin]++;
+                if( !Number.isNaN( minBin ) && !Number.isNaN( maxBin ) ) this.histogram.data[catIndex][bin-minBin]++;
               } );
             } );
           },
 
-          onView: function( force ) {
-            var self = this;
-            return this.$$onView( force ).then( function() {
-              parameters.onView();
+          onView: async function( force ) {
+            await this.$$onView( force );
+            await parameters.onView();
 
-              // determine the date spans
-              var date = moment( new Date( self.record.min_date ) );
-              date.day( 1 );
-              var endDate = moment( new Date( self.record.max_date ) );
-              endDate.day( 1 );
-              self.dateSpan.list = [];
-              while( date.isSameOrBefore( endDate ) ) {
-                self.dateSpan.list.push( {
-                  name: date.format( 'MMMM, YYYY' ),
-                  value: parseInt( date.format( 'YYYYMM' ) )
-                } );
-                date.add( 1, 'month' );
-              }
-              self.updateDateSpan();
-
-              // read the raw plotting data
-              return self.readRawData().then( function() {
-                self.buildPlot( true );
+            // determine the date spans
+            var date = moment( new Date( this.record.min_date ) );
+            date.day( 1 );
+            var endDate = moment( new Date( this.record.max_date ) );
+            endDate.day( 1 );
+            this.dateSpan.list = [];
+            while( date.isSameOrBefore( endDate ) ) {
+              this.dateSpan.list.push( {
+                name: date.format( 'MMMM, YYYY' ),
+                value: parseInt( date.format( 'YYYYMM' ) )
               } );
-            } );
+              date.add( 1, 'month' );
+            }
+            this.updateDateSpan();
+
+            // read the raw plotting data
+            await this.readRawData();
+            this.buildPlot( true );
           },
 
           onSetDateSpan: function() {
@@ -359,9 +354,9 @@ cenozo.service( 'CnPlotHelperFactory', [
             this.buildPlot();
           },
 
-          onPatch: function( data ) {
-            var self = this;
-            return this.$$onPatch( data ).then( function() { self.buildPlot( true ); } );
+          onPatch: async function( data ) {
+            await this.$$onPatch( data );
+            this.buildPlot( true );
           }
         } );
       }
