@@ -21,7 +21,9 @@ class interview extends \cenozo\database\record
   public static function update_interview_list()
   {
     $max_new_interviews = 0;
-    $opal_view_list = $opal_view_class_name::select_objects();
+    $modifier = lib::create( 'database\modifier' );
+    $modifier->where( 'keep_updated', '=', true );
+    $opal_view_list = $opal_view_class_name::select_objects( $modifier );
     foreach( $opal_view_list as $index => $db_opal_view )
     {
       $project_name = $db_opal_view->get_project_name();

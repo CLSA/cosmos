@@ -37,6 +37,13 @@ class ui extends \cenozo\ui\ui
     $module = $this->get_module( 'interview' );
     if( !is_null( $module ) ) $module->add_child( 'stage' );
 
+    $module = $this->get_module( 'opal_view' );
+    if( !is_null( $module ) )
+    {
+      $module->add_child( 'stage_type' );
+      $module->add_action( 'upload', '/{identifier}' );
+    }
+
     $module = $this->get_module( 'platform' );
     if( !is_null( $module ) ) $module->add_child( 'stage_type' );
 

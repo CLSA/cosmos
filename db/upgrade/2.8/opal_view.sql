@@ -20,6 +20,7 @@ CREATE PROCEDURE patch_opal_view()
         "create_timestamp TIMESTAMP NOT NULL, ",
         "platform_id INT UNSIGNED NOT NULL, ",
         "study_phase_id INT UNSIGNED NOT NULL, ",
+        "keep_updated TINYINT(1) NOT NULL DEFAULT 1, ",
         "total INT UNSIGNED NOT NULL DEFAULT 0, ",
         "PRIMARY KEY (id), ",
         "INDEX fk_opal_view_platform_id (platform_id ASC), ",
@@ -43,8 +44,8 @@ CREATE PROCEDURE patch_opal_view()
     
     -- NOTE: dcs_home and dcs_phone do not have baseline views
     SET @sql = CONCAT(
-      "INSERT IGNORE INTO opal_view( platform_id, study_phase_id, total ) ",
-      "SELECT platform.id, study_phase.id, 0 ",
+      "INSERT IGNORE INTO opal_view( platform_id, study_phase_id, keep_updated, total ) ",
+      "SELECT platform.id, study_phase.id, 'f3' = study_phase.code. 0 ",
       "FROM platform, ", @cenozo, ".study_phase ",
       "JOIN ", @cenozo, ".study ON study_phase.study_id = study.id ",
       "WHERE study.name = 'CLSA' ",
