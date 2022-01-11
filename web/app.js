@@ -127,32 +127,6 @@ cenozo.service( 'CnPlotHelperFactory', [
             }
           },
 
-          // reset and reread all data from the server
-          readRawData: async function() {
-            this.dataLoading = true;
-            var response = await CnHttpFactory.instance( {
-              path: parameters.getPath()
-            } ).query();
-
-            // group data into categories (cats or technicians)
-            var lastSite = null;
-            var dataIndex = -1;
-            this.rawData = [];
-            response.data.forEach( row => {
-              if( row.category != lastSite ) {
-                lastSite = row.category;
-                dataIndex++;
-                this.rawData.push( { category: row.category, data: [] } );
-              }
-              this.rawData[dataIndex].data.push( {
-                date: parseInt( moment( new Date( row.date ) ).format( 'YYYYMM' ) ),
-                value: row.value
-              } );
-            } );
-
-            this.dataLoading = false;
-          },
-
           // updates the plots based on the selected date span
           updateDateSpan: function() {
             var type = parameters.getType();
@@ -165,6 +139,13 @@ cenozo.service( 'CnPlotHelperFactory', [
             // change the low/high lists based on the selected values
             this.dateSpan.lowList = this.dateSpan.list.filter( item => item.value < this.dateSpan.high );
             this.dateSpan.highList = this.dateSpan.list.filter( item => item.value > this.dateSpan.low );
+          },
+
+          resetPlot: function() {
+            // reset the plot details
+            angular.extend( this.histogram, { labels: [], series: [], data: [] } );
+            angular.extend( this.outlierGroups, { labels: [], series: [], data: [] } );
+            angular.extend( this.outlierDistribution, { labels: [], series: [], data: [] } );
           },
 
           // builds the plots (reset will rebuild the plot's details as well)
@@ -184,15 +165,7 @@ cenozo.service( 'CnPlotHelperFactory', [
 
             if( reset === true ) {
               // reset the plot details
-              this.histogram.labels = [];
-              this.histogram.series = [];
-              this.histogram.data = [];
-              this.outlierGroups.labels = [];
-              this.outlierGroups.series = [];
-              this.outlierGroups.data = [];
-              this.outlierDistribution.labels = [];
-              this.outlierDistribution.series = [];
-              this.outlierDistribution.data = [];
+              this.resetPlot();
 
               // set the labels
               var type = parameters.getType();
@@ -326,6 +299,8 @@ cenozo.service( 'CnPlotHelperFactory', [
           },
 
           onView: async function( force ) {
+            this.dataLoading = true;
+            this.resetPlot();
             await this.$$onView( force );
             await parameters.onView();
 
@@ -345,8 +320,26 @@ cenozo.service( 'CnPlotHelperFactory', [
             this.updateDateSpan();
 
             // read the raw plotting data
-            await this.readRawData();
+            var response = await CnHttpFactory.instance( { path: parameters.getPath() } ).query();
+
+            // group data into categories (cats or technicians)
+            var lastSite = null;
+            var dataIndex = -1;
+            this.rawData = [];
+            response.data.forEach( row => {
+              if( row.category != lastSite ) {
+                lastSite = row.category;
+                dataIndex++;
+                this.rawData.push( { category: row.category, data: [] } );
+              }
+              this.rawData[dataIndex].data.push( {
+                date: parseInt( moment( new Date( row.date ) ).format( 'YYYYMM' ) ),
+                value: row.value
+              } );
+            } );
+
             this.buildPlot( true );
+            this.dataLoading = false;
           },
 
           onSetDateSpan: function() {
