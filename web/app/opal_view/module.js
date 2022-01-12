@@ -60,7 +60,7 @@ cenozoApp.defineModule( { name: 'opal_view', models: ['add', 'list', 'view'], cr
 
           await $scope.model.promise;
           CnSession.setBreadcrumbTrail( [ {
-            title: 'Opwl Views',
+            title: 'Opal Views',
             go: async function() { await $state.go( 'opal_view.list' ); }
           }, {
             title: $scope.model.title,
