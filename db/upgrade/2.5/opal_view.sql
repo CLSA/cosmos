@@ -41,10 +41,12 @@ CREATE PROCEDURE patch_opal_view()
     EXECUTE statement;
     DEALLOCATE PREPARE statement;
     
+    -- NOTE: dcs_home and dcs_phone do not have baseline views
     SET @sql = CONCAT(
       "INSERT IGNORE INTO opal_view( platform_id, study_phase_id, total ) ",
       "SELECT platform.id, study_phase.id, 0 ",
       "FROM platform, ", @cenozo, ".study_phase ",
+      "WHERE NOT( platform.name = 'dcs_home' OR platform.name = 'dcs_phone' ) OR study_phase.code != 'bl' ",
       "ORDER BY platform.name, study_phase.rank"
     );
     PREPARE statement FROM @sql;

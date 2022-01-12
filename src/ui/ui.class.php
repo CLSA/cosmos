@@ -37,6 +37,13 @@ class ui extends \cenozo\ui\ui
     $module = $this->get_module( 'interview' );
     if( !is_null( $module ) ) $module->add_child( 'stage' );
 
+    $module = $this->get_module( 'opal_view' );
+    if( !is_null( $module ) )
+    {
+      $module->add_child( 'stage_type' );
+      $module->add_action( 'upload', '/{identifier}' );
+    }
+
     $module = $this->get_module( 'platform' );
     if( !is_null( $module ) ) $module->add_child( 'stage_type' );
 
@@ -54,6 +61,7 @@ class ui extends \cenozo\ui\ui
     $this->add_listitem( 'Platforms', 'platform' );
     $this->add_listitem( 'Technicians', 'technician' );
     $this->add_listitem( 'Interviews', 'interview' );
+    $this->add_listitem( 'Opal Views', 'opal_view' );
     $this->add_listitem( 'Outliers', 'indicator' );
 
     $this->remove_listitem( 'Languages' );

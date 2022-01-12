@@ -1,0 +1,94 @@
+<org.obiba.magma.views.View>
+  <name>QC_F3_interview</name>
+  <from class="org.obiba.magma.security.SudoValueTableReference">
+    <reference>clsa-inhome-f3.Participants</reference>
+  </from>
+  <select class="org.obiba.magma.views.support.NoneClause"/>
+  <where class="org.obiba.magma.views.support.AllClause"/>
+  <variables class="org.obiba.magma.js.views.VariablesClause">
+    <variables class="linked-hash-set">
+      <variable name="barcode" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;Admin.Participant.barcode&apos;)</attribute>
+        </attributes>
+      </variable>
+      <variable name="site" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;Admin.ApplicationConfiguration.siteName&apos;).lowerCase().map({
+  &apos;britishcolumbia&apos;:&apos;University of BC DCS&apos;,
+  &apos;british columbia&apos;:&apos;University of BC DCS&apos;,
+  &apos;calgary&apos;:&apos;Calgary DCS&apos;,
+  &apos;dalhousie&apos;:&apos;Dalhousie DCS&apos;,
+  &apos;hamilton&apos;:&apos;Hamilton DCS&apos;,
+  &apos;hamiltonhome1&apos;:&apos;Hamilton DCS&apos;,
+  &apos;himilton&apos;:&apos;Hamilton DCS&apos;,
+  &apos;manitoba&apos;:&apos;Manitoba DCS&apos;,
+  &apos;mcgill&apos;:&apos;McGill DCS&apos;,
+  &apos;mcmaster&apos;:&apos;Hamilton DCS&apos;,
+  &apos;memorial&apos;:&apos;Memorial DCS&apos;,
+  &apos;memorial university&apos;:&apos;Memorial DCS&apos;,
+  &apos;ottawa&apos;:&apos;Ottawa DCS&apos;,
+  &apos;sherbrooke&apos;:&apos;Sherbrooke DCS&apos;,
+  &apos;simon fraser&apos;:&apos;Simon Fraser DCS&apos;,
+  &apos;simonfraser&apos;:&apos;Simon Fraser DCS&apos;,
+  &apos;universityofbc&apos;:&apos;University of BC DCS&apos;,
+  &apos;university of manitoba&apos;:&apos;Manitoba DCS&apos;,
+  &apos;university of victoria&apos;:&apos;Victoria DCS&apos;,
+  &apos;victoria&apos;:&apos;Victoria DCS&apos;},null)</attribute>
+        </attributes>
+      </variable>
+      <variable name="start_date" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;Admin.Interview.startDate&apos;).format(&apos;yyyy-MM-dd&apos;)</attribute>
+        </attributes>
+      </variable>
+      <variable name="duration" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var t = $(&apos;clsa-inhome-f3.Participants:Admin.Action.dateTime&apos;).asSequence().trimmer()
+var d = []
+for(var i=0;i&lt;t.size();i++) {
+  var dy = t.valueAt(i).format(&apos;yyyyMMdd&apos;)
+  if(undefined===d[dy]){
+    d[dy]=[t.valueAt(i)]
+  } else {
+    d[dy].push(t.valueAt(i))
+  }
+}
+var res = newValue(0,&apos;integer&apos;)
+for(var dy in d) {
+  if(1&lt;d[dy].length) {
+    var l = newSequence(d[dy],&apos;datetime&apos;).sort()
+    res = res.plus(l.last().time().minus(l.first().time()).div(1000).whenNull(0))
+  }    
+}
+res.gt(0).value()?res:null</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_duration" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">// estimate of stage_duration
+// accounts for stages that start and end on different dates by rejecting paired action datetimes
+//
+var s = $(&apos;clsa-inhome-f3.Participants:Admin.Action.stage&apos;).filter(function(v,i){ return i==this.indexOf(v) }).trimmer()
+var res = newValue(0,&apos;integer&apos;)
+for(var i=0;i&lt;s.size();i++) {
+  var r = $group(&apos;Admin.Action.stage&apos;,s.valueAt(i).value(),&apos;Admin.Action.dateTime&apos;).asSequence()
+  for(var k=0; k&lt;r.size();k+=2) {      
+    if(r.valueAt(k+1).format(&apos;yyyyMMdd&apos;).eq(r.valueAt(k).format(&apos;yyyyMMdd&apos;)).value()) {
+      res = res.plus(r.valueAt(k+1).time().minus(r.valueAt(k).time()).div(1000).whenNull(0))
+    }
+  }  
+}
+res.gt(0).value()?res:null</attribute>
+        </attributes>
+      </variable>
+      <variable name="type" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;clsa-inhome-f3.Participants:INHOME_PHONE&apos;).value() ? &apos;inhome phone&apos; : &apos;inhome&apos;</attribute>
+        </attributes>
+      </variable>
+    </variables>
+  </variables>
+  <created valueType="datetime">2021-09-10T12:53:19.242-04</created>
+  <updated valueType="datetime">2021-09-10T12:53:19.242-04</updated>
+</org.obiba.magma.views.View>

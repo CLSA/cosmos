@@ -1,0 +1,128 @@
+<org.obiba.magma.views.View>
+  <name>QC_F3_interview</name>
+  <from class="org.obiba.magma.views.JoinTable">
+    <list>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-dcs-f3.Participants</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>cosmos_dcs.QC_F3_meta</reference>
+      </table>
+    </list>
+  </from>
+  <select class="org.obiba.magma.views.support.NoneClause"/>
+  <where class="org.obiba.magma.views.support.AllClause"/>
+  <variables class="org.obiba.magma.js.views.VariablesClause">
+    <variables class="linked-hash-set">
+      <variable name="barcode" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;Admin.Participant.barcode&apos;)</attribute>
+        </attributes>
+      </variable>
+      <variable name="start_date" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;Admin.Interview.startDate&apos;).format(&apos;yyyy-MM-dd&apos;)</attribute>
+        </attributes>
+      </variable>
+      <variable name="site" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;Admin.ApplicationConfiguration.siteName&apos;).lowerCase().map({
+  &apos;britishcolumbia&apos;:&apos;University of BC DCS&apos;,
+  &apos;british columbia&apos;:&apos;University of BC DCS&apos;,
+  &apos;calgary&apos;:&apos;Calgary DCS&apos;,
+  &apos;dalhousie&apos;:&apos;Dalhousie DCS&apos;,
+  &apos;hamilton&apos;:&apos;Hamilton DCS&apos;,
+  &apos;hamiltonhome1&apos;:&apos;Hamilton DCS&apos;,
+  &apos;himilton&apos;:&apos;Hamilton DCS&apos;,
+  &apos;manitoba&apos;:&apos;Manitoba DCS&apos;,
+  &apos;mcgill&apos;:&apos;McGill DCS&apos;,
+  &apos;mcmaster&apos;:&apos;Hamilton DCS&apos;,
+  &apos;memorial&apos;:&apos;Memorial DCS&apos;,
+  &apos;memorial university&apos;:&apos;Memorial DCS&apos;,
+  &apos;ottawa&apos;:&apos;Ottawa DCS&apos;,
+  &apos;sherbrooke&apos;:&apos;Sherbrooke DCS&apos;,
+  &apos;simon fraser&apos;:&apos;Simon Fraser DCS&apos;,
+  &apos;simonfraser&apos;:&apos;Simon Fraser DCS&apos;,
+  &apos;universityofbc&apos;:&apos;University of BC DCS&apos;,
+  &apos;university of manitoba&apos;:&apos;Manitoba DCS&apos;,
+  &apos;university of victoria&apos;:&apos;Victoria DCS&apos;,
+  &apos;victoria&apos;:&apos;Victoria DCS&apos;},null)</attribute>
+        </attributes>
+      </variable>
+      <variable name="duration" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var t = $(&apos;clsa-dcs-f3.Participants:Admin.Action.dateTime&apos;).asSequence().trimmer()
+var d = []
+for(var i=0;i&lt;t.size();i++) {
+  var dy = t.valueAt(i).format(&apos;yyyyMMdd&apos;)
+  if(undefined===d[dy]){
+    d[dy]=[t.valueAt(i)]
+  } else {
+    d[dy].push(t.valueAt(i))
+  }
+}
+var res = newValue(0,&apos;integer&apos;)
+for(var dy in d) {
+  if(1&lt;d[dy].length) {
+    var l = newSequence(d[dy],&apos;datetime&apos;).sort()
+    res = res.plus(l.last().time().minus(l.first().time()).div(1000).whenNull(0))
+  }    
+}
+res.gt(0).value()?res:null</attribute>
+        </attributes>
+      </variable>
+      <variable name="stage_duration" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var group_stages=[&apos;ECG&apos;,&apos;ForearmBoneDensity&apos;,&apos;DualHipBoneDensity&apos;,&apos;WholeBodyBoneDensity&apos;,&apos;LateralBoneDensity&apos;,&apos;SpineBoneDensity&apos;,&apos;CarotidIntima&apos;]
+var stages = $(&apos;clsa-dcs-f3.Participants:Admin.StageInstance.stage&apos;).asSequence().filter(function(v,i) {
+    return (i==this.indexOf(v) &amp;&amp; -1==group_stages.indexOf(v.value()))
+  })
+var res = $(&apos;cosmos_dcs.QC_F3_meta:group_duration_ecg&apos;).plus(
+  $(&apos;cosmos_dcs.QC_F3_meta:group_duration_dexa&apos;)).plus(
+  $(&apos;cosmos_dcs.QC_F3_meta:group_duration_carotid&apos;)).whenNull(0)
+
+for(var i = 0; i &lt; stages.size(); i++) {
+  var stage = stages.valueAt(i).value()
+  var pre = newValue(null, &apos;datetime&apos;)
+  var post = newValue(null, &apos;datetime&apos;)
+
+  if(-1 != $(&apos;cosmos_dcs.QC_F3_meta:group_questionnaire&apos;).indexOf(stage)) {
+    pre = $(&apos;clsa-dcs-f3.&apos;+stage+&apos;:QuestionnaireRun.timeStart&apos;)
+    post = $(&apos;clsa-dcs-f3.&apos;+stage+&apos;:QuestionnaireRun.timeEnd&apos;)
+  } else if(-1 != $(&apos;cosmos_dcs.QC_F3_meta:group_instrument&apos;).indexOf(stage)) {
+    pre = $(&apos;clsa-dcs-f3.&apos;+stage+&apos;:InstrumentRun.timeStart&apos;)
+    post = $(&apos;clsa-dcs-f3.&apos;+stage+&apos;:InstrumentRun.timeEnd&apos;)      
+  } else if(-1 != $(&apos;cosmos_dcs.QC_F3_meta:group_other&apos;).indexOf(stage)) {
+    pre = $(&apos;clsa-dcs-f3.&apos;+stage+&apos;:timeStart&apos;)
+    post = $(&apos;clsa-dcs-f3.&apos;+stage+&apos;:timeEnd&apos;)
+  } 
+  
+  res = res.plus(
+      post.time().minus(pre.time()).div(1000).whenNull(
+        $group(&apos;clsa-dcs.Participants:Admin.StageInstance.stage&apos;,stage,
+        &apos;Admin.StageInstance.duration&apos;).asSequence().sum().whenNull(0)
+      )
+    )
+}
+
+res.gt(0).value()?res:null</attribute>
+        </attributes>
+      </variable>
+      <variable name="type" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var res = &apos;dcs&apos;
+//if($(&apos;clsa-dcs-f3.Participants:DCSatHOME&apos;).whenNull(false).value()) {
+//  res = &apos;dcs home&apos;
+//} 
+//else 
+if($(&apos;clsa-dcs-f3.Participants:DCS_PHONE&apos;).whenNull(false).value()) {
+  res = &apos;dcs phone&apos;
+}
+res</attribute>
+        </attributes>
+      </variable>
+    </variables>
+  </variables>
+  <created valueType="datetime">2021-11-11T10:23:51.853-05</created>
+  <updated valueType="datetime">2021-11-11T10:36:41.770-05</updated>
+</org.obiba.magma.views.View>

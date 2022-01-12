@@ -1,0 +1,144 @@
+<org.obiba.magma.views.View>
+  <name>QC_F2_json</name>
+  <from class="org.obiba.magma.security.SudoValueTableReference">
+    <reference>clsa-dcs-f2.Participants</reference>
+  </from>
+  <select class="org.obiba.magma.views.support.NoneClause"/>
+  <where class="org.obiba.magma.views.support.AllClause"/>
+  <variables class="org.obiba.magma.js.views.VariablesClause">
+    <variables class="linked-hash-set">
+      <variable name="data" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var prj = &apos;cosmos_dcs.QC_F2_&apos;
+var qnaire_arr = [&apos;technician&apos;,&apos;contraindicated&apos;,&apos;comment&apos;,&apos;duration&apos;,&apos;missing&apos;,&apos;qnaire_complete&apos;,&apos;skip&apos;,&apos;module_duration&apos;]
+var trial_arr = [&apos;technician&apos;,&apos;contraindicated&apos;,&apos;comment&apos;,&apos;duration&apos;,&apos;missing&apos;,&apos;skip&apos;,&apos;trial_count&apos;]
+var file_arr = [&apos;technician&apos;,&apos;contraindicated&apos;,&apos;comment&apos;,&apos;duration&apos;,&apos;missing&apos;,&apos;skip&apos;,&apos;file_size&apos;]
+
+var view_list = {}
+view_list[&apos;interview&apos;]=
+    [&apos;barcode&apos;,&apos;start_date&apos;,&apos;site&apos;,&apos;duration&apos;,&apos;stage_duration&apos;,&apos;type&apos;]
+view_list[&apos;contraindication_qnaire&apos;]=qnaire_arr
+view_list[&apos;disease_qnaire&apos;]=qnaire_arr
+view_list[&apos;general_health&apos;]=qnaire_arr
+view_list[&apos;social_network&apos;]=qnaire_arr
+
+if($(prj+&apos;interview:type&apos;).eq(&apos;dcs phone&apos;).value()) {
+  view_list[&apos;height_weight&apos;]=[&apos;technician&apos;,&apos;contraindicated&apos;,&apos;comment&apos;,&apos;duration&apos;,&apos;missing&apos;,&apos;skip&apos;,&apos;height_change&apos;]
+  view_list[&apos;os&apos;]=qnaire_arr
+} else if($(prj+&apos;interview:type&apos;).eq(&apos;dcs home&apos;).value()) {
+  view_list[&apos;blood_pressure&apos;]=trial_arr
+  view_list[&apos;body_composition&apos;]=
+    [&apos;technician&apos;,&apos;contraindicated&apos;,&apos;comment&apos;,&apos;duration&apos;,&apos;missing&apos;,&apos;qnaire_complete&apos;,&apos;skip&apos;,&apos;module_duration&apos;,&apos;trial_count&apos;,&apos;standard_deviation&apos;]
+  view_list[&apos;event_pmt&apos;]=qnaire_arr
+  view_list[&apos;grip_strength&apos;]=trial_arr    
+  view_list[&apos;hips_waist&apos;]=
+    [&apos;technician&apos;,&apos;contraindicated&apos;,&apos;comment&apos;,&apos;duration&apos;,&apos;missing&apos;,&apos;skip&apos;,&apos;ratio&apos;]
+  view_list[&apos;neuro_scoring&apos;]=
+    [&apos;technician&apos;,&apos;contraindicated&apos;,&apos;comment&apos;,&apos;duration&apos;,&apos;missing&apos;,&apos;qnaire_complete&apos;,&apos;skip&apos;,&apos;recording_quality&apos;]
+  view_list[&apos;os&apos;]=qnaire_arr
+  view_list[&apos;spirometry&apos;]=
+    [&apos;technician&apos;,&apos;contraindicated&apos;,&apos;comment&apos;,&apos;duration&apos;,&apos;missing&apos;,&apos;skip&apos;,&apos;grade&apos;,&apos;file_complete&apos;,&apos;file_size&apos;]
+  view_list[&apos;standing_height&apos;]=
+    [&apos;technician&apos;,&apos;contraindicated&apos;,&apos;comment&apos;,&apos;duration&apos;,&apos;missing&apos;,&apos;skip&apos;,&apos;trial_count&apos;,&apos;standard_deviation&apos;,&apos;height_change&apos;]
+  view_list[&apos;stroop_fas&apos;]=
+    [&apos;technician&apos;,&apos;contraindicated&apos;,&apos;comment&apos;,&apos;duration&apos;,&apos;missing&apos;,&apos;qnaire_complete&apos;,&apos;skip&apos;,&apos;module_duration&apos;,&apos;file_complete&apos;,&apos;file_size&apos;]
+  view_list[&apos;time_based_pmt&apos;]=qnaire_arr
+} else {
+  view_list[&apos;blood&apos;]=qnaire_arr
+  view_list[&apos;blood_pressure&apos;]=trial_arr
+  view_list[&apos;cdtt&apos;]=
+    [&apos;technician&apos;,&apos;contraindicated&apos;,&apos;comment&apos;,&apos;duration&apos;,&apos;missing&apos;,&apos;skip&apos;,&apos;file_size&apos;,&apos;standard_deviation&apos;,&apos;speech_recognition_threshold&apos;,&apos;reversal_number&apos;]
+  view_list[&apos;carotid_intima&apos;]=
+    [&apos;technician&apos;,&apos;contraindicated&apos;,&apos;comment&apos;,&apos;duration&apos;,&apos;missing&apos;,&apos;skip&apos;,&apos;file_complete&apos;,&apos;file_size&apos;]
+  view_list[&apos;chair_rise&apos;]=
+    [&apos;technician&apos;,&apos;contraindicated&apos;,&apos;comment&apos;,&apos;duration&apos;,&apos;missing&apos;,&apos;skip&apos;,&apos;time&apos;,&apos;time_congruency&apos;]   
+  view_list[&apos;cognitive_test&apos;]=file_arr
+  view_list[&apos;deviation_aecrf&apos;]=
+    [&apos;technician&apos;,&apos;contraindicated&apos;,&apos;comment&apos;,&apos;duration&apos;,&apos;missing&apos;,&apos;qnaire_complete&apos;,&apos;skip&apos;,&apos;module_duration&apos;,&apos;adverse_event&apos;,&apos;followup_event&apos;,&apos;deviation_count&apos;]
+  view_list[&apos;dexa&apos;]=
+    [&apos;technician&apos;,&apos;contraindicated&apos;,&apos;duration&apos;,&apos;missing&apos;,&apos;file_complete&apos;,&apos;file_size&apos;]
+  view_list[&apos;dexa_qnaire&apos;]=qnaire_arr
+  view_list[&apos;dexa_whole_body&apos;]=
+    [&apos;technician&apos;,&apos;contraindicated&apos;,&apos;comment&apos;,&apos;duration&apos;,&apos;missing&apos;,&apos;skip&apos;,&apos;file_size&apos;,&apos;scale_congruency&apos;]
+  view_list[&apos;dexa_lateral&apos;]=file_arr
+  view_list[&apos;dexa_forearm&apos;]=file_arr
+  view_list[&apos;dexa_hip&apos;]=
+    [&apos;technician&apos;,&apos;contraindicated&apos;,&apos;comment&apos;,&apos;duration&apos;,&apos;missing&apos;,&apos;skip&apos;,&apos;file_complete&apos;,&apos;file_size&apos;]
+  view_list[&apos;dexa_spine&apos;]=file_arr
+  view_list[&apos;ecg&apos;]=
+    [&apos;technician&apos;,&apos;contraindicated&apos;,&apos;comment&apos;,&apos;duration&apos;,&apos;missing&apos;,&apos;skip&apos;,&apos;intrinsic_poor_quality&apos;,&apos;file_size&apos;]
+  view_list[&apos;event_pmt&apos;]=qnaire_arr
+  view_list[&apos;frax&apos;]=file_arr
+  view_list[&apos;grip_strength&apos;]=trial_arr
+  view_list[&apos;hearing&apos;]=
+    [&apos;technician&apos;,&apos;contraindicated&apos;,&apos;comment&apos;,&apos;duration&apos;,&apos;missing&apos;,&apos;skip&apos;,&apos;frequency_complete&apos;,&apos;frequency_error&apos;]
+  view_list[&apos;hearing_qnaire&apos;]=
+    [&apos;technician&apos;,&apos;contraindicated&apos;,&apos;comment&apos;,&apos;duration&apos;,&apos;missing&apos;,&apos;qnaire_complete&apos;,&apos;skip&apos;]
+  view_list[&apos;hips_waist&apos;]=
+    [&apos;technician&apos;,&apos;contraindicated&apos;,&apos;comment&apos;,&apos;duration&apos;,&apos;missing&apos;,&apos;skip&apos;,&apos;ratio&apos;]
+  view_list[&apos;inhome_qa&apos;]=qnaire_arr
+  view_list[&apos;neuro_scoring&apos;]=
+    [&apos;technician&apos;,&apos;contraindicated&apos;,&apos;comment&apos;,&apos;duration&apos;,&apos;missing&apos;,&apos;qnaire_complete&apos;,&apos;skip&apos;,&apos;recording_quality&apos;]
+  view_list[&apos;osipv&apos;]=qnaire_arr
+  view_list[&apos;retinal_scan_left&apos;]=file_arr
+  view_list[&apos;retinal_scan_right&apos;]=file_arr
+  view_list[&apos;sitting_height&apos;]=
+    [&apos;technician&apos;,&apos;contraindicated&apos;,&apos;comment&apos;,&apos;duration&apos;,&apos;missing&apos;,&apos;skip&apos;,&apos;trial_count&apos;,&apos;standard_deviation&apos;,&apos;height_change&apos;]
+  view_list[&apos;spirometry&apos;]=
+    [&apos;technician&apos;,&apos;contraindicated&apos;,&apos;comment&apos;,&apos;duration&apos;,&apos;missing&apos;,&apos;skip&apos;,&apos;grade&apos;,&apos;file_complete&apos;,&apos;file_size&apos;]
+  view_list[&apos;standing_balance&apos;]=
+    [&apos;technician&apos;,&apos;contraindicated&apos;,&apos;comment&apos;,&apos;duration&apos;,&apos;missing&apos;,&apos;qnaire_complete&apos;,&apos;skip&apos;,&apos;module_duration&apos;,&apos;time&apos;]
+  view_list[&apos;standing_height&apos;]=
+    [&apos;technician&apos;,&apos;contraindicated&apos;,&apos;comment&apos;,&apos;duration&apos;,&apos;missing&apos;,&apos;skip&apos;,&apos;trial_count&apos;,&apos;standard_deviation&apos;,&apos;height_change&apos;]
+  view_list[&apos;stroop_fas&apos;]=
+    [&apos;technician&apos;,&apos;contraindicated&apos;,&apos;comment&apos;,&apos;duration&apos;,&apos;missing&apos;,&apos;qnaire_complete&apos;,&apos;skip&apos;,&apos;module_duration&apos;,&apos;file_complete&apos;,&apos;file_size&apos;]
+  view_list[&apos;time_based_pmt&apos;]=qnaire_arr
+  view_list[&apos;tonometer&apos;]=
+    [&apos;technician&apos;,&apos;contraindicated&apos;,&apos;comment&apos;,&apos;duration&apos;,&apos;missing&apos;,&apos;skip&apos;,&apos;quality_index_complete&apos;,&apos;quality_index&apos;]
+  view_list[&apos;tug&apos;]=
+    [&apos;technician&apos;,&apos;contraindicated&apos;,&apos;comment&apos;,&apos;duration&apos;,&apos;missing&apos;,&apos;skip&apos;,&apos;time&apos;,&apos;time_congruency&apos;]
+  view_list[&apos;urine&apos;]=qnaire_arr
+  view_list[&apos;vision_acuity&apos;]=qnaire_arr
+  view_list[&apos;walk&apos;]=
+    [&apos;technician&apos;,&apos;contraindicated&apos;,&apos;comment&apos;,&apos;duration&apos;,&apos;missing&apos;,&apos;skip&apos;,&apos;time&apos;,&apos;time_congruency&apos;]
+  view_list[&apos;weight&apos;]=
+    [&apos;technician&apos;,&apos;contraindicated&apos;,&apos;comment&apos;,&apos;duration&apos;,&apos;missing&apos;,&apos;skip&apos;,&apos;trial_count&apos;,&apos;standard_deviation&apos;]    
+}
+
+
+var inter_str = null
+var stage_str = []
+for( var key in view_list ) {  
+  var var_str = prj + key + &apos;:&apos;
+  var var_arr = view_list[key]  
+  key_str = []
+  for(var i=0;i&lt;var_arr.length;i++) {
+    var var_i = var_arr[i]
+    var v = $(var_str + var_i)
+    if(v.isNull().value()) continue;    
+    if(&apos;module_duration&apos;==var_i || &apos;file_size&apos;==var_i || &apos;quality_index&apos;==var_i 
+      || &apos;frequency_error&apos;==var_i || &apos;adverse_event&apos;==var_i || &apos;followup_event&apos;==var_i || &apos;deviation_count&apos;==var_i) {  
+      key_str.push(&apos;&quot;&apos; + var_i + &apos;&quot;:&apos; + v.value())
+    } else {
+      if(v.type().eq(&apos;text&apos;).and(&apos;comment&apos;!=var_i).value()) {
+        key_str.push(&apos;&quot;&apos; + var_i + &apos;&quot;:&quot;&apos; + v.value() + &apos;&quot;&apos;)
+      } else {
+        key_str.push(&apos;&quot;&apos; + var_i + &apos;&quot;:&apos; + v.value())
+      }  
+    }
+  }
+  if(&apos;interview&apos;==key) {
+    inter_str = &apos;{&apos; + key_str.join(&apos;,&apos;) + &apos;,&quot;stages&quot;:{&apos;
+  } else {
+    stage_str.push( &apos;&quot;&apos; + key + &apos;&quot;:{&apos; + key_str.join(&apos;,&apos;) + &apos;}&apos;)
+  }    
+}
+
+newValue( inter_str + stage_str.join(&apos;,&apos;) +&apos;}}&apos;,&apos;text&apos;)</attribute>
+        </attributes>
+      </variable>
+    </variables>
+  </variables>
+  <created valueType="datetime">2020-03-24T12:02:31.844-04</created>
+  <updated valueType="datetime">2020-04-23T11:18:11.588-04</updated>
+</org.obiba.magma.views.View>

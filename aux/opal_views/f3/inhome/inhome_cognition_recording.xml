@@ -1,0 +1,181 @@
+<org.obiba.magma.views.View>
+  <name>QC_F3_inhome_cognition_recording</name>
+  <from class="org.obiba.magma.views.JoinTable">
+    <list>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-inhome-f3.Participants</reference>
+      </table>
+      <table inner="false" class="org.obiba.magma.support.ValueTableReference">
+        <reference>clsa-inhome-f3.InHome_2</reference>
+      </table>
+    </list>
+  </from>
+  <select class="org.obiba.magma.views.support.NoneClause"/>
+  <where class="org.obiba.magma.views.support.AllClause"/>
+  <variables class="org.obiba.magma.js.views.VariablesClause">
+    <variables class="linked-hash-set">
+      <variable name="technician" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$(&apos;clsa-inhome-f3.InHome_2:QuestionnaireRun.user&apos;).whenNull(
+  $group(&apos;Admin.Action.stage&apos;,&apos;InHome_2&apos;,&apos;Admin.Action.user&apos;).asSequence().last()).lowerCase()</attribute>
+        </attributes>
+      </variable>
+      <variable name="contraindicated" valueType="boolean" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$group(&apos;clsa-inhome-f3.Participants:Admin.StageInstance.stage&apos;,&apos;InHome_2&apos;,
+&apos;Admin.StageInstance.lastState&apos;).any(&apos;Contraindicated&apos;,&apos;NotApplicable&apos;)</attribute>
+        </attributes>
+      </variable>
+      <variable name="comment" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">// this script compounds repeated comments by using lowercase comment strings as array keys
+//
+var stage = &apos;InHome_2&apos;
+var c_seq = $group(&apos;Admin.Action.stage&apos;,stage,&apos;Admin.Action.comment&apos;).asSequence()
+var e_seq = $group(&apos;Admin.Action.stage&apos;,stage,&apos;Admin.Action.eventReason&apos;).asSequence()
+var res = null
+if(c_seq.size().eq(e_seq.size()).value())
+{
+  var c_str = []  // string array of comments
+  var e_str = []  // string array of event reasons
+
+  for(var i = 0; i &lt; c_seq.size(); i++) {
+    var c = c_seq.valueAt(i).value()
+    if(null == c) continue
+    c = c.replace(/[^a-zA-Z0-9 àâäèéêëîïôœùûüÿçÀÂÄÈÉÊËÎÏÔŒÙÛÜŸÇ]/g,&quot;&quot;)
+    var e = e_seq.valueAt(i).value()
+    if(0 &lt; c.length) {
+      c_str.push(c)
+      if(null != e &amp;&amp; 0 &lt; e.length) {
+        e = e.slice(14)
+      } else {
+        e = &apos;SeeComment&apos;
+      }
+      e_str.push(e)
+    }
+  }
+
+  if(0 &lt; c_str.length) {
+    var arr = []  // array of event reasons
+    var key_orig = []  // array of lower cased comments as unique keys
+    for(var i = 0; i &lt; c_str.length; i++) {
+      var key = c_str[i]
+      var key_lower = key.toLowerCase()
+      // retain the first encountered instance of the comment
+      //
+      if(undefined === key_orig[key_lower])
+        key_orig[key_lower] = key
+
+      if(undefined === arr[e_str[i]])
+        arr[e_str[i]] = []
+
+      if(-1==arr[e_str[i]].indexOf(key_orig[key_lower]))
+        arr[e_str[i]].push(key_orig[key_lower])
+    }
+
+    // loop over the final array of event reasons and their sets of comments
+    //
+    var str = &apos;{&apos;
+    for(var key in arr) {
+      str += &apos;&quot;&apos; + key + &apos;&quot;:[&apos;
+      var t = []
+      for(var i = 0; i &lt; arr[key].length; i++) {
+        t.push(&apos;&quot;&apos; + arr[key][i] + &apos;&quot;&apos;)
+      }
+      str += t.join(&apos;,&apos;) + &apos;],&apos;
+    }
+
+    res = newValue(str.substring(0,str.length-1)+&apos;}&apos;,&apos;text&apos;)
+  }
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="duration" valueType="integer" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var res = $(&apos;clsa-inhome-f3.InHome_2:QuestionnaireMetric.duration&apos;).filter(function(v,i){
+    return $(&apos;clsa-inhome-f3.InHome_2:QuestionnaireMetric.section&apos;).valueAt(i).eq(&apos;COG&apos;)
+  }).asSequence().sum()
+res.gt(0).value()?res:null</attribute>
+        </attributes>
+      </variable>
+      <variable name="missing" valueType="boolean" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">$this(&apos;contraindicated&apos;).not().and(
+  $this(&apos;skip&apos;).isNull(),
+  $this(&apos;qnaire_complete&apos;).isNull(),
+  $this(&apos;file_complete&apos;).eq(0))</attribute>
+        </attributes>
+      </variable>
+      <variable name="qnaire_complete" valueType="decimal" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var res = null
+var q = $(&apos;clsa-inhome-f3.InHome_2:QuestionnaireMetric.questionCount&apos;).asSequence()
+var p = $(&apos;clsa-inhome-f3.InHome_2:QuestionnaireMetric.missingCount&apos;).asSequence()
+var s = $(&apos;clsa-inhome-f3.InHome_2:QuestionnaireMetric.section&apos;).asSequence()
+if(s.size().eq(q.size()).and(p.size().eq(q.size())).value()) {
+  var i = s.lastIndexOf(&apos;COG&apos;)
+  var j = i-1
+  while(j&gt;=0 &amp;&amp; s.valueAt(j).matches(/COG/).value()) { j-- }
+  var qsum = q.subset(j+1,i+1).sum()
+  var psum = p.subset(j+1,i+1).sum()
+  res = qsum.minus(psum).multiply(100).div(qsum)
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="file_complete" valueType="decimal" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var sz = newSequence([
+  $(&apos;clsa-inhome-f3.InHome_2:COG_WRDLSTREC_COF3&apos;).length(),
+  $(&apos;clsa-inhome-f3.InHome_2:COG_ANMLLLIST_REC_COF3&apos;).length(),
+  $(&apos;clsa-inhome-f3.InHome_2:COG_CNTTMEREC_COF3&apos;).length(),
+  $(&apos;clsa-inhome-f3.InHome_2:COG_ALPTME_REC2_COF3&apos;).length(),
+  $(&apos;clsa-inhome-f3.InHome_2:COG_ALTTME_REC_COF3&apos;).length(),
+  $(&apos;clsa-inhome-f3.InHome_2:COG_WRDLST2_REC_COF3&apos;).length()
+  ],&apos;integer&apos;)
+sz.trimmer().size().div(sz.size()).multiply(100).whenNull(0)</attribute>
+        </attributes>
+      </variable>
+      <variable name="skip" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var stage = &apos;InHome_2&apos;
+var action = $group(&apos;clsa-inhome-f3.Participants:Admin.Action.stage&apos;,stage,&apos;Admin.Action.actionType&apos;).asSequence()
+var res = $group(&apos;clsa-inhome-f3.Participants:Admin.Action.stage&apos;,stage,&apos;Admin.Action.eventReason&apos;).asSequence().filter(function(v,i){
+  return i == action.indexOf(&apos;SKIP&apos;)
+  }).last()
+if(res.isNull().not().value()) {
+  res = newValue(res.value().slice(14),&apos;text&apos;)  
+}
+res</attribute>
+        </attributes>
+      </variable>
+      <variable name="file_size" valueType="text" entityType="Participant" unit="" mimeType="" referencedEntityType="" index="0">
+        <attributes>
+          <attribute name="script" valueType="text">var res = null
+var list = [&apos;REY1&apos;,&apos;AFT&apos;,&apos;pre_MAT_alphabet&apos;,&apos;pre_MAT_number&apos;,&apos;MAT&apos;,&apos;REY2&apos;]
+var sz = newSequence([
+  $(&apos;clsa-inhome-f3.InHome_2:COG_WRDLSTREC_COF3&apos;).length(),
+  $(&apos;clsa-inhome-f3.InHome_2:COG_ANMLLLIST_REC_COF3&apos;).length(),
+  $(&apos;clsa-inhome-f3.InHome_2:COG_CNTTMEREC_COF3&apos;).length(),
+  $(&apos;clsa-inhome-f3.InHome_2:COG_ALPTME_REC2_COF3&apos;).length(),
+  $(&apos;clsa-inhome-f3.InHome_2:COG_ALTTME_REC_COF3&apos;).length(),
+  $(&apos;clsa-inhome-f3.InHome_2:COG_WRDLST2_REC_COF3&apos;).length()
+  ],&apos;integer&apos;)
+var str = []  
+for(var i = 0; i &lt; list.length; i++) {
+  var v = sz.valueAt(i)
+  if(v.isNull().value()) continue
+  str.push(&apos;&quot;&apos; + list[i] + &apos;&quot;:&apos; + v.value())
+}
+if(0&lt;str.length) {
+  res = newValue(&apos;{&apos;+str.join(&apos;,&apos;)+&apos;}&apos;,&apos;text&apos;)
+}
+res</attribute>
+        </attributes>
+      </variable>
+    </variables>
+  </variables>
+  <created valueType="datetime">2021-09-10T12:47:10.248-04</created>
+  <updated valueType="datetime">2021-09-10T12:48:35.260-04</updated>
+</org.obiba.magma.views.View>
