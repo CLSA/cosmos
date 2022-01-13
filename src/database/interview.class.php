@@ -20,23 +20,31 @@ class interview extends \cenozo\database\record
    */
   public static function update_interview_list()
   {
-    $max_new_interviews = 0;
+    $opal_view_class_name = lib::get_class_name( 'database\opal_view' );
+
+    $new_interviews = 0;
     $modifier = lib::create( 'database\modifier' );
     $modifier->where( 'keep_updated', '=', true );
     $opal_view_list = $opal_view_class_name::select_objects( $modifier );
     foreach( $opal_view_list as $index => $db_opal_view )
     {
-      $project_name = $db_opal_view->get_project_name();
-      $view_name = $db_opal_view->get_view_name();
-      log::info( sprintf( 'Scanning %s/%s [%d of %d]', $project_name, $view_name, $index+1, count( $opal_view_list ) ) );
-
-      $new_interviews = $db_opal_view->update_inerview_list();
-      if( $new_interviews > $max_new_interviews ) $max_new_interviews = $new_interviews;
+      log::info( sprintf(
+        'Scanning Opal view "%s/%s" for new interviews [%d of %d]',
+        $db_opal_view->get_project_name(),
+        $db_opal_view->get_view_name(),
+        $index+1,
+        count( $opal_view_list )
+      ) );
+      
+      $total = $db_opal_view->update_interview_list();
+      log::info( sprintf( 'Finished, %d new interview%s added', $total, 1 == $total ? '' : 's' ) );
+      
+      $new_interviews += $total;
     }
 
     // update all outliers since we now have new data
-    if( 0 < $max_new_interviews ) self::db()->execute( 'CALL update_outliers()' );
+    if( 0 < $new_interviews ) self::db()->execute( 'CALL update_outliers()' );
 
-    return $max_new_interviews;
+    return $new_interviews;
   }
 }
