@@ -67,9 +67,9 @@ class module extends \cenozo\service\site_restricted_module
 
       $modifier->join( 'temp_outlier_join', 'indicator.id', 'temp_outlier_join.indicator_id' );
       if( $select->has_column( 'outlier_low' ) )
-        $select->add_table_column( 'outlier_join', 'outlier_low' );
+        $select->add_table_column( 'temp_outlier_join', 'outlier_low' );
       if( $select->has_column( 'outlier_high' ) )
-        $select->add_table_column( 'outlier_join', 'outlier_high' );
+        $select->add_table_column( 'temp_outlier_join', 'outlier_high' );
     }
 
     if( $select->has_column( 'min_date' ) || $select->has_column( 'max_date' ) )
