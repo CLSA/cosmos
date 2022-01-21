@@ -124,7 +124,8 @@ cenozoApp.defineModule( { name: 'indicator', models: ['list', 'view'], create: m
             return '';
           },
           getPath: function() {
-            return 'stage?plot=' + self.record.name;
+            console.log( self.record );
+            return 'stage_type/' + self.record.stage_type_id + '/stage?plot=' + self.record.name;
           },
           getXLabel: function() {
             return ( self.record.study_phase ? self.record.study_phase.toUpperCase() + ': ' : '' ) +
