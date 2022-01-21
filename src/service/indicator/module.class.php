@@ -18,6 +18,8 @@ class module extends \cenozo\service\site_restricted_module
    */
   public function prepare_read( $select, $modifier )
   {
+    $indicator_table_name = lib::get_class_name( 'database\indicator' );
+
     parent::prepare_read( $select, $modifier );
 
     $modifier->join( 'stage_type', 'indicator.stage_type_id', 'stage_type.id' );
@@ -38,6 +40,7 @@ class module extends \cenozo\service\site_restricted_module
 
     if( $select->has_column( 'outlier_low' ) || $select->has_column( 'outlier_high' ) )
     {
+      // create a temporary table that includes the number of low and high outliers
       $join_sel = lib::create( 'database\select' );
       $join_sel->from( 'indicator' );
       $join_sel->add_column( 'id', 'indicator_id' );
@@ -55,12 +58,14 @@ class module extends \cenozo\service\site_restricted_module
       if( !is_null( $db_restricted_site ) )
         $join_mod->where( 'outlier.site_id', '=', $db_restricted_site->id );
 
-      $modifier->join(
-        sprintf( '( %s %s ) AS outlier_join', $join_sel->get_sql(), $join_mod->get_sql() ),
-        'indicator.id',
-        'outlier_join.indicator_id'
-      );
+      $indicator_table_name::db()->execute( sprintf(
+        'CREATE TEMPORARY TABLE temp_outlier_join %s %s',
+        $join_sel->get_sql(),
+        $join_mod->get_sql()
+      ) );
+      $indicator_table_name::db()->execute( 'ALTER TABLE temp_outlier_join ADD INDEX fk_indicator_id (indicator_id)' );
 
+      $modifier->join( 'temp_outlier_join', 'indicator.id', 'temp_outlier_join.indicator_id' );
       if( $select->has_column( 'outlier_low' ) )
         $select->add_table_column( 'outlier_join', 'outlier_low' );
       if( $select->has_column( 'outlier_high' ) )
