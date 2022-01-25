@@ -20,7 +20,7 @@ CREATE PROCEDURE patch_outlier()
         "update_timestamp TIMESTAMP NOT NULL, ",
         "create_timestamp TIMESTAMP NOT NULL, ",
         "site_id INT UNSIGNED NOT NULL, ",
-        "technician_id INT UNSIGNED NOT NULL, ",
+        "technician_id INT UNSIGNED NULL DEFAULT NULL, ",
         "date DATE NOT NULL, ",
         "type ENUM('low', 'high') NOT NULL, ",
         "PRIMARY KEY (indicator_id, stage_id), ",
