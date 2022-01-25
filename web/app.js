@@ -11,11 +11,12 @@ cenozo.controller( 'HeaderCtrl', [
 ] );
 
 cenozo.service( 'CnPlotHelperFactory', [
-  'CnHttpFactory',
-  function( CnHttpFactory ) {
+  'CnHttpFactory', '$state',
+  function( CnHttpFactory, $state ) {
     return {
       addPlot: function( model, parameters ) {
         if( !parameters ) parameters = {};
+        if( angular.isUndefined( parameters.isExcluded ) ) parameters.isExcluded = function( $state, model ) { return false; };
         if( angular.isUndefined( parameters.getType ) ) parameters.getType = function() { return ''; };
         if( angular.isUndefined( parameters.getXLabel ) ) parameters.getXLabel = function() { return ''; };
         if( angular.isUndefined( parameters.getYLabel ) ) parameters.getYLabel = function() { return 'Number of Interviews'; };
@@ -302,6 +303,10 @@ cenozo.service( 'CnPlotHelperFactory', [
             this.dataLoading = true;
             this.resetPlot();
             await this.$$onView( force );
+
+            // don't run the plot if this view has been excluded
+            if( parameters.isExcluded( $state, this.parentModel ) ) return;
+
             await parameters.onView();
 
             // determine the date spans

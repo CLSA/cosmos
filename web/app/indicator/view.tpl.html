@@ -5,55 +5,57 @@
      class="vertical-spacer">
   <cn-record-list model="model.viewModel[child.subject.camel+'Model']"></cn-record-list>
 </div>
-<div class="vertical-spacer">
-  <div class="row">
-    <div class="col-md-6" style="padding-right: 3px;">
-      <cn-chart identifier="outlierGroups"
-                type="bar"
-                plot="model.viewModel.outlierGroups"
-                heading="Outlier Groups"
-                loading="model.viewModel.dataLoading"></cn-chart>
-    </div>
-    <div class="col-md-6" style="padding-left: 3px;">
-      <cn-chart identifier="outlierDistribution"
-                type="bar"
-                plot="model.viewModel.outlierDistribution"
-                heading="Outlier Distribution"
-                loading="model.viewModel.dataLoading"></cn-chart>
-    </div>
-  </div>
-</div>
-<div class="vertical-spacer">
-  <div class="record-view rounded">
-    <div class="container-fluid bg-primary rounded-top">
-      <h4>Interview Date Span</h4>
-    </div>
-    <div class="form-body spacer" style="padding-top: 0;">
-      <div class="row">
-        <div class="col-sm-6">
-          <select ng-model="model.viewModel.dateSpan.low"
-                  ng-change="model.viewModel.onSetDateSpan()"
-                  ng-options="item.value as item.name for item in model.viewModel.dateSpan.lowList"
-                  class="form-control">
-          </select>
-        </div>
-        <div class="col-sm-6">
-          <select ng-model="model.viewModel.dateSpan.high"
-                  ng-change="model.viewModel.onSetDateSpan()"
-                  ng-options="item.value as item.name for item in model.viewModel.dateSpan.highList"
-                  class="form-control">
-          </select>
-        </div>
+<div ng-if="['float', 'integer'].includes( model.viewModel.record.type )">
+  <div class="vertical-spacer">
+    <div class="row">
+      <div class="col-md-6" style="padding-right: 3px;">
+        <cn-chart identifier="outlierGroups"
+                  type="bar"
+                  plot="model.viewModel.outlierGroups"
+                  heading="Outlier Groups"
+                  loading="model.viewModel.dataLoading"></cn-chart>
+      </div>
+      <div class="col-md-6" style="padding-left: 3px;">
+        <cn-chart identifier="outlierDistribution"
+                  type="bar"
+                  plot="model.viewModel.outlierDistribution"
+                  heading="Outlier Distribution"
+                  loading="model.viewModel.dataLoading"></cn-chart>
       </div>
     </div>
-    <div class="form-footer text-right rounded-bottom bg-info">
+  </div>
+  <div class="vertical-spacer">
+    <div class="record-view rounded">
+      <div class="container-fluid bg-primary rounded-top">
+        <h4>Interview Date Span</h4>
+      </div>
+      <div class="form-body spacer" style="padding-top: 0;">
+        <div class="row">
+          <div class="col-sm-6">
+            <select ng-model="model.viewModel.dateSpan.low"
+                    ng-change="model.viewModel.onSetDateSpan()"
+                    ng-options="item.value as item.name for item in model.viewModel.dateSpan.lowList"
+                    class="form-control">
+            </select>
+          </div>
+          <div class="col-sm-6">
+            <select ng-model="model.viewModel.dateSpan.high"
+                    ng-change="model.viewModel.onSetDateSpan()"
+                    ng-options="item.value as item.name for item in model.viewModel.dateSpan.highList"
+                    class="form-control">
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="form-footer text-right rounded-bottom bg-info">
+      </div>
     </div>
   </div>
-</div>
-<div class="vertical-spacer">
-  <cn-chart identifier="histogram"
-            type="line"
-            plot="model.viewModel.histogram"
-            heading="Histogram"
-            loading="model.viewModel.dataLoading"></cn-chart>
+  <div class="vertical-spacer">
+    <cn-chart identifier="histogram"
+              type="line"
+              plot="model.viewModel.histogram"
+              heading="Histogram"
+              loading="model.viewModel.dataLoading"></cn-chart>
+  </div>
 </div>

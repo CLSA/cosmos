@@ -62,17 +62,26 @@ cenozoApp.defineModule( { name: 'indicator', models: ['list', 'view'], create: m
       title: 'Median Value',
       type: 'string',
       format: 'float',
-      isConstant: true
+      isConstant: true,
+      isExcluded: function( $state, model ) {
+        return angular.isDefined( model.viewModel.record.type ) && !['float', 'integer'].includes( model.viewModel.record.type );
+      }
     },
     minimum: {
       title: 'Minimum Threshold',
       type: 'string',
-      format: 'float'
+      format: 'float',
+      isExcluded: function( $state, model ) {
+        return angular.isDefined( model.viewModel.record.type ) && !['float', 'integer'].includes( model.viewModel.record.type );
+      }
     },
     maximum: {
       title: 'Maximum Threshold',
       type: 'string',
-      format: 'float'
+      format: 'float',
+      isExcluded: function( $state, model ) {
+        return angular.isDefined( model.viewModel.record.type ) && !['float', 'integer'].includes( model.viewModel.record.type );
+      }
     },
     min_date: {
       type: 'date',
@@ -82,6 +91,15 @@ cenozoApp.defineModule( { name: 'indicator', models: ['list', 'view'], create: m
       type: 'date',
       isExcluded: true
     }
+  } );
+
+  module.addExtraOperation( 'view', {
+    title: 'Recalculate Boundaries',
+    isIncluded: function( $state, model ) {
+      return angular.isDefined( model.viewModel.record.type ) && ['float', 'integer'].includes( model.viewModel.record.type );
+    },
+    isDisabled: function( $state, model ) { return model.viewModel.recalculatingBoundaries; },
+    operation: async function( $state, model ) { await model.viewModel.recalculateBoundaries(); }
   } );
 
   /* ######################################################################################################## */
@@ -104,14 +122,43 @@ cenozoApp.defineModule( { name: 'indicator', models: ['list', 'view'], create: m
 
   /* ######################################################################################################## */
   cenozo.providers.factory( 'CnIndicatorViewFactory', [
-    'CnBaseViewFactory', 'CnPlotHelperFactory',
-    function( CnBaseViewFactory, CnPlotHelperFactory ) {
+    'CnBaseViewFactory', 'CnPlotHelperFactory', 'CnModalMessageFactory', 'CnHttpFactory',
+    function( CnBaseViewFactory, CnPlotHelperFactory, CnModalMessageFactory, CnHttpFactory ) {
       var object = function( parentModel, root ) {
         CnBaseViewFactory.construct( this, parentModel, root );
+
+        angular.extend( this, {
+          recalculatingBoundaries: false,
+          recalculateBoundaries: async () => {
+            var modal = CnModalMessageFactory.instance( {
+              title: 'Please Wait',
+              message: 'Please wait while indicator boundaries are calculated.',
+              block: true
+            } );
+
+            try {
+              this.recalculatingBoundaires = true;
+              modal.show();
+              var response = await CnHttpFactory.instance( {
+                path: this.parentModel.getServiceResourcePath() + '?recalculate_boundaries=1'
+              } ).get();
+              this.record.minimum = response.data.minimum;
+              this.record.maximum = response.data.maximum;
+              await this.onView();
+
+            } finally {
+              modal.close();
+              this.recalculatingBoundaires = false;
+            }
+          }
+        } );
 
         // use the plot helper to set up an outlier and histogram plot for this indicator
         var self = this;
         CnPlotHelperFactory.addPlot( this, {
+          isExcluded: function( $state, model ) {
+            return !['float', 'integer'].includes( model.viewModel.record.type );
+          },
           getType: function() {
             // determine if the indicator has a special data type
             if( null != self.record.name.match( /^[a-zA-Z0-9_]+_size\./ ) ) { 
@@ -124,7 +171,6 @@ cenozoApp.defineModule( { name: 'indicator', models: ['list', 'view'], create: m
             return '';
           },
           getPath: function() {
-            console.log( self.record );
             return 'stage_type/' + self.record.stage_type_id + '/stage?plot=' + self.record.name;
           },
           getXLabel: function() {

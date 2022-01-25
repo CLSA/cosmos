@@ -67,12 +67,100 @@ cenozoApp.defineModule( { name: 'stage_type', models: ['list', 'view'], create: 
     }
   } );
 
+  module.addExtraOperation( 'list', {
+    title: 'Recalculate All Boundaries',
+    isDisabled: function( $state, model ) {
+      return !model.listModel.isMasterUser() || model.listModel.recalculatingBoundaries;
+    },
+    operation: async function( $state, model ) {
+      await model.listModel.recalculateAllBoundaries();
+    },
+    help: 'Developer access only'
+  } );
+
+  module.addExtraOperation( 'view', {
+    title: 'Recalculate Boundaries',
+    isDisabled: function( $state, model ) {
+      return model.viewModel.recalculatingBoundaries;
+    },
+    operation: async function( $state, model ) {
+      await model.viewModel.recalculateBoundaries();
+    }
+  } );
+
+  /* ######################################################################################################## */
+  cenozo.providers.factory( 'CnStageTypeListFactory', [
+    'CnBaseListFactory', 'CnModalConfirmFactory', 'CnModalMessageFactory', 'CnHttpFactory', 'CnSession',
+    function( CnBaseListFactory, CnModalConfirmFactory, CnModalMessageFactory, CnHttpFactory, CnSession ) {
+      var object = function( parentModel ) {
+        CnBaseListFactory.construct( this, parentModel );
+        angular.extend( this, {
+          isMasterUser: function() { return 1 == CnSession.user.id; },
+          recalculatingBoundaries: false,
+          recalculateAllBoundaries: async () => {
+            var response = await CnModalConfirmFactory.instance( {
+              title: 'Please Confirm',
+              message: 'Recalculating all stage type and indicator boundaries is time consuming and will cause ' +
+                       'significant impact to the database, possibly slowing down this and other applications.\n\n' +
+                       'Are you sure you wish to proceed?'
+            } ).show();
+
+            if( response ) {
+              var modal = CnModalMessageFactory.instance( {
+                title: 'Please Wait',
+                message: 'Please wait while all stage type duration and indicator boundaries are calculated. ' +
+                         'This may take a while.',
+                block: true
+              } );
+
+              try {
+                this.recalculatingBoundaries = true;
+                modal.show();
+                await CnHttpFactory.instance( {
+                  path: this.parentModel.getServiceCollectionPath() + '?recalculate_boundaries=1'
+                } ).get();
+              } finally {
+                modal.close();
+                this.recalculatingBoundaries = false;
+              }
+            }
+          }
+        } );
+      };
+      return { instance: function( parentModel ) { return new object( parentModel ); } };
+    }
+  ] );
+
   /* ######################################################################################################## */
   cenozo.providers.factory( 'CnStageTypeViewFactory', [
-    'CnBaseViewFactory', 'CnPlotHelperFactory',
-    function( CnBaseViewFactory, CnPlotHelperFactory ) {
+    'CnBaseViewFactory', 'CnPlotHelperFactory', 'CnModalMessageFactory', 'CnHttpFactory',
+    function( CnBaseViewFactory, CnPlotHelperFactory, CnModalMessageFactory, CnHttpFactory ) {
       var object = function( parentModel, root ) {
         CnBaseViewFactory.construct( this, parentModel, root );
+
+        angular.extend( this, {
+          recalculatingBoundaries: false,
+          recalculateBoundaries: async () => {
+            var modal = CnModalMessageFactory.instance( {
+              title: 'Please Wait',
+              message: 'Please wait while stage type duration boundaries are calculated.',
+              block: true
+            } );
+
+            try {
+              this.recalculatingBoundaires = true;
+              modal.show();
+              var response = await CnHttpFactory.instance( {
+                path: this.parentModel.getServiceResourcePath() + '?recalculate_boundaries=1'
+              } ).get();
+              this.record.duration_low = response.data.duration_low;
+              this.record.duration_high = response.data.duration_high;
+            } finally {
+              modal.close();
+              this.recalculatingBoundaires = false;
+            }
+          }
+        } );
 
         // use the plot helper to set up an outlier and histogram plot for this indicator
         var self = this;

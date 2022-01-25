@@ -18,10 +18,11 @@ class module extends \cenozo\service\site_restricted_module
    */
   public function prepare_read( $select, $modifier )
   {
+    $indicator_class_name = lib::get_class_name( 'database\indicator' );
+
     parent::prepare_read( $select, $modifier );
 
     $all_sites = lib::create( 'business\session' )->get_role()->all_sites;
-
     $modifier->join( 'interview', 'stage.interview_id', 'interview.id' );
 
     // restrict by site
@@ -55,8 +56,18 @@ class module extends \cenozo\service\site_restricted_module
       }
       else
       {
-        $select->add_column( sprintf( 'JSON_VALUE( data, "$.%s" )', $plot ), 'value', false );
-        $modifier->where( sprintf( 'JSON_EXISTS( data, "$.%s" )', $plot ), '=', true );
+        $db_indicator = $indicator_class_name::get_unique_record(
+          array( 'stage_type_id', 'name' ),
+          array( $this->get_parent_resource()->id, $plot )
+        );
+
+        $json_params = sprintf( 'data, "$.%s"', $plot );
+        $select->add_column(
+          sprintf( 'CAST( JSON_VALUE( %s ) AS %s )', $json_params, $db_indicator->get_cast_type() ),
+          'value',
+          false
+        );
+        $modifier->where( sprintf( 'JSON_EXISTS( %s )', $json_params ), '=', true );
       }
 
       $modifier->order( 'interview.start_date' );
