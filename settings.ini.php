@@ -13,7 +13,7 @@ global $SETTINGS;
 $SETTINGS['general']['application_name'] = 'cosmos';
 $SETTINGS['general']['instance_name'] = $SETTINGS['general']['application_name'];
 $SETTINGS['general']['version'] = '2.8';
-$SETTINGS['general']['build'] = '8ad84c9';
+$SETTINGS['general']['build'] = 'b6dbec6';
 
 // the location of the application's internal path
 $SETTINGS['path']['APPLICATION'] = str_replace( '/settings.ini.php', '', __FILE__ );
@@ -23,3 +23,6 @@ $SETTINGS['path']['PHP_UTIL'] = $SETTINGS['path']['APPLICATION'].'/../php_util';
 
 // the location of new forms which need to be processed
 $SETTINGS['path']['OPAL_VIEWS'] = $SETTINGS['path']['APPLICATION'].'/aux/opal_views';
+
+// how many outliers/month a technician can have before it is considered an issue
+$SETTINGS['general']['issue_threshold'] = 5;

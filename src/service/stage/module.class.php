@@ -24,6 +24,7 @@ class module extends \cenozo\service\site_restricted_module
 
     $all_sites = lib::create( 'business\session' )->get_role()->all_sites;
     $modifier->join( 'interview', 'stage.interview_id', 'interview.id' );
+    $modifier->join( 'participant', 'interview.participant_id', 'participant.id' );
 
     // restrict by site
     $db_restricted_site = $this->get_restricted_site();

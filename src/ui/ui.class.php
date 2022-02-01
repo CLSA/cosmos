@@ -47,6 +47,13 @@ class ui extends \cenozo\ui\ui
     $module = $this->get_module( 'platform' );
     if( !is_null( $module ) ) $module->add_child( 'stage_type' );
 
+    $module = $this->get_module( 'stage_issue' );
+    if( !is_null( $module ) )
+    {
+      $module->add_child( 'stage_issue_note' );
+      $module->add_choose( 'stage' );
+    }
+
     $module = $this->get_module( 'stage_type' );
     if( !is_null( $module ) ) $module->add_child( 'indicator' );
   }
@@ -59,12 +66,21 @@ class ui extends \cenozo\ui\ui
     parent::build_listitem_list();
 
     $this->add_listitem( 'Platforms', 'platform' );
-    $this->add_listitem( 'Technicians', 'technician' );
     $this->add_listitem( 'Interviews', 'interview' );
     $this->add_listitem( 'Opal Views', 'opal_view' );
     $this->add_listitem( 'Outliers', 'indicator' );
+    $this->add_listitem( 'Stage Duration Issues', 'stage_issue' );
 
     $this->remove_listitem( 'Languages' );
+
+    // remove some lists from coordinators
+    if( 'coordinator' == lib::create( 'business\session' )->get_role()->name )
+    {
+      $this->remove_listitem( 'Outliers' );
+      $this->remove_listitem( 'Overviews' );
+      $this->remove_listitem( 'Platforms' );
+      $this->remove_listitem( 'Users' );
+    }
   }
 
   /**

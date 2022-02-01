@@ -23,7 +23,7 @@ class indicator extends \cenozo\database\record
 
     parent::save();
 
-    if( $update_outliers ) self::db()->execute( sprintf( 'CALL update_outlier( %d )', $this->id ) );
+    if( $update_outliers ) self::db()->execute( sprintf( 'CALL update_outlier_for_indicator( %d )', $this->id ) );
   }
 
   /**

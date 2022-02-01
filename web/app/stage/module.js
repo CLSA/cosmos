@@ -1,4 +1,4 @@
-cenozoApp.defineModule( { name: 'stage', models: ['list', 'view'], create: module => {
+cenozoApp.defineModule( { name: 'stage', models: ['list', 'view'], dependencies: 'interview', create: module => {
 
   angular.extend( module, {
     identifier: {
@@ -13,11 +13,13 @@ cenozoApp.defineModule( { name: 'stage', models: ['list', 'view'], create: modul
       possessive: 'stage\'s'
     },
     columnList: {
+      uid: { column: 'participant.uid', title: 'UID' },
+      barcode: { column: 'interview.barcode', title: 'Barcode' },
       stage_type: { column: 'stage_type.name', title: 'Stage Type' },
       technician: { column: 'technician.name', title: 'Technician' },
       contraindicated: { title: 'Contraindicated', type: 'boolean' },
       missing: { title: 'Missing', type: 'boolean' },
-      duration: { title: 'Duration', type: 'number' }
+      duration: { title: 'Duration', type: 'seconds' }
     },
     defaultOrder: {
       column: 'stage_type.name',

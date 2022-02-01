@@ -14,6 +14,19 @@ use cenozo\lib, cenozo\log, cosmos\util;
 class stage_type extends \cenozo\database\record
 {
   /**
+   * Overrides the parent save method.
+   * @access public
+   */
+  public function save()
+  {
+    $update_outliers = $this->has_column_changed( 'duration_low' ) || $this->has_column_changed( 'duration_high' );
+
+    parent::save();
+
+    if( $update_outliers ) self::db()->execute( sprintf( 'CALL update_outlier_for_stage_type( %d )', $this->id ) );
+  }
+
+  /**
    * Recalculates the min and max duration for this stage type
    * 
    * The values are calculated by finding the outer fences (3 times the difference between the upper and lower quartiles)

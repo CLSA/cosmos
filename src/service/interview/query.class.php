@@ -29,13 +29,20 @@ class query extends \cenozo\service\query
    */
   protected function execute()
   {
+    $interview_class_name = lib::get_class_name( 'database\interview' );
+    $stage_issue_class_name = lib::get_class_name( 'database\stage_issue' );
+
     parent::execute();
 
     if( $this->get_argument( 'update', false ) )
     {
       set_time_limit( 600 ); // set time limit to 10 minutes
-      $interview_class_name = lib::get_class_name( 'database\interview' );
-      $this->set_data( $interview_class_name::update_interview_list() );
+      $new_interview_count = $interview_class_name::update_interview_list();
+
+      // only generate last-month's issues on the 1st of the month
+      if( '1' == util::get_datetime_object()->format( 'j' ) ) $stage_issue_class_name::generate_issues();
+      
+      $this->set_data( $new_interview_count );
     }
   }
 }

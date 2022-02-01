@@ -18,7 +18,33 @@ CREATE PROCEDURE patch_role_has_service()
       "SELECT role.id, service.id ",
       "FROM ", @cenozo, ".role, service ",
       "WHERE role.name = 'administrator' ",
-      "AND service.subject = 'opal_view' ",
+      "AND service.subject IN( 'opal_view', 'stage_issue', 'stage_issue_note', 'stage_type' ) ",
+      "AND service.restricted = 1"
+    );
+    PREPARE statement FROM @sql;
+    EXECUTE statement;
+    DEALLOCATE PREPARE statement;
+
+    -- add services to coordinator role
+    SET @sql = CONCAT(
+      "INSERT IGNORE INTO role_has_service( role_id, service_id ) ",
+      "SELECT role.id, service.id ",
+      "FROM ", @cenozo, ".role, service ",
+      "WHERE role.name = 'coordinator' ",
+      "AND service.subject IN( 'report', 'setting', 'stage_issue', 'stage_issue_note', 'system_message', 'technician' ) ",
+      "AND service.restricted = 1"
+    );
+    PREPARE statement FROM @sql;
+    EXECUTE statement;
+    DEALLOCATE PREPARE statement;
+
+    SET @sql = CONCAT(
+      "INSERT IGNORE INTO role_has_service( role_id, service_id ) ",
+      "SELECT role.id, service.id ",
+      "FROM ", @cenozo, ".role, service ",
+      "WHERE role.name = 'coordinator' ",
+      "AND service.subject IN( 'report_restriction', 'report_type'  ) ",
+      "AND service.method = 'GET' ",
       "AND service.restricted = 1"
     );
     PREPARE statement FROM @sql;
