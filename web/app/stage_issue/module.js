@@ -8,17 +8,18 @@ cenozoApp.defineModule( { name: 'stage_issue', models: ['list', 'view'], default
       possessive: 'stage issue\'s'
     },
     columnList: {
+      site: { column: 'site.name', title: 'Site' },
       technician: { column: 'technician.name', title: 'Technician' },
       study_phase: { column: 'study_phase.code', title: 'Phase' },
       platform: { column: 'platform.name', title: 'Platform' },
       stage_type: { column: 'stage_type.name', title: 'Stage Type' },
       date: { title: 'Month', type: 'yearmonth' },
-      stage_count: { title: 'Number of Interviews' },
+      stage_count: { title: 'Number of Interviews', type: 'number' },
       closed: { type: 'boolean', title: 'Closed' }
     },
     defaultOrder: {
-      column: 'stage_issue.date',
-      reverse: false
+      column: 'date',
+      reverse: true
     }
   } );
 
@@ -69,6 +70,21 @@ cenozoApp.defineModule( { name: 'stage_issue', models: ['list', 'view'], default
   } );
 
   /* ######################################################################################################## */
+  cenozo.providers.directive( 'cnStageIssueList', [
+    'CnStageIssueModelFactory',
+    function( CnStageIssueModelFactory ) {
+      return {
+        templateUrl: module.getFileUrl( 'list.tpl.html' ),
+        restrict: 'E',
+        scope: { model: '=?', removeColumns: '@' },
+        controller: function( $scope ) {
+          if( angular.isUndefined( $scope.model ) ) $scope.model = CnStageIssueModelFactory.root;
+        }
+      };
+    }
+  ] );
+
+  /* ######################################################################################################## */
   cenozo.providers.factory( 'CnStageIssueViewFactory', [
     'CnBaseViewFactory',
     function( CnBaseViewFactory ) {
@@ -87,4 +103,41 @@ cenozoApp.defineModule( { name: 'stage_issue', models: ['list', 'view'], default
       return { instance: function( parentModel, root ) { return new object( parentModel, root ); } };
     }
   ] );
+
+  /* ######################################################################################################## */
+  cenozo.providers.factory( 'CnStageIssueModelFactory', [
+    'CnBaseModelFactory', 'CnStageIssueListFactory', 'CnStageIssueViewFactory',
+    function( CnBaseModelFactory, CnStageIssueListFactory, CnStageIssueViewFactory ) {
+      var object = function( root ) {
+        CnBaseModelFactory.construct( this, module );
+
+        angular.extend( this, {
+          listModel: CnStageIssueListFactory.instance( this ),
+          viewModel: CnStageIssueViewFactory.instance( this, root ),
+          getServiceCollectionPath: function( ignoreParent ) {
+            // ignore the parent if we're on the root view
+            return this.$$getServiceCollectionPath( ignoreParent || 'root' == this.getSubjectFromState() );
+          },
+          getServiceData: function( type, columnRestrictLists ) {
+            var data = this.$$getServiceData( type, columnRestrictLists );
+
+            // only show open issues when on the root view
+            if( 'root' == this.getSubjectFromState() ) {
+              if( angular.isUndefined( data.modifier ) ) data.modifier = {};
+              if( angular.isUndefined( data.modifier.where ) ) data.modifier.where = [];
+              data.modifier.where.push( { column: 'stage_issue.closed', operator: '=', value: false } );
+            }
+
+            return data;
+          }
+        } );
+      };
+
+      return {
+        root: new object( true ),
+        instance: function() { return new object( false ); }
+      };
+    }
+  ] );
+
 } } );

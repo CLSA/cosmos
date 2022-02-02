@@ -26,7 +26,7 @@ class stage_issue extends \cenozo\database\record
     $stage_issue_sel->add_constant( NULL, 'create_timestamp' );
     $stage_issue_sel->add_column( 'technician_id' );
     $stage_issue_sel->add_column( 'stage_type.id', 'stage_type_id', false );
-    $stage_issue_sel->add_constant( 'DATE( UTC_TIMESTAMP() )', 'date', 'date', false );
+    $stage_issue_sel->add_constant( 'DATE( UTC_TIMESTAMP() - INTERVAL 1 MONTH )', 'date', 'date', false );
     
     $stage_issue_mod = lib::create( 'database\modifier' );
     $stage_issue_mod->join( 'stage', 'outlier.stage_id', 'stage.id' );
