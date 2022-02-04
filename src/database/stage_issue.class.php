@@ -18,6 +18,7 @@ class stage_issue extends \cenozo\database\record
    */
   public static function generate_issues()
   {
+    \cenozo\database\database::$debug = true;
     $threshold = lib::create( 'business\setting_manager' )->get_setting( 'general', 'issue_threshold' );
 
     // create all stage_issue records for this month
@@ -33,6 +34,7 @@ class stage_issue extends \cenozo\database\record
     $stage_issue_mod->join( 'stage_type', 'stage.stage_type_id', 'stage_type.id' );
     $stage_issue_mod->where( 'outlier.technician_id', '!=', NULL );
     $stage_issue_mod->where( 'outlier.indicator_id', '=', NULL );
+    $stage_issue_mod->where( 'YEAR( outlier.date )', '=', 'YEAR( UTC_TIMESTAMP() - INTERVAL 1 MONTH )', false );
     $stage_issue_mod->where( 'MONTH( outlier.date )', '=', 'MONTH( UTC_TIMESTAMP() - INTERVAL 1 MONTH )', false );
     $stage_issue_mod->group( 'outlier.technician_id' );
     $stage_issue_mod->group( 'stage.stage_type_id' );
@@ -59,11 +61,14 @@ class stage_issue extends \cenozo\database\record
     $join_mod->where( 'stage.id', '=', 'outlier.stage_id', false );
     $join_mod->where( 'outlier.indicator_id', '=', NULL );
     $stage_mod->join_modifier( 'outlier', $join_mod );
+    $stage_mod->where( 'YEAR( outlier.date )', '=', 'YEAR( UTC_TIMESTAMP() - INTERVAL 1 MONTH )', false );
+    $stage_mod->where( 'MONTH( outlier.date )', '=', 'MONTH( UTC_TIMESTAMP() - INTERVAL 1 MONTH )', false );
 
     static::db()->execute( sprintf(
       'INSERT IGNORE INTO stage_issue_has_stage( create_timestamp, stage_issue_id, stage_id ) %s %s',
       $stage_sel->get_sql(),
       $stage_mod->get_sql()
     ) );
+    \cenozo\database\database::$debug = false;
   }
 }

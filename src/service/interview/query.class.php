@@ -30,6 +30,7 @@ class query extends \cenozo\service\query
   protected function execute()
   {
     $interview_class_name = lib::get_class_name( 'database\interview' );
+    $indicator_issue_class_name = lib::get_class_name( 'database\indicator_issue' );
     $stage_issue_class_name = lib::get_class_name( 'database\stage_issue' );
 
     parent::execute();
@@ -40,7 +41,11 @@ class query extends \cenozo\service\query
       $new_interview_count = $interview_class_name::update_interview_list();
 
       // only generate last-month's issues on the 1st of the month
-      if( '1' == util::get_datetime_object()->format( 'j' ) ) $stage_issue_class_name::generate_issues();
+      if( '1' == util::get_datetime_object()->format( 'j' ) )
+      {
+        $indicator_issue_class_name::generate_issues();
+        $stage_issue_class_name::generate_issues();
+      }
       
       $this->set_data( $new_interview_count );
     }

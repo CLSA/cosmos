@@ -21,18 +21,12 @@ class ui extends \cenozo\ui\ui
   {
     parent::build_module_list();
 
-    $module = $this->get_module( 'participant' );
-    if( !is_null( $module ) ) $module->add_child( 'interview' );
-
-    $module = $this->get_module( 'site' );
+    $module = $this->get_module( 'indicator_issue' );
     if( !is_null( $module ) )
     {
-      $module->add_child( 'technician' );
-      $module->add_child( 'interview' );
+      $module->add_child( 'indicator_issue_note' );
+      $module->add_choose( 'stage' );
     }
-
-    $module = $this->get_module( 'technician' );
-    if( !is_null( $module ) ) $module->add_child( 'stage' );
 
     $module = $this->get_module( 'interview' );
     if( !is_null( $module ) ) $module->add_child( 'stage' );
@@ -43,6 +37,9 @@ class ui extends \cenozo\ui\ui
       $module->add_child( 'stage_type' );
       $module->add_action( 'upload', '/{identifier}' );
     }
+
+    $module = $this->get_module( 'participant' );
+    if( !is_null( $module ) ) $module->add_child( 'interview' );
 
     $module = $this->get_module( 'platform' );
     if( !is_null( $module ) ) $module->add_child( 'stage_type' );
@@ -56,6 +53,16 @@ class ui extends \cenozo\ui\ui
 
     $module = $this->get_module( 'stage_type' );
     if( !is_null( $module ) ) $module->add_child( 'indicator' );
+
+    $module = $this->get_module( 'technician' );
+    if( !is_null( $module ) ) $module->add_child( 'stage' );
+
+    $module = $this->get_module( 'site' );
+    if( !is_null( $module ) )
+    {
+      $module->add_child( 'technician' );
+      $module->add_child( 'interview' );
+    }
   }
 
   /**
@@ -69,6 +76,7 @@ class ui extends \cenozo\ui\ui
     $this->add_listitem( 'Interviews', 'interview' );
     $this->add_listitem( 'Opal Views', 'opal_view' );
     $this->add_listitem( 'Outliers', 'indicator' );
+    $this->add_listitem( 'Indicator Issues', 'indicator_issue' );
     $this->add_listitem( 'Stage Duration Issues', 'stage_issue' );
 
     $this->remove_listitem( 'Languages' );

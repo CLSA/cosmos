@@ -18,7 +18,9 @@ CREATE PROCEDURE patch_role_has_service()
       "SELECT role.id, service.id ",
       "FROM ", @cenozo, ".role, service ",
       "WHERE role.name = 'administrator' ",
-      "AND service.subject IN( 'opal_view', 'stage_issue', 'stage_issue_note', 'stage_type' ) ",
+      "AND service.subject IN( ",
+        "'opal_view', 'indicator_issue', 'indicator_issue_note', 'stage_issue', 'stage_issue_note', 'stage_type' ",
+      ") ",
       "AND service.restricted = 1"
     );
     PREPARE statement FROM @sql;
@@ -31,7 +33,10 @@ CREATE PROCEDURE patch_role_has_service()
       "SELECT role.id, service.id ",
       "FROM ", @cenozo, ".role, service ",
       "WHERE role.name = 'coordinator' ",
-      "AND service.subject IN( 'report', 'setting', 'stage_issue', 'stage_issue_note', 'system_message', 'technician' ) ",
+      "AND service.subject IN( ",
+        "'report', 'setting', 'indicator_issue', 'indicator_issue_note', 'stage_issue', ",
+        "'stage_issue_note', ","'system_message', 'technician' ",
+      ") ",
       "AND service.restricted = 1"
     );
     PREPARE statement FROM @sql;

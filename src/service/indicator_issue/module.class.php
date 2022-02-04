@@ -5,7 +5,7 @@
  * @author Patrick Emond <emondpd@mcmaster.ca>
  */
 
-namespace cosmos\service\stage_issue;
+namespace cosmos\service\indicator_issue;
 use cenozo\lib, cenozo\log, cosmos\util;
 
 /**
@@ -23,11 +23,11 @@ class module extends \cenozo\service\site_restricted_module
     if( 300 > $this->get_status()->get_code() )
     {
       // restrict by site
-      $db_stage_issue = $this->get_resource();
+      $db_indicator_issue = $this->get_resource();
       $db_restrict_site = $this->get_restricted_site();
-      if( !is_null( $db_stage_issue ) && !is_null( $db_restrict_site ) )
+      if( !is_null( $db_indicator_issue ) && !is_null( $db_restrict_site ) )
       {
-        if( $db_restrict_site->id != $db_stage_issue->get_technician()->site_id ) $this->get_status()->set_code( 403 );
+        if( $db_restrict_site->id != $db_indicator_issue->get_technician()->site_id ) $this->get_status()->set_code( 403 );
       }
     }
   }
@@ -39,9 +39,10 @@ class module extends \cenozo\service\site_restricted_module
   {
     parent::prepare_read( $select, $modifier );
 
-    $modifier->join( 'technician', 'stage_issue.technician_id', 'technician.id' );
+    $modifier->join( 'technician', 'indicator_issue.technician_id', 'technician.id' );
     $modifier->join( 'site', 'technician.site_id', 'site.id' );
-    $modifier->join( 'stage_type', 'stage_issue.stage_type_id', 'stage_type.id' );
+    $modifier->join( 'indicator', 'indicator_issue.indicator_id', 'indicator.id' );
+    $modifier->join( 'stage_type', 'indicator.stage_type_id', 'stage_type.id' );
     $modifier->join( 'opal_view', 'stage_type.opal_view_id', 'opal_view.id' );
     $modifier->join( 'study_phase', 'opal_view.study_phase_id', 'study_phase.id' );
     $modifier->join( 'platform', 'opal_view.platform_id', 'platform.id' );
@@ -50,11 +51,11 @@ class module extends \cenozo\service\site_restricted_module
     $select->add_column( 'DATE_FORMAT( date, "%M, %Y" )', 'date_string', false );
     $select->add_column(
       'CONCAT( '.
-        'REPLACE( REPLACE( sec_to_time( duration_low ), ".999999", "" ), ".000000", "" ), '.
+        'REPLACE( REPLACE( sec_to_time( minimum ), ".999999", "" ), ".000000", "" ), '.
         '" to ", '.
-        'REPLACE( REPLACE( sec_to_time( duration_high ), ".999999", "" ), ".000000", "" )'.
+        'REPLACE( REPLACE( sec_to_time( maximum ), ".999999", "" ), ".000000", "" )'.
       ')',
-      'duration_span',
+      'value_span',
       false
     );
 
