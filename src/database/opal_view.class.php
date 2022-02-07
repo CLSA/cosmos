@@ -41,7 +41,7 @@ class opal_view extends \cenozo\database\record
    */
   public function update_interview_list( $interview_data = NULL )
   {
-    $limit = 2000;
+    $limit = 50;
     set_time_limit( 3600 );
 
     $opal_manager = lib::create( 'business\opal_manager' );
@@ -66,6 +66,27 @@ class opal_view extends \cenozo\database\record
           $values = $opal_manager->get_all_values( $project_name, $view_name, $limit, $this->total );
           foreach( $values as $uid => $data ) if( $this->import( $uid, util::json_decode( $data['data'] ) ) ) $interviews++;
           $new_interviews += $interviews;
+
+          // Check if we're missing an interview that isn't recent
+          // This can happen when an error prevents an interview from being imported.  The only way to fix this is to select
+          // all interviews in backward order until we find the missing ones
+          if( 0 == $interviews && $count > $this->total )
+          {
+            log::info( 'Missing interview detected, back-scanning until it is found.' );
+            $found = false;
+            $offset = $count - $limit;
+            if( 0 > $offset ) $offset = 0;
+            while( $offset >= 0 )
+            {
+              log::debug( $limit, $offset );
+              $values = $opal_manager->get_all_values( $project_name, $view_name, $limit, $offset );
+              foreach( $values as $uid => $data ) if( $this->import( $uid, util::json_decode( $data['data'] ) ) ) $interviews++;
+              $new_interviews += $interviews;
+              if( $count <= ( $this->total + $new_interviews ) ) break;
+              $offset -= $limit;
+            }
+            log::info( sprintf( 'Retrieved %d missing interviews.', $new_interviews ) );
+          }
         }
       }
     }
