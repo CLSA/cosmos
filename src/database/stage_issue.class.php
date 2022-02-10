@@ -18,7 +18,6 @@ class stage_issue extends \cenozo\database\record
    */
   public static function generate_issues()
   {
-    \cenozo\database\database::$debug = true;
     $threshold = lib::create( 'business\setting_manager' )->get_setting( 'general', 'issue_threshold' );
 
     // create all stage_issue records for this month
@@ -69,6 +68,5 @@ class stage_issue extends \cenozo\database\record
       $stage_sel->get_sql(),
       $stage_mod->get_sql()
     ) );
-    \cenozo\database\database::$debug = false;
   }
 }

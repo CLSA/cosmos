@@ -37,6 +37,12 @@ cenozoApp.defineModule( { name: 'stage_type', models: ['list', 'view'], create: 
       type: 'string',
       isConstant: true
     },
+    median: {
+      title: 'Median Duration',
+      type: 'string',
+      format: 'float',
+      isConstant: true
+    },
     duration_low: {
       title: 'Duration Low (seconds)',
       type: 'string',

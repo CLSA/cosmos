@@ -27,6 +27,8 @@ class module extends \cenozo\service\module
     $db_stage_type = $this->get_resource();
     if( !is_null( $db_stage_type ) )
     {
+      if( $select->has_column( 'median' ) ) $select->add_constant( $db_stage_type->get_median(), 'median', 'float' );
+
       if( $select->has_column( 'min_date' ) ||
           $select->has_column( 'max_date' ) ||
           $select->has_column( 'contraindicated' ) ||

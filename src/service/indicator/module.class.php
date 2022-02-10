@@ -85,10 +85,7 @@ class module extends \cenozo\service\site_restricted_module
     $db_indicator = $this->get_resource();
     if( !is_null( $db_indicator ) )
     {
-      if( $select->has_column( 'median' ) )
-      {
-        $select->add_constant( $db_indicator->get_median(), 'median', 'float' );
-      }
+      if( $select->has_column( 'median' ) ) $select->add_constant( $db_indicator->get_median(), 'median', 'float' );
     }
   }
 }

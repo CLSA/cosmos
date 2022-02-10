@@ -27,6 +27,30 @@ class stage_type extends \cenozo\database\record
   }
 
   /**
+   * Calculates this stage type's median duration across all stages
+   */
+  public function get_median()
+  {
+    $stage_table_name = lib::get_class_name( 'database\stage' );
+
+    $stage_mod = lib::create( 'database\modifier' );
+    $stage_mod->where( 'duration', '!=', NULL );
+    $count = $stage_table_name::count( $stage_mod );
+
+    $stage_sel = lib::create( 'database\select' );
+    $stage_sel->add_column( 'duration' );
+    $stage_mod = lib::create( 'database\modifier' );
+    $stage_mod->where( 'duration', '!=', NULL );
+    $stage_mod->order( 'duration' );
+    $stage_mod->limit( 1 );
+    $stage_mod->offset( floor( $count/2 ) );
+    $result = $stage_table_name::select( $stage_sel, $stage_mod );
+    $median = current( $result )['duration'];
+
+    return $median;
+  }
+
+  /**
    * Recalculates the min and max duration for this stage type
    * 
    * The values are calculated by finding the outer fences (3 times the difference between the upper and lower quartiles)
