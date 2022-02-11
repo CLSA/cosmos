@@ -53,13 +53,13 @@ cenozoApp.defineModule( { name: 'stage_type', models: ['list', 'view'], create: 
       type: 'string',
       format: 'float'
     },
-    contraindicated: {
-      title: 'Contraindicated',
+    contraindicated_count: {
+      title: 'Total Contraindicated',
       type: 'string',
       isConstant: true
     },
-    missing: {
-      title: 'Missing',
+    missing_count: {
+      title: 'Total Missing',
       type: 'string',
       isConstant: true
     },
@@ -174,7 +174,7 @@ cenozoApp.defineModule( { name: 'stage_type', models: ['list', 'view'], create: 
           getType: function() { return 'time'; },
           getPath: function() { return self.parentModel.getServiceResourcePath() + '/stage?plot=duration' },
           getXLabel: function() { return 'Stage Duration'; },
-          getBinSize: function() { return 30; },
+          getBinSize: function() { return Math.ceil( ( self.record.duration_high - self.record.duration_low )/100 ); },
           minName: 'duration_low',
           maxName: 'duration_high'
         } );

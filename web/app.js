@@ -285,16 +285,21 @@ cenozo.service( 'CnPlotHelperFactory', [
               catData.data.filter( datum => this.dateSpan.low <= datum.date && datum.date <= this.dateSpan.high )
                            .forEach( datum => {
                 // outlierGroups data
-                this.outlierGroups.data[catIndex][minValue > datum.value ? 0 : maxValue < datum.value ? 2 : 1]++;
+                if( angular.isDefined( this.outlierGroups.data[catIndex] ) ) // temporary fix for a state-based bug
+                  this.outlierGroups.data[catIndex][minValue > datum.value ? 0 : maxValue < datum.value ? 2 : 1]++;
 
                 // outlierDistribution data
-                if( minValue > datum.value || maxValue < datum.value ) this.outlierDistribution.data[catIndex][0]++;
+                if( minValue > datum.value || maxValue < datum.value )
+                  if( angular.isDefined( this.outlierDistribution.data[catIndex] ) ) // temporary fix for a state-based bug
+                    this.outlierDistribution.data[catIndex][0]++;
 
                 // histogram data
                 var bin = Math.ceil( datum.value / binSize );
                 if( bin < minBin ) bin = minBin;
                 else if( bin > maxBin ) bin = maxBin;
-                if( !Number.isNaN( minBin ) && !Number.isNaN( maxBin ) ) this.histogram.data[catIndex][bin-minBin]++;
+                if( !Number.isNaN( minBin ) && !Number.isNaN( maxBin ) )
+                  if( angular.isDefined( this.histogram.data[catIndex] ) ) // temporary fix for a state-based bug
+                    this.histogram.data[catIndex][bin-minBin]++;
               } );
             } );
           },
