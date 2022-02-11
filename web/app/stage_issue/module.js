@@ -13,6 +13,7 @@ cenozoApp.defineModule( { name: 'stage_issue', models: ['list', 'view'], default
       study_phase: { column: 'study_phase.code', title: 'Phase' },
       platform: { column: 'platform.name', title: 'Platform' },
       stage_type: { column: 'stage_type.name', title: 'Stage Type' },
+      type: { title: 'Type', type: 'string' },
       date: { title: 'Month', type: 'yearmonth' },
       stage_count: { title: 'Number of Interviews', type: 'number' },
       closed: { type: 'boolean', title: 'Closed' }
@@ -45,6 +46,12 @@ cenozoApp.defineModule( { name: 'stage_issue', models: ['list', 'view'], default
     stage_type: {
       column: 'stage_type.name',
       title: 'Stage Type',
+      type: 'string',
+      isConstant: true
+    },
+    type: {
+      column: 'stage_issue.type',
+      title: 'Issue Type',
       type: 'string',
       isConstant: true
     },

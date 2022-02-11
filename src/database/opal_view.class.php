@@ -78,7 +78,6 @@ class opal_view extends \cenozo\database\record
             if( 0 > $offset ) $offset = 0;
             while( $offset >= 0 )
             {
-              log::debug( $limit, $offset );
               $values = $opal_manager->get_all_values( $project_name, $view_name, $limit, $offset );
               foreach( $values as $uid => $data ) if( $this->import( $uid, util::json_decode( $data['data'] ) ) ) $interviews++;
               $new_interviews += $interviews;

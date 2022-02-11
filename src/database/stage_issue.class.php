@@ -20,12 +20,13 @@ class stage_issue extends \cenozo\database\record
   {
     $threshold = lib::create( 'business\setting_manager' )->get_setting( 'general', 'issue_threshold' );
 
-    // create all stage_issue records for this month
+    // create all stage duration issue records for this month
     $stage_issue_sel = lib::create( 'database\select' );
     $stage_issue_sel->from( 'outlier' );
     $stage_issue_sel->add_constant( NULL, 'create_timestamp' );
     $stage_issue_sel->add_column( 'technician_id' );
     $stage_issue_sel->add_column( 'stage_type.id', 'stage_type_id', false );
+    $stage_issue_sel->add_constant( 'duration' );
     $stage_issue_sel->add_constant( 'DATE( UTC_TIMESTAMP() - INTERVAL 1 MONTH )', 'date', 'date', false );
     
     $stage_issue_mod = lib::create( 'database\modifier' );
@@ -40,12 +41,12 @@ class stage_issue extends \cenozo\database\record
     $stage_issue_mod->having( 'COUNT(*)', '>=', $threshold );
 
     static::db()->execute( sprintf(
-      'INSERT IGNORE INTO stage_issue( create_timestamp, technician_id, stage_type_id, date ) %s %s',
+      'INSERT IGNORE INTO stage_issue( create_timestamp, technician_id, stage_type_id, type, date ) %s %s',
       $stage_issue_sel->get_sql(),
       $stage_issue_mod->get_sql()
     ) );
 
-    // associate all stages with the new stage issues
+    // associate all stages with the new stage durtaion issues
     $stage_sel = lib::create( 'database\select' );
     $stage_sel->from( 'stage_issue' );
     $stage_sel->add_constant( NULL, 'create_timestamp' );
@@ -60,8 +61,55 @@ class stage_issue extends \cenozo\database\record
     $join_mod->where( 'stage.id', '=', 'outlier.stage_id', false );
     $join_mod->where( 'outlier.indicator_id', '=', NULL );
     $stage_mod->join_modifier( 'outlier', $join_mod );
+    $stage_mod->where( 'stage_issue.type', '=', 'duration' );
     $stage_mod->where( 'YEAR( outlier.date )', '=', 'YEAR( UTC_TIMESTAMP() - INTERVAL 1 MONTH )', false );
     $stage_mod->where( 'MONTH( outlier.date )', '=', 'MONTH( UTC_TIMESTAMP() - INTERVAL 1 MONTH )', false );
+
+    static::db()->execute( sprintf(
+      'INSERT IGNORE INTO stage_issue_has_stage( create_timestamp, stage_issue_id, stage_id ) %s %s',
+      $stage_sel->get_sql(),
+      $stage_mod->get_sql()
+    ) );
+
+    // create all stage skip issue records for this month
+    $stage_issue_sel = lib::create( 'database\select' );
+    $stage_issue_sel->from( 'stage' );
+    $stage_issue_sel->add_constant( NULL, 'create_timestamp' );
+    $stage_issue_sel->add_column( 'technician_id' );
+    $stage_issue_sel->add_column( 'stage_type_id' );
+    $stage_issue_sel->add_constant( 'skip' );
+    $stage_issue_sel->add_constant( 'DATE( UTC_TIMESTAMP() - INTERVAL 1 MONTH )', 'date', 'date', false );
+    
+    $stage_issue_mod = lib::create( 'database\modifier' );
+    $stage_issue_mod->join( 'interview', 'stage.interview_id', 'interview.id' );
+    $stage_issue_mod->where( 'skip', '!=', NULL );
+    $stage_issue_mod->where( 'YEAR( interview.start_date )', '=', 'YEAR( UTC_TIMESTAMP() - INTERVAL 1 MONTH )', false );
+    $stage_issue_mod->where( 'MONTH( interview.start_date )', '=', 'MONTH( UTC_TIMESTAMP() - INTERVAL 1 MONTH )', false );
+    $stage_issue_mod->group( 'stage.technician_id' );
+    $stage_issue_mod->group( 'stage.stage_type_id' );
+    $stage_issue_mod->having( 'COUNT(*)', '>=', $threshold );
+
+    static::db()->execute( sprintf(
+      'INSERT IGNORE INTO stage_issue( create_timestamp, technician_id, stage_type_id, type, date ) %s %s',
+      $stage_issue_sel->get_sql(),
+      $stage_issue_mod->get_sql()
+    ) );
+
+    // associate all stages with the new stage durtaion issues
+    $stage_sel = lib::create( 'database\select' );
+    $stage_sel->from( 'stage_issue' );
+    $stage_sel->add_constant( NULL, 'create_timestamp' );
+    $stage_sel->add_column( 'id' );
+    $stage_sel->add_column( 'stage.id', 'stage_id', false );
+
+    $stage_mod = lib::create( 'database\modifier' );
+    $stage_mod->join( 'stage_type', 'stage_issue.stage_type_id', 'stage_type.id' );
+    $stage_mod->join( 'stage', 'stage_type.id', 'stage.stage_type_id' );
+    $stage_mod->join( 'interview', 'stage.interview_id', 'interview.id' );
+    $stage_mod->where( 'stage_issue.type', '=', 'skip' );
+    $stage_mod->where( 'stage.skip', '!=', NULL );
+    $stage_mod->where( 'YEAR( interview.start_date )', '=', 'YEAR( UTC_TIMESTAMP() - INTERVAL 1 MONTH )', false );
+    $stage_mod->where( 'MONTH( interview.start_date )', '=', 'MONTH( UTC_TIMESTAMP() - INTERVAL 1 MONTH )', false );
 
     static::db()->execute( sprintf(
       'INSERT IGNORE INTO stage_issue_has_stage( create_timestamp, stage_issue_id, stage_id ) %s %s',

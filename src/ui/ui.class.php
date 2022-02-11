@@ -77,7 +77,7 @@ class ui extends \cenozo\ui\ui
     $this->add_listitem( 'Opal Views', 'opal_view' );
     $this->add_listitem( 'Outliers', 'indicator' );
     $this->add_listitem( 'Indicator Issues', 'indicator_issue' );
-    $this->add_listitem( 'Stage Duration Issues', 'stage_issue' );
+    $this->add_listitem( 'Stage Issues', 'stage_issue' );
 
     $this->remove_listitem( 'Languages' );
 

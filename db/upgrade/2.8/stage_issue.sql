@@ -6,6 +6,7 @@ CREATE TABLE IF NOT EXISTS stage_issue (
   create_timestamp TIMESTAMP NOT NULL,
   technician_id INT(10) UNSIGNED NOT NULL,
   stage_type_id INT(10) UNSIGNED NOT NULL,
+  type ENUM('duration', 'skip') NOT NULL,
   date DATE NOT NULL,
   closed TINYINT(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (id),

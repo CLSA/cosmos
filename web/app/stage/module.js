@@ -19,6 +19,7 @@ cenozoApp.defineModule( { name: 'stage', models: ['list', 'view'], dependencies:
       technician: { column: 'technician.name', title: 'Technician' },
       contraindicated: { title: 'Contraindicated', type: 'boolean' },
       missing: { title: 'Missing', type: 'boolean' },
+      skip: { title: 'Skip', type: 'string' },
       duration: { title: 'Duration', type: 'seconds' }
     },
     defaultOrder: {
@@ -55,6 +56,10 @@ cenozoApp.defineModule( { name: 'stage', models: ['list', 'view'], dependencies:
     missing: {
       title: 'Missing',
       type: 'boolean'
+    },
+    skip: {
+      title: 'Skip',
+      type: 'string'
     },
     duration: {
       title: 'Duration',
