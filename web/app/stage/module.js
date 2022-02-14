@@ -73,4 +73,22 @@ cenozoApp.defineModule( { name: 'stage', models: ['list', 'view'], dependencies:
     }
   } );
 
+  /* ######################################################################################################## */
+  cenozo.providers.factory( 'CnStageViewFactory', [
+    'CnBaseViewFactory',
+    function( CnBaseViewFactory ) {
+      var object = function( parentModel, root ) {
+        CnBaseViewFactory.construct( this, parentModel, root );
+
+        this.onView = async function( force ) {
+          await this.$$onView();
+          
+          // pretty print the raw data
+          this.record.data = JSON.stringify( JSON.parse( this.record.data ), null, 2 );
+        };
+      };
+      return { instance: function( parentModel, root ) { return new object( parentModel, root ); } };
+    }
+  ] );
+
 } } );
