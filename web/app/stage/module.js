@@ -20,7 +20,8 @@ cenozoApp.defineModule( { name: 'stage', models: ['list', 'view'], dependencies:
       contraindicated: { title: 'Contraindicated', type: 'boolean' },
       missing: { title: 'Missing', type: 'boolean' },
       skip: { title: 'Skip', type: 'string' },
-      duration: { title: 'Duration', type: 'seconds' }
+      duration: { title: 'Duration', type: 'seconds' },
+      comment_list: { title: 'Comments', type: 'text', align: 'left', width: '50%', limit: null }
     },
     defaultOrder: {
       column: 'stage_type.name',

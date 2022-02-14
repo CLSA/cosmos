@@ -4,6 +4,7 @@ SET AUTOCOMMIT=0;
 
 SOURCE table_character_sets.sql
 
+SOURCE comment.sql
 SOURCE outlier.sql
 SOURCE opal_view.sql
 SOURCE stage_type.sql

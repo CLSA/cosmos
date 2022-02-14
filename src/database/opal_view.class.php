@@ -228,6 +228,29 @@ class opal_view extends \cenozo\database\record
           unset( $stage_data->duration );
         }
 
+        // we need the stage to have an id so we can link comment records
+        $db_stage->data = '{}';
+        $db_stage->save();
+
+        if( property_exists( $stage_data, 'comment' ) )
+        {
+          $rank = 1;
+          foreach( (array) $stage_data->comment as $type => $list )
+          {
+            foreach( $list as $note )
+            {
+              $db_comment = lib::create( 'database\comment' );
+              $db_comment->stage_id = $db_stage->id;
+              $db_comment->rank = $rank;
+              $db_comment->type = $type;
+              $db_comment->note = $note;
+              $db_comment->save();
+              $rank++;
+            }
+          }
+          unset( $stage_data->comment );
+        }
+
         // encode all remaining data into the JSON data column
         $db_stage->data = util::json_encode( $stage_data );
         $db_stage->save();

@@ -54,6 +54,9 @@ class ui extends \cenozo\ui\ui
     $module = $this->get_module( 'stage_type' );
     if( !is_null( $module ) ) $module->add_child( 'indicator' );
 
+    $module = $this->get_module( 'stage' );
+    if( !is_null( $module ) ) $module->add_child( 'comment' );
+
     $module = $this->get_module( 'technician' );
     if( !is_null( $module ) ) $module->add_child( 'stage' );
 

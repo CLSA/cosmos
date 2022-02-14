@@ -82,6 +82,22 @@ class module extends \cenozo\service\site_restricted_module
       $modifier->join( 'platform', 'opal_view.platform_id', 'platform.id' );
       $modifier->join( 'participant', 'interview.participant_id', 'participant.id' );
       $modifier->left_join( 'technician', 'stage.technician_id', 'technician.id' );
+
+      if( $select->has_column( 'comment_list' ) )
+      {
+        $this->add_list_column(
+          'comment_list',
+          'comment',
+          'CONCAT_WS( ": ", comment.type, comment.note )',
+          $select,
+          $modifier,
+          NULL,
+          NULL,
+          'rank',
+          '; ',
+          false
+        );
+      }
     }
   }
 }
