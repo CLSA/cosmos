@@ -88,7 +88,7 @@ class module extends \cenozo\service\site_restricted_module
         $this->add_list_column(
           'comment_list',
           'comment',
-          'CONCAT_WS( ": ", comment.type, comment.note )',
+          'IF( comment.type IS NOT NULL, CONCAT_WS( ": ", comment.type, comment.note ), NULL )',
           $select,
           $modifier,
           NULL,
