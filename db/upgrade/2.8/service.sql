@@ -3,6 +3,8 @@ SELECT "Adding new services" AS "";
 DELETE FROM service WHERE subject RLIKE "^(bl|f1|f2|f3)_*" OR subject = "setting";
 
 INSERT IGNORE INTO service ( subject, method, resource, restricted ) VALUES
+( 'adverse_event', 'GET', 0, 0 ),
+( 'adverse_event', 'GET', 1, 0 ),
 ( 'comment', 'GET', 0, 0 ),
 ( 'comment', 'GET', 1, 0 ),
 ( 'opal_view', 'DELETE', 1, 1 ),

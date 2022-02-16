@@ -13,7 +13,7 @@ cenozoApp.defineModule( { name: 'stage_type', models: ['list', 'view'], create: 
       name: { column: 'stage_type.name', title: 'Name' }
     },
     defaultOrder: {
-      column: 'study_phase.name',
+      column: 'study_phase',
       reverse: false
     }
   } );

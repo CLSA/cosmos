@@ -55,7 +55,11 @@ class ui extends \cenozo\ui\ui
     if( !is_null( $module ) ) $module->add_child( 'indicator' );
 
     $module = $this->get_module( 'stage' );
-    if( !is_null( $module ) ) $module->add_child( 'comment' );
+    if( !is_null( $module ) )
+    {
+      $module->add_child( 'comment' );
+      $module->add_child( 'adverse_event' );
+    }
 
     $module = $this->get_module( 'technician' );
     if( !is_null( $module ) ) $module->add_child( 'stage' );
@@ -75,12 +79,14 @@ class ui extends \cenozo\ui\ui
   {
     parent::build_listitem_list();
 
+    $this->add_listitem( 'Adverse Events', 'adverse_event' );
     $this->add_listitem( 'Platforms', 'platform' );
     $this->add_listitem( 'Interviews', 'interview' );
     $this->add_listitem( 'Opal Views', 'opal_view' );
     $this->add_listitem( 'Outliers', 'indicator' );
     $this->add_listitem( 'Indicator Issues', 'indicator_issue' );
     $this->add_listitem( 'Stage Issues', 'stage_issue' );
+    $this->add_listitem( 'Stage Types', 'stage_type' );
 
     $this->remove_listitem( 'Languages' );
 

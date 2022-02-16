@@ -48,13 +48,13 @@ class opal_view extends \cenozo\database\record
     $project_name = $this->get_project_name();
     $view_name = $this->get_view_name();
 
-    try 
+    try
     {
       // if opal doesn't responde a runtime exception will be thrown
       $new_interviews = 0;
       if( !is_null( $interview_data ) )
       {
-        foreach( $interview_data as $uid => $data ) if( $this->import( $uid, util::json_decode( $data ) ) ) $new_interviews++; 
+        foreach( $interview_data as $uid => $data ) if( $this->import( $uid, util::json_decode( $data ) ) ) $new_interviews++;
       }
       else
       {
@@ -209,7 +209,7 @@ class opal_view extends \cenozo\database\record
           $db_stage->contraindicated = $stage_data->contraindicated;
           unset( $stage_data->contraindicated );
         }
-        
+
         if( property_exists( $stage_data, 'missing' ) )
         {
           $db_stage->missing = $stage_data->missing;
@@ -228,7 +228,7 @@ class opal_view extends \cenozo\database\record
           unset( $stage_data->duration );
         }
 
-        // we need the stage to have an id so we can link comment records
+        // we need the stage to have an id so we can link comment and adverse event records
         $db_stage->data = '{}';
         $db_stage->save();
 
@@ -249,6 +249,22 @@ class opal_view extends \cenozo\database\record
             }
           }
           unset( $stage_data->comment );
+        }
+
+        // store adverse events
+        if( property_exists( $stage_data, 'adverse_event' ) || property_exists( $stage_data, 'followup_event' ) )
+        {
+          $db_adverse_event = lib::create( 'database\adverse_effect' );
+          $db_adverse_event->stage_id = $db_stage->id;
+
+          // adverse events are always provided as an array
+          if( property_exists( $stage_data, 'adverse_event' ) )
+            $db_adverse_event->type = implode( ', ', $stage_data->adverse_event );
+
+          // followup events are always provided as an array
+          if( property_exists( $stage_data, 'followup_event' ) )
+            $db_adverse_event->followup = implode( ', ', $stage_data->followup_event );
+          $db_adverse_event->save();
         }
 
         // encode all remaining data into the JSON data column
@@ -273,6 +289,9 @@ class opal_view extends \cenozo\database\record
             }
           }
           else if( 'array' != $type ) $indicator_list[] = array( 'name' => $name, 'type' => $type );
+
+          // Note that we are explicitely ignoring array values.  This is because the only array values should be adverse and
+          // followup events which are treated differently (stored in the adverse_effect table above)
 
           foreach( $indicator_list as $indicator )
           {

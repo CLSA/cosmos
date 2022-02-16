@@ -16,6 +16,8 @@ CREATE PROCEDURE patch_comment()
         ADD COLUMN rank INT(10) UNSIGNED NOT NULL DEFAULT 1 AFTER stage_id,
         ADD UNIQUE INDEX uq_stage_id_rank (stage_id ASC, rank ASC);
     END IF;
+
+    ALTER TABLE comment MODIFY note TEXT NOT NULL;
   END //
 DELIMITER ;
 

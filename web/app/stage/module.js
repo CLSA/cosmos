@@ -78,7 +78,7 @@ cenozoApp.defineModule( { name: 'stage', models: ['list', 'view'], dependencies:
     'CnBaseViewFactory',
     function( CnBaseViewFactory ) {
       var object = function( parentModel, root ) {
-        CnBaseViewFactory.construct( this, parentModel, root );
+        CnBaseViewFactory.construct( this, parentModel, root, 'comment' );
 
         this.onView = async function( force ) {
           await this.$$onView();

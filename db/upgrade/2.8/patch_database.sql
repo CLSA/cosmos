@@ -19,6 +19,7 @@ SOURCE indicator_issue_note.sql
 SOURCE stage_issue.sql
 SOURCE stage_issue_has_stage.sql
 SOURCE stage_issue_note.sql
+SOURCE adverse_event.sql
 SOURCE service.sql
 SOURCE role_has_service.sql
 
