@@ -20,8 +20,9 @@ class site extends \cenozo\business\overview\base_overview
   {
     $opal_view_class_name = lib::get_class_name( 'database\opal_view' );
     $interview_class_name = lib::get_class_name( 'database\interview' );
-    $indicator_class_name = lib::get_class_name( 'database\indicator' );
     $stage_class_name = lib::get_class_name( 'database\stage' );
+    $indicator_class_name = lib::get_class_name( 'database\indicator' );
+    $adverse_event_class_name = lib::get_class_name( 'database\adverse_event' );
     $outlier_class_name = lib::get_class_name( 'database\outlier' );
     $indicator_issue_class_name = lib::get_class_name( 'database\indicator_issue' );
     $stage_issue_class_name = lib::get_class_name( 'database\stage_issue' );
@@ -88,6 +89,30 @@ class site extends \cenozo\business\overview\base_overview
         current( $interview_class_name::select( $interview_sel, $interview_mod ) )['total_stage_duration'];
     }
 
+    $stage_sel = lib::create( 'database\select' );
+    $stage_sel->from( 'stage' );
+    $stage_sel->add_table_column( 'interview', 'site_id' );
+    $stage_sel->add_table_column( 'interview', 'study_phase_id' );
+    $stage_sel->add_table_column( 'interview', 'platform_id' );
+    $stage_sel->add_column( 'COUNT(*)', 'total', false );
+    $stage_mod = lib::create( 'database\modifier' );
+    $stage_mod->join( 'interview', 'stage.interview_id', 'interview.id' );
+    $join_mod = lib::create( 'database\modifier' );
+    $join_mod->where( 'interview.study_phase_id', '=', 'opal_view.study_phase_id', false );
+    $join_mod->where( 'interview.platform_id', '=', 'opal_view.platform_id', false );
+    $stage_mod->join_modifier( 'opal_view', $join_mod );
+    $stage_mod->where( 'opal_view.keep_updated', '=', true );
+    $stage_mod->group( 'site_id' );
+    $stage_mod->group( 'study_phase_id' );
+    $stage_mod->group( 'platform_id' );
+    
+    $stage_data = array();
+    foreach( $stage_class_name::select( $stage_sel, $stage_mod ) as $row )
+    {
+      $data_index = sprintf( '%d-%d-%d', $row['site_id'], $row['study_phase_id'], $row['platform_id'] );
+      $stage_data[$data_index] = $row['total'];
+    }
+
     $indicator_sel = lib::create( 'database\select' );
     $indicator_sel->from( 'indicator' );
     $indicator_sel->add_table_column( 'interview', 'site_id' );
@@ -113,28 +138,29 @@ class site extends \cenozo\business\overview\base_overview
       $indicator_data[$data_index] = $row['total'];
     }
 
-    $stage_sel = lib::create( 'database\select' );
-    $stage_sel->from( 'stage' );
-    $stage_sel->add_table_column( 'interview', 'site_id' );
-    $stage_sel->add_table_column( 'interview', 'study_phase_id' );
-    $stage_sel->add_table_column( 'interview', 'platform_id' );
-    $stage_sel->add_column( 'COUNT(*)', 'total', false );
-    $stage_mod = lib::create( 'database\modifier' );
-    $stage_mod->join( 'interview', 'stage.interview_id', 'interview.id' );
+    $adverse_event_sel = lib::create( 'database\select' );
+    $adverse_event_sel->from( 'adverse_event' );
+    $adverse_event_sel->add_table_column( 'interview', 'site_id' );
+    $adverse_event_sel->add_table_column( 'interview', 'study_phase_id' );
+    $adverse_event_sel->add_table_column( 'interview', 'platform_id' );
+    $adverse_event_sel->add_column( 'COUNT(*)', 'total', false );
+    $adverse_event_mod = lib::create( 'database\modifier' );
+    $adverse_event_mod->join( 'stage', 'adverse_event.stage_id', 'stage.id' );
+    $adverse_event_mod->join( 'interview', 'stage.interview_id', 'interview.id' );
     $join_mod = lib::create( 'database\modifier' );
     $join_mod->where( 'interview.study_phase_id', '=', 'opal_view.study_phase_id', false );
     $join_mod->where( 'interview.platform_id', '=', 'opal_view.platform_id', false );
-    $stage_mod->join_modifier( 'opal_view', $join_mod );
-    $stage_mod->where( 'opal_view.keep_updated', '=', true );
-    $stage_mod->group( 'site_id' );
-    $stage_mod->group( 'study_phase_id' );
-    $stage_mod->group( 'platform_id' );
+    $adverse_event_mod->join_modifier( 'opal_view', $join_mod );
+    $adverse_event_mod->where( 'opal_view.keep_updated', '=', true );
+    $adverse_event_mod->group( 'site_id' );
+    $adverse_event_mod->group( 'study_phase_id' );
+    $adverse_event_mod->group( 'platform_id' );
     
-    $stage_data = array();
-    foreach( $stage_class_name::select( $stage_sel, $stage_mod ) as $row )
+    $adverse_event_data = array();
+    foreach( $adverse_event_class_name::select( $adverse_event_sel, $adverse_event_mod ) as $row )
     {
       $data_index = sprintf( '%d-%d-%d', $row['site_id'], $row['study_phase_id'], $row['platform_id'] );
-      $stage_data[$data_index] = $row['total'];
+      $adverse_event_data[$data_index] = $row['total'];
     }
 
     $indicator_outlier_sel = lib::create( 'database\select' );
@@ -343,6 +369,12 @@ class site extends \cenozo\business\overview\base_overview
               array_key_exists( $open_data_index, $stage_issue_data ) ? $stage_issue_data[$open_data_index] : 0,
               array_key_exists( $closed_data_index, $stage_issue_data ) ? $stage_issue_data[$closed_data_index] : 0
             )
+          );
+
+          $this->add_item(
+            $opal_view_node,
+            'Adverse Events',
+            array_key_exists( $data_index, $adverse_event_data ) ? $adverse_event_data[$data_index] : 0
           );
         }
       }
