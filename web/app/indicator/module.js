@@ -18,8 +18,8 @@ cenozoApp.defineModule( { name: 'indicator', models: ['list', 'view'], create: m
       stage_type: { column: 'stage_type.name', title: 'Stage Type' },
       name: { column: 'indicator.name', title: 'Name' },
       type: { title: 'Type' },
-      minimum: { title: 'Minimum' },
-      maximum: { title: 'Maximum' },
+      minimum: { title: 'Minimum', type: 'number' },
+      maximum: { title: 'Maximum', type: 'number' },
       outlier_low: { title: 'Low Outliers' },
       outlier_high: { title: 'High Outliers' }
     },
