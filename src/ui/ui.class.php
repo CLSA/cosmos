@@ -83,7 +83,6 @@ class ui extends \cenozo\ui\ui
     $this->add_listitem( 'Platforms', 'platform' );
     $this->add_listitem( 'Interviews', 'interview' );
     $this->add_listitem( 'Opal Views', 'opal_view' );
-    $this->add_listitem( 'Outliers', 'indicator' );
     $this->add_listitem( 'Indicator Issues', 'indicator_issue' );
     $this->add_listitem( 'Stage Issues', 'stage_issue' );
     $this->add_listitem( 'Stage Types', 'stage_type' );
@@ -93,7 +92,6 @@ class ui extends \cenozo\ui\ui
     // remove some lists from coordinators
     if( 'coordinator' == lib::create( 'business\session' )->get_role()->name )
     {
-      $this->remove_listitem( 'Outliers' );
       $this->remove_listitem( 'Overviews' );
       $this->remove_listitem( 'Platforms' );
       $this->remove_listitem( 'Users' );
