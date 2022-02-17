@@ -20,6 +20,8 @@ class site extends \cenozo\business\overview\base_overview
   {
     $opal_view_class_name = lib::get_class_name( 'database\opal_view' );
     $interview_class_name = lib::get_class_name( 'database\interview' );
+    $indicator_class_name = lib::get_class_name( 'database\indicator' );
+    $stage_class_name = lib::get_class_name( 'database\stage' );
     $outlier_class_name = lib::get_class_name( 'database\outlier' );
     $indicator_issue_class_name = lib::get_class_name( 'database\indicator_issue' );
     $stage_issue_class_name = lib::get_class_name( 'database\stage_issue' );
@@ -86,6 +88,55 @@ class site extends \cenozo\business\overview\base_overview
         current( $interview_class_name::select( $interview_sel, $interview_mod ) )['total_stage_duration'];
     }
 
+    $indicator_sel = lib::create( 'database\select' );
+    $indicator_sel->from( 'indicator' );
+    $indicator_sel->add_table_column( 'interview', 'site_id' );
+    $indicator_sel->add_table_column( 'interview', 'study_phase_id' );
+    $indicator_sel->add_table_column( 'interview', 'platform_id' );
+    $indicator_sel->add_column( 'COUNT(*)', 'total', false );
+    $indicator_mod = lib::create( 'database\modifier' );
+    $indicator_mod->join( 'stage', 'indicator.stage_type_id', 'stage.stage_type_id' );
+    $indicator_mod->join( 'interview', 'stage.interview_id', 'interview.id' );
+    $join_mod = lib::create( 'database\modifier' );
+    $join_mod->where( 'interview.study_phase_id', '=', 'opal_view.study_phase_id', false );
+    $join_mod->where( 'interview.platform_id', '=', 'opal_view.platform_id', false );
+    $indicator_mod->join_modifier( 'opal_view', $join_mod );
+    $indicator_mod->where( 'opal_view.keep_updated', '=', true );
+    $indicator_mod->group( 'site_id' );
+    $indicator_mod->group( 'study_phase_id' );
+    $indicator_mod->group( 'platform_id' );
+    
+    $indicator_data = array();
+    foreach( $indicator_class_name::select( $indicator_sel, $indicator_mod ) as $row )
+    {
+      $data_index = sprintf( '%d-%d-%d', $row['site_id'], $row['study_phase_id'], $row['platform_id'] );
+      $indicator_data[$data_index] = $row['total'];
+    }
+
+    $stage_sel = lib::create( 'database\select' );
+    $stage_sel->from( 'stage' );
+    $stage_sel->add_table_column( 'interview', 'site_id' );
+    $stage_sel->add_table_column( 'interview', 'study_phase_id' );
+    $stage_sel->add_table_column( 'interview', 'platform_id' );
+    $stage_sel->add_column( 'COUNT(*)', 'total', false );
+    $stage_mod = lib::create( 'database\modifier' );
+    $stage_mod->join( 'interview', 'stage.interview_id', 'interview.id' );
+    $join_mod = lib::create( 'database\modifier' );
+    $join_mod->where( 'interview.study_phase_id', '=', 'opal_view.study_phase_id', false );
+    $join_mod->where( 'interview.platform_id', '=', 'opal_view.platform_id', false );
+    $stage_mod->join_modifier( 'opal_view', $join_mod );
+    $stage_mod->where( 'opal_view.keep_updated', '=', true );
+    $stage_mod->group( 'site_id' );
+    $stage_mod->group( 'study_phase_id' );
+    $stage_mod->group( 'platform_id' );
+    
+    $stage_data = array();
+    foreach( $stage_class_name::select( $stage_sel, $stage_mod ) as $row )
+    {
+      $data_index = sprintf( '%d-%d-%d', $row['site_id'], $row['study_phase_id'], $row['platform_id'] );
+      $stage_data[$data_index] = $row['total'];
+    }
+
     $indicator_outlier_sel = lib::create( 'database\select' );
     $indicator_outlier_sel->from( 'outlier' );
     $indicator_outlier_sel->add_column( 'site_id' );
@@ -119,6 +170,7 @@ class site extends \cenozo\business\overview\base_overview
     $stage_outlier_mod->join( 'stage', 'outlier.stage_id', 'stage.id' );
     $stage_outlier_mod->join( 'stage_type', 'stage.stage_type_id', 'stage_type.id' );
     $stage_outlier_mod->join( 'opal_view', 'stage_type.opal_view_id', 'opal_view.id' );
+    $stage_outlier_mod->where( 'outlier.indicator_id', '=', NULL );
     $stage_outlier_mod->where( 'opal_view.keep_updated', '=', true );
     $stage_outlier_mod->group( 'site_id' );
     $stage_outlier_mod->group( 'study_phase_id' );
@@ -210,101 +262,89 @@ class site extends \cenozo\business\overview\base_overview
         $data_index = sprintf( '%d-%d-%d', $db_site->id, $opal_view['study_phase_id'], $opal_view['platform_id'] );
         $opal_view_node = $this->add_item( $site_node, sprintf( '%s: %s', $opal_view['study_phase'], $opal_view['platform'] ) );
 
-        $this->add_item(
-          $opal_view_node,
-          'Interviews',
-          array_key_exists( $data_index, $interview_data ) ? $interview_data[$data_index]['total'] : 0
-        );
+        $interviews = array_key_exists( $data_index, $interview_data ) ? $interview_data[$data_index]['total'] : 0;
+        $this->add_item( $opal_view_node, 'Interviews', $interviews );
 
-        $median_duration = 'N/A';
-        if( array_key_exists( $data_index, $interview_data ) )
+        if( 0 < $interviews )
         {
-          $median_duration = sprintf(
+          $this->add_item( $opal_view_node, 'Median Duration', sprintf(
             'Stage: %s, Total: %s',
             $interview_data[$data_index]['median_stage_duration'],
             $interview_data[$data_index]['median_duration']
-          );
-        }
-        $this->add_item( $opal_view_node, 'Median Duration', $median_duration );
+          ) );
 
-        $date_span = 'N/A';
-        if( array_key_exists( $data_index, $interview_data ) )
-        {
-          $date_span = sprintf(
+          $this->add_item( $opal_view_node, 'Date Span', sprintf(
             '%s to %s',
             util::get_datetime_object( $interview_data[$data_index]['min_date'] )->format( 'F jS, Y' ),
             util::get_datetime_object( $interview_data[$data_index]['max_date'] )->format( 'F jS, Y' )
+          ) );
+
+          $low_data_index = sprintf( '%s-low', $data_index );
+          $high_data_index = sprintf( '%s-high', $data_index );
+          $low_value = array_key_exists( $low_data_index, $indicator_outlier_data ) ? $indicator_outlier_data[$low_data_index] : 0;
+          $high_value = array_key_exists( $high_data_index, $indicator_outlier_data ) ? $indicator_outlier_data[$high_data_index] : 0;
+          $this->add_item(
+            $opal_view_node,
+            'Indicator Outliers',
+            sprintf(
+              'Low: %d (%0.2f%%), High: %d (%0.2f%%)',
+              $low_value,
+              $low_value / $indicator_data[$data_index],
+              $high_value,
+              $high_value / $indicator_data[$data_index]
+            )
+          );
+
+          $low_value = array_key_exists( $low_data_index, $stage_outlier_data ) ? $stage_outlier_data[$low_data_index] : 0;
+          $high_value = array_key_exists( $high_data_index, $stage_outlier_data ) ? $stage_outlier_data[$high_data_index] : 0;
+          $this->add_item(
+            $opal_view_node,
+            'Stage Outliers',
+            sprintf(
+              'Low: %d (%0.2f%%), High: %d (%0.2f%%)',
+              $low_value,
+              $low_value / $stage_data[$data_index],
+              $high_value,
+              $high_value / $stage_data[$data_index]
+            )
+          );
+
+          $open_data_index = sprintf( '%s-0', $data_index );
+          $closed_data_index = sprintf( '%s-1', $data_index );
+          $this->add_item(
+            $opal_view_node,
+            'Indicator Issues',
+            sprintf(
+              'Open: %d, Closed: %d',
+              array_key_exists( $open_data_index, $indicator_issue_data ) ? $indicator_issue_data[$open_data_index] : 0,
+              array_key_exists( $closed_data_index, $indicator_issue_data ) ? $indicator_issue_data[$closed_data_index] : 0
+            )
+          );
+
+          $open_data_index = sprintf( '%s-duration-0', $data_index );
+          $closed_data_index = sprintf( '%s-duration-1', $data_index );
+          $this->add_item(
+            $opal_view_node,
+            'Stage Duration Issues',
+            sprintf(
+              'Open: %d, Closed: %d',
+              array_key_exists( $open_data_index, $stage_issue_data ) ? $stage_issue_data[$open_data_index] : 0,
+              array_key_exists( $closed_data_index, $stage_issue_data ) ? $stage_issue_data[$closed_data_index] : 0
+            )
+          );
+
+          $open_data_index = sprintf( '%s-skip-0', $data_index );
+          $closed_data_index = sprintf( '%s-skip-1', $data_index );
+          $this->add_item(
+            $opal_view_node,
+            'Stage Skip Issues',
+            sprintf(
+              'Open: %d, Closed: %d',
+              array_key_exists( $open_data_index, $stage_issue_data ) ? $stage_issue_data[$open_data_index] : 0,
+              array_key_exists( $closed_data_index, $stage_issue_data ) ? $stage_issue_data[$closed_data_index] : 0
+            )
           );
         }
-        $this->add_item( $opal_view_node, 'Date Span', $date_span );
-
-        $date_span = 'N/A';
-        if( array_key_exists( $data_index, $interview_data ) )
-        {
-          $date_span = sprintf(
-            '%s to %s',
-            util::get_datetime_object( $interview_data[$data_index]['min_date'] )->format( 'F jS, Y' ),
-            util::get_datetime_object( $interview_data[$data_index]['max_date'] )->format( 'F jS, Y' )
-          );
-        }
-
-        $low_data_index = sprintf( '%s-low', $data_index );
-        $high_data_index = sprintf( '%s-high', $data_index );
-        $this->add_item(
-          $opal_view_node,
-          'Indicator Outliers',
-          sprintf(
-            'Low: %d, High: %d',
-            array_key_exists( $low_data_index, $indicator_outlier_data ) ? $indicator_outlier_data[$low_data_index] : 0,
-            array_key_exists( $high_data_index, $indicator_outlier_data ) ? $indicator_outlier_data[$high_data_index] : 0
-          )
-        );
-
-        $this->add_item(
-          $opal_view_node,
-          'Stage Outliers',
-          sprintf(
-            'Low: %d, High: %d',
-            array_key_exists( $low_data_index, $stage_outlier_data ) ? $stage_outlier_data[$low_data_index] : 0,
-            array_key_exists( $high_data_index, $stage_outlier_data ) ? $stage_outlier_data[$high_data_index] : 0
-          )
-        );
-
-        $open_data_index = sprintf( '%s-0', $data_index );
-        $closed_data_index = sprintf( '%s-1', $data_index );
-        $this->add_item(
-          $opal_view_node,
-          'Indicator Issues',
-          sprintf(
-            'Open: %d, Closed: %d',
-            array_key_exists( $open_data_index, $indicator_issue_data ) ? $indicator_issue_data[$open_data_index] : 0,
-            array_key_exists( $closed_data_index, $indicator_issue_data ) ? $indicator_issue_data[$closed_data_index] : 0
-          )
-        );
-
-        $open_data_index = sprintf( '%s-duration-0', $data_index );
-        $closed_data_index = sprintf( '%s-duration-1', $data_index );
-        $this->add_item(
-          $opal_view_node,
-          'Stage Duration Issues',
-          sprintf(
-            'Open: %d, Closed: %d',
-            array_key_exists( $open_data_index, $stage_issue_data ) ? $stage_issue_data[$open_data_index] : 0,
-            array_key_exists( $closed_data_index, $stage_issue_data ) ? $stage_issue_data[$closed_data_index] : 0
-          )
-        );
-
-        $open_data_index = sprintf( '%s-skip-0', $data_index );
-        $closed_data_index = sprintf( '%s-skip-1', $data_index );
-        $this->add_item(
-          $opal_view_node,
-          'Stage Skip Issues',
-          sprintf(
-            'Open: %d, Closed: %d',
-            array_key_exists( $open_data_index, $stage_issue_data ) ? $stage_issue_data[$open_data_index] : 0,
-            array_key_exists( $closed_data_index, $stage_issue_data ) ? $stage_issue_data[$closed_data_index] : 0
-          )
-        );
       }
     }
   }
