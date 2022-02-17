@@ -38,38 +38,34 @@ class module extends \cenozo\service\site_restricted_module
         $modifier->where( 'outlier.site_id', '=', $db_restricted_site->id );
     }
 
-    if( $select->has_column( 'outlier_low' ) || $select->has_column( 'outlier_high' ) )
+    if( $select->has_column( 'outlier_low' ) )
     {
-      // create a temporary table that includes the number of low and high outliers
-      $join_sel = lib::create( 'database\select' );
-      $join_sel->from( 'indicator' );
-      $join_sel->add_column( 'id', 'indicator_id' );
-      if( $select->has_column( 'outlier_low' ) )
-        $join_sel->add_column( 'SUM( IF( outlier.type = "low", 1, 0 ) )', 'outlier_low', false );
-      if( $select->has_column( 'outlier_high' ) )
-        $join_sel->add_column( 'SUM( IF( outlier.type = "high", 1, 0 ) )', 'outlier_high', false );
+      $indicator_table_name::db()->execute(
+        'CREATE TEMPORARY TABLE temp_outlier_low '.
+        'SELECT indicator.id AS indicator_id, IF( outlier.id IS NULL, 0, COUNT(*) ) AS total '.
+        'FROM indicator '.
+        'LEFT JOIN outlier ON indicator.id = outlier.indicator_id AND outlier.type = "low" '.
+        'GROUP BY indicator.id'
+      );
+      $indicator_table_name::db()->execute( 'ALTER TABLE temp_outlier_low ADD INDEX fk_indicator_id( indicator_id )' );
 
-      $join_mod = lib::create( 'database\modifier' );
-      $join_mod->left_join( 'outlier', 'indicator.id', 'outlier.indicator_id' );
-      $join_mod->group( 'indicator.id' );
+      $modifier->join( 'temp_outlier_low', 'indicator.id', 'temp_outlier_low.indicator_id' );
+      $select->add_table_column( 'temp_outlier_low', 'total', 'outlier_low' );
+    }
 
-      // restrict by site
-      $db_restricted_site = $this->get_restricted_site();
-      if( !is_null( $db_restricted_site ) )
-        $join_mod->where( 'outlier.site_id', '=', $db_restricted_site->id );
+    if( $select->has_column( 'outlier_high' ) )
+    {
+      $indicator_table_name::db()->execute(
+        'CREATE TEMPORARY TABLE temp_outlier_high '.
+        'SELECT indicator.id AS indicator_id, IF( outlier.id IS NULL, 0, COUNT(*) ) AS total '.
+        'FROM indicator '.
+        'LEFT JOIN outlier ON indicator.id = outlier.indicator_id AND outlier.type = "high" '.
+        'GROUP BY indicator.id'
+      );
+      $indicator_table_name::db()->execute( 'ALTER TABLE temp_outlier_high ADD INDEX fk_indicator_id( indicator_id )' );
 
-      $indicator_table_name::db()->execute( sprintf(
-        'CREATE TEMPORARY TABLE temp_outlier_join %s %s',
-        $join_sel->get_sql(),
-        $join_mod->get_sql()
-      ) );
-      $indicator_table_name::db()->execute( 'ALTER TABLE temp_outlier_join ADD INDEX fk_indicator_id (indicator_id)' );
-
-      $modifier->join( 'temp_outlier_join', 'indicator.id', 'temp_outlier_join.indicator_id' );
-      if( $select->has_column( 'outlier_low' ) )
-        $select->add_table_column( 'temp_outlier_join', 'outlier_low' );
-      if( $select->has_column( 'outlier_high' ) )
-        $select->add_table_column( 'temp_outlier_join', 'outlier_high' );
+      $modifier->join( 'temp_outlier_high', 'indicator.id', 'temp_outlier_high.indicator_id' );
+      $select->add_table_column( 'temp_outlier_high', 'total', 'outlier_high' );
     }
 
     if( $select->has_column( 'min_date' ) || $select->has_column( 'max_date' ) )
@@ -80,6 +76,7 @@ class module extends \cenozo\service\site_restricted_module
         $select->add_column( 'MIN( interview.start_date )', 'min_date', false );
       if( $select->has_column( 'max_date' ) )
         $select->add_column( 'MAX( interview.start_date )', 'max_date', false );
+      $modifier->group( 'indicator.id' );
     }
 
     $db_indicator = $this->get_resource();

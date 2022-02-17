@@ -34,12 +34,14 @@ class stage_type extends \cenozo\database\record
     $stage_table_name = lib::get_class_name( 'database\stage' );
 
     $stage_mod = lib::create( 'database\modifier' );
+    $stage_mod->where( 'stage_type_id', '=', $this->id );
     $stage_mod->where( 'duration', '!=', NULL );
     $count = $stage_table_name::count( $stage_mod );
 
     $stage_sel = lib::create( 'database\select' );
     $stage_sel->add_column( 'duration' );
     $stage_mod = lib::create( 'database\modifier' );
+    $stage_mod->where( 'stage_type_id', '=', $this->id );
     $stage_mod->where( 'duration', '!=', NULL );
     $stage_mod->order( 'duration' );
     $stage_mod->limit( 1 );

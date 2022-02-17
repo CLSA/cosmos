@@ -31,6 +31,7 @@ CREATE PROCEDURE patch_outlier()
         "INDEX fk_site_id (site_id ASC), ",
         "INDEX fk_technician_id (technician_id ASC), ",
         "INDEX dk_date (date ASC), ",
+        "INDEX dk_indicator_id_type (indicator_id ASC, type ASC), ",
         "PRIMARY KEY (id), ",
         "CONSTRAINT fk_outlier_indicator_id ",
           "FOREIGN KEY (indicator_id) ",

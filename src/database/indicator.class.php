@@ -51,12 +51,14 @@ class indicator extends \cenozo\database\record
       $json_params = sprintf( 'data, "$.%s"', $this->name );
 
       $stage_mod = lib::create( 'database\modifier' );
+      $stage_mod->where( 'stage.stage_type_id', '=', $this->stage_type_id );
       $stage_mod->where( sprintf( 'JSON_EXISTS( %s )', $json_params ), '=', true );
       $count = $stage_table_name::count( $stage_mod );
 
       $stage_sel = lib::create( 'database\select' );
       $stage_sel->add_column( sprintf( 'CAST( JSON_VALUE( %s ) AS %s )', $json_params, $this->get_cast_type() ), 'value', false );
       $stage_mod = lib::create( 'database\modifier' );
+      $stage_mod->where( 'stage.stage_type_id', '=', $this->stage_type_id );
       $stage_mod->where( sprintf( 'JSON_EXISTS( %s )', $json_params ), '=', true );
       $stage_mod->order( sprintf( 'CAST( JSON_VALUE( %s ) AS %s )', $json_params, $this->get_cast_type() ) );
       $stage_mod->limit( 1 );
