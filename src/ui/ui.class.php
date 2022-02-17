@@ -84,8 +84,8 @@ class ui extends \cenozo\ui\ui
     $this->add_listitem( 'Interviews', 'interview' );
     $this->add_listitem( 'Opal Views', 'opal_view' );
     $this->add_listitem( 'Indicator Issues', 'indicator_issue' );
+    $this->add_listitem( 'Platforms', 'platform' );
     $this->add_listitem( 'Stage Issues', 'stage_issue' );
-    $this->add_listitem( 'Stage Types', 'stage_type' );
 
     $this->remove_listitem( 'Languages' );
 
